@@ -21,4 +21,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "mission-mate"
 include(":app")
- 
+include(":core:data")
