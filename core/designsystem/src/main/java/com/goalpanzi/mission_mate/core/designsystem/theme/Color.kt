@@ -1,4 +1,4 @@
-package com.goalpanzi.mission_mate.ui.theme
+package com.goalpanzi.mission_mate.core.designsystem.theme
 
 import androidx.compose.ui.graphics.Color
 
