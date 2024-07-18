@@ -23,3 +23,4 @@ rootProject.name = "mission-mate"
 include(":app")
 include(":core:data")
 include(":core:network")
+include(":core:datastore")
