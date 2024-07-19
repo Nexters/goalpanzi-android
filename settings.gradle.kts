@@ -21,4 +21,12 @@ dependencyResolutionManagement {
 
 rootProject.name = "mission-mate"
 include(":app")
- 
+include(":core:data")
+include(":core:network")
+include(":core:datastore")
+include(":core:domain")
+include(":core:designsystem")
+include(":core:navigation")
+include(":feature:login")
+include(":feature:main")
+include(":feature:board")
