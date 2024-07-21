@@ -3,7 +3,8 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
-    alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.hilt.android)
+    alias(libs.plugins.kotlin.ksp)
 }
 
 android {
@@ -41,12 +42,6 @@ android {
             jvmTarget.set(JvmTarget.JVM_17)
         }
     }
-    buildFeatures {
-        compose = true
-    }
-    composeCompiler {
-        enableStrongSkippingMode = true
-    }
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
@@ -56,7 +51,9 @@ android {
 
 dependencies {
 
-    //project
+    ksp(libs.hilt.compiler)
+    implementation(libs.hilt.android)
+
     implementation(project(":feature:main"))
     implementation(project(":feature:login"))
     implementation(project(":core:designsystem"))
