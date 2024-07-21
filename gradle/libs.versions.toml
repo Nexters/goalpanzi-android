@@ -117,8 +117,8 @@ hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 [bundles]
 coroutines = ["coroutines-core", "coroutines-android"]
 lifecycle = ["androidx-lifecycle-runtime-ktx","androidx-lifecycle-runtime-compose","androidx-lifecycle-viewmodel-compose"]
-test = ["junit","androidx-junit","androidx-espresso-core","kotlin-test","coroutines-test"]
+test = ["junit","coroutines-test","kotlin-test"]
+android-test = ["androidx-junit","androidx-espresso-core","androidx-ui-test-junit4"]
 kotest = ["kotest-runner","kotest-assertions"]
-compose = ["androidx-compose-bom","androidx-ui","androidx-ui-graphics","androidx-ui-tooling","androidx-ui-tooling-preview",
-           "androidx-ui-test-junit4", "androidx-ui-test-manifest","androidx-material3","androidx-navigation-compose"]
+compose = ["androidx-ui","androidx-ui-graphics","androidx-ui-tooling-preview", "androidx-material3","androidx-navigation-compose"]
 network = ["retrofit","retrofit-kotlinx-serialization","okhttp3","okhttp3-logging-interceptor"]
