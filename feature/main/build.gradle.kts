@@ -69,4 +69,7 @@ dependencies {
     ksp(libs.hilt.compiler)
 
     implementation(project(":core:designsystem"))
+    implementation(project(":core:navigation"))
+    implementation(project(":core:domain"))
+    implementation(project(":feature:login"))
 }

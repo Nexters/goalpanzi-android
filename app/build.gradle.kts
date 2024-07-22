@@ -26,12 +26,16 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            getByName("debug")
+            isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
         }
+    }
+    buildFeatures {
+        buildConfig = true
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
@@ -57,4 +61,5 @@ dependencies {
     implementation(project(":feature:main"))
     implementation(project(":feature:login"))
     implementation(project(":core:designsystem"))
+    implementation(project(":core:data"))
 }

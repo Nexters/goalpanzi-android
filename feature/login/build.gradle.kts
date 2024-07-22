@@ -1,3 +1,4 @@
+import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
@@ -23,8 +24,12 @@ android {
     }
 
     buildTypes {
+        debug {
+            buildConfigField("String", "CREDENTIAL_WEB_CLIENT_ID", getCredentialClientId())
+        }
         release {
-            isMinifyEnabled = false
+            buildConfigField("String", "CREDENTIAL_WEB_CLIENT_ID", getCredentialClientId())
+            isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -42,6 +47,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
     composeCompiler {
         enableStrongSkippingMode = true
@@ -72,4 +78,15 @@ dependencies {
     ksp(libs.hilt.compiler)
 
     implementation(project(":core:designsystem"))
+    implementation(project(":core:navigation"))
+    implementation(project(":core:domain"))
+    implementation(project(":core:model"))
+
+    implementation(libs.credentials)
+    implementation(libs.credentials.auth)
+    implementation(libs.google.id)
+}
+
+fun getCredentialClientId(): String {
+    return gradleLocalProperties(rootDir, providers).getProperty("CREDENTIAL_WEB_CLIENT_ID") ?: ""
 }
