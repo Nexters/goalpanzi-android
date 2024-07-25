@@ -42,6 +42,7 @@ dataStore-preferences = "1.1.1"
 
 ## Image Loader
 coil-compose = "2.5.0"
+material = "1.12.0"
 
 ## Google OAuth
 credential = "1.2.2"
@@ -101,6 +102,7 @@ dataStore = { module = "androidx.datastore:datastore-preferences", version.ref =
 
 ## Image Loader
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil-compose" }
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 
 ## Google OAuth
 credentials = { group = "androidx.credentials", name = "credentials", version.ref = "credential" }
