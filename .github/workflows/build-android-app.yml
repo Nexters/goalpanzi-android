@@ -1,0 +1,14 @@
+name: build-android-app
+on:
+  pull_request:
+    branches:
+      - master
+      - 'dev'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: fastlane beta
