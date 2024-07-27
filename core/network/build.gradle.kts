@@ -1,3 +1,4 @@
+import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
@@ -21,10 +22,10 @@ android {
 
     buildTypes {
         debug {
-            buildConfigField("String", "BASE_URL", "\"http://223.130.130.31:8080\"")
+            buildConfigField("String", "BASE_URL", getMissionMateBaseUrl())
         }
         release {
-            buildConfigField("String", "BASE_URL", "\"http://223.130.130.31:8080\"")
+            buildConfigField("String", "BASE_URL", getMissionMateBaseUrl())
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -57,4 +58,7 @@ dependencies {
     implementation(libs.hilt.android)
 
     implementation(project(":core:model"))
+}
+fun getMissionMateBaseUrl(): String {
+    return gradleLocalProperties(rootDir, providers).getProperty("MISSION_MATE_BASE_URL") ?: ""
 }
