@@ -17,7 +17,6 @@ android {
         minSdk = 26
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles("consumer-rules.pro")
     }
 
     buildTypes {
@@ -26,7 +25,6 @@ android {
         }
         release {
             buildConfigField("String", "BASE_URL", getMissionMateBaseUrl())
-            isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -59,6 +57,7 @@ dependencies {
 
     implementation(project(":core:model"))
 }
+
 fun getMissionMateBaseUrl(): String {
     return gradleLocalProperties(rootDir, providers).getProperty("MISSION_MATE_BASE_URL") ?: ""
 }

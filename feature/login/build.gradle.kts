@@ -17,7 +17,6 @@ android {
         minSdk = 26
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles("consumer-rules.pro")
         vectorDrawables {
             useSupportLibrary = true
         }
@@ -29,7 +28,6 @@ android {
         }
         release {
             buildConfigField("String", "CREDENTIAL_WEB_CLIENT_ID", getCredentialClientId())
-            isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
