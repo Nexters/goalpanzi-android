@@ -23,4 +23,4 @@ jobs:
           echo MISSION_MATE_BASE_URL=\"$MISSION_MATE_BASE_URL\" >> ./local.properties
 
       - name: Build with Gradle
-        run: fastlane beta
+        run: fastlane test
