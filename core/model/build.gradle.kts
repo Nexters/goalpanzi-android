@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.luckyoct.model"
+    namespace = "com.luckyoct.core.model"
     compileSdk = 34
 
     defaultConfig {

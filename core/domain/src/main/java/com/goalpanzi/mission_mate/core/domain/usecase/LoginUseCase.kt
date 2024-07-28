@@ -1,7 +1,7 @@
 package com.goalpanzi.mission_mate.core.domain.usecase
 
 import com.goalpanzi.mission_mate.core.domain.repository.LoginRepository
-import com.luckyoct.model.GoogleLogin
+import com.luckyoct.core.model.GoogleLogin
 import javax.inject.Inject
 
 class LoginUseCase @Inject constructor(

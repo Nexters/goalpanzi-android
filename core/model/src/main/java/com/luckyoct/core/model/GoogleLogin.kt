@@ -1,4 +1,4 @@
-package com.luckyoct.model
+package com.luckyoct.core.model
 
 import kotlinx.serialization.Serializable
 

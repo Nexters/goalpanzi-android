@@ -30,7 +30,7 @@ kotest = "5.9.0"
 mockk = "1.13.11"
 
 ## Hilt
-hilt = "2.51"
+hilt = "2.51.1"
 hilt-navigation-compose = "1.2.0"
 
 ## Network
