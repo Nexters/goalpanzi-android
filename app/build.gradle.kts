@@ -1,4 +1,6 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import java.io.FileInputStream
+import java.util.Properties
 
 plugins {
     alias(libs.plugins.android.application)
@@ -6,6 +8,10 @@ plugins {
     alias(libs.plugins.hilt.android)
     alias(libs.plugins.kotlin.ksp)
 }
+
+//val keystorePropertiesFile = rootProject.file("keystore.properties")
+//val keystoreProperties = Properties()
+//keystoreProperties.load(FileInputStream(keystorePropertiesFile))
 
 android {
     namespace = "com.goalpanzi.mission_mate"
@@ -24,14 +30,27 @@ android {
         }
     }
 
+//    signingConfigs {
+//        create("release") {
+//            keyAlias = keystoreProperties["keyAlias"] as String
+//            keyPassword = keystoreProperties["keyPassword"] as String
+//            storeFile = file(keystoreProperties["storeFile"] as String)
+//            storePassword = keystoreProperties["storePassword"] as String
+//        }
+//    }
+
     buildTypes {
         release {
-            isMinifyEnabled = false
+            getByName("debug")
+//            signingConfig = signingConfigs.getByName("release")
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
         }
+    }
+    buildFeatures {
+        buildConfig = true
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
@@ -57,4 +76,5 @@ dependencies {
     implementation(project(":feature:main"))
     implementation(project(":feature:login"))
     implementation(project(":core:designsystem"))
+    implementation(project(":core:data"))
 }

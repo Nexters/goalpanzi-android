@@ -1,3 +1,4 @@
+import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
@@ -16,17 +17,22 @@ android {
         minSdk = 26
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles("consumer-rules.pro")
     }
 
     buildTypes {
+        debug {
+            buildConfigField("String", "BASE_URL", getMissionMateBaseUrl())
+        }
         release {
-            isMinifyEnabled = false
+            buildConfigField("String", "BASE_URL", getMissionMateBaseUrl())
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
         }
+    }
+    buildFeatures {
+        buildConfig = true
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
@@ -48,4 +54,10 @@ dependencies {
 
     ksp(libs.hilt.compiler)
     implementation(libs.hilt.android)
+
+    implementation(project(":core:model"))
+}
+
+fun getMissionMateBaseUrl(): String {
+    return gradleLocalProperties(rootDir, providers).getProperty("MISSION_MATE_BASE_URL") ?: ""
 }

@@ -17,7 +17,7 @@ androidxActivity = "1.9.0"
 
 ## Compose
 composeBom = "2024.06.00"
-navigation-compose = "2.7.7"
+navigation-compose = "2.8.0-beta02"
 
 ## Kotlin Symbol Processing (KSP)
 ksp = "2.0.0-1.0.23"
@@ -30,7 +30,7 @@ kotest = "5.9.0"
 mockk = "1.13.11"
 
 ## Hilt
-hilt = "2.51"
+hilt = "2.51.1"
 hilt-navigation-compose = "1.2.0"
 
 ## Network
@@ -42,6 +42,11 @@ dataStore-preferences = "1.1.1"
 
 ## Image Loader
 coil-compose = "2.5.0"
+
+## Google OAuth
+credential = "1.2.2"
+identity = "1.1.1"
+material = "1.12.0"
 
 [libraries]
 ## Koitln
@@ -69,7 +74,7 @@ androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-toolin
 androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
-androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigation-compose" }
+androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigation-compose" }
 
 ## Test
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -96,6 +101,12 @@ dataStore = { module = "androidx.datastore:datastore-preferences", version.ref =
 
 ## Image Loader
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil-compose" }
+
+## Google OAuth
+credentials = { group = "androidx.credentials", name = "credentials", version.ref = "credential" }
+credentials-auth = { group = "androidx.credentials", name = "credentials-play-services-auth", version.ref = "credential" }
+google-id = { group = "com.google.android.libraries.identity.googleid", name = "googleid", version = "identity" }
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 
 [plugins]
 ## Android gradle plugin
