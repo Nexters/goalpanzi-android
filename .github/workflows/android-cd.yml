@@ -1,4 +1,4 @@
-name: build-android-app
+name: android-cd
 on:
   push:
     branches:
