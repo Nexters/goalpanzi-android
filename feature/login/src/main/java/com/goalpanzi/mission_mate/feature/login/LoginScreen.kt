@@ -26,8 +26,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.goalpanzi.mission_mate.core.designsystem.theme.ColorFFF5EDEA
 import com.goalpanzi.mission_mate.core.designsystem.theme.MissionMateTypography
-import com.goalpanzi.mission_mate.core.designsystem.theme.Orange01
 
 @Composable
 fun LoginRoute(
@@ -54,7 +54,7 @@ fun LoginScreen(
         Column(
             modifier = modifier
                 .fillMaxSize()
-                .background(color = Orange01)
+                .background(color = ColorFFF5EDEA)
                 .padding(horizontal = 24.dp),
             verticalArrangement = Arrangement.Center
         ) {
