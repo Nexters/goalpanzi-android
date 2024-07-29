@@ -3,33 +3,33 @@ package com.goalpanzi.mission_mate.core.designsystem.theme
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 
-val ColorFFFFFFFF = Color(0xFFFFFFFF)
-val ColorFF000000 = Color(0xFF000000)
-val ColorFF404249 = Color(0xFF404249)
-val ColorFF4F505B = Color(0xFF4F505B)
-val ColorFF727483 = Color(0xFF727483)
+val ColorWhite_FFFFFFFF = Color(0xFFFFFFFF)
+val ColorBlack_FF000000 = Color(0xFF000000)
+val ColorGray1_FF404249 = Color(0xFF404249)
+val ColorGray2_FF4F505C = Color(0xFF4F505C)
+val ColorGray3_FF727484 = Color(0xFF727484)
 
-val ColorFFE5E5E5 = Color(0xFFE5E5E5)
-val ColorFFF5F6F9 = Color(0xFFF5F6F9)
-val Color80919293 = Color(0x80919293)
-val Color80B3B3B3 = Color(0x80B3B3B3)
+val ColorGray4_FFE5E5E5 = Color(0xFFE5E5E5)
+val ColorGray5_FFF5F6F9 = Color(0xFFF5F6F9)
+val ColorGray5_80F5F6F9 = Color(0x80F5F6F9)
+val ColorDisabled_FFB3B3B3 = Color(0xFFB3B3B3)
 
-val ColorFFED645F = Color(0xFFED645F)
-val ColorFFED6341 = Color(0xFFED6341)
-val ColorFFFBE5E5 = Color(0xFFFBE5E5)
-val ColorFFFBE5A4 = Color(0xFFFBE5A4)
-val ColorFFF2BD42 = Color(0xFFF2BD42)
+val ColorRed_FFFF5858 = Color(0xFFFF5858)
+val ColorOrange_FFFF5732 = Color(0xFFFF5732)
+val ColorPink_FFFFE4E4 = Color(0xFFFFE4E4)
+val ColorLightYellow_FFFFE59A = Color(0xFFFFE59A)
+val ColorYellow_FFFBBC05 = Color(0xFFFBBC05)
 
-val ColorFFCAE59B = Color(0xFFCAE59B)
-val ColorFFC4E6FD = Color(0xFFC4E6FD)
-val ColorFFC3D7FC = Color(0xFFC3D7FC)
-val ColorFFF3D9B8 = Color(0xFFF3D9B8)
+val ColorLightGreen_FFC2E792 = Color(0xFFC2E792)
+val ColorLightBlue_FFBCE7FF = Color(0xFFBCE7FF)
+val ColorBlue_FFBFD7FF = Color(0xFFBFD7FF)
+val ColorLightBrown_FFF7D8B3 = Color(0xFFF7D8B3)
 
 val ColorFFF5EDEA = Color(0xFFF5EDEA)
 
 val ColorFFFF5F3C = Color(0xFFFF5F3C)
 val ColorFFFFAE50 = Color(0xFFFFAE50)
 
-val Gradient_FFFF5F3C_FFFFAE50 = Brush.verticalGradient(
+val OrangeGradient_FFFF5F3C_FFFFAE50 = Brush.verticalGradient(
     listOf(ColorFFFF5F3C, ColorFFFFAE50)
 )
