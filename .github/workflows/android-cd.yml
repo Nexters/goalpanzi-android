@@ -23,9 +23,9 @@ jobs:
         run: |
           echo CREDENTIAL_WEB_CLIENT_ID=\"$CREDENTIAL_WEB_CLIENT_ID\" > ./local.properties
           echo MISSION_MATE_BASE_URL=\"$MISSION_MATE_BASE_URL\" >> ./local.properties
-          echo SIGNING_STORE_PASSWORD=\"$SIGNING_STORE_PASSWORD\" >> ./local.properties
-          echo SIGNING_KEY_PASSWORD=\"$SIGNING_KEY_PASSWORD\" >> ./local.properties
-          echo SIGNING_KEY_ALIAS=\"$SIGNING_KEY_ALIAS\" >> ./local.properties
+          echo SIGNING_STORE_PASSWORD=$SIGNING_STORE_PASSWORD >> ./local.properties
+          echo SIGNING_KEY_PASSWORD=$SIGNING_KEY_PASSWORD >> ./local.properties
+          echo SIGNING_KEY_ALIAS=$SIGNING_KEY_ALIAS >> ./local.properties
 
       - name: Generate Keystore file from Github Secrets
         env:
