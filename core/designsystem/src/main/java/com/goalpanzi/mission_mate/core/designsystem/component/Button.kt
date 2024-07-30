@@ -1,8 +1,8 @@
 package com.goalpanzi.mission_mate.core.designsystem.component
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
@@ -11,27 +11,47 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.goalpanzi.mission_mate.core.designsystem.R
+import com.goalpanzi.mission_mate.core.designsystem.theme.ColorDisabled_FFB3B3B3
+import com.goalpanzi.mission_mate.core.designsystem.theme.ColorGray1_FF404249
+import com.goalpanzi.mission_mate.core.designsystem.theme.ColorOrange_FFFF5732
+import com.goalpanzi.mission_mate.core.designsystem.theme.ColorWhite_FFFFFFFF
 import com.goalpanzi.mission_mate.core.designsystem.theme.MissionMateTypography
+
+enum class MissionMateButtonType(
+    val containerColor : Color,
+    val contentColor : Color = ColorWhite_FFFFFFFF,
+) {
+    ACTIVE(containerColor = ColorOrange_FFFF5732),
+    SECONDARY(containerColor = ColorGray1_FF404249),
+    DISABLED(containerColor = ColorDisabled_FFB3B3B3)
+}
 
 @Composable
 fun MissionMateTextButton(
-    text: String,
+    @StringRes textId: Int,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
+    buttonType: MissionMateButtonType = MissionMateButtonType.ACTIVE,
     textColor: Color = Color(0xFFFFFFFF),
     textStyle: TextStyle = MissionMateTypography.body_lg_bold,
     enabled: Boolean = true
 ) {
     MissionMateButton(
         modifier = modifier,
-        contentColor = textColor,
+        buttonType = buttonType,
         enabled = enabled,
         onClick = onClick
     ) {
-        Text(text = text, style = textStyle)
+        Text(
+            text = stringResource(id = textId),
+            style = textStyle,
+            color = textColor
+        )
     }
 }
 
@@ -39,10 +59,7 @@ fun MissionMateTextButton(
 fun MissionMateButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    containerColor: Color = Color(0xFFFF5F3C),
-    disabledContainerColor: Color = Color(0xFFB3B3B3),
-    contentColor: Color = Color(0xFFFFFFFF),
-    disabledContentColor: Color = Color(0xFFFFFFFF),
+    buttonType: MissionMateButtonType = MissionMateButtonType.ACTIVE,
     enabled: Boolean = true,
     shape: Shape = RoundedCornerShape(30.dp),
     contentPadding: PaddingValues = PaddingValues(vertical = 18.dp, horizontal = 30.dp),
@@ -53,10 +70,10 @@ fun MissionMateButton(
         enabled = enabled,
         shape = shape,
         colors = ButtonColors(
-            containerColor = containerColor,
-            disabledContainerColor = disabledContainerColor,
-            contentColor = contentColor,
-            disabledContentColor = disabledContentColor
+            containerColor = buttonType.containerColor,
+            disabledContainerColor = MissionMateButtonType.DISABLED.containerColor,
+            contentColor = buttonType.contentColor,
+            disabledContentColor = MissionMateButtonType.DISABLED.contentColor
         ),
         contentPadding = contentPadding,
         onClick = onClick
@@ -70,17 +87,29 @@ fun MissionMateButton(
 fun PreviewTextButton(){
     MissionMateTextButton(
         modifier = Modifier.fillMaxWidth(),
-        text = "btn",
+        textId = R.string.app_name,
         onClick = {}
     )
 }
 
 @Preview
 @Composable
+fun PreviewSecondaryTextButton(){
+    MissionMateTextButton(
+        modifier = Modifier.fillMaxWidth(),
+        textId = R.string.app_name,
+        buttonType = MissionMateButtonType.SECONDARY,
+        onClick = {}
+    )
+}
+
+
+@Preview
+@Composable
 fun PreviewTextButtonDisabled(){
     MissionMateTextButton(
         modifier = Modifier.fillMaxWidth(),
-        text = "btn",
+        textId = R.string.app_name,
         enabled = false,
         onClick = {}
     )
