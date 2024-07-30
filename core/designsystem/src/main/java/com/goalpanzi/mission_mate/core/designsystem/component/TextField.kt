@@ -1,5 +1,6 @@
 package com.goalpanzi.mission_mate.core.designsystem.component
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -24,10 +25,18 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.goalpanzi.mission_mate.core.designsystem.R
+import com.goalpanzi.mission_mate.core.designsystem.theme.ColorGray1_FF404249
+import com.goalpanzi.mission_mate.core.designsystem.theme.ColorGray3_FF727484
+import com.goalpanzi.mission_mate.core.designsystem.theme.ColorGray4_FFE5E5E5
+import com.goalpanzi.mission_mate.core.designsystem.theme.ColorGray5_80F5F6F9
+import com.goalpanzi.mission_mate.core.designsystem.theme.ColorRed_FFFF5858
+import com.goalpanzi.mission_mate.core.designsystem.theme.ColorWhite_FFFFFFFF
 import com.goalpanzi.mission_mate.core.designsystem.theme.MissionMateTypography
 
 @Composable
@@ -35,17 +44,17 @@ fun MissionMateTextField(
     text: String,
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
-    hint : String = "",
+    @StringRes hintId : Int? = null,
     isError : Boolean = false,
-    textStyle: TextStyle = MissionMateTypography.body_lg_bold,
+    textStyle: TextStyle = MissionMateTypography.body_lg_regular,
     hintStyle: TextStyle = MissionMateTypography.body_lg_regular,
-    textColor: Color = Color(0xFF313239),
-    hintColor: Color = Color(0xFF727484),
-    containerColor: Color = Color(0xFFF5F6F9),
-    errorContainerColor: Color = Color(0x4DFF6464),
-    borderStroke: BorderStroke = BorderStroke(1.dp,Color(0xFFF5F6F9)),
-    focusedBorderStroke: BorderStroke = BorderStroke(1.dp, Color(0xFF000000)),
-    errorBorderStroke: BorderStroke = BorderStroke(1.dp, Color(0xFFFF6464)),
+    textColor: Color = ColorGray1_FF404249,
+    hintColor: Color = ColorGray3_FF727484,
+    containerColor: Color = ColorWhite_FFFFFFFF,
+    unfocusedHintColor: Color = ColorGray5_80F5F6F9,
+    borderStroke: BorderStroke = BorderStroke(1.dp, ColorGray4_FFE5E5E5),
+    focusedBorderStroke: BorderStroke = BorderStroke(1.dp, ColorGray4_FFE5E5E5),
+    errorBorderStroke: BorderStroke = BorderStroke(2.dp, ColorRed_FFFF5858),
     shape: Shape = RoundedCornerShape(12.dp),
     isSingleLine: Boolean = true,
     visualTransformation: VisualTransformation = VisualTransformation.None,
@@ -53,7 +62,6 @@ fun MissionMateTextField(
     contentPadding : PaddingValues = PaddingValues(horizontal = 16.dp)
 ) {
     var isFocused by remember { mutableStateOf(false) }
-
     BasicTextField(
         modifier = modifier
             .heightIn(min = 60.dp)
@@ -78,7 +86,7 @@ fun MissionMateTextField(
                         shape = shape
                     )
                     .background(
-                        if (isError) errorContainerColor
+                        if (!isFocused && text.isEmpty()) unfocusedHintColor
                         else containerColor
                     )
                     .padding(contentPadding),
@@ -86,7 +94,7 @@ fun MissionMateTextField(
             ) {
                 if(text.isBlank()){
                     Text(
-                        text = hint,
+                        text = hintId?.let { stringResource(id = it) } ?: "",
                         style = hintStyle,
                         color = hintColor
                     )
@@ -103,12 +111,10 @@ fun MissionMateTextFieldGroup(
     text: String,
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
-    useTitle : Boolean = false,
-    useGuidance : Boolean = false,
     useMaxLength : Boolean = false,
-    title : String = "",
-    hint : String = "",
-    guidance : String = "",
+    @StringRes titleId : Int? = null,
+    @StringRes hintId : Int? = null,
+    @StringRes guidanceId : Int? = null,
     maxLength : Int = Int.MAX_VALUE,
     isError : Boolean = false,
     titleColor : Color = Color(0xFF4F505C),
@@ -119,10 +125,10 @@ fun MissionMateTextFieldGroup(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        if(useTitle){
+        if(titleId != null){
             Text(
                 modifier = Modifier.padding(bottom = 4.dp),
-                text = title,
+                text = stringResource(id = titleId),
                 style = MissionMateTypography.body_md_bold,
                 color = titleColor
             )
@@ -131,12 +137,12 @@ fun MissionMateTextFieldGroup(
             text = text,
             onValueChange = onValueChange,
             modifier = Modifier.fillMaxWidth(),
-            hint = hint,
+            hintId = hintId,
             isError = isError
         )
-        if(useGuidance){
+        if(guidanceId != null){
             Text(
-                text = guidance + if(useMaxLength) "(${text.length}/$maxLength)" else "",
+                text = stringResource(id = guidanceId) + if(useMaxLength) "(${text.length}/$maxLength)" else "",
                 style = MissionMateTypography.body_md_regular,
                 color = if(isError) errorColor else guidanceColor
             )
@@ -149,7 +155,8 @@ fun MissionMateTextFieldGroup(
 fun PreviewMissionMateTextField(){
     MissionMateTextField(
         modifier = Modifier.fillMaxWidth(),
-        text = "Goalpanzi",
+        text = "",
+        hintId = R.string.app_name,
         onValueChange = {}
     )
 }
@@ -160,10 +167,8 @@ fun PreviewMissionMateTextFieldGroup(){
     MissionMateTextFieldGroup(
         text = "Goalpanzi",
         onValueChange = {},
-        useTitle = true,
-        useGuidance = true,
-        title = "Mission-Mate",
-        guidance = "4~10자, 한글, 영문 또는 숫자를 입력하세요."
+        titleId = R.string.app_name,
+        guidanceId = R.string.app_name,
     )
 }
 
@@ -173,10 +178,8 @@ fun PreviewMissionMateTextFieldGroupWithMaxLength(){
     MissionMateTextFieldGroup(
         text = "Goalpanzi",
         onValueChange = {},
-        useTitle = true,
-        useGuidance = true,
-        title = "Mission-Mate",
-        guidance = "4~12자 이내로 입력하세요. ",
+        titleId = R.string.app_name,
+        guidanceId = R.string.app_name,
         useMaxLength = true,
         maxLength = 12
     )
@@ -188,10 +191,8 @@ fun PreviewMissionMateTextFieldGroupError(){
     MissionMateTextFieldGroup(
         text = "Goalpanzi",
         onValueChange = {},
-        useTitle = true,
-        useGuidance = true,
-        title = "Mission-Mate",
-        guidance = "중복된 닉네임이에요.",
+        titleId = R.string.app_name,
+        guidanceId = R.string.app_name,
         isError = true
     )
 }
