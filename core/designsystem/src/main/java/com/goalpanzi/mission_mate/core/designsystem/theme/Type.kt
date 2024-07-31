@@ -57,6 +57,19 @@ object MissionMateTypography {
         fontWeight = FontWeight.Normal
     )
 
+    private val heading_sm = DefaultTextStyle.copy(
+        fontSize = 30.sp,
+        lineHeight = 40.sp
+    )
+
+    val heading_sm_bold = heading_md.copy(
+        fontWeight = FontWeight.Bold
+    )
+
+    val heading_sm_regular = heading_md.copy(
+        fontWeight = FontWeight.Normal
+    )
+
     private val title_xl = DefaultTextStyle.copy(
         fontSize = 24.sp,
         lineHeight = 34.sp
