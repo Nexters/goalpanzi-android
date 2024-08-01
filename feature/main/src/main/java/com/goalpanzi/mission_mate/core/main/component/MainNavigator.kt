@@ -6,13 +6,16 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.goalpanzi.mission_mate.core.navigation.RouteModel
 import com.goalpanzi.mission_mate.feature.login.navigateToLogin
+import com.goalpanzi.mission_mate.feature.onboarding.navigateToBoardSetup
+import com.goalpanzi.mission_mate.feature.onboarding.navigateToInvitationCode
+import com.goalpanzi.mission_mate.feature.onboarding.navigateToOnboarding
 
 class MainNavigator(
     val navController: NavHostController
 ) {
 
     //TODO : change to Main
-    val startDestination = RouteModel.Login
+    val startDestination = RouteModel.Onboarding
 
     fun popBackStack() {
         navController.popBackStack()
@@ -20,6 +23,18 @@ class MainNavigator(
 
     fun navigateToLogin() {
         navController.navigateToLogin()
+    }
+
+    fun navigationToOnboarding() {
+        navController.navigateToOnboarding()
+    }
+
+    fun navigationToBoardSetup() {
+        navController.navigateToBoardSetup()
+    }
+
+    fun navigationToInvitationCode() {
+        navController.navigateToInvitationCode()
     }
 }
 
