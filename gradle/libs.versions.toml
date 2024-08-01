@@ -47,7 +47,6 @@ material = "1.12.0"
 ## Google OAuth
 credential = "1.2.2"
 identity = "1.1.1"
-material = "1.12.0"
 
 [libraries]
 ## Koitln
@@ -108,7 +107,6 @@ material = { group = "com.google.android.material", name = "material", version.r
 credentials = { group = "androidx.credentials", name = "credentials", version.ref = "credential" }
 credentials-auth = { group = "androidx.credentials", name = "credentials-play-services-auth", version.ref = "credential" }
 google-id = { group = "com.google.android.libraries.identity.googleid", name = "googleid", version = "identity" }
-material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 
 [plugins]
 ## Android gradle plugin
