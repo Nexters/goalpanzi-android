@@ -32,8 +32,9 @@ internal fun MainNavHost(
                 onBackClick = { navigator.popBackStack() }
             )
             onboardingNavGraph(
-                onClickBoardSetup = { navigator.navigationToBoardSetup() },
-                onClickInvitationCode = { navigator.navigationToInvitationCode() }
+                onClickBoardSetup = {  },
+                onClickInvitationCode = {  },
+                onClickSetting = {  }
             )
             boardSetupNavGraph()
             invitationCodeNavGraph()

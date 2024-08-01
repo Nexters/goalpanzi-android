@@ -20,10 +20,15 @@ fun NavController.navigateToInvitationCode() {
 
 fun NavGraphBuilder.onboardingNavGraph(
     onClickBoardSetup : () -> Unit,
-    onClickInvitationCode : () -> Unit
+    onClickInvitationCode : () -> Unit,
+    onClickSetting : () -> Unit
 ) {
     composable<RouteModel.Onboarding> {
-
+        OnboardingRoute(
+            onClickBoardSetup = onClickBoardSetup,
+            onClickInvitationCode = onClickInvitationCode,
+            onClickSetting = onClickSetting
+        )
     }
 }
 
