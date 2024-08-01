@@ -108,6 +108,7 @@ credentials-auth = { group = "androidx.credentials", name = "credentials-play-se
 google-id = { group = "com.google.android.libraries.identity.googleid", name = "googleid", version = "identity" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 
+
 [plugins]
 ## Android gradle plugin
 android-application = { id = "com.android.application", version.ref = "agp" }

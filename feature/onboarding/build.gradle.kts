@@ -9,17 +9,19 @@ plugins {
 }
 
 android {
-    namespace = "com.goalpanzi.mission_mate.core.main"
+    namespace = "com.goalpanzi.mission_mate.feature.onboarding"
     compileSdk = 34
 
     defaultConfig {
         minSdk = 26
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles("consumer-rules.pro")
     }
 
     buildTypes {
         release {
+            isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -41,19 +43,14 @@ android {
     composeCompiler {
         enableStrongSkippingMode = true
     }
-    packaging {
-        resources {
-            excludes += "/META-INF/{AL2.0,LGPL2.1}"
-        }
-    }
 }
 
 dependencies {
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.bundles.lifecycle)
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.bundles.compose)
-    implementation(libs.androidx.activity.compose)
     implementation(libs.bundles.coroutines)
 
     testImplementation(libs.bundles.test)
@@ -66,9 +63,8 @@ dependencies {
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
 
+    implementation(libs.coil.compose)
+
     implementation(project(":core:designsystem"))
     implementation(project(":core:navigation"))
-    implementation(project(":core:domain"))
-    implementation(project(":feature:login"))
-    implementation(project(":feature:onboarding"))
 }
