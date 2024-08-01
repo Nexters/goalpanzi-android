@@ -15,7 +15,7 @@ class MainNavigator(
 ) {
 
     //TODO : change to Main
-    val startDestination = RouteModel.Onboarding
+    val startDestination = RouteModel.Login
 
     fun popBackStack() {
         navController.popBackStack()
