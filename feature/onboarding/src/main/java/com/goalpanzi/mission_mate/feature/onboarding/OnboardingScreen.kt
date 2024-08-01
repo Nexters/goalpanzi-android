@@ -99,7 +99,7 @@ fun OnboardingScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .wrapContentHeight(),
-                    drawableResId = designSystemResource.drawable.background_jeju_theme,
+                    drawableResId = designSystemResource.drawable.img_jeju_theme,
                     contentScale = ContentScale.FillWidth
                 )
                 StableImage(
