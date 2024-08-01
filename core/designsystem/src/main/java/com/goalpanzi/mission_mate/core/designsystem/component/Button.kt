@@ -38,13 +38,11 @@ fun MissionMateTextButton(
     modifier: Modifier = Modifier,
     buttonType: MissionMateButtonType = MissionMateButtonType.ACTIVE,
     textColor: Color = Color(0xFFFFFFFF),
-    textStyle: TextStyle = MissionMateTypography.body_lg_bold,
-    enabled: Boolean = true
+    textStyle: TextStyle = MissionMateTypography.body_lg_bold
 ) {
     MissionMateButton(
         modifier = modifier,
         buttonType = buttonType,
-        enabled = enabled,
         onClick = onClick
     ) {
         Text(
@@ -60,14 +58,13 @@ fun MissionMateButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     buttonType: MissionMateButtonType = MissionMateButtonType.ACTIVE,
-    enabled: Boolean = true,
     shape: Shape = RoundedCornerShape(30.dp),
     contentPadding: PaddingValues = PaddingValues(vertical = 18.dp, horizontal = 30.dp),
     content: @Composable () -> Unit
 ) {
     Button(
         modifier = modifier,
-        enabled = enabled,
+        enabled = buttonType != MissionMateButtonType.DISABLED,
         shape = shape,
         colors = ButtonColors(
             containerColor = buttonType.containerColor,
@@ -110,7 +107,7 @@ fun PreviewTextButtonDisabled(){
     MissionMateTextButton(
         modifier = Modifier.fillMaxWidth(),
         textId = R.string.app_name,
-        enabled = false,
+        buttonType = MissionMateButtonType.DISABLED,
         onClick = {}
     )
 }
