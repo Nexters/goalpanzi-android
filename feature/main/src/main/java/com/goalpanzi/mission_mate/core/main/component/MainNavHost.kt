@@ -13,6 +13,8 @@ import com.goalpanzi.mission_mate.feature.onboarding.boardSetupNavGraph
 import com.goalpanzi.mission_mate.feature.onboarding.boardSetupSuccessNavGraph
 import com.goalpanzi.mission_mate.feature.onboarding.invitationCodeNavGraph
 import com.goalpanzi.mission_mate.feature.onboarding.onboardingNavGraph
+import com.luckyoct.feature.profile.ProfileSettingType
+import com.luckyoct.feature.profile.profileNavGraph
 
 @Composable
 internal fun MainNavHost(
@@ -30,7 +32,7 @@ internal fun MainNavHost(
             startDestination = navigator.startDestination
         ) {
             loginNavGraph(
-                onBackClick = { navigator.popBackStack() }
+                onLoginSuccess = { if (it) navigator.navigationToOnboarding() else navigator.navigateToProfileCreate() }
             )
             onboardingNavGraph(
                 onClickBoardSetup = { navigator.navigationToBoardSetup() },
@@ -51,6 +53,9 @@ internal fun MainNavHost(
                 }
             )
             invitationCodeNavGraph()
+            profileNavGraph(
+                onSaveSuccess = { navigator.navigationToOnboarding() }
+            )
         }
     }
 }

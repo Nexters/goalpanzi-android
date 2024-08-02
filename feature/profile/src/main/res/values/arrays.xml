@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="character_selected_image_array">
+        <item>@drawable/img_rabbit_selected</item>
+        <item>@drawable/img_cat_selected</item>
+        <item>@drawable/img_dog_selected</item>
+        <item>@drawable/img_panda_selected</item>
+        <item>@drawable/img_bear_selected</item>
+        <item>@drawable/img_bird_selected</item>
+    </array>
+
+    <string-array name="character_name_array">
+        <item>@string/rabbit_name</item>
+        <item>@string/cat_name</item>
+        <item>@string/dog_name</item>
+        <item>@string/panda_name</item>
+        <item>@string/bear_name</item>
+        <item>@string/bird_name</item>
+    </string-array>
+
+    <array name="character_background_color_array">
+        <item>@color/rabbit_color</item>
+        <item>@color/cat_color</item>
+        <item>@color/dog_color</item>
+        <item>@color/panda_color</item>
+        <item>@color/bear_color</item>
+        <item>@color/bird_color</item>
+    </array>
+</resources>

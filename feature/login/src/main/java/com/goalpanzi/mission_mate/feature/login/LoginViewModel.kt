@@ -13,6 +13,8 @@ import com.google.android.libraries.identity.googleid.GetSignInWithGoogleOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.google.android.libraries.identity.googleid.GoogleIdTokenParsingException
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -21,9 +23,11 @@ class LoginViewModel @Inject constructor(
     private val loginUseCase: LoginUseCase
 ) : ViewModel() {
 
+    private val _eventFlow = MutableSharedFlow<LoginEvent>()
+    val eventFlow = _eventFlow.asSharedFlow()
+
     fun request(context: Context) {
         viewModelScope.launch {
-
             val credentialManager = CredentialManager.create(context)
             val signInWithGoogleOption: GetSignInWithGoogleOption =
                 GetSignInWithGoogleOption.Builder(BuildConfig.CREDENTIAL_WEB_CLIENT_ID)
@@ -54,7 +58,7 @@ class LoginViewModel @Inject constructor(
                             token = compressedToken,
                             email = googleIdTokenCredential.id
                         )
-                        // TODO : success event
+                        _eventFlow.emit(LoginEvent.Success(result.isProfileSet))
                     } catch (e: GoogleIdTokenParsingException) {
                         e.printStackTrace()
                     }

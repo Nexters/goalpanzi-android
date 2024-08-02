@@ -40,6 +40,7 @@ dependencies {
 
     implementation(libs.bundles.test)
     implementation(libs.bundles.coroutines)
+    implementation(libs.retrofit)
 
     ksp(libs.hilt.compiler)
     implementation(libs.hilt.android)
