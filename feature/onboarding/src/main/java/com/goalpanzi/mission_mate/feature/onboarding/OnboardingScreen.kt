@@ -26,6 +26,7 @@ import com.goalpanzi.mission_mate.core.designsystem.theme.ColorWhite_FFFFFFFF
 import com.goalpanzi.mission_mate.core.designsystem.theme.MissionMateTypography
 import com.goalpanzi.mission_mate.feature.onboarding.component.OnboardingNavigationButton
 import com.goalpanzi.mission_mate.feature.onboarding.component.OutlinedTextBox
+import com.goalpanzi.mission_mate.feature.onboarding.component.StableImage
 import com.goalpanzi.mission_mate.core.designsystem.R as designSystemResource
 
 @Composable
@@ -87,15 +88,28 @@ fun OnboardingScreen(
                 text = stringResource(id = R.string.onboarding_level_1), 
                 modifier = Modifier.padding(bottom = 23.dp)
             )
-            Image(
+            Box(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 7.dp)
                     .wrapContentHeight(),
-                painter = painterResource(id = designSystemResource.drawable.image_onboarding_jeju),
-                contentDescription = null,
-                contentScale = ContentScale.FillWidth
-            )
+                contentAlignment = Alignment.BottomCenter
+            ) {
+                StableImage(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .wrapContentHeight(),
+                    drawableResId = designSystemResource.drawable.img_jeju_theme,
+                    contentScale = ContentScale.FillWidth
+                )
+                StableImage(
+                    modifier = Modifier
+                        .fillMaxWidth(0.564f)
+                        .wrapContentHeight(),
+                    drawableResId = designSystemResource.drawable.img_rabbit_selected,
+                    contentScale = ContentScale.FillWidth
+                )
+            }
             Row(
                 modifier = Modifier
                     .fillMaxSize()
