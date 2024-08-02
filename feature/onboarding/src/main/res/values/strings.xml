@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="onboarding_ready_title">미션 완수를 위해\n경쟁할 준비가 되었나요?</string>
+    <string name="onboarding_crating_board_title">미션보드\n생성하기</string>
+    <string name="onboarding_crating_board_desription">내 목표는 내가~</string>
+    <string name="onboarding_code_title">초대코드\n입력하기</string>
+    <string name="onboarding_code_desription">초대받고 왔지~</string>
+
+    <string name="onboarding_level_1">LV1. 제주도</string>
+</resources>
