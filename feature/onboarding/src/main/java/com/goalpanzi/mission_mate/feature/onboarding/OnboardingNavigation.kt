@@ -5,6 +5,10 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.goalpanzi.mission_mate.core.navigation.OnboardingRouteModel
 import com.goalpanzi.mission_mate.core.navigation.RouteModel
+import com.goalpanzi.mission_mate.feature.onboarding.screen.boardsetup.BoardSetupRoute
+import com.goalpanzi.mission_mate.feature.onboarding.screen.invitation.InvitationScreen
+import com.goalpanzi.mission_mate.feature.onboarding.screen.OnboardingRoute
+import com.goalpanzi.mission_mate.feature.onboarding.screen.boardsetup.BoardSetupSuccessScreen
 
 fun NavController.navigateToOnboarding() {
     this.navigate(RouteModel.Onboarding)
@@ -12,6 +16,10 @@ fun NavController.navigateToOnboarding() {
 
 fun NavController.navigateToBoardSetup() {
     this.navigate(OnboardingRouteModel.BoardSetup)
+}
+
+fun NavController.navigateToBoardSetupSuccess(){
+    this.navigate(OnboardingRouteModel.BoardSetupSuccess)
 }
 
 fun NavController.navigateToInvitationCode() {
@@ -32,14 +40,30 @@ fun NavGraphBuilder.onboardingNavGraph(
     }
 }
 
-fun NavGraphBuilder.boardSetupNavGraph() {
+fun NavGraphBuilder.boardSetupNavGraph(
+    onSuccess : () -> Unit,
+    onBackClick: () -> Unit
+) {
     composable<OnboardingRouteModel.BoardSetup> {
+        BoardSetupRoute(
+            onSuccess = onSuccess,
+            onBackClick = onBackClick
+        )
+    }
+}
 
+fun NavGraphBuilder.boardSetupSuccessNavGraph(
+    onClickStart : () -> Unit
+) {
+    composable<OnboardingRouteModel.BoardSetupSuccess> {
+        BoardSetupSuccessScreen(
+            onClickStart = onClickStart
+        )
     }
 }
 
 fun NavGraphBuilder.invitationCodeNavGraph() {
     composable<OnboardingRouteModel.InvitationCode> {
-
+        InvitationScreen()
     }
 }

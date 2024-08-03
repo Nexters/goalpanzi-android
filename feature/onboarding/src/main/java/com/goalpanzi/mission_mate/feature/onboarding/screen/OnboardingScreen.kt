@@ -1,4 +1,4 @@
-package com.goalpanzi.mission_mate.feature.onboarding
+package com.goalpanzi.mission_mate.feature.onboarding.screen
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -24,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorGray1_FF404249
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorWhite_FFFFFFFF
 import com.goalpanzi.mission_mate.core.designsystem.theme.MissionMateTypography
+import com.goalpanzi.mission_mate.feature.onboarding.R
 import com.goalpanzi.mission_mate.feature.onboarding.component.OnboardingNavigationButton
 import com.goalpanzi.mission_mate.feature.onboarding.component.OutlinedTextBox
 import com.goalpanzi.mission_mate.feature.onboarding.component.StableImage
@@ -63,12 +65,12 @@ fun OnboardingScreen(
             contentScale = ContentScale.FillWidth
         )
         Column(
-            modifier = modifier,
+            modifier = modifier.statusBarsPadding(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             IconButton(
                 modifier = Modifier
-                    .padding(end = 10.dp, top = 24.dp)
+                    .padding(end = 10.dp)
                     .align(Alignment.End),
                 onClick = onClickSetting
             ) {
@@ -85,7 +87,7 @@ fun OnboardingScreen(
                 color = ColorGray1_FF404249
             )
             OutlinedTextBox(
-                text = stringResource(id = R.string.onboarding_level_1), 
+                text = stringResource(id = R.string.onboarding_level_1),
                 modifier = Modifier.padding(bottom = 23.dp)
             )
             Box(
