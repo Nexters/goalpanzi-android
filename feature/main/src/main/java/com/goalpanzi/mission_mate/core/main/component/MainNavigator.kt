@@ -7,6 +7,7 @@ import androidx.navigation.compose.rememberNavController
 import com.goalpanzi.mission_mate.core.navigation.RouteModel
 import com.goalpanzi.mission_mate.feature.login.navigateToLogin
 import com.goalpanzi.mission_mate.feature.onboarding.navigateToBoardSetup
+import com.goalpanzi.mission_mate.feature.onboarding.navigateToBoardSetupSuccess
 import com.goalpanzi.mission_mate.feature.onboarding.navigateToInvitationCode
 import com.goalpanzi.mission_mate.feature.onboarding.navigateToOnboarding
 
@@ -31,6 +32,10 @@ class MainNavigator(
 
     fun navigationToBoardSetup() {
         navController.navigateToBoardSetup()
+    }
+
+    fun navigationToBoardSetupSuccess() {
+        navController.navigateToBoardSetupSuccess()
     }
 
     fun navigationToInvitationCode() {

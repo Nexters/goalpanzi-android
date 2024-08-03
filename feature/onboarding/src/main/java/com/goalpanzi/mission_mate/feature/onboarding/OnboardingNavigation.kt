@@ -5,9 +5,8 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.goalpanzi.mission_mate.core.navigation.OnboardingRouteModel
 import com.goalpanzi.mission_mate.core.navigation.RouteModel
-import com.goalpanzi.mission_mate.feature.onboarding.screen.boardsetup.BoardSetupRoute
-import com.goalpanzi.mission_mate.feature.onboarding.screen.invitation.InvitationScreen
 import com.goalpanzi.mission_mate.feature.onboarding.screen.OnboardingRoute
+import com.goalpanzi.mission_mate.feature.onboarding.screen.boardsetup.BoardSetupRoute
 import com.goalpanzi.mission_mate.feature.onboarding.screen.boardsetup.BoardSetupSuccessScreen
 
 fun NavController.navigateToOnboarding() {
@@ -18,7 +17,7 @@ fun NavController.navigateToBoardSetup() {
     this.navigate(OnboardingRouteModel.BoardSetup)
 }
 
-fun NavController.navigateToBoardSetupSuccess(){
+fun NavController.navigateToBoardSetupSuccess() {
     this.navigate(OnboardingRouteModel.BoardSetupSuccess)
 }
 
@@ -27,9 +26,9 @@ fun NavController.navigateToInvitationCode() {
 }
 
 fun NavGraphBuilder.onboardingNavGraph(
-    onClickBoardSetup : () -> Unit,
-    onClickInvitationCode : () -> Unit,
-    onClickSetting : () -> Unit
+    onClickBoardSetup: () -> Unit,
+    onClickInvitationCode: () -> Unit,
+    onClickSetting: () -> Unit
 ) {
     composable<RouteModel.Onboarding> {
         OnboardingRoute(
@@ -41,7 +40,7 @@ fun NavGraphBuilder.onboardingNavGraph(
 }
 
 fun NavGraphBuilder.boardSetupNavGraph(
-    onSuccess : () -> Unit,
+    onSuccess: () -> Unit,
     onBackClick: () -> Unit
 ) {
     composable<OnboardingRouteModel.BoardSetup> {
@@ -53,7 +52,7 @@ fun NavGraphBuilder.boardSetupNavGraph(
 }
 
 fun NavGraphBuilder.boardSetupSuccessNavGraph(
-    onClickStart : () -> Unit
+    onClickStart: () -> Unit
 ) {
     composable<OnboardingRouteModel.BoardSetupSuccess> {
         BoardSetupSuccessScreen(
@@ -64,6 +63,5 @@ fun NavGraphBuilder.boardSetupSuccessNavGraph(
 
 fun NavGraphBuilder.invitationCodeNavGraph() {
     composable<OnboardingRouteModel.InvitationCode> {
-        InvitationScreen()
     }
 }
