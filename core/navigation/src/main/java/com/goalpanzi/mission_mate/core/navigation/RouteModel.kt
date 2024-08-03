@@ -15,5 +15,8 @@ sealed interface OnboardingRouteModel {
     data object BoardSetup : OnboardingRouteModel
 
     @Serializable
+    data object BoardSetupSuccess : OnboardingRouteModel
+
+    @Serializable
     data object InvitationCode : OnboardingRouteModel
 }
