@@ -5,7 +5,9 @@ import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
+import java.time.temporal.ChronoUnit
 import java.util.Locale
+import kotlin.math.absoluteValue
 
 object DateUtils {
     private fun convertMillisToLocalDateWithFormatter(date: LocalDate, dateTimeFormatter: DateTimeFormatter) : LocalDate {
@@ -43,4 +45,11 @@ object DateUtils {
             if (date.isBefore(endDate)) date.plusDays(1) else null
         }.filter { it.dayOfWeek in days }.toList().size
     }
+
+    fun isDifferenceTargetDaysOrMore(
+        startDate: LocalDate,
+        endDate: LocalDate,
+        targetDifferenceDays : Int = 7
+    ) = ChronoUnit.DAYS.between(startDate, endDate).absoluteValue >= targetDifferenceDays
+
 }

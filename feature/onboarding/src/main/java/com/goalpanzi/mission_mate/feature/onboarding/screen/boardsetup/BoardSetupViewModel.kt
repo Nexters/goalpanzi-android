@@ -7,6 +7,7 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.goalpanzi.mission_mate.feature.onboarding.model.VerificationTimeType
+import com.goalpanzi.mission_mate.feature.onboarding.util.DateUtils.isDifferenceTargetDaysOrMore
 import com.goalpanzi.mission_mate.feature.onboarding.util.DateUtils.longToLocalDate
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -22,9 +23,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.time.DayOfWeek
 import java.time.LocalDate
-import java.time.temporal.ChronoUnit
 import javax.inject.Inject
-import kotlin.math.absoluteValue
 
 @HiltViewModel
 class BoardSetupViewModel @Inject constructor(
@@ -60,13 +59,10 @@ class BoardSetupViewModel @Inject constructor(
         ) { startDate, endDate ->
             if (startDate == null || endDate == null) {
                 emptySet()
-            } else if (ChronoUnit.DAYS.between(startDate, endDate).absoluteValue >= 7) {
+            } else if (isDifferenceTargetDaysOrMore(startDate,endDate)) {
                 DayOfWeek.entries.toSet()
             } else {
-                generateSequence(startDate) { date ->
-                    if (date.isBefore(endDate)) date.plusDays(1) else null
-                }.map { it.dayOfWeek }
-                    .toSet()
+                getUniqueDaysOfWeekInRange(startDate,endDate)
             }
         }.stateIn(
             scope = viewModelScope,
@@ -105,7 +101,7 @@ class BoardSetupViewModel @Inject constructor(
         viewModelScope.launch {
             if (currentStep.value.ordinal in 0 until BoardSetupStep.entries.lastIndex) {
                 _currentStep.emit(
-                    BoardSetupStep.entries.get(currentStep.value.ordinal + 1)
+                    BoardSetupStep.entries[currentStep.value.ordinal + 1]
                 )
             } else if (currentStep.value == BoardSetupStep.VERIFICATION_TIME) {
                 _setupSuccessEvent.emit(Unit)
@@ -117,7 +113,7 @@ class BoardSetupViewModel @Inject constructor(
         viewModelScope.launch {
             if (currentStep.value.ordinal in 1 .. BoardSetupStep.entries.lastIndex) {
                 _currentStep.emit(
-                    BoardSetupStep.entries.get(currentStep.value.ordinal - 1)
+                    BoardSetupStep.entries[currentStep.value.ordinal - 1]
                 )
             }
         }
@@ -159,6 +155,15 @@ class BoardSetupViewModel @Inject constructor(
         }
     }
 
+    private fun getUniqueDaysOfWeekInRange(
+        startDate : LocalDate,
+        endDate: LocalDate
+    ) : Set<DayOfWeek> {
+        return generateSequence(startDate) { date ->
+            if (date.isBefore(endDate)) date.plusDays(1) else null
+        }.map { it.dayOfWeek }
+            .toSet()
+    }
 
     companion object {
 
