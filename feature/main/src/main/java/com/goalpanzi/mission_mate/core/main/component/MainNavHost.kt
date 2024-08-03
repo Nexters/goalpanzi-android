@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import com.goalpanzi.mission_mate.feature.login.loginNavGraph
 import com.goalpanzi.mission_mate.feature.onboarding.boardSetupNavGraph
+import com.goalpanzi.mission_mate.feature.onboarding.boardSetupSuccessNavGraph
 import com.goalpanzi.mission_mate.feature.onboarding.invitationCodeNavGraph
 import com.goalpanzi.mission_mate.feature.onboarding.onboardingNavGraph
 
@@ -32,11 +33,23 @@ internal fun MainNavHost(
                 onBackClick = { navigator.popBackStack() }
             )
             onboardingNavGraph(
-                onClickBoardSetup = {  },
-                onClickInvitationCode = {  },
+                onClickBoardSetup = { navigator.navigationToBoardSetup() },
+                onClickInvitationCode = { navigator.navigationToInvitationCode() },
                 onClickSetting = {  }
             )
-            boardSetupNavGraph()
+            boardSetupNavGraph(
+                onSuccess = {
+                    navigator.navigationToBoardSetupSuccess()
+                },
+                onBackClick = {
+                    navigator.popBackStack()
+                }
+            )
+            boardSetupSuccessNavGraph(
+                onClickStart = {
+
+                }
+            )
             invitationCodeNavGraph()
         }
     }
