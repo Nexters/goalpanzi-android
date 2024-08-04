@@ -13,6 +13,8 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -45,26 +47,32 @@ fun MissionMateTextField(
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
     @StringRes hintId : Int? = null,
+    @StringRes guidanceId : Int? = null,
     isError : Boolean = false,
+    useMaxLength : Boolean = false,
     textStyle: TextStyle = MissionMateTypography.body_lg_regular,
     hintStyle: TextStyle = MissionMateTypography.body_lg_regular,
     textColor: Color = ColorGray1_FF404249,
     hintColor: Color = ColorGray3_FF727484,
+    guidanceColor : Color = Color(0xFF4F505C),
+    errorColor : Color = Color(0xFFFF6464),
     containerColor: Color = ColorWhite_FFFFFFFF,
     unfocusedHintColor: Color = ColorGray5_80F5F6F9,
     borderStroke: BorderStroke = BorderStroke(1.dp, ColorGray4_FFE5E5E5),
     focusedBorderStroke: BorderStroke = BorderStroke(1.dp, ColorGray4_FFE5E5E5),
     errorBorderStroke: BorderStroke = BorderStroke(2.dp, ColorRed_FFFF5858),
     shape: Shape = RoundedCornerShape(12.dp),
+    maxLength : Int = Int.MAX_VALUE,
     isSingleLine: Boolean = true,
     visualTransformation: VisualTransformation = VisualTransformation.None,
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
+    keyboardActions: KeyboardActions = KeyboardActions.Default,
     textAlign : Alignment = Alignment.CenterStart,
     contentPadding : PaddingValues = PaddingValues(horizontal = 16.dp)
 ) {
     var isFocused by remember { mutableStateOf(false) }
     BasicTextField(
         modifier = modifier
-            .heightIn(min = 60.dp)
             .onFocusChanged {
                 isFocused = it.isFocused
             },
@@ -74,34 +82,48 @@ fun MissionMateTextField(
             color = textColor
         ),
         visualTransformation = visualTransformation,
+        keyboardActions = keyboardActions,
+        keyboardOptions = keyboardOptions,
         onValueChange = onValueChange,
         decorationBox = { innerTextField ->
-            Box(
-                modifier = Modifier
-                    .clip(shape)
-                    .border(
-                        border = if (isError) errorBorderStroke
-                        else if (isFocused) focusedBorderStroke
-                        else borderStroke,
-                        shape = shape
-                    )
-                    .background(
-                        if (!isFocused && text.isEmpty()) unfocusedHintColor
-                        else containerColor
-                    )
-                    .padding(contentPadding),
-                contentAlignment = textAlign
+            Column(
+                verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                if(text.isBlank()){
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .heightIn(min = 60.dp)
+                        .clip(shape)
+                        .border(
+                            border = if (isError) errorBorderStroke
+                            else if (isFocused) focusedBorderStroke
+                            else borderStroke,
+                            shape = shape
+                        )
+                        .background(
+                            if (!isFocused && text.isEmpty()) unfocusedHintColor
+                            else containerColor
+                        )
+                        .padding(contentPadding),
+                    contentAlignment = textAlign
+                ) {
+                    if(text.isBlank()){
+                        Text(
+                            text = hintId?.let { stringResource(id = it) } ?: "",
+                            style = hintStyle,
+                            color = hintColor
+                        )
+                    }
+                    innerTextField()
+                }
+                if(guidanceId != null){
                     Text(
-                        text = hintId?.let { stringResource(id = it) } ?: "",
-                        style = hintStyle,
-                        color = hintColor
+                        text = stringResource(id = guidanceId) + if(useMaxLength) "(${text.length}/$maxLength)" else "",
+                        style = MissionMateTypography.body_md_regular,
+                        color = if(isError) errorColor else guidanceColor
                     )
                 }
-                innerTextField()
             }
-
         }
     )
 }
@@ -119,7 +141,9 @@ fun MissionMateTextFieldGroup(
     isError : Boolean = false,
     titleColor : Color = Color(0xFF4F505C),
     guidanceColor : Color = Color(0xFF4F505C),
-    errorColor : Color = Color(0xFFFF6464)
+    errorColor : Color = Color(0xFFFF6464),
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
+    keyboardActions: KeyboardActions = KeyboardActions.Default,
 ){
     Column(
         modifier = modifier,
@@ -127,7 +151,6 @@ fun MissionMateTextFieldGroup(
     ) {
         if(titleId != null){
             Text(
-                modifier = Modifier.padding(bottom = 4.dp),
                 text = stringResource(id = titleId),
                 style = MissionMateTypography.body_md_bold,
                 color = titleColor
@@ -138,15 +161,15 @@ fun MissionMateTextFieldGroup(
             onValueChange = onValueChange,
             modifier = Modifier.fillMaxWidth(),
             hintId = hintId,
-            isError = isError
+            isError = isError,
+            useMaxLength = useMaxLength,
+            guidanceId = guidanceId,
+            maxLength = maxLength,
+            guidanceColor = guidanceColor,
+            errorColor = errorColor,
+            keyboardOptions = keyboardOptions,
+            keyboardActions = keyboardActions
         )
-        if(guidanceId != null){
-            Text(
-                text = stringResource(id = guidanceId) + if(useMaxLength) "(${text.length}/$maxLength)" else "",
-                style = MissionMateTypography.body_md_regular,
-                color = if(isError) errorColor else guidanceColor
-            )
-        }
     }
 }
 
