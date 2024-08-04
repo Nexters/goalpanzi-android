@@ -4,6 +4,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -13,13 +15,15 @@ import com.goalpanzi.mission_mate.feature.onboarding.R
 
 @Composable
 fun BoardSetupMission(
-    missionTitle : String,
-    onTitleChange : (String) -> Unit,
+    missionTitle: String,
+    onTitleChange: (String) -> Unit,
     modifier: Modifier = Modifier
-){
+) {
+    val scrollState = rememberScrollState()
     Column(
         modifier = modifier
             .fillMaxSize()
+            .verticalScroll(scrollState)
             .padding(horizontal = 24.dp)
     ) {
         BoardSetupDescription(
