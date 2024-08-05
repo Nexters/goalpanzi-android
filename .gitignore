@@ -167,3 +167,4 @@ google-services.json
 # End of https://www.gitignore.io/api/kotlin,androidstudio
 /app/keystore
 /app/mission-mate-keystore.jks
+/.idea/kotlinc.xml
