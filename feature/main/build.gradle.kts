@@ -71,4 +71,5 @@ dependencies {
     implementation(project(":core:domain"))
     implementation(project(":feature:login"))
     implementation(project(":feature:onboarding"))
+    implementation(project(":feature:profile"))
 }
