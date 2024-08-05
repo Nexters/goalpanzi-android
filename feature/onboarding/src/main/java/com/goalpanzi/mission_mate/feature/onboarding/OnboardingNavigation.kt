@@ -8,6 +8,7 @@ import com.goalpanzi.mission_mate.core.navigation.RouteModel
 import com.goalpanzi.mission_mate.feature.onboarding.screen.OnboardingRoute
 import com.goalpanzi.mission_mate.feature.onboarding.screen.boardsetup.BoardSetupRoute
 import com.goalpanzi.mission_mate.feature.onboarding.screen.boardsetup.BoardSetupSuccessScreen
+import com.goalpanzi.mission_mate.feature.onboarding.screen.invitation.InvitationCodeRoute
 
 fun NavController.navigateToOnboarding() {
     this.navigate(RouteModel.Onboarding)
@@ -61,7 +62,12 @@ fun NavGraphBuilder.boardSetupSuccessNavGraph(
     }
 }
 
-fun NavGraphBuilder.invitationCodeNavGraph() {
+fun NavGraphBuilder.invitationCodeNavGraph(
+    onBackClick: () -> Unit
+) {
     composable<OnboardingRouteModel.InvitationCode> {
+        InvitationCodeRoute(
+            onBackClick = onBackClick
+        )
     }
 }

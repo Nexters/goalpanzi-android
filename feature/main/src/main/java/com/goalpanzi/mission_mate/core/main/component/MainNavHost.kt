@@ -50,7 +50,11 @@ internal fun MainNavHost(
 
                 }
             )
-            invitationCodeNavGraph()
+            invitationCodeNavGraph(
+                onBackClick = {
+                    navigator.popBackStack()
+                }
+            )
         }
     }
 }
