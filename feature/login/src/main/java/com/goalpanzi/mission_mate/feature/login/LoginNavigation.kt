@@ -10,11 +10,11 @@ fun NavController.navigateToLogin() {
 }
 
 fun NavGraphBuilder.loginNavGraph(
-    onBackClick: () -> Unit
+    onLoginSuccess: (isProfileSet: Boolean) -> Unit
 ) {
     composable<RouteModel.Login> {
         LoginRoute(
-            onBackClick = onBackClick
+            onLoginSuccess = onLoginSuccess
         )
     }
 }

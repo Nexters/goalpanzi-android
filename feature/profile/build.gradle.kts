@@ -9,7 +9,7 @@ plugins {
 }
 
 android {
-    namespace = "com.goalpanzi.mission_mate.core.main"
+    namespace = "com.luckyoct.feature.profile"
     compileSdk = 34
 
     defaultConfig {
@@ -49,6 +49,7 @@ android {
 }
 
 dependencies {
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.bundles.lifecycle)
     implementation(platform(libs.androidx.compose.bom))
@@ -69,7 +70,5 @@ dependencies {
     implementation(project(":core:designsystem"))
     implementation(project(":core:navigation"))
     implementation(project(":core:domain"))
-    implementation(project(":feature:login"))
-    implementation(project(":feature:onboarding"))
-    implementation(project(":feature:profile"))
+    implementation(project(":core:model"))
 }

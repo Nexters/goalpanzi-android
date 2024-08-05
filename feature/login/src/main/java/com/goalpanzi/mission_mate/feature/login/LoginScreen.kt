@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -28,14 +29,24 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorFFF5EDEA
 import com.goalpanzi.mission_mate.core.designsystem.theme.MissionMateTypography
+import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun LoginRoute(
-    onBackClick: () -> Unit,
+    onLoginSuccess: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: LoginViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
+
+    LaunchedEffect(true) {
+        viewModel.eventFlow.collectLatest {
+            when (it) {
+                LoginEvent.Error -> Unit
+                is LoginEvent.Success -> onLoginSuccess(it.isAlreadyMember)
+            }
+        }
+    }
 
     LoginScreen(
         modifier = modifier,

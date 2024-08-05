@@ -8,6 +8,14 @@ sealed interface RouteModel {
 
     @Serializable
     data object Onboarding : RouteModel
+
+    @Serializable
+    sealed interface Profile: RouteModel {
+        @Serializable
+        data object Create : Profile
+        @Serializable
+        data object Change : Profile
+    }
 }
 
 sealed interface OnboardingRouteModel {

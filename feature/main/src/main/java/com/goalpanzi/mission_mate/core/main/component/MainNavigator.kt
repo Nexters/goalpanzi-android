@@ -10,6 +10,7 @@ import com.goalpanzi.mission_mate.feature.onboarding.navigateToBoardSetup
 import com.goalpanzi.mission_mate.feature.onboarding.navigateToBoardSetupSuccess
 import com.goalpanzi.mission_mate.feature.onboarding.navigateToInvitationCode
 import com.goalpanzi.mission_mate.feature.onboarding.navigateToOnboarding
+import com.luckyoct.feature.profile.navigateToProfileCreate
 
 class MainNavigator(
     val navController: NavHostController
@@ -24,6 +25,10 @@ class MainNavigator(
 
     fun navigateToLogin() {
         navController.navigateToLogin()
+    }
+
+    fun navigateToProfileCreate() {
+        navController.navigateToProfileCreate()
     }
 
     fun navigationToOnboarding() {
