@@ -39,8 +39,22 @@
     <string name="onboarding_board_setup_success_title">목표가 완성되었어요!</string>
     <string name="onboarding_board_setup_success_description">꾸준히 미션를 완수해\n세계 곳곳을 경험해봐요!</string>
 
+    <string name="onboarding_invitation_title">초대코드 입력</string>
+    <string name="onboarding_invitation_description">친구에게 전송받은\n초대코드 4자리를 입력해주세요!</string>
+    <string name="onboarding_invitation_description_color_target">초대코드 4자리</string>
+    <string name="onboarding_invitation_error">알맞지 않은 초대코드 입니다! 다시 확인해주세요.</string>
+    <string name="onboarding_invitation_dialog_title">초대받은 경쟁이 맞나요?</string>
+    <string name="onboarding_invitation_dialog_description">*기간 대비 인증 요일을 계산해\n인증횟수(보드판 수)는 총 %d개 가\n생성되었어요.</string>
+    <string name="onboarding_invitation_dialog_description_color_target">인증횟수(보드판 수)는 총 %d개</string>
+    <string name="onboarding_invitation_dialog_schedule_day_title">인증 요일</string>
+
     <string name="next">다음</string>
     <string name="done">완성</string>
     <string name="start">시작하기</string>
+    <string name="confirm">확인</string>
+
+    <string name="check_ok">맞아요</string>
+    <string name="check_no">아니에요</string>
+
 
 </resources>
