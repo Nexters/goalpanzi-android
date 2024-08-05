@@ -1,5 +1,6 @@
 package com.goalpanzi.mission_mate.feature.onboarding.screen.boardsetup
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
@@ -13,7 +14,6 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -22,6 +22,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.font.FontWeight
@@ -37,6 +38,7 @@ import com.goalpanzi.mission_mate.core.designsystem.theme.MissionMateTypography
 import com.goalpanzi.mission_mate.feature.onboarding.R
 import com.goalpanzi.mission_mate.feature.onboarding.component.BoardSetupNavigationBar
 import com.goalpanzi.mission_mate.feature.onboarding.component.DatePickerDialog
+import com.goalpanzi.mission_mate.feature.onboarding.model.BoardSetupResult
 import com.goalpanzi.mission_mate.feature.onboarding.model.VerificationTimeType
 import com.goalpanzi.mission_mate.feature.onboarding.screen.boardsetup.BoardSetupViewModel.Companion.BoardSetupStep
 import com.goalpanzi.mission_mate.feature.onboarding.util.DateUtils.dateToString
@@ -51,6 +53,7 @@ fun BoardSetupRoute(
     onBackClick: () -> Unit,
     viewModel: BoardSetupViewModel = hiltViewModel()
 ) {
+    val context = LocalContext.current
     val keyboardController = LocalSoftwareKeyboardController.current
     val localFocusManager = LocalFocusManager.current
     val pagerState = rememberPagerState { BoardSetupStep.entries.size }
@@ -103,8 +106,16 @@ fun BoardSetupRoute(
     }
 
     LaunchedEffect(key1 = Unit) {
-        viewModel.setupSuccessEvent.collect {
-            onSuccess()
+        viewModel.setupEvent.collect { event ->
+            when(event){
+                is BoardSetupResult.Success -> {
+                    onSuccess()
+                }
+                is BoardSetupResult.Error -> {
+                    Toast.makeText(context, event.message,Toast.LENGTH_SHORT).show()
+                }
+            }
+
         }
     }
 

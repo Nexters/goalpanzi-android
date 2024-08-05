@@ -6,9 +6,15 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.goalpanzi.mission_mate.core.domain.usecase.CreateMissionUseCase
+import com.goalpanzi.mission_mate.feature.onboarding.model.BoardSetupResult
 import com.goalpanzi.mission_mate.feature.onboarding.model.VerificationTimeType
+import com.goalpanzi.mission_mate.feature.onboarding.util.DateUtils.filterDatesByDayOfWeek
+import com.goalpanzi.mission_mate.feature.onboarding.util.DateUtils.formatLocalDateToString
 import com.goalpanzi.mission_mate.feature.onboarding.util.DateUtils.isDifferenceTargetDaysOrMore
 import com.goalpanzi.mission_mate.feature.onboarding.util.DateUtils.longToLocalDate
+import com.luckyoct.core.model.base.NetworkResult
+import com.luckyoct.core.model.request.CreateMissionRequest
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -27,11 +33,11 @@ import javax.inject.Inject
 
 @HiltViewModel
 class BoardSetupViewModel @Inject constructor(
-
+    private val createMissionUseCase : CreateMissionUseCase
 ) : ViewModel() {
 
-    private val _setupSuccessEvent = MutableSharedFlow<Unit>()
-    val setupSuccessEvent: SharedFlow<Unit> = _setupSuccessEvent.asSharedFlow()
+    private val _setupEvent = MutableSharedFlow<BoardSetupResult>()
+    val setupEvent: SharedFlow<BoardSetupResult> = _setupEvent.asSharedFlow()
 
     private val _currentStep = MutableStateFlow(BoardSetupStep.MISSION)
     val currentStep: StateFlow<BoardSetupStep> = _currentStep.asStateFlow()
@@ -104,7 +110,7 @@ class BoardSetupViewModel @Inject constructor(
                     BoardSetupStep.entries[currentStep.value.ordinal + 1]
                 )
             } else if (currentStep.value == BoardSetupStep.VERIFICATION_TIME) {
-                _setupSuccessEvent.emit(Unit)
+                createMission()
             }
         }
     }
@@ -152,6 +158,36 @@ class BoardSetupViewModel @Inject constructor(
     fun updateSelectedVerificationTimeType(timeType: VerificationTimeType) {
         viewModelScope.launch {
             _selectedVerificationTimeType.emit(timeType)
+        }
+    }
+
+    private suspend fun createMission(){
+        val timeOfDay = selectedVerificationTimeType.value?.name
+        val startDate = startDate.value
+        val endDate = endDate.value
+        if(timeOfDay == null || startDate == null || endDate == null){
+            _setupEvent.emit(BoardSetupResult.Error("Board Setup is Failed"))
+            return
+        }
+
+        createMissionUseCase(
+            CreateMissionRequest(
+                description = missionTitle,
+                missionStartDate = formatLocalDateToString(startDate),
+                missionEndDate = formatLocalDateToString(endDate),
+                missionDays = selectedDays.value.map { it.name },
+                timeOfDay = timeOfDay,
+                boardCount = filterDatesByDayOfWeek(startDate, endDate, selectedDays.value)
+            )
+        ).collect { result ->
+            when(result){
+                is NetworkResult.Success -> {
+                    _setupEvent.emit(BoardSetupResult.Success(result.data))
+                }
+                else -> {
+                    _setupEvent.emit(BoardSetupResult.Error("Board Setup is Failed"))
+                }
+            }
         }
     }
 
