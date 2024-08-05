@@ -3,7 +3,10 @@ package com.goalpanzi.mission_mate.feature.onboarding.util
 import java.time.DayOfWeek
 import java.time.Instant
 import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.LocalTime
 import java.time.ZoneId
+import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
 import java.util.Locale
@@ -52,4 +55,11 @@ object DateUtils {
         targetDifferenceDays : Int = 7
     ) = ChronoUnit.DAYS.between(startDate, endDate).absoluteValue >= targetDifferenceDays
 
+
+    fun formatLocalDateToString(date: LocalDate): String {
+        val dateTime = LocalDateTime.of(date, LocalTime.MIDNIGHT)
+
+        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+        return dateTime.atOffset(ZoneOffset.UTC).format(formatter)
+    }
 }
