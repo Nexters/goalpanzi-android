@@ -9,7 +9,7 @@
     <string name="onboarding_level_1">LV1. 제주도</string>
     
     <string name="onboarding_board_setup_mission_title">미션 설정</string>
-    <string name="onboarding_board_setup_mission_description">경쟁인원은\n최소 2명에서 최대 10명입니다!</string>
+    <string name="onboarding_board_setup_mission_description">경쟁인원은\n최소 2명에서 최대 10명이에요!</string>
     <string name="onboarding_board_setup_mission_description_color_target1">최소 2명</string>
     <string name="onboarding_board_setup_mission_description_color_target2">최대 10명</string>
     <string name="onboarding_board_setup_mission_input_title">미션</string>
@@ -17,7 +17,7 @@
     <string name="onboarding_board_setup_mission_input_guide">4~12자 이내로 입력하세요.</string>
 
     <string name="onboarding_board_setup_schedule_title">기간 및 요일 설정</string>
-    <string name="onboarding_board_setup_schedule_description">경쟁 기간내 인증 요일로 계산한\n총 인증 횟수는 %s번 입니다!</string>
+    <string name="onboarding_board_setup_schedule_description">경쟁 기간내 인증 요일로 계산한\n총 인증 횟수는 %s번 이에요!</string>
     <string name="onboarding_board_setup_schedule_description_color_target1">경쟁 기간</string>
     <string name="onboarding_board_setup_schedule_description_color_target2">인증 요일</string>
     <string name="onboarding_board_setup_schedule_description_style_target">번</string>
@@ -37,7 +37,8 @@
     <string name="onboarding_board_setup_verification_time_input_content_all">종일\n00~00시</string>
 
     <string name="onboarding_board_setup_success_title">목표가 완성되었어요!</string>
-    <string name="onboarding_board_setup_success_description">꾸준히 미션를 완수해\n세계 곳곳을 경험해봐요!</string>
+    <string name="onboarding_board_setup_success_description_top">이제 시작해볼까요?</string>
+    <string name="onboarding_board_setup_success_description_bottom">꾸준히 미션를 완수해\n세계 곳곳을 경험해봐요!</string>
 
     <string name="onboarding_invitation_title">초대코드 입력</string>
     <string name="onboarding_invitation_description">친구에게 전송받은\n초대코드 4자리를 입력해주세요!</string>
