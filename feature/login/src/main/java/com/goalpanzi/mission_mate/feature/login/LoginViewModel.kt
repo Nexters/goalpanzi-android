@@ -8,7 +8,6 @@ import androidx.credentials.GetCredentialResponse
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.goalpanzi.mission_mate.core.domain.usecase.LoginUseCase
-import com.goalpanzi.mission_mate.feature.login.util.TokenUtil
 import com.google.android.libraries.identity.googleid.GetSignInWithGoogleOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.google.android.libraries.identity.googleid.GoogleIdTokenParsingException
@@ -51,14 +50,15 @@ class LoginViewModel @Inject constructor(
             is CustomCredential -> {
                 if (credential.type == GoogleIdTokenCredential.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL) {
                     try {
-                        val googleIdTokenCredential =
-                            GoogleIdTokenCredential.createFrom(credential.data)
-                        val compressedToken = TokenUtil.compressToken(googleIdTokenCredential.idToken)
-                        val result = loginUseCase.requestGoogleLogin(
-                            token = compressedToken,
-                            email = googleIdTokenCredential.id
+                        val googleIdTokenCredential = GoogleIdTokenCredential.createFrom(credential.data)
+                        val result = loginUseCase.requestGoogleLogin(email = googleIdTokenCredential.id)
+                        _eventFlow.emit(
+                            result?.let {
+                                LoginEvent.Success(it.isProfileSet)
+                            } ?: run {
+                                LoginEvent.Error
+                            }
                         )
-                        _eventFlow.emit(LoginEvent.Success(result.isProfileSet))
                     } catch (e: GoogleIdTokenParsingException) {
                         e.printStackTrace()
                     }
