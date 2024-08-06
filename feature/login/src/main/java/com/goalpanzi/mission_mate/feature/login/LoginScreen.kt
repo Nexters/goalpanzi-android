@@ -43,7 +43,7 @@ fun LoginRoute(
         viewModel.eventFlow.collectLatest {
             when (it) {
                 LoginEvent.Error -> Unit
-                is LoginEvent.Success -> onLoginSuccess(it.isAlreadyMember)
+                is LoginEvent.Success -> onLoginSuccess(it.isProfileSet)
             }
         }
     }
