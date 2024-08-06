@@ -6,6 +6,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
@@ -38,7 +39,7 @@ import com.goalpanzi.mission_mate.core.designsystem.theme.MissionMateTypography
 fun MissionMateDialog(
     @StringRes titleId: Int,
     onDismissRequest: () -> Unit,
-    onClickOk : () -> Unit,
+    onClickOk: () -> Unit,
     modifier: Modifier = Modifier,
     @StringRes descriptionId: Int? = null,
     @StringRes okTextId: Int? = null,
@@ -97,7 +98,8 @@ fun MissionMateDialog(
 
             if (cancelTextId != null) {
                 Text(
-                    modifier = Modifier.padding(top = 20.dp)
+                    modifier = Modifier
+                        .padding(top = 20.dp)
                         .clickable(
                             interactionSource = null,
                             indication = null,
@@ -117,6 +119,7 @@ fun MissionMateDialog(
 @Composable
 fun MissionMateDialog(
     onDismissRequest: () -> Unit,
+    onClickOk: () -> Unit,
     modifier: Modifier = Modifier,
     @StringRes okTextId: Int? = null,
     @StringRes cancelTextId: Int? = null,
@@ -129,7 +132,7 @@ fun MissionMateDialog(
         start = 24.dp,
         end = 24.dp
     ),
-    content: @Composable () -> Unit
+    content: @Composable ColumnScope.() -> Unit
 ) {
     Dialog(
         properties = DialogProperties(
@@ -146,25 +149,37 @@ fun MissionMateDialog(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             content()
-            if (okTextId != null) {
-                MissionMateTextButton(
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    textId = okTextId,
-                    textStyle = okTextStyle,
-                    onClick = {}
-                )
+
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                if (okTextId != null) {
+                    MissionMateTextButton(
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        textId = okTextId,
+                        textStyle = okTextStyle,
+                        onClick = onClickOk
+                    )
+                }
+
+                if (cancelTextId != null) {
+                    Text(
+                        modifier = Modifier
+                            .padding(top = 20.dp)
+                            .clickable(
+                                interactionSource = null,
+                                indication = null,
+                                onClick = onDismissRequest
+                            ),
+                        text = stringResource(id = cancelTextId),
+                        style = cancelTextStyle,
+                        textAlign = TextAlign.Center,
+                        color = ColorGray3_FF727484
+                    )
+                }
             }
 
-            if (cancelTextId != null) {
-                Text(
-                    modifier = Modifier.padding(top = 20.dp),
-                    text = stringResource(id = cancelTextId),
-                    style = cancelTextStyle,
-                    textAlign = TextAlign.Center,
-                    color = ColorGray3_FF727484
-                )
-            }
         }
     }
 }
@@ -199,7 +214,8 @@ fun PreviewMissionMateContentDialog() {
             modifier = Modifier.fillMaxWidth(),
             okTextId = R.string.app_name,
             cancelTextId = R.string.app_name,
-            onDismissRequest = {}
+            onDismissRequest = {},
+            onClickOk = {}
         ) {
             Spacer(
                 modifier = Modifier

@@ -52,7 +52,11 @@ internal fun MainNavHost(
 
                 }
             )
-            invitationCodeNavGraph()
+            invitationCodeNavGraph(
+                onBackClick = {
+                    navigator.popBackStack()
+                }
+            )
             profileNavGraph(
                 onSaveSuccess = { navigator.navigationToOnboarding() }
             )
