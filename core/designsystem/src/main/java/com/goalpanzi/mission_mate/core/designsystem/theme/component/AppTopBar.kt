@@ -46,7 +46,7 @@ fun MissionMateTopAppBar(
     modifier: Modifier = Modifier,
     @StringRes titleRes: Int? = null,
     navigationType: NavigationType,
-    onNavigationClick: () -> Unit,
+    onNavigationClick: () -> Unit = {},
     containerColor: Color = MaterialTheme.colorScheme.surfaceDim,
     contentColor: Color = MaterialTheme.colorScheme.onSurface,
     leftActionButtons: @Composable (() -> Unit)? = null,
@@ -69,10 +69,10 @@ fun MissionMateTopAppBar(
 
         Box(
             modifier = Modifier
-                .background(containerColor)
                 .fillMaxWidth()
+                .height(98.dp)
+                .background(containerColor)
                 .padding(horizontal = 12.dp)
-                .pointerInput(Unit) {}
         ) {
             when (navigationType) {
                 NavigationType.BACK -> {

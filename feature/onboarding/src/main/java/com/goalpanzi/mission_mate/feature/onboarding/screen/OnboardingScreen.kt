@@ -12,20 +12,27 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorGray1_FF404249
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorWhite_FFFFFFFF
 import com.goalpanzi.mission_mate.core.designsystem.theme.MissionMateTypography
+import com.goalpanzi.mission_mate.core.designsystem.theme.component.MissionMateTopAppBar
+import com.goalpanzi.mission_mate.core.designsystem.theme.component.NavigationType
 import com.goalpanzi.mission_mate.feature.onboarding.R
 import com.goalpanzi.mission_mate.feature.onboarding.component.OnboardingNavigationButton
 import com.goalpanzi.mission_mate.feature.onboarding.component.OutlinedTextBox
@@ -35,9 +42,9 @@ import com.goalpanzi.mission_mate.core.designsystem.R as designSystemResource
 @Composable
 fun OnboardingRoute(
     modifier: Modifier = Modifier,
-    onClickBoardSetup : () -> Unit,
-    onClickInvitationCode : () -> Unit,
-    onClickSetting : () -> Unit
+    onClickBoardSetup: () -> Unit,
+    onClickInvitationCode: () -> Unit,
+    onClickSetting: () -> Unit
 ) {
     OnboardingScreen(
         modifier = modifier.fillMaxSize(),
@@ -50,9 +57,9 @@ fun OnboardingRoute(
 @Composable
 fun OnboardingScreen(
     modifier: Modifier = Modifier,
-    onClickBoardSetup : () -> Unit,
-    onClickInvitationCode : () -> Unit,
-    onClickSetting : () -> Unit
+    onClickBoardSetup: () -> Unit,
+    onClickInvitationCode: () -> Unit,
+    onClickSetting: () -> Unit
 ) {
     Box(
         modifier = modifier.background(ColorWhite_FFFFFFFF)
@@ -66,20 +73,21 @@ fun OnboardingScreen(
             contentScale = ContentScale.FillWidth
         )
         Column(
-            modifier = modifier.statusBarsPadding().navigationBarsPadding(),
+            modifier = modifier
+                .statusBarsPadding()
+                .navigationBarsPadding(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            IconButton(
-                modifier = Modifier
-                    .padding(end = 10.dp)
-                    .align(Alignment.End),
-                onClick = onClickSetting
-            ) {
-                Icon(
-                    painter = painterResource(id = designSystemResource.drawable.ic_setting),
-                    contentDescription = null
-                )
-            }
+            MissionMateTopAppBar(
+                modifier = modifier,
+                navigationType = NavigationType.NONE,
+                containerColor = Color.Transparent,
+                rightActionButtons = {
+                    TopBarSetting(
+                        onClick = {}
+                    )
+                }
+            )
             Text(
                 modifier = Modifier.padding(bottom = 52.dp),
                 text = stringResource(id = R.string.onboarding_ready_title),
@@ -137,5 +145,30 @@ fun OnboardingScreen(
             }
         }
     }
+}
 
+@Composable
+fun TopBarSetting(
+    onClick: () -> Unit
+) {
+    IconButton(
+        onClick = onClick,
+        modifier = Modifier.wrapContentSize()
+    ) {
+        Icon(
+            imageVector = ImageVector.vectorResource(id = com.goalpanzi.mission_mate.core.designsystem.R.drawable.ic_setting),
+            contentDescription = "",
+            tint = ColorGray1_FF404249
+        )
+    }
+}
+
+@Preview
+@Composable
+fun OnboardingScreenPreview() {
+    OnboardingScreen(
+        onClickBoardSetup = {},
+        onClickInvitationCode = {},
+        onClickSetting = {}
+    )
 }
