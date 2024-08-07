@@ -70,7 +70,7 @@ fun MissionMateTopAppBar(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(98.dp)
+                .height(56.dp)
                 .background(containerColor)
                 .padding(horizontal = 12.dp)
         ) {

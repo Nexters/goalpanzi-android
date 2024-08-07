@@ -48,6 +48,8 @@ import com.goalpanzi.mission_mate.core.designsystem.theme.ColorOrange_FFFF5732
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorRed_FFFF5858
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorWhite_FFFFFFFF
 import com.goalpanzi.mission_mate.core.designsystem.theme.MissionMateTypography
+import com.goalpanzi.mission_mate.core.designsystem.theme.component.MissionMateTopAppBar
+import com.goalpanzi.mission_mate.core.designsystem.theme.component.NavigationType
 import com.goalpanzi.mission_mate.feature.onboarding.R
 import com.goalpanzi.mission_mate.feature.onboarding.component.InvitationCodeTextField
 import com.goalpanzi.mission_mate.feature.onboarding.model.CodeResultEvent
@@ -161,16 +163,12 @@ fun InvitationCodeScreen(
             .statusBarsPadding()
             .navigationBarsPadding()
     ) {
-        IconButton(
-            modifier = Modifier.padding(start = 4.dp),
-            onClick = onBackClick
-        ) {
-            Icon(
-                modifier = Modifier.size(24.dp),
-                imageVector = Icons.Default.KeyboardArrowLeft, // merge 전까지 임시 사용
-                contentDescription = null
-            )
-        }
+        MissionMateTopAppBar(
+            modifier = modifier,
+            navigationType = NavigationType.BACK,
+            onNavigationClick = onBackClick,
+            containerColor = ColorWhite_FFFFFFFF,
+        )
         Text(
             text = stringResource(id = R.string.onboarding_invitation_title),
             modifier = Modifier.padding(start = 24.dp, end = 24.dp, bottom = 22.dp),
