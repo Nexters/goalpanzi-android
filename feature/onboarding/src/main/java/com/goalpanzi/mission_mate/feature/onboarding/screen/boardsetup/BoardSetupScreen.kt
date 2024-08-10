@@ -2,6 +2,7 @@ package com.goalpanzi.mission_mate.feature.onboarding.screen.boardsetup
 
 import android.widget.Toast
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.fillMaxSize
@@ -120,6 +121,13 @@ fun BoardSetupRoute(
     }
 
     BoardSetupScreen(
+        modifier = Modifier.clickable(
+            null,
+            null,
+            onClick = {
+                keyboardController?.hide()
+            }
+        ),
         currentStep = currentStep,
         missionTitle = viewModel.missionTitle,
         startDate = startDate?.let {
