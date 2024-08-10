@@ -26,7 +26,7 @@ fun OutlinedTextBox(
     borderStroke: BorderStroke = BorderStroke(1.dp, ColorOrange_FFFF5732),
     shape: Shape = RoundedCornerShape(50),
     contentPadding : PaddingValues = PaddingValues(vertical = 1.dp, horizontal = 14.dp),
-    textStyle: TextStyle = MissionMateTypography.title_lg_regular,
+    textStyle: TextStyle = MissionMateTypography.body_xl_regular,
     textColor : Color = ColorOrange_FFFF5732
 ){
     Box(
