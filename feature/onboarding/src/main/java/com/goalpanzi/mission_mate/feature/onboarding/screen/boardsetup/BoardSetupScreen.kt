@@ -94,7 +94,7 @@ fun BoardSetupRoute(
                 isShownEndDateDialog = !isShownEndDateDialog
             },
             selectableStartDate = startDate,
-            selectableEndDate = startDate?.plusDays(29),
+            selectableEndDate = startDate?.plusDays(30),
             initialDisplayedMonthMillis = localDateToMillis(startDate),
             onDismiss = { isShownEndDateDialog = !isShownEndDateDialog }
         )
