@@ -1,5 +1,6 @@
 package com.goalpanzi.mission_mate.feature.onboarding.screen.boardsetup
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue

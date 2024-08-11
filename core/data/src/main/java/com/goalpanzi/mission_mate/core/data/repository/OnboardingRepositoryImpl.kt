@@ -13,4 +13,8 @@ class OnboardingRepositoryImpl @Inject constructor(
     override suspend fun createMission(missionRequest: CreateMissionRequest): NetworkResult<MissionDetailResponse> = handleResult {
         onboardingService.createMission(missionRequest)
     }
+
+    override suspend fun getMissionByInvitationCode(invitationCode: String): NetworkResult<MissionDetailResponse> = handleResult{
+        onboardingService.getMissionByInvitationCode(invitationCode)
+    }
 }

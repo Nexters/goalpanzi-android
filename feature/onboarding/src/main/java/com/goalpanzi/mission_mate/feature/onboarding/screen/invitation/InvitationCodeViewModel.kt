@@ -6,10 +6,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.goalpanzi.mission_mate.core.domain.usecase.GetMissionByInvitationCodeUseCase
 import com.goalpanzi.mission_mate.feature.onboarding.model.CodeResultEvent
-import com.goalpanzi.mission_mate.feature.onboarding.model.MissionUiModel
+import com.goalpanzi.mission_mate.feature.onboarding.model.toMissionUiModel
+import com.luckyoct.core.model.base.NetworkResult
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -17,6 +18,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filterNot
 import kotlinx.coroutines.flow.map
@@ -28,7 +30,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class InvitationCodeViewModel @Inject constructor(
-
+    private val getMissionByInvitationCodeUseCase : GetMissionByInvitationCodeUseCase
 ) : ViewModel() {
 
     var codeFirst by mutableStateOf("")
@@ -83,7 +85,6 @@ class InvitationCodeViewModel @Inject constructor(
             started = SharingStarted.WhileSubscribed(500)
         )
 
-
     private val _codeResultEvent = MutableSharedFlow<CodeResultEvent>()
     val codeResultEvent: SharedFlow<CodeResultEvent> = _codeResultEvent.asSharedFlow()
 
@@ -109,23 +110,22 @@ class InvitationCodeViewModel @Inject constructor(
 
     fun checkCode() {
         viewModelScope.launch {
-            delay(200)
-            // 아래는 모두 삭제 예정
-            if (isNotCodeValid.value == false) {
-                _codeResultEvent.emit(
-                    CodeResultEvent.Success(
-                        MissionUiModel(
-                            "유산소 1시간",
-                            "08.15~09.15",
-                            "월/수/금",
-                            "오전 00~12시"
+            getMissionByInvitationCodeUseCase(
+                codeFirst + codeSecond + codeThird + codeFourth
+            ).catch {
+                _codeResultEvent.emit(CodeResultEvent.Error)
+            }.collect { result ->
+                when(result){
+                    is NetworkResult.Success -> {
+                        _codeResultEvent.emit(
+                            CodeResultEvent.Success(result.data.toMissionUiModel())
                         )
-                    )
-                )
-            } else {
-                _isNotCodeValid.emit(isNotCodeValid.value.not())
+                    }
+                    else -> {
+                        _isNotCodeValid.emit(true)
+                    }
+                }
             }
-
         }
     }
 

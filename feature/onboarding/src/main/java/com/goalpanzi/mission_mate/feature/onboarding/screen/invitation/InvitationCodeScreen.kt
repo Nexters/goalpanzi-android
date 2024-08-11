@@ -1,5 +1,6 @@
 package com.goalpanzi.mission_mate.feature.onboarding.screen.invitation
 
+import android.widget.Toast
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -32,6 +33,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
@@ -61,7 +63,7 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun InvitationCodeRoute(
-    onBackClick : () -> Unit,
+    onBackClick: () -> Unit,
     viewModel: InvitationCodeViewModel = hiltViewModel()
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
@@ -82,6 +84,7 @@ fun InvitationCodeRoute(
                         delay(80)
                         localFocusManager.moveFocus(FocusDirection.Next)
                     }
+
                     else -> {
 
                     }
@@ -91,10 +94,11 @@ fun InvitationCodeRoute(
 
         launch {
             viewModel.codeResultEvent.collect { result ->
-                when(result){
+                when (result) {
                     is CodeResultEvent.Success -> {
                         hasInvitationDialogData = result.mission
                     }
+
                     is CodeResultEvent.Error -> {
 
                     }
@@ -147,9 +151,9 @@ fun InvitationCodeScreen(
     onCodeSecondChange: (String) -> Unit,
     onCodeThirdChange: (String) -> Unit,
     onCodeFourthChange: (String) -> Unit,
-    onClickButton : () -> Unit,
-    onBackClick : () -> Unit,
-    isNotCodeValid : Boolean,
+    onClickButton: () -> Unit,
+    onBackClick: () -> Unit,
+    isNotCodeValid: Boolean,
     enabledButton: Boolean,
     modifier: Modifier = Modifier,
     scrollState: ScrollState = rememberScrollState()
@@ -237,13 +241,13 @@ fun InvitationCodeScreen(
                 onValueChange = onCodeFourthChange
             )
         }
-        if(isNotCodeValid){
+        if (isNotCodeValid) {
             val set = mutableSetOf<Int>()
             set.forEach {
                 return@forEach
             }
             Text(
-                modifier = Modifier.padding(top = 12.dp, start = 24.dp, end = 24.dp ),
+                modifier = Modifier.padding(top = 12.dp, start = 24.dp, end = 24.dp),
                 text = stringResource(id = R.string.onboarding_invitation_error),
                 style = MissionMateTypography.body_md_regular,
                 color = ColorRed_FFFF5858

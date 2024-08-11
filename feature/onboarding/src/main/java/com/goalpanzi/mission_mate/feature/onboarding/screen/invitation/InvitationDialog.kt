@@ -1,6 +1,5 @@
 package com.goalpanzi.mission_mate.feature.onboarding.screen.invitation
 
-import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -25,6 +24,7 @@ import com.goalpanzi.mission_mate.core.designsystem.theme.ColorGray4_FFE5E5E5
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorOrange_FFFF5732
 import com.goalpanzi.mission_mate.core.designsystem.theme.MissionMateTypography
 import com.goalpanzi.mission_mate.feature.onboarding.R
+import com.goalpanzi.mission_mate.feature.onboarding.model.VerificationTimeType
 import com.goalpanzi.mission_mate.feature.onboarding.util.styledTextWithHighlights
 
 @Composable
@@ -32,8 +32,8 @@ fun InvitationDialog(
     count : Int,
     missionTitle : String,
     missionPeriod : String,
-    missionDays : String,
-    missionTime : String,
+    missionDays : List<String>,
+    missionTime : VerificationTimeType,
     onDismissRequest: () -> Unit,
     onClickOk: () -> Unit,
     modifier: Modifier = Modifier,
@@ -54,7 +54,9 @@ fun InvitationDialog(
         cancelTextStyle = cancelTextStyle
     ){
         Column(
-            modifier = Modifier.weight(1f,false).padding(bottom = 29.dp),
+            modifier = Modifier
+                .weight(1f, false)
+                .padding(bottom = 29.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
@@ -123,7 +125,7 @@ fun InvitationDialog(
                 )
                 Text(
                     modifier = Modifier.align(Alignment.Start),
-                    text = missionDays,
+                    text = missionDays.joinToString("/"),
                     color = ColorGray1_FF404249,
                     style = MissionMateTypography.body_lg_bold
                 )
@@ -140,7 +142,7 @@ fun InvitationDialog(
                 )
                 Text(
                     modifier = Modifier.align(Alignment.Start),
-                    text = missionTime,
+                    text = stringResource(id = missionTime.titleId).replace("\n"," "),
                     color = ColorGray1_FF404249,
                     style = MissionMateTypography.body_lg_bold
                 )
@@ -158,8 +160,8 @@ fun PreviewInvitationDialog(){
         modifier = Modifier.fillMaxWidth(),
         missionTitle = "매일 유산소 1시간",
         missionPeriod = "2024.07.24~2024.08.14",
-        missionDays = "월/수/목",
-        missionTime = "오전 00~12시",
+        missionDays = listOf("월","수"),
+        missionTime = VerificationTimeType.MORNING,
         onDismissRequest  = {},
         onClickOk = {}
 
