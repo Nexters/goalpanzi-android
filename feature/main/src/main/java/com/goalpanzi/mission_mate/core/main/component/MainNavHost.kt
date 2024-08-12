@@ -44,7 +44,7 @@ internal fun MainNavHost(
                 onClickBoardSetup = { navigator.navigationToBoardSetup() },
                 onClickInvitationCode = { navigator.navigationToInvitationCode() },
                 onNavigateMissionBoard = { missionId ->
-
+                    navigator.navigationToBoard(missionId)
                 },
                 onClickSetting = { navigator.navigationToSetting() }
             )
@@ -58,7 +58,7 @@ internal fun MainNavHost(
             )
             boardSetupSuccessNavGraph(
                 onClickStart = {
-
+                    navigator.navigationToOnboarding()
                 }
             )
             invitationCodeNavGraph(
@@ -66,7 +66,7 @@ internal fun MainNavHost(
                     navigator.popBackStack()
                 },
                 onNavigateMissionBoard = { missionId ->
-
+                    navigator.navigationToBoard(missionId)
                 }
             )
             profileNavGraph(
@@ -92,13 +92,7 @@ internal fun MainNavHost(
             )
             boardNavGraph(
                 onNavigateOnboarding = {
-                    navigator.navigationToOnboarding(
-                        navOptions = navOptions {
-                            popUpTo(route = RouteModel.Board){
-                                inclusive = true
-                            }
-                        }
-                    )
+                    navigator.navigationToOnboarding()
                 }
             )
         }

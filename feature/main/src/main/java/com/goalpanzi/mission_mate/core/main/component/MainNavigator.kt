@@ -42,12 +42,8 @@ class MainNavigator(
         navController.navigateToProfileSetting()
     }
 
-    fun navigationToOnboarding(
-        navOptions: NavOptions? = null
-    ) {
-        navController.navigateToOnboarding(
-            navOptions = navOptions
-        )
+    fun navigationToOnboarding() {
+        navController.navigateToOnboarding()
     }
 
     fun navigationToBoardSetup() {
@@ -78,8 +74,8 @@ class MainNavigator(
         navController.navigateToPrivacyPolicy()
     }
 
-    fun navigationToBoard() {
-        navController.navigateToBoard()
+    fun navigationToBoard(missionId : Long) {
+        navController.navigateToBoard(missionId)
     }
 }
 

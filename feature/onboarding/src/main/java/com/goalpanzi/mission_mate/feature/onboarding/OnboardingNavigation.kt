@@ -12,7 +12,11 @@ import com.goalpanzi.mission_mate.feature.onboarding.screen.boardsetup.BoardSetu
 import com.goalpanzi.mission_mate.feature.onboarding.screen.invitation.InvitationCodeRoute
 
 fun NavController.navigateToOnboarding(
-    navOptions: NavOptions? = null
+    navOptions: NavOptions? = androidx.navigation.navOptions {
+        popUpTo(this@navigateToOnboarding.graph.id){
+            inclusive = true
+        }
+    }
 ) {
     this.navigate(RouteModel.Onboarding,navOptions = navOptions)
 }
