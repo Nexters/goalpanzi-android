@@ -1,10 +1,7 @@
 package com.luckyoct.core.model.request
 
+import com.luckyoct.core.model.CharacterType
 import kotlinx.serialization.Serializable
-
-enum class CharacterType {
-    RABBIT, CAT, DOG, PANDA, BEAR, BIRD
-}
 
 @Serializable
 data class SaveProfileRequest(
