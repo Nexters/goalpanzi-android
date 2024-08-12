@@ -44,7 +44,7 @@ enum class NavigationType {
 @Composable
 fun MissionMateTopAppBar(
     modifier: Modifier = Modifier,
-    @StringRes titleRes: Int? = null,
+    title: String? = null,
     navigationType: NavigationType,
     onNavigationClick: () -> Unit = {},
     containerColor: Color = MaterialTheme.colorScheme.surfaceDim,
@@ -72,7 +72,8 @@ fun MissionMateTopAppBar(
                 .fillMaxWidth()
                 .height(56.dp)
                 .background(containerColor)
-                .padding(horizontal = 12.dp)
+                .padding(horizontal = 12.dp),
+            contentAlignment = Alignment.CenterStart
         ) {
             when (navigationType) {
                 NavigationType.BACK -> {
@@ -89,9 +90,9 @@ fun MissionMateTopAppBar(
                     )
                 }
             }
-            titleRes?.let {
+            title?.let {
                 Text(
-                    text = stringResource(id = it),
+                    text = it,
                     modifier = Modifier.align(Alignment.Center),
                     style = MissionMateTypography.title_lg_bold,
                     color = ColorGray1_FF404249
@@ -114,7 +115,7 @@ fun AppTopBarBackPreview() {
         navigationType = NavigationType.BACK,
         onNavigationClick = {},
         containerColor = Color.White,
-        titleRes = R.string.app_name
+        title = stringResource(id = R.string.app_name)
     )
 }
 
