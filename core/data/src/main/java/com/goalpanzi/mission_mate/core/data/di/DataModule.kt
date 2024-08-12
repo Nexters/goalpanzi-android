@@ -1,13 +1,11 @@
 package com.goalpanzi.mission_mate.core.data.di
 
-import com.goalpanzi.mission_mate.core.data.repository.LoginRepositoryImpl
-import com.goalpanzi.mission_mate.core.data.repository.MissionRepositoryImpl
 import com.goalpanzi.mission_mate.core.data.repository.AuthRepositoryImpl
+import com.goalpanzi.mission_mate.core.data.repository.MissionRepositoryImpl
 import com.goalpanzi.mission_mate.core.data.repository.OnboardingRepositoryImpl
 import com.goalpanzi.mission_mate.core.data.repository.ProfileRepositoryImpl
-import com.goalpanzi.mission_mate.core.domain.repository.LoginRepository
-import com.goalpanzi.mission_mate.core.domain.repository.MissionRepository
 import com.goalpanzi.mission_mate.core.domain.repository.AuthRepository
+import com.goalpanzi.mission_mate.core.domain.repository.MissionRepository
 import com.goalpanzi.mission_mate.core.domain.repository.OnboardingRepository
 import com.goalpanzi.mission_mate.core.domain.repository.ProfileRepository
 import dagger.Binds
