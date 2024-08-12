@@ -76,7 +76,6 @@ internal fun MainNavHost(
             settingNavGraph(
                 onBackClick = { navigator.popBackStack() },
                 onClickProfileSetting = { navigator.navigateToProfileSetting() },
-                onClickInquiry = { navigator.navigationToInquiry() },
                 onClickServicePolicy = { navigator.navigationToServicePolicy() },
                 onClickPrivacyPolicy = { navigator.navigationToPrivacyPolicy() },
                 onClickLogout = { navigator.navigateToLogin() }
