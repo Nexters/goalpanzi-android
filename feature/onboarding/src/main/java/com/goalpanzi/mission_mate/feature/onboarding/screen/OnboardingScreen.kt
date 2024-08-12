@@ -84,7 +84,7 @@ fun OnboardingScreen(
                 containerColor = Color.Transparent,
                 rightActionButtons = {
                     TopBarSetting(
-                        onClick = {}
+                        onClick = { onClickSetting() }
                     )
                 }
             )

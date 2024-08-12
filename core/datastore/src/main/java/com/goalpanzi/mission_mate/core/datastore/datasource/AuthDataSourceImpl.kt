@@ -1,6 +1,5 @@
 package com.goalpanzi.mission_mate.core.datastore.datasource
 
-import android.util.Log
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
@@ -41,5 +40,4 @@ class AuthDataSourceImpl @Inject constructor(
         }
         emit(Unit)
     }
-
 }

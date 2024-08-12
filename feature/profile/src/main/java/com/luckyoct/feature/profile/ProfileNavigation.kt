@@ -6,19 +6,20 @@ import androidx.navigation.compose.composable
 import com.goalpanzi.mission_mate.core.navigation.RouteModel
 
 enum class ProfileSettingType {
-    CREATE, CHANGE
+    CREATE, SETTING
 }
 
 fun NavController.navigateToProfileCreate() {
     this.navigate(RouteModel.Profile.Create)
 }
 
-fun NavController.navigateToProfileChange() {
-    this.navigate(RouteModel.Profile.Change)
+fun NavController.navigateToProfileSetting() {
+    this.navigate(RouteModel.Profile.Setting)
 }
 
 fun NavGraphBuilder.profileNavGraph(
-    onSaveSuccess: () -> Unit
+    onSaveSuccess: () -> Unit,
+    onBackClick: () -> Unit
 ) {
     composable<RouteModel.Profile.Create> {
         ProfileRoute(
@@ -26,10 +27,11 @@ fun NavGraphBuilder.profileNavGraph(
             onSaveSuccess = { onSaveSuccess() }
         )
     }
-    composable<RouteModel.Profile.Change> {
+    composable<RouteModel.Profile.Setting> {
         ProfileRoute(
-            profileSettingType = ProfileSettingType.CHANGE,
-            onSaveSuccess = { onSaveSuccess() }
+            profileSettingType = ProfileSettingType.SETTING,
+            onSaveSuccess = { onSaveSuccess() },
+            onBackClick = { onBackClick() }
         )
     }
 }

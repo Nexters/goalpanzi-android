@@ -11,6 +11,11 @@ import com.goalpanzi.mission_mate.feature.onboarding.navigateToBoardSetupSuccess
 import com.goalpanzi.mission_mate.feature.onboarding.navigateToInvitationCode
 import com.goalpanzi.mission_mate.feature.onboarding.navigateToOnboarding
 import com.luckyoct.feature.profile.navigateToProfileCreate
+import com.luckyoct.feature.profile.navigateToProfileSetting
+import com.luckyoct.feature.setting.navigation.navigateToInquiry
+import com.luckyoct.feature.setting.navigation.navigateToPrivacyPolicy
+import com.luckyoct.feature.setting.navigation.navigateToServicePolicy
+import com.luckyoct.feature.setting.navigation.navigateToSetting
 
 class MainNavigator(
     val navController: NavHostController
@@ -31,6 +36,10 @@ class MainNavigator(
         navController.navigateToProfileCreate()
     }
 
+    fun navigateToProfileSetting() {
+        navController.navigateToProfileSetting()
+    }
+
     fun navigationToOnboarding() {
         navController.navigateToOnboarding()
     }
@@ -45,6 +54,22 @@ class MainNavigator(
 
     fun navigationToInvitationCode() {
         navController.navigateToInvitationCode()
+    }
+
+    fun navigationToSetting() {
+        navController.navigateToSetting()
+    }
+
+    fun navigationToInquiry() {
+        navController.navigateToInquiry()
+    }
+
+    fun navigationToServicePolicy() {
+        navController.navigateToServicePolicy()
+    }
+
+    fun navigationToPrivacyPolicy() {
+        navController.navigateToPrivacyPolicy()
     }
 }
 
