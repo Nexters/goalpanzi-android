@@ -3,9 +3,9 @@ package com.goalpanzi.mission_mate.core.network.service
 import com.luckyoct.core.model.request.CreateMissionRequest
 import com.luckyoct.core.model.request.JoinMissionRequest
 import com.luckyoct.core.model.response.MissionDetailResponse
+import com.luckyoct.core.model.response.MissionsResponse
 import retrofit2.Response
 import retrofit2.http.Body
-import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Query
@@ -25,4 +25,7 @@ interface OnboardingService {
     suspend fun joinMission(
         @Body request : JoinMissionRequest
     ) : Response<Unit>
+
+    @GET("/api/mission-members/me")
+    suspend fun getJoinedMissions() : Response<MissionsResponse>
 }

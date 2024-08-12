@@ -6,6 +6,7 @@ import com.luckyoct.core.model.base.NetworkResult
 import com.luckyoct.core.model.request.CreateMissionRequest
 import com.luckyoct.core.model.request.JoinMissionRequest
 import com.luckyoct.core.model.response.MissionDetailResponse
+import com.luckyoct.core.model.response.MissionsResponse
 import javax.inject.Inject
 
 class OnboardingRepositoryImpl @Inject constructor(
@@ -21,5 +22,9 @@ class OnboardingRepositoryImpl @Inject constructor(
 
     override suspend fun joinMission(invitationCode: String): NetworkResult<Unit> = handleResult {
         onboardingService.joinMission(JoinMissionRequest(invitationCode))
+    }
+
+    override suspend fun getJoinedMissions(): NetworkResult<MissionsResponse> = handleResult {
+        onboardingService.getJoinedMissions()
     }
 }

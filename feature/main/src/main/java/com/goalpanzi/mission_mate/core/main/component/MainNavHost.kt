@@ -37,7 +37,10 @@ internal fun MainNavHost(
             onboardingNavGraph(
                 onClickBoardSetup = { navigator.navigationToBoardSetup() },
                 onClickInvitationCode = { navigator.navigationToInvitationCode() },
-                onClickSetting = {  }
+                onClickSetting = {  },
+                onNavigateMissionBoard = { missionId ->
+
+                }
             )
             boardSetupNavGraph(
                 onSuccess = {
