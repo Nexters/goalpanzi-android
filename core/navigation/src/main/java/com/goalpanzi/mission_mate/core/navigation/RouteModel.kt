@@ -14,8 +14,11 @@ sealed interface RouteModel {
         @Serializable
         data object Create : Profile
         @Serializable
-        data object Change : Profile
+        data object Setting : Profile
     }
+
+    @Serializable
+    data object Setting : RouteModel
 }
 
 sealed interface OnboardingRouteModel {
@@ -27,4 +30,16 @@ sealed interface OnboardingRouteModel {
 
     @Serializable
     data object InvitationCode : OnboardingRouteModel
+}
+
+sealed interface SettingRouteModel {
+
+    @Serializable
+    data object Inquiry : SettingRouteModel
+
+    @Serializable
+    data object ServicePolicy : SettingRouteModel
+
+    @Serializable
+    data object PrivacyPolicy : SettingRouteModel
 }

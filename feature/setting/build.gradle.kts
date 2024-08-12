@@ -6,10 +6,11 @@ plugins {
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.kotlin.ksp)
     alias(libs.plugins.hilt.android)
+    alias(libs.plugins.kotlin.plugin.serialization)
 }
 
 android {
-    namespace = "com.goalpanzi.mission_mate.core.main"
+    namespace = "com.luckyoct.feature.setting"
     compileSdk = 34
 
     defaultConfig {
@@ -49,6 +50,7 @@ android {
 }
 
 dependencies {
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.bundles.lifecycle)
     implementation(platform(libs.androidx.compose.bom))
@@ -66,11 +68,11 @@ dependencies {
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
 
+    implementation(libs.kotlin.serialization.json)
+
     implementation(project(":core:designsystem"))
     implementation(project(":core:navigation"))
     implementation(project(":core:domain"))
-    implementation(project(":feature:login"))
-    implementation(project(":feature:onboarding"))
+    implementation(project(":core:model"))
     implementation(project(":feature:profile"))
-    implementation(project(":feature:setting"))
 }

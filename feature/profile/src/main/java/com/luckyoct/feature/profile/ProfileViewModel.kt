@@ -85,7 +85,7 @@ class ProfileViewModel @AssistedInject constructor(
                 }
             }
             // TODO : set my character selected
-            ProfileSettingType.CHANGE -> {
+            ProfileSettingType.SETTING -> {
                 defaultImageIds.indices.map {
                     CharacterListItem(
                         imageResId = defaultImageIds[it],

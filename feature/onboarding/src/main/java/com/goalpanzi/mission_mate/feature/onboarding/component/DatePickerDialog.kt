@@ -28,10 +28,12 @@ fun DatePickerDialog(
     selectableStartDate: LocalDate?,
     selectableEndDate: LocalDate?,
     onSuccess: (Long) -> Unit,
-    onDismiss: () -> Unit
+    onDismiss: () -> Unit,
+    initialDisplayedMonthMillis : Long? = null,
 ) {
     val datePickerState = rememberDatePickerState(
         initialSelectedDateMillis = selectedDate?.let { localDateToMillis(it) },
+        initialDisplayedMonthMillis = initialDisplayedMonthMillis,
         selectableDates = object : SelectableDates {
             override fun isSelectableDate(utcTimeMillis: Long): Boolean {
                 val startMillis = localDateToMillis(selectableStartDate)

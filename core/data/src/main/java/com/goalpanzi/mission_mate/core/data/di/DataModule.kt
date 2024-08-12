@@ -1,9 +1,9 @@
 package com.goalpanzi.mission_mate.core.data.di
 
-import com.goalpanzi.mission_mate.core.data.repository.LoginRepositoryImpl
+import com.goalpanzi.mission_mate.core.data.repository.AuthRepositoryImpl
 import com.goalpanzi.mission_mate.core.data.repository.OnboardingRepositoryImpl
 import com.goalpanzi.mission_mate.core.data.repository.ProfileRepositoryImpl
-import com.goalpanzi.mission_mate.core.domain.repository.LoginRepository
+import com.goalpanzi.mission_mate.core.domain.repository.AuthRepository
 import com.goalpanzi.mission_mate.core.domain.repository.OnboardingRepository
 import com.goalpanzi.mission_mate.core.domain.repository.ProfileRepository
 import dagger.Binds
@@ -16,7 +16,7 @@ import dagger.hilt.components.SingletonComponent
 internal abstract class DataModule {
 
     @Binds
-    abstract fun bindLoginRepository(impl: LoginRepositoryImpl): LoginRepository
+    abstract fun bindLoginRepository(impl: AuthRepositoryImpl): AuthRepository
 
     @Binds
     abstract fun bindProfileRepository(impl: ProfileRepositoryImpl): ProfileRepository

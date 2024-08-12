@@ -2,12 +2,13 @@ package com.goalpanzi.mission_mate.feature.onboarding.screen
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
@@ -115,7 +116,7 @@ fun OnboardingScreen(
                         containerColor = Color.Transparent,
                         rightActionButtons = {
                             TopBarSetting(
-                                onClick = {}
+                                onClick = { onClickSetting() }
                             )
                         }
                     )
@@ -162,20 +163,21 @@ fun OnboardingScreen(
                     }
                     Row(
                         modifier = Modifier
-                            .fillMaxSize()
-                            .padding(horizontal = 24.dp),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(18.dp)
+                            .fillMaxSize(348f / 390f),
+                        verticalAlignment = Alignment.CenterVertically
                     ) {
                         OnboardingNavigationButton(
-                            modifier = Modifier.weight(1f),
+                            modifier = Modifier.weight(162f / 324f),
                             titleId = R.string.onboarding_crating_board_title,
                             descriptionId = R.string.onboarding_crating_board_desription,
                             imageId = designSystemResource.drawable.ic_creating_board,
                             onClick = onClickBoardSetup
                         )
+                        Spacer(modifier = Modifier
+                            .height(1.dp)
+                            .weight(24f / 324f))
                         OnboardingNavigationButton(
-                            modifier = Modifier.weight(1f),
+                            modifier = Modifier.weight(162f / 324f),
                             titleId = R.string.onboarding_code_title,
                             descriptionId = R.string.onboarding_code_desription,
                             imageId = designSystemResource.drawable.ic_invitation_friend,
