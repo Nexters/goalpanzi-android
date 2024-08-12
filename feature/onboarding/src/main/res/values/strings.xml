@@ -36,9 +36,8 @@
     <string name="onboarding_board_setup_verification_time_input_content_pm">오후\n12~00시</string>
     <string name="onboarding_board_setup_verification_time_input_content_all">종일\n00~00시</string>
 
-    <string name="onboarding_board_setup_success_title">목표가 완성되었어요!</string>
-    <string name="onboarding_board_setup_success_description_top">이제 시작해볼까요?</string>
-    <string name="onboarding_board_setup_success_description_bottom">꾸준히 미션를 완수해\n세계 곳곳을 경험해봐요!</string>
+    <string name="onboarding_board_setup_success_title">미션설정 완료!\n이제 시작해볼까요?</string>
+    <string name="onboarding_board_setup_success_description">친구와 함께 꾸준히 미션을 완수해\n세계 곳곳을 경험해봐요!</string>
 
     <string name="onboarding_invitation_title">초대코드 입력</string>
     <string name="onboarding_invitation_description">친구에게 전송받은\n초대코드 4자리를 입력해주세요!</string>

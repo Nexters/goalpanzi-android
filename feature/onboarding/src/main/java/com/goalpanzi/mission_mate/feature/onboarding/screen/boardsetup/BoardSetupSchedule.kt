@@ -41,8 +41,8 @@ fun BoardSetupSchedule(
     startDate: String,
     endDate: String,
     selectedDays: List<DayOfWeek>,
-    enabledDaysOfWeek : Set<DayOfWeek>,
-    count : String,
+    enabledDaysOfWeek: Set<DayOfWeek>,
+    count: String,
     onClickStartDate: () -> Unit,
     onClickEndDate: () -> Unit,
     onSelectDay: (DayOfWeek) -> Unit,
@@ -54,7 +54,7 @@ fun BoardSetupSchedule(
             .padding(horizontal = 24.dp)
     ) {
         BoardSetupDescription(
-            text = stringResource(id = R.string.onboarding_board_setup_schedule_description,count),
+            text = stringResource(id = R.string.onboarding_board_setup_schedule_description, count),
             colorTargetTexts = listOf(
                 stringResource(R.string.onboarding_board_setup_schedule_description_color_target1),
                 stringResource(R.string.onboarding_board_setup_schedule_description_color_target2)
@@ -103,10 +103,10 @@ fun Period(
                 modifier = Modifier
                     .height(60.dp)
                     .weight(1f),
-                border = if(startDate.isBlank()) null else BorderStroke(1.dp, ColorGray4_FFE5E5E5) ,
+                border = if (startDate.isBlank()) null else BorderStroke(1.dp, ColorGray4_FFE5E5E5),
                 shape = RoundedCornerShape(12.dp),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = if(startDate.isBlank()) ColorGray5_80F5F6F9 else ColorWhite_FFFFFFFF
+                    containerColor = if (startDate.isBlank()) ColorGray5_80F5F6F9 else ColorWhite_FFFFFFFF
                 ),
                 contentPadding = PaddingValues(horizontal = 16.dp),
                 onClick = onClickStartDate
@@ -114,7 +114,7 @@ fun Period(
                 Text(
                     modifier = Modifier.fillMaxWidth(),
                     text = startDate.ifBlank { stringResource(id = R.string.onboarding_board_setup_schedule_period_start_hint) },
-                    color = if(startDate.isBlank()) ColorGray3_FF727484 else ColorGray1_FF404249,
+                    color = if (startDate.isBlank()) ColorGray3_FF727484 else ColorGray1_FF404249,
                     style = MissionMateTypography.body_lg_regular
                 )
             }
@@ -128,10 +128,10 @@ fun Period(
                 modifier = Modifier
                     .height(60.dp)
                     .weight(1f),
-                border = if(endDate.isBlank()) null else BorderStroke(1.dp, ColorGray4_FFE5E5E5) ,
+                border = if (endDate.isBlank()) null else BorderStroke(1.dp, ColorGray4_FFE5E5E5),
                 shape = RoundedCornerShape(12.dp),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = if(endDate.isBlank()) ColorGray5_80F5F6F9 else ColorWhite_FFFFFFFF
+                    containerColor = if (endDate.isBlank()) ColorGray5_80F5F6F9 else ColorWhite_FFFFFFFF
                 ),
                 contentPadding = PaddingValues(horizontal = 16.dp),
                 onClick = onClickEndDate
@@ -139,7 +139,7 @@ fun Period(
                 Text(
                     modifier = Modifier.fillMaxWidth(),
                     text = endDate.ifBlank { stringResource(id = R.string.onboarding_board_setup_schedule_period_end_hint) },
-                    color = if(endDate.isBlank()) ColorGray3_FF727484 else ColorGray1_FF404249,
+                    color = if (endDate.isBlank()) ColorGray3_FF727484 else ColorGray1_FF404249,
                     style = MissionMateTypography.body_lg_regular
                 )
             }
@@ -155,21 +155,20 @@ fun Period(
 @Composable
 fun Frequency(
     selectedDays: List<DayOfWeek>,
-    enabledDaysOfWeek : Set<DayOfWeek>,
+    enabledDaysOfWeek: Set<DayOfWeek>,
     onClickDay: (DayOfWeek) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
-        modifier = modifier.alpha(
-            if(enabledDaysOfWeek.isNotEmpty()) 1f else 0.3f
-        ),
+        modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         Text(
-            modifier = Modifier.padding(bottom = 4.dp),
+            modifier = Modifier
+                .padding(bottom = 4.dp),
             text = stringResource(id = R.string.onboarding_board_setup_schedule_day_input_title),
             style = MissionMateTypography.body_md_bold,
-            color = ColorGray3_FF727484
+            color = ColorGray3_FF727484.copy(alpha = if (enabledDaysOfWeek.isNotEmpty()) 1f else 0.3f)
         )
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -192,7 +191,7 @@ fun Frequency(
         Text(
             text = stringResource(id = R.string.onboarding_board_setup_schedule_day_input_guide),
             style = MissionMateTypography.body_md_regular,
-            color = ColorGray2_FF4F505C
+            color = ColorGray2_FF4F505C.copy(alpha = if (enabledDaysOfWeek.isNotEmpty()) 1f else 0.3f)
         )
     }
 }
@@ -200,19 +199,19 @@ fun Frequency(
 
 @Composable
 fun DayItem(
-    dayOfWeek : DayOfWeek,
-    enabled : Boolean,
-    onClick : () -> Unit,
+    dayOfWeek: DayOfWeek,
+    enabled: Boolean,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier,
     shape: Shape = CircleShape,
-    selected : Boolean = false
-){
+    selected: Boolean = false
+) {
     TextButton(
         modifier = modifier,
         contentPadding = PaddingValues(horizontal = 16.dp),
         shape = shape,
         colors = ButtonDefaults.textButtonColors(
-            containerColor = if(selected) ColorGray1_FF404249 else ColorGray5_FFF5F6F9,
+            containerColor = if (selected) ColorGray1_FF404249 else ColorGray5_FFF5F6F9,
             disabledContainerColor = ColorGray5_FFF5F6F9.copy(0.3f)
         ),
         enabled = enabled,
@@ -220,8 +219,8 @@ fun DayItem(
     ) {
         Text(
             text = stringResource(id = dayOfWeek.getStringId()),
-            color = if (selected) ColorWhite_FFFFFFFF
-            else ColorGray1_FF404249,
+            color = if (selected && enabled) ColorWhite_FFFFFFFF
+            else if(enabled) ColorGray1_FF404249 else ColorGray1_FF404249.copy(0.3f),
             style = MissionMateTypography.body_lg_regular
         )
     }

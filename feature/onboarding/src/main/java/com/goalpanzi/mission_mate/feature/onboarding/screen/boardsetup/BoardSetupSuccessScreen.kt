@@ -29,6 +29,7 @@ import com.goalpanzi.mission_mate.core.designsystem.theme.ColorGray3_FF727484
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorWhite_FFFFFFFF
 import com.goalpanzi.mission_mate.core.designsystem.theme.MissionMateTypography
 import com.goalpanzi.mission_mate.feature.onboarding.R
+import com.goalpanzi.mission_mate.feature.onboarding.component.OutlinedTextBox
 import com.goalpanzi.mission_mate.feature.onboarding.component.StableImage
 
 @Composable
@@ -50,7 +51,6 @@ fun BoardSetupSuccessScreen(
         Column(
             modifier = modifier
                 .fillMaxWidth()
-                .statusBarsPadding()
                 .navigationBarsPadding()
                 .padding(horizontal = 14.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -59,15 +59,20 @@ fun BoardSetupSuccessScreen(
             Text(
                 modifier = Modifier
                     .statusBarsPadding()
-                    .padding(top = 48.dp),
+                    .padding(top = 48.dp, bottom = 52.dp),
                 text = stringResource(id = R.string.onboarding_board_setup_success_title),
                 style = MissionMateTypography.heading_sm_bold,
-                color = ColorGray1_FF404249
+                color = ColorGray1_FF404249,
+                textAlign = TextAlign.Center
             )
-
+            OutlinedTextBox(
+                text = stringResource(id = R.string.onboarding_level_1),
+                modifier = Modifier.padding(bottom = 12.dp)
+            )
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
+                    .padding(horizontal = 7.dp)
                     .weight(1f),
                 contentAlignment = Alignment.Center
             ) {
@@ -79,22 +84,13 @@ fun BoardSetupSuccessScreen(
                     contentScale = ContentScale.FillWidth
                 )
             }
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Text(
-                    text = stringResource(id = R.string.onboarding_board_setup_success_description_top),
-                    style = MissionMateTypography.title_xl_bold,
-                    color = ColorGray3_FF727484,
-                    textAlign = TextAlign.Center
-                )
-                Text(
-                    text = stringResource(id = R.string.onboarding_board_setup_success_description_bottom),
-                    style = MissionMateTypography.title_xl_regular,
-                    color = ColorGray3_FF727484,
-                    textAlign = TextAlign.Center
-                )
-            }
+
+            Text(
+                text = stringResource(id = R.string.onboarding_board_setup_success_description),
+                style = MissionMateTypography.body_xl_regular,
+                color = ColorGray1_FF404249,
+                textAlign = TextAlign.Center
+            )
             MissionMateTextButton(
                 modifier = Modifier
                     .padding(bottom = 36.dp, start = 10.dp, end = 10.dp, top = 71.dp)
