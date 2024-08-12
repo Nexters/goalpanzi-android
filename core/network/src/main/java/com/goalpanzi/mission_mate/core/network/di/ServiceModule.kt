@@ -1,6 +1,7 @@
 package com.goalpanzi.mission_mate.core.network.di
 
 import com.goalpanzi.mission_mate.core.network.service.LoginService
+import com.goalpanzi.mission_mate.core.network.service.MissionService
 import com.goalpanzi.mission_mate.core.network.service.OnboardingService
 import com.goalpanzi.mission_mate.core.network.service.ProfileService
 import dagger.Module
@@ -30,5 +31,11 @@ object ServiceModule {
     @Singleton
     fun provideOnboardingService(retrofit: Retrofit): OnboardingService {
         return retrofit.create(OnboardingService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideMissionService(retrofit: Retrofit): MissionService {
+        return retrofit.create(MissionService::class.java)
     }
 }
