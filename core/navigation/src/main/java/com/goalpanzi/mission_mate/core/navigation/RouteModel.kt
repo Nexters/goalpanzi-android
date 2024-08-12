@@ -16,6 +16,9 @@ sealed interface RouteModel {
         @Serializable
         data object Change : Profile
     }
+
+    @Serializable
+    data object Board : RouteModel
 }
 
 sealed interface OnboardingRouteModel {

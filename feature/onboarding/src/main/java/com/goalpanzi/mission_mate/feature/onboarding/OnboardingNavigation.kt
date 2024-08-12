@@ -2,6 +2,7 @@ package com.goalpanzi.mission_mate.feature.onboarding
 
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import com.goalpanzi.mission_mate.core.navigation.OnboardingRouteModel
 import com.goalpanzi.mission_mate.core.navigation.RouteModel
@@ -10,8 +11,10 @@ import com.goalpanzi.mission_mate.feature.onboarding.screen.boardsetup.BoardSetu
 import com.goalpanzi.mission_mate.feature.onboarding.screen.boardsetup.BoardSetupSuccessScreen
 import com.goalpanzi.mission_mate.feature.onboarding.screen.invitation.InvitationCodeRoute
 
-fun NavController.navigateToOnboarding() {
-    this.navigate(RouteModel.Onboarding)
+fun NavController.navigateToOnboarding(
+    navOptions: NavOptions? = null
+) {
+    this.navigate(RouteModel.Onboarding,navOptions = navOptions)
 }
 
 fun NavController.navigateToBoardSetup() {

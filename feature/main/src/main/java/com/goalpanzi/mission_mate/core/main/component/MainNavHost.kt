@@ -8,6 +8,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
+import androidx.navigation.navOptions
+import com.goalpanzi.mission_mate.core.navigation.RouteModel
+import com.goalpanzi.mission_mate.feature.board.boardNavGraph
 import com.goalpanzi.mission_mate.feature.login.loginNavGraph
 import com.goalpanzi.mission_mate.feature.onboarding.boardSetupNavGraph
 import com.goalpanzi.mission_mate.feature.onboarding.boardSetupSuccessNavGraph
@@ -59,6 +62,17 @@ internal fun MainNavHost(
             )
             profileNavGraph(
                 onSaveSuccess = { navigator.navigationToOnboarding() }
+            )
+            boardNavGraph(
+                onNavigateOnboarding = {
+                    navigator.navigationToOnboarding(
+                        navOptions = navOptions {
+                            popUpTo(route = RouteModel.Board){
+                                inclusive = true
+                            }
+                        }
+                    )
+                }
             )
         }
     }
