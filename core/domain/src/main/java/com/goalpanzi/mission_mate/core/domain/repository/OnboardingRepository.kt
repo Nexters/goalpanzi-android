@@ -13,4 +13,8 @@ interface OnboardingRepository : ResultHandler {
     suspend fun getMissionByInvitationCode(
         invitationCode : String
     ) : NetworkResult<MissionDetailResponse>
+
+    suspend fun joinMission(
+        invitationCode: String
+    ) : NetworkResult<Unit>
 }

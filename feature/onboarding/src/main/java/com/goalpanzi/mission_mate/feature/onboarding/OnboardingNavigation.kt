@@ -63,11 +63,13 @@ fun NavGraphBuilder.boardSetupSuccessNavGraph(
 }
 
 fun NavGraphBuilder.invitationCodeNavGraph(
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
+    onNavigateMissionBoard: (Long) -> Unit,
 ) {
     composable<OnboardingRouteModel.InvitationCode> {
         InvitationCodeRoute(
-            onBackClick = onBackClick
+            onBackClick = onBackClick,
+            onNavigateMissionBoard = onNavigateMissionBoard
         )
     }
 }

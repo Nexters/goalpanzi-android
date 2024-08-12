@@ -3,6 +3,7 @@ package com.goalpanzi.mission_mate.feature.onboarding.model
 import com.luckyoct.core.model.response.MissionDetailResponse
 
 data class MissionUiModel(
+    val missionId : Long,
     val missionTitle : String,
     val missionPeriod : String,
     val missionDays : List<String>,
@@ -12,6 +13,7 @@ data class MissionUiModel(
 
 fun MissionDetailResponse.toMissionUiModel() =
     MissionUiModel(
+        missionId = missionId,
         missionTitle = description,
         missionPeriod = missionPeriod,
         missionDays = missionDaysOfWeek,

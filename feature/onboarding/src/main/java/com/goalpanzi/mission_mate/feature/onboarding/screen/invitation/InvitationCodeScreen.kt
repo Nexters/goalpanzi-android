@@ -1,6 +1,5 @@
 package com.goalpanzi.mission_mate.feature.onboarding.screen.invitation
 
-import android.widget.Toast
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -13,16 +12,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.KeyboardArrowLeft
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -33,7 +27,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
@@ -55,6 +48,7 @@ import com.goalpanzi.mission_mate.core.designsystem.theme.component.NavigationTy
 import com.goalpanzi.mission_mate.feature.onboarding.R
 import com.goalpanzi.mission_mate.feature.onboarding.component.InvitationCodeTextField
 import com.goalpanzi.mission_mate.feature.onboarding.model.CodeResultEvent
+import com.goalpanzi.mission_mate.feature.onboarding.model.JoinResultEvent
 import com.goalpanzi.mission_mate.feature.onboarding.model.MissionUiModel
 import com.goalpanzi.mission_mate.feature.onboarding.screen.invitation.InvitationCodeViewModel.Companion.CodeActionEvent
 import com.goalpanzi.mission_mate.feature.onboarding.util.styledTextWithHighlights
@@ -64,6 +58,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun InvitationCodeRoute(
     onBackClick: () -> Unit,
+    onNavigateMissionBoard: (Long) -> Unit,
     viewModel: InvitationCodeViewModel = hiltViewModel()
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
@@ -105,6 +100,22 @@ fun InvitationCodeRoute(
                 }
             }
         }
+
+        launch {
+            viewModel.joinResultEvent.collect { result ->
+                hasInvitationDialogData = null
+
+                when (result) {
+                    is JoinResultEvent.Success -> {
+                        onNavigateMissionBoard(result.missionId)
+                    }
+
+                    is JoinResultEvent.Error -> {
+
+                    }
+                }
+            }
+        }
     }
     hasInvitationDialogData?.let { mission ->
         InvitationDialog(
@@ -117,7 +128,7 @@ fun InvitationCodeRoute(
                 hasInvitationDialogData = null
             },
             onClickOk = {
-                hasInvitationDialogData = null
+                viewModel.joinMission(mission.missionId)
             }
         )
     }

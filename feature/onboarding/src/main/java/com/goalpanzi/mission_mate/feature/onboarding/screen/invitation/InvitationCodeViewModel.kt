@@ -1,5 +1,6 @@
 package com.goalpanzi.mission_mate.feature.onboarding.screen.invitation
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -7,7 +8,9 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.goalpanzi.mission_mate.core.domain.usecase.GetMissionByInvitationCodeUseCase
+import com.goalpanzi.mission_mate.core.domain.usecase.JoinMissionUseCase
 import com.goalpanzi.mission_mate.feature.onboarding.model.CodeResultEvent
+import com.goalpanzi.mission_mate.feature.onboarding.model.JoinResultEvent
 import com.goalpanzi.mission_mate.feature.onboarding.model.toMissionUiModel
 import com.luckyoct.core.model.base.NetworkResult
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -30,7 +33,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class InvitationCodeViewModel @Inject constructor(
-    private val getMissionByInvitationCodeUseCase : GetMissionByInvitationCodeUseCase
+    private val getMissionByInvitationCodeUseCase : GetMissionByInvitationCodeUseCase,
+    private val joinMissionUseCase : JoinMissionUseCase
 ) : ViewModel() {
 
     var codeFirst by mutableStateOf("")
@@ -88,6 +92,9 @@ class InvitationCodeViewModel @Inject constructor(
     private val _codeResultEvent = MutableSharedFlow<CodeResultEvent>()
     val codeResultEvent: SharedFlow<CodeResultEvent> = _codeResultEvent.asSharedFlow()
 
+    private val _joinResultEvent = MutableSharedFlow<JoinResultEvent>()
+    val joinResultEvent: SharedFlow<JoinResultEvent> = _joinResultEvent.asSharedFlow()
+
     fun updateCodeFirst(code: String) {
         if (isNotCodeValid.value) resetCodeValidState()
         if (code.length <= 1) codeFirst = code
@@ -132,6 +139,23 @@ class InvitationCodeViewModel @Inject constructor(
     private fun resetCodeValidState() {
         viewModelScope.launch {
             _isNotCodeValid.emit(false)
+        }
+    }
+
+    fun joinMission(
+        missionId : Long
+    ){
+        viewModelScope.launch {
+            joinMissionUseCase(
+                codeFirst + codeSecond + codeThird + codeFourth
+            ).catch {
+
+            }.collect {
+                Log.d("123123","Joined")
+                _joinResultEvent.emit(
+                    JoinResultEvent.Success(missionId)
+                )
+            }
         }
     }
 

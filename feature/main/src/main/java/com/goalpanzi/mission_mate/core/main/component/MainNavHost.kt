@@ -55,6 +55,9 @@ internal fun MainNavHost(
             invitationCodeNavGraph(
                 onBackClick = {
                     navigator.popBackStack()
+                },
+                onNavigateMissionBoard = { missionId ->
+
                 }
             )
             profileNavGraph(
