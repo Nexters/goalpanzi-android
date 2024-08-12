@@ -5,6 +5,9 @@ import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ButtonDefaults
@@ -23,7 +26,7 @@ import com.goalpanzi.mission_mate.core.designsystem.theme.ColorWhite_FFFFFFFF
 import com.goalpanzi.mission_mate.core.designsystem.theme.MissionMateTypography
 
 @Composable
-fun OnboardingNavigationButton(
+fun RowScope.OnboardingNavigationButton(
     @StringRes titleId : Int,
     @StringRes descriptionId : Int,
     @DrawableRes imageId: Int,
@@ -41,7 +44,7 @@ fun OnboardingNavigationButton(
         contentPadding = PaddingValues()
     ) {
         Column(
-            modifier = Modifier,
+            modifier = Modifier.fillMaxWidth(),
             verticalArrangement = Arrangement.spacedBy(6.dp)
         ) {
             Text(

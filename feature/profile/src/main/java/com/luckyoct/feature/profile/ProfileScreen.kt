@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -48,6 +49,8 @@ import com.goalpanzi.mission_mate.core.designsystem.theme.ColorGray5_FFF5F6F9
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorPink_FFFFE4E4
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorWhite_FFFFFFFF
 import com.goalpanzi.mission_mate.core.designsystem.theme.MissionMateTypography
+import com.goalpanzi.mission_mate.core.designsystem.theme.component.MissionMateTopAppBar
+import com.goalpanzi.mission_mate.core.designsystem.theme.component.NavigationType
 import com.luckyoct.feature.profile.model.CharacterListItem
 import com.luckyoct.feature.profile.model.ProfileEvent
 import dagger.hilt.android.EntryPointAccessors
@@ -67,7 +70,8 @@ fun profileViewModel(profileSettingType: ProfileSettingType): ProfileViewModel {
 fun ProfileRoute(
     modifier: Modifier = Modifier,
     profileSettingType: ProfileSettingType,
-    onSaveSuccess: () -> Unit
+    onSaveSuccess: () -> Unit,
+    onBackClick: (() -> Unit)? = null
 ) {
     val viewModel = profileViewModel(profileSettingType = profileSettingType)
     val characters = viewModel.characters.collectAsStateWithLifecycle()
@@ -84,12 +88,9 @@ fun ProfileRoute(
     ProfileScreen(
         profileSettingType = profileSettingType,
         characters = characters.value,
-        onclickCharacter = {
-            viewModel.selectCharacter(it)
-        },
-        onClickSave = {
-            viewModel.saveProfile(it)
-        }
+        onclickCharacter = { viewModel.selectCharacter(it) },
+        onClickSave = { viewModel.saveProfile(it) },
+        onBackClick = { onBackClick?.invoke() }
     )
 }
 
@@ -99,7 +100,8 @@ fun ProfileScreen(
     profileSettingType: ProfileSettingType,
     characters: List<CharacterListItem>,
     onclickCharacter: (CharacterListItem) -> Unit,
-    onClickSave: (String) -> Unit
+    onClickSave: (String) -> Unit,
+    onBackClick: (() -> Unit)? = null
 ) {
 
     var nicknameInput by remember { mutableStateOf("") }
@@ -111,7 +113,15 @@ fun ProfileScreen(
             .fillMaxSize()
             .background(color = ColorWhite_FFFFFFFF)
             .imePadding()
+            .statusBarsPadding()
     ) {
+        if (profileSettingType == ProfileSettingType.SETTING) {
+            MissionMateTopAppBar(
+                navigationType = NavigationType.BACK,
+                containerColor = ColorWhite_FFFFFFFF,
+                onNavigationClick = { onBackClick?.invoke() }
+            )
+        }
         Column(
             modifier = modifier
                 .padding(bottom = 18.dp)
@@ -120,11 +130,15 @@ fun ProfileScreen(
                 .verticalScroll(scrollState)
         ) {
             Text(
-                text = stringResource(id = R.string.profile_create),
+                text = stringResource(id = when (profileSettingType) {
+                   ProfileSettingType.CREATE -> R.string.profile_create
+                    ProfileSettingType.SETTING -> R.string.profile_setting_title
+                }),
                 modifier = modifier
                     .align(Alignment.CenterHorizontally)
                     .padding(top = 48.dp),
                 style = MissionMateTypography.heading_sm_bold,
+                color = ColorGray1_FF404249
             )
 
             characters.find { it.isSelected }?.let {

@@ -12,16 +12,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.KeyboardArrowLeft
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -53,6 +48,7 @@ import com.goalpanzi.mission_mate.core.designsystem.theme.component.NavigationTy
 import com.goalpanzi.mission_mate.feature.onboarding.R
 import com.goalpanzi.mission_mate.feature.onboarding.component.InvitationCodeTextField
 import com.goalpanzi.mission_mate.feature.onboarding.model.CodeResultEvent
+import com.goalpanzi.mission_mate.feature.onboarding.model.JoinResultEvent
 import com.goalpanzi.mission_mate.feature.onboarding.model.MissionUiModel
 import com.goalpanzi.mission_mate.feature.onboarding.screen.invitation.InvitationCodeViewModel.Companion.CodeActionEvent
 import com.goalpanzi.mission_mate.feature.onboarding.util.styledTextWithHighlights
@@ -61,7 +57,8 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun InvitationCodeRoute(
-    onBackClick : () -> Unit,
+    onBackClick: () -> Unit,
+    onNavigateMissionBoard: (Long) -> Unit,
     viewModel: InvitationCodeViewModel = hiltViewModel()
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
@@ -82,6 +79,7 @@ fun InvitationCodeRoute(
                         delay(80)
                         localFocusManager.moveFocus(FocusDirection.Next)
                     }
+
                     else -> {
 
                     }
@@ -91,11 +89,28 @@ fun InvitationCodeRoute(
 
         launch {
             viewModel.codeResultEvent.collect { result ->
-                when(result){
+                when (result) {
                     is CodeResultEvent.Success -> {
                         hasInvitationDialogData = result.mission
                     }
+
                     is CodeResultEvent.Error -> {
+
+                    }
+                }
+            }
+        }
+
+        launch {
+            viewModel.joinResultEvent.collect { result ->
+                hasInvitationDialogData = null
+
+                when (result) {
+                    is JoinResultEvent.Success -> {
+                        onNavigateMissionBoard(result.missionId)
+                    }
+
+                    is JoinResultEvent.Error -> {
 
                     }
                 }
@@ -113,7 +128,7 @@ fun InvitationCodeRoute(
                 hasInvitationDialogData = null
             },
             onClickOk = {
-                hasInvitationDialogData = null
+                viewModel.joinMission(mission.missionId)
             }
         )
     }
@@ -147,9 +162,9 @@ fun InvitationCodeScreen(
     onCodeSecondChange: (String) -> Unit,
     onCodeThirdChange: (String) -> Unit,
     onCodeFourthChange: (String) -> Unit,
-    onClickButton : () -> Unit,
-    onBackClick : () -> Unit,
-    isNotCodeValid : Boolean,
+    onClickButton: () -> Unit,
+    onBackClick: () -> Unit,
+    isNotCodeValid: Boolean,
     enabledButton: Boolean,
     modifier: Modifier = Modifier,
     scrollState: ScrollState = rememberScrollState()
@@ -237,13 +252,13 @@ fun InvitationCodeScreen(
                 onValueChange = onCodeFourthChange
             )
         }
-        if(isNotCodeValid){
+        if (isNotCodeValid) {
             val set = mutableSetOf<Int>()
             set.forEach {
                 return@forEach
             }
             Text(
-                modifier = Modifier.padding(top = 12.dp, start = 24.dp, end = 24.dp ),
+                modifier = Modifier.padding(top = 12.dp, start = 24.dp, end = 24.dp),
                 text = stringResource(id = R.string.onboarding_invitation_error),
                 style = MissionMateTypography.body_md_regular,
                 color = ColorRed_FFFF5858

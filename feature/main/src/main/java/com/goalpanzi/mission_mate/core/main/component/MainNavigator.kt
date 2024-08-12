@@ -13,13 +13,18 @@ import com.goalpanzi.mission_mate.feature.onboarding.navigateToBoardSetupSuccess
 import com.goalpanzi.mission_mate.feature.onboarding.navigateToInvitationCode
 import com.goalpanzi.mission_mate.feature.onboarding.navigateToOnboarding
 import com.luckyoct.feature.profile.navigateToProfileCreate
+import com.luckyoct.feature.profile.navigateToProfileSetting
+import com.luckyoct.feature.setting.navigation.navigateToInquiry
+import com.luckyoct.feature.setting.navigation.navigateToPrivacyPolicy
+import com.luckyoct.feature.setting.navigation.navigateToServicePolicy
+import com.luckyoct.feature.setting.navigation.navigateToSetting
 
 class MainNavigator(
     val navController: NavHostController
 ) {
 
     //TODO : change to Main
-    val startDestination = RouteModel.Board
+    val startDestination = RouteModel.Login
 
     fun popBackStack() {
         navController.popBackStack()
@@ -31,6 +36,10 @@ class MainNavigator(
 
     fun navigateToProfileCreate() {
         navController.navigateToProfileCreate()
+    }
+
+    fun navigateToProfileSetting() {
+        navController.navigateToProfileSetting()
     }
 
     fun navigationToOnboarding(
@@ -53,6 +62,22 @@ class MainNavigator(
         navController.navigateToInvitationCode()
     }
 
+    fun navigationToSetting() {
+        navController.navigateToSetting()
+    }
+
+    fun navigationToInquiry() {
+        navController.navigateToInquiry()
+    }
+
+    fun navigationToServicePolicy() {
+        navController.navigateToServicePolicy()
+    }
+
+    fun navigationToPrivacyPolicy() {
+        navController.navigateToPrivacyPolicy()
+    }
+
     fun navigationToBoard() {
         navController.navigateToBoard()
     }
@@ -61,6 +86,6 @@ class MainNavigator(
 @Composable
 internal fun rememberMainNavigator(
     navController: NavHostController = rememberNavController()
-): MainNavigator = remember(navController) {
+) : MainNavigator = remember(navController) {
     MainNavigator(navController)
 }

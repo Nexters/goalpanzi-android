@@ -2,6 +2,7 @@ package com.goalpanzi.mission_mate.feature.onboarding.screen.boardsetup
 
 import android.widget.Toast
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.fillMaxSize
@@ -43,6 +44,7 @@ import com.goalpanzi.mission_mate.feature.onboarding.model.VerificationTimeType
 import com.goalpanzi.mission_mate.feature.onboarding.screen.boardsetup.BoardSetupViewModel.Companion.BoardSetupStep
 import com.goalpanzi.mission_mate.feature.onboarding.util.DateUtils.dateToString
 import com.goalpanzi.mission_mate.feature.onboarding.util.DateUtils.filterDatesByDayOfWeek
+import com.goalpanzi.mission_mate.feature.onboarding.util.DateUtils.localDateToMillis
 import com.goalpanzi.mission_mate.feature.onboarding.util.styledTextWithHighlights
 import java.time.DayOfWeek
 import java.time.LocalDate
@@ -79,6 +81,7 @@ fun BoardSetupRoute(
             },
             selectableStartDate = LocalDate.now().plusDays(1),
             selectableEndDate = null,
+            initialDisplayedMonthMillis = localDateToMillis(startDate),
             onDismiss = { isShownStartDateDialog = !isShownStartDateDialog }
         )
     }
@@ -91,7 +94,8 @@ fun BoardSetupRoute(
                 isShownEndDateDialog = !isShownEndDateDialog
             },
             selectableStartDate = startDate,
-            selectableEndDate = startDate?.plusDays(29),
+            selectableEndDate = startDate?.plusDays(30),
+            initialDisplayedMonthMillis = localDateToMillis(startDate),
             onDismiss = { isShownEndDateDialog = !isShownEndDateDialog }
         )
     }
@@ -120,6 +124,13 @@ fun BoardSetupRoute(
     }
 
     BoardSetupScreen(
+        modifier = Modifier.clickable(
+            null,
+            null,
+            onClick = {
+                keyboardController?.hide()
+            }
+        ),
         currentStep = currentStep,
         missionTitle = viewModel.missionTitle,
         startDate = startDate?.let {

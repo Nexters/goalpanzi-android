@@ -73,4 +73,5 @@ dependencies {
     implementation(project(":feature:onboarding"))
     implementation(project(":feature:profile"))
     implementation(project(":feature:board"))
+    implementation(project(":feature:setting"))
 }

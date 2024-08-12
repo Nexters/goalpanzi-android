@@ -16,8 +16,11 @@ import com.goalpanzi.mission_mate.feature.onboarding.boardSetupNavGraph
 import com.goalpanzi.mission_mate.feature.onboarding.boardSetupSuccessNavGraph
 import com.goalpanzi.mission_mate.feature.onboarding.invitationCodeNavGraph
 import com.goalpanzi.mission_mate.feature.onboarding.onboardingNavGraph
-import com.luckyoct.feature.profile.ProfileSettingType
 import com.luckyoct.feature.profile.profileNavGraph
+import com.luckyoct.feature.setting.navigation.inquiryNavGraph
+import com.luckyoct.feature.setting.navigation.privacyPolicyNavGraph
+import com.luckyoct.feature.setting.navigation.servicePolicyNavGraph
+import com.luckyoct.feature.setting.navigation.settingNavGraph
 
 @Composable
 internal fun MainNavHost(
@@ -40,7 +43,10 @@ internal fun MainNavHost(
             onboardingNavGraph(
                 onClickBoardSetup = { navigator.navigationToBoardSetup() },
                 onClickInvitationCode = { navigator.navigationToInvitationCode() },
-                onClickSetting = {  }
+                onNavigateMissionBoard = { missionId ->
+
+                },
+                onClickSetting = { navigator.navigationToSetting() }
             )
             boardSetupNavGraph(
                 onSuccess = {
@@ -58,10 +64,31 @@ internal fun MainNavHost(
             invitationCodeNavGraph(
                 onBackClick = {
                     navigator.popBackStack()
+                },
+                onNavigateMissionBoard = { missionId ->
+
                 }
             )
             profileNavGraph(
-                onSaveSuccess = { navigator.navigationToOnboarding() }
+                onSaveSuccess = { navigator.navigationToOnboarding() },
+                onBackClick = { navigator.popBackStack() }
+            )
+            settingNavGraph(
+                onBackClick = { navigator.popBackStack() },
+                onClickProfileSetting = { navigator.navigateToProfileSetting() },
+                onClickInquiry = { navigator.navigationToInquiry() },
+                onClickServicePolicy = { navigator.navigationToServicePolicy() },
+                onClickPrivacyPolicy = { navigator.navigationToPrivacyPolicy() },
+                onClickLogout = { navigator.navigateToLogin() }
+            )
+            inquiryNavGraph(
+                onBackClick = { navigator.popBackStack() }
+            )
+            servicePolicyNavGraph(
+                onBackClick = { navigator.popBackStack() }
+            )
+            privacyPolicyNavGraph(
+                onBackClick = { navigator.popBackStack() }
             )
             boardNavGraph(
                 onNavigateOnboarding = {
