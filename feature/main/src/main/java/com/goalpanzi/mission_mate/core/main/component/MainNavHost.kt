@@ -40,6 +40,9 @@ internal fun MainNavHost(
             onboardingNavGraph(
                 onClickBoardSetup = { navigator.navigationToBoardSetup() },
                 onClickInvitationCode = { navigator.navigationToInvitationCode() },
+                onNavigateMissionBoard = { missionId ->
+
+                },
                 onClickSetting = { navigator.navigationToSetting() }
             )
             boardSetupNavGraph(
@@ -58,6 +61,9 @@ internal fun MainNavHost(
             invitationCodeNavGraph(
                 onBackClick = {
                     navigator.popBackStack()
+                },
+                onNavigateMissionBoard = { missionId ->
+
                 }
             )
             profileNavGraph(
