@@ -1,5 +1,6 @@
 package com.luckyoct.feature.profile
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -10,9 +11,11 @@ import com.goalpanzi.mission_mate.core.designsystem.theme.ColorLightGreen_FFC2E7
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorLightYellow_FFFFE59A
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorPink_FFFFE4E4
 import com.goalpanzi.mission_mate.core.domain.usecase.ProfileUseCase
+import com.luckyoct.core.model.CharacterType
+import com.luckyoct.core.model.UserProfile
 import com.luckyoct.core.model.base.NetworkResult
 import com.luckyoct.feature.profile.model.CharacterListItem
-import com.luckyoct.feature.profile.model.ProfileEvent
+import com.luckyoct.feature.profile.model.ProfileUiState
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -25,7 +28,7 @@ import kotlinx.coroutines.launch
 class ProfileViewModel @AssistedInject constructor(
     @Assisted private val profileSettingType: ProfileSettingType,
     private val profileUseCase: ProfileUseCase
-): ViewModel() {
+) : ViewModel() {
 
     @AssistedFactory
     interface Factory {
@@ -44,77 +47,78 @@ class ProfileViewModel @AssistedInject constructor(
         }
     }
 
-    private val defaultImageIds = listOf(
-        com.goalpanzi.mission_mate.core.designsystem.R.drawable.img_rabbit_selected,
-        com.goalpanzi.mission_mate.core.designsystem.R.drawable.img_cat_selected,
-        com.goalpanzi.mission_mate.core.designsystem.R.drawable.img_dog_selected,
-        com.goalpanzi.mission_mate.core.designsystem.R.drawable.img_panda_selected,
-        com.goalpanzi.mission_mate.core.designsystem.R.drawable.img_bear_selected,
-        com.goalpanzi.mission_mate.core.designsystem.R.drawable.img_bird_selected
-    )
-    private val defaultNameIds = listOf(
-        R.string.rabbit_name,
-        R.string.cat_name,
-        R.string.dog_name,
-        R.string.panda_name,
-        R.string.bear_name,
-        R.string.bird_name
-    )
-    private val defaultColors = listOf(
-        ColorPink_FFFFE4E4,
-        ColorBlue_FFBFD7FF,
-        ColorLightYellow_FFFFE59A,
-        ColorLightGreen_FFC2E792,
-        ColorLightBrown_FFF7D8B3,
-        ColorLightBlue_FFBCE7FF
-    )
+    private val defaultCharacters = CharacterListItem.createDefaultList()
 
-    private val _event = MutableSharedFlow<ProfileEvent>()
-    val event = _event.asSharedFlow()
+    private val _uiState = MutableStateFlow<ProfileUiState>(ProfileUiState.Loading)
+    val uiState = _uiState.asStateFlow()
 
-    private val _characters = MutableStateFlow(
-        when (profileSettingType) {
-            ProfileSettingType.CREATE -> {
-                defaultImageIds.indices.map {
-                    CharacterListItem(
-                        imageResId = defaultImageIds[it],
-                        nameResId = defaultNameIds[it],
-                        isSelected = it == 0,
-                        backgroundColor = defaultColors[it]
+    private val _isInvalidNickname = MutableStateFlow(false)
+    val isInvalidNickname = _isInvalidNickname.asStateFlow()
+
+    private val _isSaveSuccess = MutableSharedFlow<Boolean>()
+    val isSaveSuccess = _isSaveSuccess.asSharedFlow()
+
+    init {
+        viewModelScope.launch {
+            when (profileSettingType) {
+                ProfileSettingType.CREATE -> {
+                    _uiState.value = ProfileUiState.Success(
+                        nickname = "",
+                        characterList = defaultCharacters.toMutableList().apply {
+                            set(0, get(0).copy(isSelected = true))
+                        }
                     )
                 }
-            }
-            // TODO : set my character selected
-            ProfileSettingType.SETTING -> {
-                defaultImageIds.indices.map {
-                    CharacterListItem(
-                        imageResId = defaultImageIds[it],
-                        nameResId = defaultNameIds[it],
-                        isSelected = false,
-                        backgroundColor = defaultColors[it]
+
+                ProfileSettingType.SETTING -> {
+                    val userProfile = profileUseCase.getProfile()
+                        ?: UserProfile(
+                            nickname = "",
+                            characterType = CharacterType.RABBIT
+                        ) // TODO : API
+                    _uiState.value = ProfileUiState.Success(
+                        nickname = userProfile.nickname,
+                        characterList = defaultCharacters.toMutableList().apply {
+                            val index = indexOfFirst { it.type == userProfile.characterType }
+                            set(index, get(index).copy(isSelected = true))
+                        }
                     )
                 }
             }
         }
-    )
-    val characters = _characters.asStateFlow()
+    }
 
     fun selectCharacter(character: CharacterListItem) {
-        _characters.value = _characters.value.map {
-            it.copy(isSelected = it == character)
-        }
+        val state = uiState.value as? ProfileUiState.Success ?: return
+        _uiState.value = state.copy(
+            characterList = state.characterList.map {
+                it.copy(isSelected = it == character)
+            }
+        )
+    }
+
+    fun resetNicknameErrorState() {
+        _isInvalidNickname.value = false
     }
 
     fun saveProfile(nickname: String) {
         if (nickname.isEmpty()) return
-
         viewModelScope.launch {
-            val response = profileUseCase.saveProfile(nickname, characters.value.indexOfFirst { it.isSelected })
-            when (response) {
+            val selectedItem = (uiState.value as? ProfileUiState.Success)?.characterList?.find {
+                it.isSelected
+            } ?: return@launch
+
+            when(val response = profileUseCase.saveProfile(nickname, selectedItem.type)) {
                 is NetworkResult.Success -> {
-                    _event.emit(ProfileEvent.Success)
+                    profileUseCase.saveProfile(nickname, selectedItem.type)
+                    _isSaveSuccess.emit(true)
                 }
-                else -> return@launch
+                is NetworkResult.Exception -> {}
+                is NetworkResult.Error -> {
+                    if (response.code == 409) {
+                        _isInvalidNickname.emit(true)
+                    }
+                }
             }
         }
     }

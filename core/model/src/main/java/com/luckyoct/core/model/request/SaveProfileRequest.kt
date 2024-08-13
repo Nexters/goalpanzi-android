@@ -9,9 +9,9 @@ data class SaveProfileRequest(
     val characterType: String,
 ) {
     companion object {
-        fun createRequest(nickname: String, index: Int) = SaveProfileRequest(
+        fun createRequest(nickname: String, type: CharacterType) = SaveProfileRequest(
             nickname = nickname,
-            characterType = CharacterType.entries[index].name.uppercase()
+            characterType = type.name.uppercase()
         )
     }
 }
