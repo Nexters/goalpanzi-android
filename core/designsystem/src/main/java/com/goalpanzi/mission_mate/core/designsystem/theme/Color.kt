@@ -33,3 +33,5 @@ val ColorFFFFAE50 = Color(0xFFFFAE50)
 val OrangeGradient_FFFF5F3C_FFFFAE50 = Brush.verticalGradient(
     listOf(ColorFFFF5F3C, ColorFFFFAE50)
 )
+
+val Color_FFFF5632 = Color(0xFFFF5632)
