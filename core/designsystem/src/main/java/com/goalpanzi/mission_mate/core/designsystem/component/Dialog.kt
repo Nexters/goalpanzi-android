@@ -54,12 +54,13 @@ fun MissionMateDialog(
         bottom = 34.dp,
         start = 24.dp,
         end = 24.dp
+    ),
+    dialogProperties: DialogProperties = DialogProperties(
+        usePlatformDefaultWidth = false
     )
 ) {
     Dialog(
-        properties = DialogProperties(
-            usePlatformDefaultWidth = false
-        ),
+        properties = dialogProperties,
         onDismissRequest = onDismissRequest,
     ) {
         Column(
@@ -132,12 +133,13 @@ fun MissionMateDialog(
         start = 24.dp,
         end = 24.dp
     ),
+    dialogProperties: DialogProperties = DialogProperties(
+        usePlatformDefaultWidth = false
+    ),
     content: @Composable ColumnScope.() -> Unit
 ) {
     Dialog(
-        properties = DialogProperties(
-            usePlatformDefaultWidth = false
-        ),
+        properties = dialogProperties,
         onDismissRequest = onDismissRequest,
     ) {
         Column(
