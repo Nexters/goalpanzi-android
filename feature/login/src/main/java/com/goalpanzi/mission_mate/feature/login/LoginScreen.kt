@@ -75,8 +75,8 @@ fun LoginScreen(
         Column(
             modifier = modifier
                 .fillMaxSize()
-                .background(color = Color_FFFF5632)
                 .navigationBarsPadding()
+                .background(color = Color_FFFF5632)
                 .statusBarsPadding(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -106,7 +106,7 @@ fun LoginScreen(
                     modifier = Modifier
                         .fillMaxWidth(220f/390f)
                         .aspectRatio(1f),
-                    painter = painterResource(id = R.drawable.img_login_rabbit),
+                    painter = painterResource(id = com.goalpanzi.mission_mate.core.designsystem.R.drawable.img_rabbit_default),
                     contentDescription = "rabbit",
                     contentScale = ContentScale.FillWidth
                 )
