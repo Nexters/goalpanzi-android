@@ -3,8 +3,10 @@ package com.goalpanzi.mission_mate.core.main.component
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.navigation.NavHostController
+import androidx.navigation.NavOptions
 import androidx.navigation.compose.rememberNavController
 import com.goalpanzi.mission_mate.core.navigation.RouteModel
+import com.goalpanzi.mission_mate.feature.board.navigateToBoard
 import com.goalpanzi.mission_mate.feature.login.navigateToLogin
 import com.goalpanzi.mission_mate.feature.onboarding.navigateToBoardSetup
 import com.goalpanzi.mission_mate.feature.onboarding.navigateToBoardSetupSuccess
@@ -70,6 +72,10 @@ class MainNavigator(
 
     fun navigationToPrivacyPolicy() {
         navController.navigateToPrivacyPolicy()
+    }
+
+    fun navigationToBoard(missionId : Long) {
+        navController.navigateToBoard(missionId)
     }
 }
 

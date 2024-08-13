@@ -1,5 +1,6 @@
 package com.goalpanzi.mission_mate.feature.board
 
+import com.goalpanzi.mission_mate.feature.board.util.BoardUtil
 import org.junit.Test
 
 import org.junit.Assert.*
@@ -9,9 +10,11 @@ import org.junit.Assert.*
  *
  * See [testing documentation](http://d.android.com/tools/testing).
  */
-class ExampleUnitTest {
+class BoardUtilUnitTest {
     @Test
-    fun addition_isCorrect() {
-        assertEquals(4, 2 + 2)
+    fun getBlockListByBoardCount_isCorrect() {
+        BoardUtil.getBlockListByBoardCount(11,3,4).let {
+
+        }
     }
 }

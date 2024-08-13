@@ -2,6 +2,7 @@ package com.luckyoct.core.model.response
 
 import kotlinx.serialization.Serializable
 import java.time.DayOfWeek
+import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.time.format.TextStyle
@@ -19,6 +20,11 @@ data class MissionDetailResponse(
     val boardCount : Int,
     val invitationCode : String
 ){
+    val missionStartLocalDate: LocalDate by lazy {
+        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")
+        LocalDate.parse(missionStartDate, formatter)
+    }
+
     val missionPeriod : String by lazy {
         try {
             val inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")
@@ -41,5 +47,10 @@ data class MissionDetailResponse(
         }catch (e: Exception){
             missionDays
         }
+    }
+
+    fun isStartedMission() : Boolean {
+        val currentDate = LocalDate.now()
+        return currentDate.isEqual(missionStartLocalDate) || currentDate.isAfter(missionStartLocalDate)
     }
 }
