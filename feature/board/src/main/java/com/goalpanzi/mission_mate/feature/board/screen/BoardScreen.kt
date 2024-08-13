@@ -139,7 +139,7 @@ fun BoardScreen(
                 modifier = Modifier.fillMaxSize(),
                 painter = painterResource(id = com.goalpanzi.mission_mate.core.designsystem.R.drawable.background_jeju_full),
                 contentDescription = null,
-                contentScale = ContentScale.FillWidth
+                contentScale = ContentScale.Crop
             )
             Board(
                 boardCount = missionBoardUiModel.missionBoardsResponse.missionBoards.size,
