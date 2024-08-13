@@ -93,6 +93,9 @@ internal fun MainNavHost(
             boardNavGraph(
                 onNavigateOnboarding = {
                     navigator.navigationToOnboarding()
+                },
+                onClickSetting = {
+                    navigator.navigationToSetting()
                 }
             )
         }
