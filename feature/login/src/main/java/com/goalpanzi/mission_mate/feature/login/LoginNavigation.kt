@@ -6,7 +6,11 @@ import androidx.navigation.compose.composable
 import com.goalpanzi.mission_mate.core.navigation.RouteModel
 
 fun NavController.navigateToLogin() {
-    this.navigate(RouteModel.Login)
+    this.navigate(RouteModel.Login) {
+        popUpTo(this@navigateToLogin.graph.id){
+            inclusive = true
+        }
+    }
 }
 
 fun NavGraphBuilder.loginNavGraph(
