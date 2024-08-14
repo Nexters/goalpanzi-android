@@ -6,19 +6,23 @@ import androidx.compose.ui.Modifier
 import com.goalpanzi.mission_mate.core.main.component.MainNavHost
 import com.goalpanzi.mission_mate.core.main.component.MainNavigator
 import com.goalpanzi.mission_mate.core.main.component.rememberMainNavigator
+import com.goalpanzi.mission_mate.core.navigation.RouteModel
 
 @Composable
 internal fun MainScreen(
     navigator: MainNavigator = rememberMainNavigator(),
+    startDestination: RouteModel
 ) {
     MainScreenContent(
-        navigator = navigator
+        navigator = navigator,
+        startDestination = startDestination
     )
 }
 
 @Composable
 private fun MainScreenContent(
     navigator: MainNavigator,
+    startDestination: RouteModel,
     modifier: Modifier = Modifier
 ) {
     Scaffold(
@@ -26,6 +30,7 @@ private fun MainScreenContent(
         content = { padding ->
             MainNavHost(
                 navigator = navigator,
+                startDestination = startDestination,
                 padding = padding
             )
         }
