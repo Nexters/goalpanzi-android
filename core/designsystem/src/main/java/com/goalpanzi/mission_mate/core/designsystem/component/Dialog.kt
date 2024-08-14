@@ -1,9 +1,11 @@
 package com.goalpanzi.mission_mate.core.designsystem.component
 
+import android.annotation.SuppressLint
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
@@ -35,6 +37,7 @@ import com.goalpanzi.mission_mate.core.designsystem.theme.ColorGray3_FF727484
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorWhite_FFFFFFFF
 import com.goalpanzi.mission_mate.core.designsystem.theme.MissionMateTypography
 
+@SuppressLint("UnrememberedMutableInteractionSource")
 @Composable
 fun MissionMateDialog(
     @StringRes titleId: Int,
@@ -102,7 +105,7 @@ fun MissionMateDialog(
                     modifier = Modifier
                         .padding(top = 20.dp)
                         .clickable(
-                            interactionSource = null,
+                            interactionSource = MutableInteractionSource(),
                             indication = null,
                             onClick = onDismissRequest
                         ),
@@ -117,6 +120,7 @@ fun MissionMateDialog(
 }
 
 
+@SuppressLint("UnrememberedMutableInteractionSource")
 @Composable
 fun MissionMateDialog(
     onDismissRequest: () -> Unit,
@@ -170,7 +174,7 @@ fun MissionMateDialog(
                         modifier = Modifier
                             .padding(top = 20.dp)
                             .clickable(
-                                interactionSource = null,
+                                interactionSource = MutableInteractionSource(),
                                 indication = null,
                                 onClick = onDismissRequest
                             ),

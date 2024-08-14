@@ -63,7 +63,6 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun BoardRoute(
-    missionId : Long,
     onNavigateOnboarding : () -> Unit,
     onClickSetting : () -> Unit,
     modifier: Modifier = Modifier,
@@ -77,9 +76,9 @@ fun BoardRoute(
     }
 
     LaunchedEffect(key1 = Unit) {
-        viewModel.getMissionBoards(missionId)
-        viewModel.getMission(missionId)
-        viewModel.getMissionVerification(missionId)
+        viewModel.getMissionBoards()
+        viewModel.getMission()
+        viewModel.getMissionVerification()
 
         launch {
             viewModel.deleteMissionResultEvent.collect {
@@ -106,7 +105,7 @@ fun BoardRoute(
                 isShownDeleteMissionDialog = false
             },
             onClickOk = {
-                viewModel.deleteMission(missionId)
+                viewModel.deleteMission()
             }
         )
     }

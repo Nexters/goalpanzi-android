@@ -25,7 +25,7 @@ import com.luckyoct.feature.setting.navigation.settingNavGraph
 internal fun MainNavHost(
     modifier: Modifier = Modifier,
     navigator: MainNavigator,
-    startDestination: RouteModel,
+    startDestination: String,
     padding: PaddingValues
 ) {
     Box(

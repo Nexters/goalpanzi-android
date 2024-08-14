@@ -11,7 +11,7 @@ import com.goalpanzi.mission_mate.core.navigation.RouteModel
 @Composable
 internal fun MainScreen(
     navigator: MainNavigator = rememberMainNavigator(),
-    startDestination: RouteModel
+    startDestination: String
 ) {
     MainScreenContent(
         navigator = navigator,
@@ -22,7 +22,7 @@ internal fun MainScreen(
 @Composable
 private fun MainScreenContent(
     navigator: MainNavigator,
-    startDestination: RouteModel,
+    startDestination: String,
     modifier: Modifier = Modifier
 ) {
     Scaffold(
