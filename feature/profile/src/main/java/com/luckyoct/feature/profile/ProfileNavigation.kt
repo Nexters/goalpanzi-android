@@ -12,32 +12,31 @@ enum class ProfileSettingType {
 }
 
 fun NavController.navigateToProfileCreate() {
-    this.navigate(RouteModel.Profile.Create)
+    this.navigate("RouteModel.Profile.Create")
 }
 
 fun NavController.navigateToProfileSetting() {
-    this.navigate(RouteModel.Profile.Setting)
+    this.navigate("RouteModel.Profile.Setting")
 }
 
 fun NavGraphBuilder.profileNavGraph(
     onSaveSuccess: () -> Unit,
     onBackClick: () -> Unit
 ) {
-    composable<RouteModel.Profile.Create>(
+    composable("RouteModel.Profile.Create",
         enterTransition = {
             slideIntoContainer(
                 towards = AnimatedContentTransitionScope.SlideDirection.Left,
                 animationSpec = tween(300)
             )
-        },
-        content = {
-            ProfileRoute(
-                profileSettingType = ProfileSettingType.CREATE,
-                onSaveSuccess = onSaveSuccess
-            )
         }
-    )
-    composable<RouteModel.Profile.Setting> {
+    ) {
+        ProfileRoute(
+            profileSettingType = ProfileSettingType.CREATE,
+            onSaveSuccess = onSaveSuccess
+        )
+    }
+    composable("RouteModel.Profile.Setting") {
         ProfileRoute(
             profileSettingType = ProfileSettingType.SETTING,
             onSaveSuccess = onBackClick,

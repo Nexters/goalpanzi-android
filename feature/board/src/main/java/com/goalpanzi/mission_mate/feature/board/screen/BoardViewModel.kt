@@ -1,5 +1,6 @@
 package com.goalpanzi.mission_mate.feature.board.screen
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.goalpanzi.mission_mate.core.domain.usecase.DeleteMissionUseCase
@@ -26,9 +27,12 @@ class BoardViewModel @Inject constructor(
     private val getMissionUseCase: GetMissionUseCase,
     private val getMissionBoardsUseCase: GetMissionBoardsUseCase,
     private val getMissionVerificationsUseCase: GetMissionVerificationsUseCase,
-    private val deleteMissionUseCase: DeleteMissionUseCase
+    private val deleteMissionUseCase: DeleteMissionUseCase,
+    savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
+    private val missionId : Long = savedStateHandle.get<Long>("missionId")!!
+    
     private val _deleteMissionResultEvent = MutableSharedFlow<Boolean>()
     val deleteMissionResultEvent: SharedFlow<Boolean> = _deleteMissionResultEvent.asSharedFlow()
 
@@ -45,7 +49,7 @@ class BoardViewModel @Inject constructor(
     val missionVerificationUiModel: StateFlow<MissionVerificationUiModel> =
         _missionVerificationUiModel.asStateFlow()
 
-    fun getMissionBoards(missionId: Long) {
+    fun getMissionBoards() {
         viewModelScope.launch {
             _missionBoardUiModel.emit(MissionBoardUiModel.Loading)
 
@@ -67,7 +71,7 @@ class BoardViewModel @Inject constructor(
         }
     }
 
-    fun getMission(missionId: Long) {
+    fun getMission() {
         viewModelScope.launch {
             getMissionUseCase(missionId).catch {
                 _missionUiModel.emit(MissionUiModel.Error)
@@ -85,7 +89,7 @@ class BoardViewModel @Inject constructor(
         }
     }
 
-    fun getMissionVerification(missionId: Long) {
+    fun getMissionVerification() {
         viewModelScope.launch {
             getMissionVerificationsUseCase(missionId).catch {
                 _missionVerificationUiModel.emit(MissionVerificationUiModel.Error)
@@ -103,7 +107,7 @@ class BoardViewModel @Inject constructor(
         }
     }
 
-    fun deleteMission(missionId: Long) {
+    fun deleteMission() {
         viewModelScope.launch {
             deleteMissionUseCase(missionId)
                 .catch {

@@ -34,12 +34,12 @@ class MainActivity : ComponentActivity() {
                 MainScreen(
                     navigator = navigator,
                     startDestination = if (isNewUser) {
-                        RouteModel.Login
+                        "RouteModel.Login"
                     } else {
                         if (user == null) {
-                            RouteModel.Profile.Create
+                            "RouteModel.Profile.Create"
                         } else {
-                            RouteModel.Onboarding
+                            "RouteModel.Onboarding"
                         }
                     }
                 )

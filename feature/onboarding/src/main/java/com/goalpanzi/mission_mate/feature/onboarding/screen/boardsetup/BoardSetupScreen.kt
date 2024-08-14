@@ -1,8 +1,11 @@
 package com.goalpanzi.mission_mate.feature.onboarding.screen.boardsetup
 
+import android.annotation.SuppressLint
 import android.widget.Toast
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.fillMaxSize
@@ -49,6 +52,8 @@ import com.goalpanzi.mission_mate.feature.onboarding.util.styledTextWithHighligh
 import java.time.DayOfWeek
 import java.time.LocalDate
 
+@SuppressLint("UnrememberedMutableInteractionSource")
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun BoardSetupRoute(
     onSuccess : () -> Unit,
@@ -125,7 +130,7 @@ fun BoardSetupRoute(
 
     BoardSetupScreen(
         modifier = Modifier.clickable(
-            null,
+            MutableInteractionSource(),
             null,
             onClick = {
                 keyboardController?.hide()
@@ -168,6 +173,7 @@ fun BoardSetupRoute(
     )
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun BoardSetupScreen(
     currentStep: BoardSetupStep,

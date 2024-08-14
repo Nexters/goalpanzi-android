@@ -18,11 +18,11 @@ fun NavController.navigateToOnboarding(
         }
     }
 ) {
-    this.navigate(RouteModel.Onboarding,navOptions = navOptions)
+    this.navigate("RouteModel.Onboarding",navOptions = navOptions)
 }
 
 fun NavController.navigateToBoardSetup() {
-    this.navigate(OnboardingRouteModel.BoardSetup)
+    this.navigate("OnboardingRouteModel.BoardSetup")
 }
 
 fun NavController.navigateToBoardSetupSuccess(
@@ -32,11 +32,11 @@ fun NavController.navigateToBoardSetupSuccess(
         }
     }
 ) {
-    this.navigate(OnboardingRouteModel.BoardSetupSuccess,navOptions = navOptions)
+    this.navigate("OnboardingRouteModel.BoardSetupSuccess",navOptions = navOptions)
 }
 
 fun NavController.navigateToInvitationCode() {
-    this.navigate(OnboardingRouteModel.InvitationCode)
+    this.navigate("OnboardingRouteModel.InvitationCode")
 }
 
 fun NavGraphBuilder.onboardingNavGraph(
@@ -45,7 +45,7 @@ fun NavGraphBuilder.onboardingNavGraph(
     onClickSetting: () -> Unit,
     onNavigateMissionBoard : (Long) -> Unit
 ) {
-    composable<RouteModel.Onboarding> {
+    composable("RouteModel.Onboarding") {
         OnboardingRoute(
             onClickBoardSetup = onClickBoardSetup,
             onClickInvitationCode = onClickInvitationCode,
@@ -59,7 +59,7 @@ fun NavGraphBuilder.boardSetupNavGraph(
     onSuccess: () -> Unit,
     onBackClick: () -> Unit
 ) {
-    composable<OnboardingRouteModel.BoardSetup> {
+    composable("OnboardingRouteModel.BoardSetup") {
         BoardSetupRoute(
             onSuccess = onSuccess,
             onBackClick = onBackClick
@@ -70,7 +70,7 @@ fun NavGraphBuilder.boardSetupNavGraph(
 fun NavGraphBuilder.boardSetupSuccessNavGraph(
     onClickStart: () -> Unit
 ) {
-    composable<OnboardingRouteModel.BoardSetupSuccess> {
+    composable("OnboardingRouteModel.BoardSetupSuccess") {
         BoardSetupSuccessScreen(
             onClickStart = onClickStart
         )
@@ -81,7 +81,7 @@ fun NavGraphBuilder.invitationCodeNavGraph(
     onBackClick: () -> Unit,
     onNavigateMissionBoard: (Long) -> Unit,
 ) {
-    composable<OnboardingRouteModel.InvitationCode> {
+    composable("OnboardingRouteModel.InvitationCode") {
         InvitationCodeRoute(
             onBackClick = onBackClick,
             onNavigateMissionBoard = onNavigateMissionBoard

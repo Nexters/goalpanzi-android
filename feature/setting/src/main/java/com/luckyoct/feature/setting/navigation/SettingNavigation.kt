@@ -17,15 +17,19 @@ import com.luckyoct.feature.setting.screen.SettingRoute
 import com.luckyoct.feature.setting.screen.WebViewScreen
 
 fun NavController.navigateToSetting() {
-    this.navigate(RouteModel.Setting)
+    this.navigate("RouteModel.Setting")
+}
+
+fun NavController.navigateToInquiry() {
+    this.navigate("SettingRouteModel.Inquiry")
 }
 
 fun NavController.navigateToServicePolicy() {
-    this.navigate(SettingRouteModel.ServicePolicy)
+    this.navigate("SettingRouteModel.ServicePolicy")
 }
 
 fun NavController.navigateToPrivacyPolicy() {
-    this.navigate(SettingRouteModel.PrivacyPolicy)
+    this.navigate("SettingRouteModel.PrivacyPolicy")
 }
 
 fun NavGraphBuilder.settingNavGraph(
@@ -35,7 +39,7 @@ fun NavGraphBuilder.settingNavGraph(
     onClickPrivacyPolicy: () -> Unit,
     onClickLogout: () -> Unit
 ) {
-    composable<RouteModel.Setting>(
+    composable("RouteModel.Setting",
         enterTransition = {
             slideIntoContainer(
                 towards = AnimatedContentTransitionScope.SlideDirection.Start,
@@ -43,21 +47,22 @@ fun NavGraphBuilder.settingNavGraph(
             )
         },
         popEnterTransition = null,
-        content = {
-            SettingRoute(
-                onBackClick = onBackClick,
-                onClickProfileSetting = onClickProfileSetting,
-                onClickServicePolicy = onClickServicePolicy,
-                onClickPrivacyPolicy = onClickPrivacyPolicy,
-                onLogout = onClickLogout
-            )
-        })
+        ) {
+        SettingRoute(
+            onBackClick = onBackClick,
+            onClickProfileSetting = onClickProfileSetting,
+            onClickServicePolicy = onClickServicePolicy,
+            onClickPrivacyPolicy = onClickPrivacyPolicy,
+            onLogout = onClickLogout
+        )
+    }
 }
+
 
 fun NavGraphBuilder.servicePolicyNavGraph(
     onBackClick: () -> Unit
 ) {
-    composable<SettingRouteModel.ServicePolicy> {
+    composable("SettingRouteModel.ServicePolicy") {
         WebViewScreen(
             onBackClick = onBackClick,
             url = "https://missionmate.notion.site/f638866edeaf45b58ef63d1000f30c15?pvs=73"
@@ -68,7 +73,7 @@ fun NavGraphBuilder.servicePolicyNavGraph(
 fun NavGraphBuilder.privacyPolicyNavGraph(
     onBackClick: () -> Unit
 ) {
-    composable<SettingRouteModel.PrivacyPolicy> {
+    composable("SettingRouteModel.PrivacyPolicy") {
         WebViewScreen(
             onBackClick = onBackClick,
             url = "https://missionmate.notion.site/c79e9e6990de466490c584f351b364b7?pvs=4"
