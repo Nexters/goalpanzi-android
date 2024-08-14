@@ -16,7 +16,6 @@ import com.goalpanzi.mission_mate.feature.onboarding.boardSetupSuccessNavGraph
 import com.goalpanzi.mission_mate.feature.onboarding.invitationCodeNavGraph
 import com.goalpanzi.mission_mate.feature.onboarding.onboardingNavGraph
 import com.luckyoct.feature.profile.profileNavGraph
-import com.luckyoct.feature.setting.navigation.inquiryNavGraph
 import com.luckyoct.feature.setting.navigation.privacyPolicyNavGraph
 import com.luckyoct.feature.setting.navigation.servicePolicyNavGraph
 import com.luckyoct.feature.setting.navigation.settingNavGraph
@@ -79,9 +78,6 @@ internal fun MainNavHost(
                 onClickServicePolicy = { navigator.navigationToServicePolicy() },
                 onClickPrivacyPolicy = { navigator.navigationToPrivacyPolicy() },
                 onClickLogout = { navigator.navigateToLogin() }
-            )
-            inquiryNavGraph(
-                onBackClick = { navigator.popBackStack() }
             )
             servicePolicyNavGraph(
                 onBackClick = { navigator.popBackStack() }

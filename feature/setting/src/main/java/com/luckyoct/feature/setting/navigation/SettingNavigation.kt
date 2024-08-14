@@ -1,5 +1,13 @@
 package com.luckyoct.feature.setting.navigation
 
+import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
@@ -31,7 +39,15 @@ fun NavGraphBuilder.settingNavGraph(
     onClickPrivacyPolicy: () -> Unit,
     onClickLogout: () -> Unit
 ) {
-    composable("RouteModel.Setting") {
+    composable("RouteModel.Setting",
+        enterTransition = {
+            slideIntoContainer(
+                towards = AnimatedContentTransitionScope.SlideDirection.Start,
+                animationSpec = tween(300)
+            )
+        },
+        popEnterTransition = null,
+        ) {
         SettingRoute(
             onBackClick = onBackClick,
             onClickProfileSetting = onClickProfileSetting,
@@ -42,16 +58,6 @@ fun NavGraphBuilder.settingNavGraph(
     }
 }
 
-fun NavGraphBuilder.inquiryNavGraph(
-    onBackClick: () -> Unit
-) {
-    composable("SettingRouteModel.Inquiry") {
-        WebViewScreen(
-            onBackClick = onBackClick,
-            url = "https://www.google.com/"
-        )
-    }
-}
 
 fun NavGraphBuilder.servicePolicyNavGraph(
     onBackClick: () -> Unit

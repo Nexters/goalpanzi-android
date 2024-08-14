@@ -2,8 +2,8 @@ package com.goalpanzi.mission_mate.core.main.component
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.lifecycle.Lifecycle
 import androidx.navigation.NavHostController
-import androidx.navigation.NavOptions
 import androidx.navigation.compose.rememberNavController
 import com.goalpanzi.mission_mate.core.navigation.RouteModel
 import com.goalpanzi.mission_mate.feature.board.navigateToBoard
@@ -14,7 +14,6 @@ import com.goalpanzi.mission_mate.feature.onboarding.navigateToInvitationCode
 import com.goalpanzi.mission_mate.feature.onboarding.navigateToOnboarding
 import com.luckyoct.feature.profile.navigateToProfileCreate
 import com.luckyoct.feature.profile.navigateToProfileSetting
-import com.luckyoct.feature.setting.navigation.navigateToInquiry
 import com.luckyoct.feature.setting.navigation.navigateToPrivacyPolicy
 import com.luckyoct.feature.setting.navigation.navigateToServicePolicy
 import com.luckyoct.feature.setting.navigation.navigateToSetting
@@ -23,11 +22,10 @@ class MainNavigator(
     val navController: NavHostController
 ) {
 
-    //TODO : change to Main
-    val startDestination = RouteModel.Login
-
     fun popBackStack() {
-        navController.popBackStack()
+        if (navController.currentBackStackEntry?.lifecycle?.currentState == Lifecycle.State.RESUMED) {
+            navController.popBackStack()
+        }
     }
 
     fun navigateToLogin() {

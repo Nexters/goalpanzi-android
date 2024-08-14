@@ -1,5 +1,7 @@
 package com.luckyoct.feature.profile
 
+import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.core.tween
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
@@ -21,7 +23,14 @@ fun NavGraphBuilder.profileNavGraph(
     onSaveSuccess: () -> Unit,
     onBackClick: () -> Unit
 ) {
-    composable("RouteModel.Profile.Create") {
+    composable("RouteModel.Profile.Create",
+        enterTransition = {
+            slideIntoContainer(
+                towards = AnimatedContentTransitionScope.SlideDirection.Left,
+                animationSpec = tween(300)
+            )
+        }
+    ) {
         ProfileRoute(
             profileSettingType = ProfileSettingType.CREATE,
             onSaveSuccess = onSaveSuccess

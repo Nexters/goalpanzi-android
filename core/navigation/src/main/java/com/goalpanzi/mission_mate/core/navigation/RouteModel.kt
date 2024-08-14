@@ -37,9 +37,6 @@ sealed interface OnboardingRouteModel {
 sealed interface SettingRouteModel {
 
     @Serializable
-    data object Inquiry : SettingRouteModel
-
-    @Serializable
     data object ServicePolicy : SettingRouteModel
 
     @Serializable
