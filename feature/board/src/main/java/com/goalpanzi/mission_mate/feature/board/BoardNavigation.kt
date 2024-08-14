@@ -22,13 +22,15 @@ fun NavController.navigateToBoard(
 }
 
 fun NavGraphBuilder.boardNavGraph(
-    onNavigateOnboarding: () -> Unit
+    onNavigateOnboarding: () -> Unit,
+    onClickSetting : () -> Unit
 ) {
     composable<RouteModel.Board> { navBackStackEntry ->
         val missionId = navBackStackEntry.toRoute<RouteModel.Board>().missionId
         BoardRoute(
             missionId = missionId,
-            onNavigateOnboarding = onNavigateOnboarding
+            onNavigateOnboarding = onNavigateOnboarding,
+            onClickSetting = onClickSetting
         )
     }
 }

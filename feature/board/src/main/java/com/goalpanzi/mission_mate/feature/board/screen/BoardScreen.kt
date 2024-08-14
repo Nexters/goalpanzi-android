@@ -65,6 +65,7 @@ import kotlinx.coroutines.launch
 fun BoardRoute(
     missionId : Long,
     onNavigateOnboarding : () -> Unit,
+    onClickSetting : () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: BoardViewModel = hiltViewModel()
 ) {
@@ -113,7 +114,8 @@ fun BoardRoute(
     BoardScreen(
         missionBoardUiModel = missionBoardUiModel,
         missionUiModel = missionUiModel,
-        missionVerificationUiModel = missionVerificationUiModel
+        missionVerificationUiModel = missionVerificationUiModel,
+        onClickSetting = onClickSetting
     )
 }
 
@@ -122,6 +124,7 @@ fun BoardScreen(
     missionBoardUiModel: MissionBoardUiModel,
     missionUiModel: MissionUiModel,
     missionVerificationUiModel : MissionVerificationUiModel,
+    onClickSetting : () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val scrollState = rememberScrollState()
@@ -139,7 +142,7 @@ fun BoardScreen(
                 modifier = Modifier.fillMaxSize(),
                 painter = painterResource(id = com.goalpanzi.mission_mate.core.designsystem.R.drawable.background_jeju_full),
                 contentDescription = null,
-                contentScale = ContentScale.FillWidth
+                contentScale = ContentScale.Crop
             )
             Board(
                 boardCount = missionBoardUiModel.missionBoardsResponse.missionBoards.size,
@@ -152,7 +155,8 @@ fun BoardScreen(
                     missionUiModel.missionDetailResponse.missionStartLocalDate.dayOfMonth
                 ),
                 scrollState = scrollState,
-                isStartedMission = missionUiModel.missionDetailResponse.isStartedMission()
+                isStartedMission = missionUiModel.missionDetailResponse.isStartedMission(),
+                hasEnoughPeople = missionVerificationUiModel.missionVerificationsResponse.missionVerifications.size != 1
             )
             BoardTopView(
                 title = missionUiModel.missionDetailResponse.description,
@@ -164,16 +168,19 @@ fun BoardScreen(
                 },
                 onClickFlag = {},
                 onClickAddUser = {},
-                onClickSetting = {},
+                onClickSetting = onClickSetting,
             )
 
-            if (!missionUiModel.missionDetailResponse.isStartedMission()) {
+
+            if (!(missionUiModel.missionDetailResponse.isStartedMission()
+                        && missionVerificationUiModel.missionVerificationsResponse.missionVerifications.size != 1)) {
                 Box(
                     modifier = Modifier
                         .wrapContentSize()
                         .padding(
                             top = 180.dp,
-                            bottom = if (missionUiModel.missionDetailResponse.isStartedMission()) 188.dp else 46.dp
+                            bottom = if (missionUiModel.missionDetailResponse.isStartedMission()
+                                &&  missionVerificationUiModel.missionVerificationsResponse.missionVerifications.size != 1) 188.dp else 46.dp
                         )
                         .align(Alignment.Center),
                     contentAlignment = Alignment.TopCenter,
@@ -186,7 +193,7 @@ fun BoardScreen(
                         contentScale = ContentScale.FillWidth
                     )
                     StableImage(
-                        drawableResId = com.goalpanzi.mission_mate.core.designsystem.R.drawable.img_rabbit_selected,
+                        missionVerificationUiModel.missionVerificationsResponse.missionVerifications.first().characterType.toCharacter().imageId,
                         modifier = Modifier
                             .padding(top = 85.dp)
                             .fillMaxWidth(240f / 390f)
@@ -219,7 +226,8 @@ fun Board(
     startDateText: String,
     missionBoards: List<MissionBoardResponse>,
     modifier: Modifier = Modifier,
-    numberOfColumns: Int
+    numberOfColumns: Int,
+    hasEnoughPeople : Boolean
 ) {
     Column(
         modifier = Modifier
@@ -231,7 +239,7 @@ fun Board(
                 top = 180.dp,
                 start = 24.dp,
                 end = 24.dp,
-                bottom = if (isStartedMission) 188.dp else 46.dp
+                bottom = if (hasEnoughPeople && isStartedMission) 188.dp else 46.dp
             )
 
     ) {
@@ -272,7 +280,7 @@ fun Board(
                     }
                 }
             }
-            if (isStartedMission) {
+            if (hasEnoughPeople) {
                 missionBoards.forEach { block ->
                     if (block.missionBoardMembers.isNotEmpty()) {
                         Piece(

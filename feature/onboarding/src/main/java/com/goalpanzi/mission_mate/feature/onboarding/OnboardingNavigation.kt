@@ -25,8 +25,14 @@ fun NavController.navigateToBoardSetup() {
     this.navigate(OnboardingRouteModel.BoardSetup)
 }
 
-fun NavController.navigateToBoardSetupSuccess() {
-    this.navigate(OnboardingRouteModel.BoardSetupSuccess)
+fun NavController.navigateToBoardSetupSuccess(
+    navOptions: NavOptions? = androidx.navigation.navOptions {
+        popUpTo(this@navigateToBoardSetupSuccess.graph.id){
+            inclusive = true
+        }
+    }
+) {
+    this.navigate(OnboardingRouteModel.BoardSetupSuccess,navOptions = navOptions)
 }
 
 fun NavController.navigateToInvitationCode() {
