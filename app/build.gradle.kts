@@ -66,6 +66,7 @@ dependencies {
 
     ksp(libs.hilt.compiler)
     implementation(libs.hilt.android)
+    implementation(platform(libs.firebase.bom))
 
     implementation(project(":feature:main"))
     implementation(project(":feature:login"))

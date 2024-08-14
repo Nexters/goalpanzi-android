@@ -168,3 +168,5 @@ google-services.json
 /app/keystore
 /app/mission-mate-keystore.jks
 /.idea/kotlinc.xml
+
+firebase_credentials.json
