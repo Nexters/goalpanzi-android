@@ -13,6 +13,20 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: Create Google Services JSON File
+        env:
+          GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON }}
+        run: |
+          echo "$GOOGLE_SERVICES_JSON" > google-services.json.b64
+          base64 -d -i google-services.json.b64 > ./app/google-services.json
+
+      - name: Create Firebase Service Credentials file
+        env:
+          FIREBASE_CREDENTIALS: ${{ secrets.FIREBASE_CREDENTIALS }}
+        run: |
+          echo "$FIREBASE_CREDENTIALS" > firebase_credentials.json.b64
+          base64 -d -i firebase_credentials.json.b64 > firebase_credentials.json
+
       - name: Create LocalProperites
         env:
           CREDENTIAL_WEB_CLIENT_ID: ${{ secrets.CREDENTIAL_WEB_CLIENT_ID }}
@@ -34,5 +48,6 @@ jobs:
           echo "$KEYSTORE" > ./mission-mate-keystore.b64
           base64 -d -i ./mission-mate-keystore.b64 > ./mission-mate-keystore.jks  
 
-      - name: Build with Gradle
-        run: fastlane beta
+      - run: fastlane publishDevDebug
+        env:
+          APP_ID: ${{ secrets.DEV_APP_ID }}

@@ -166,4 +166,4 @@ google-services.json
 # End of https://www.gitignore.io/api/kotlin,androidstudio
 /app/keystore
 
-missionmate-a4e71c5298e3.json
+firebase_credentials.json
