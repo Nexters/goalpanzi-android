@@ -110,9 +110,9 @@ fun LoginScreen(
                         .wrapContentHeight()
                         .padding(top = 175.dp)
                         .background(color = Color.White, shape = RoundedCornerShape(30.dp))
-                        .padding(horizontal = 12.dp, vertical = 6.dp)
                         .clip(RoundedCornerShape(30.dp))
-                        .clickable(onClick = onGoogleLoginClick),
+                        .clickable(onClick = onGoogleLoginClick)
+                        .padding(horizontal = 12.dp, vertical = 6.dp),
                     contentAlignment = Alignment.CenterStart
                 ) {
                     Image(
