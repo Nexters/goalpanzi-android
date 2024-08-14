@@ -1,6 +1,6 @@
 package com.luckyoct.core.model.response
 
-import com.luckyoct.core.model.request.CharacterType
+import com.luckyoct.core.model.CharacterType
 import kotlinx.serialization.Serializable
 
 @Serializable

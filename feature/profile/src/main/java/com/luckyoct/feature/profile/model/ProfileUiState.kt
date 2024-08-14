@@ -1,8 +1,11 @@
 package com.luckyoct.feature.profile.model
 
-sealed interface ProfileEvent {
+sealed interface ProfileUiState {
 
-    data object Loading : ProfileEvent
+    data object Loading : ProfileUiState
 
-    data object Success : ProfileEvent
+    data class Success(
+        val nickname: String,
+        val characterList: List<CharacterListItem>
+    ) : ProfileUiState
 }

@@ -24,14 +24,14 @@ fun NavGraphBuilder.profileNavGraph(
     composable<RouteModel.Profile.Create> {
         ProfileRoute(
             profileSettingType = ProfileSettingType.CREATE,
-            onSaveSuccess = { onSaveSuccess() }
+            onSaveSuccess = onSaveSuccess
         )
     }
     composable<RouteModel.Profile.Setting> {
         ProfileRoute(
             profileSettingType = ProfileSettingType.SETTING,
-            onSaveSuccess = { onSaveSuccess() },
-            onBackClick = { onBackClick() }
+            onSaveSuccess = onBackClick,
+            onBackClick = onBackClick
         )
     }
 }

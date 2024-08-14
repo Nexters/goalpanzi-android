@@ -21,18 +21,17 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.goalpanzi.mission_mate.core.designsystem.component.MissionMateDialog
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorGray1_FF404249
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorGray3_FF727484
@@ -43,13 +42,13 @@ import com.goalpanzi.mission_mate.core.designsystem.theme.component.MissionMateT
 import com.goalpanzi.mission_mate.core.designsystem.theme.component.NavigationType
 import com.luckyoct.feature.setting.Event
 import com.luckyoct.feature.setting.R
+import com.luckyoct.feature.setting.Util
 import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun SettingRoute(
     modifier: Modifier = Modifier,
     onClickProfileSetting: () -> Unit,
-    onClickInquiry: () -> Unit,
     onClickServicePolicy: () -> Unit,
     onClickPrivacyPolicy: () -> Unit,
     onBackClick: () -> Unit,
@@ -85,7 +84,6 @@ fun SettingRoute(
         modifier = modifier,
         onBackClick = { onBackClick() },
         onClickProfileSetting = { onClickProfileSetting() },
-        onClickInquiry = { onClickInquiry() },
         onClickServicePolicy = { onClickServicePolicy() },
         onClickPrivacyPolicy = { onClickPrivacyPolicy() },
         onClickLogout = { showLogoutDialog.value = true },
@@ -98,7 +96,6 @@ fun SettingScreen(
     modifier: Modifier = Modifier,
     onBackClick: () -> Unit,
     onClickProfileSetting: () -> Unit,
-    onClickInquiry: () -> Unit,
     onClickServicePolicy: () -> Unit,
     onClickPrivacyPolicy: () -> Unit,
     onClickLogout: () -> Unit,
@@ -139,10 +136,28 @@ fun SettingScreen(
                 onClick = { onClickProfileSetting() }
             )
             Divider()
+            SettingHeader(titleRes = R.string.version_info)
+            SettingContent(
+                titleRes = R.string.current_version,
+                subContent = {
+                    Text(
+                        text = Util.getAppVersionName(LocalContext.current),
+                        style = MissionMateTypography.body_xl_regular,
+                        color = ColorGray1_FF404249
+                    )
+                }
+            )
+            Divider()
             SettingHeader(titleRes = R.string.help_desk)
             SettingContent(
                 titleRes = R.string.inquiry,
-                onClick = { onClickInquiry() }
+                subContent = {
+                    Text(
+                        text = stringResource(id = R.string.inquiry_email),
+                        style = MissionMateTypography.body_xl_regular,
+                        color = ColorGray1_FF404249
+                    )
+                }
             )
             Divider()
             SettingHeader(titleRes = R.string.policy)
@@ -195,7 +210,11 @@ fun SettingContent(
         modifier = modifier
             .fillMaxWidth()
             .wrapContentHeight()
-            .clickable { onClick?.invoke() },
+            .run {
+                onClick?.let {
+                    clickable { it() }
+                } ?: run { this }
+            },
         verticalAlignment = Alignment.CenterVertically
     ) {
         Spacer(modifier = modifier.width(24.dp))
@@ -270,7 +289,6 @@ fun SettingScreenPreview() {
     SettingScreen(
         onBackClick = {},
         onClickProfileSetting = {},
-        onClickInquiry = {},
         onClickServicePolicy = {},
         onClickPrivacyPolicy = {},
         onClickLogout = {},

@@ -1,10 +1,7 @@
 package com.luckyoct.core.model.request
 
+import com.luckyoct.core.model.CharacterType
 import kotlinx.serialization.Serializable
-
-enum class CharacterType {
-    RABBIT, CAT, DOG, PANDA, BEAR, BIRD
-}
 
 @Serializable
 data class SaveProfileRequest(
@@ -12,9 +9,9 @@ data class SaveProfileRequest(
     val characterType: String,
 ) {
     companion object {
-        fun createRequest(nickname: String, index: Int) = SaveProfileRequest(
+        fun createRequest(nickname: String, type: CharacterType) = SaveProfileRequest(
             nickname = nickname,
-            characterType = CharacterType.entries[index].name.uppercase()
+            characterType = type.name.uppercase()
         )
     }
 }

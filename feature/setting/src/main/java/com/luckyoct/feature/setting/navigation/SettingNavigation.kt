@@ -27,7 +27,6 @@ fun NavController.navigateToPrivacyPolicy() {
 fun NavGraphBuilder.settingNavGraph(
     onBackClick: () -> Unit,
     onClickProfileSetting: () -> Unit,
-    onClickInquiry: () -> Unit,
     onClickServicePolicy: () -> Unit,
     onClickPrivacyPolicy: () -> Unit,
     onClickLogout: () -> Unit
@@ -36,7 +35,6 @@ fun NavGraphBuilder.settingNavGraph(
         SettingRoute(
             onBackClick = onBackClick,
             onClickProfileSetting = onClickProfileSetting,
-            onClickInquiry = onClickInquiry,
             onClickServicePolicy = onClickServicePolicy,
             onClickPrivacyPolicy = onClickPrivacyPolicy,
             onLogout = onClickLogout

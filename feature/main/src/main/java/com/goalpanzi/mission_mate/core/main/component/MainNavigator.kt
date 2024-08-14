@@ -62,10 +62,6 @@ class MainNavigator(
         navController.navigateToSetting()
     }
 
-    fun navigationToInquiry() {
-        navController.navigateToInquiry()
-    }
-
     fun navigationToServicePolicy() {
         navController.navigateToServicePolicy()
     }
