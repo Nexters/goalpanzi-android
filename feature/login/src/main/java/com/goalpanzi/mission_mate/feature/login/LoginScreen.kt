@@ -70,8 +70,7 @@ fun LoginScreen(
             modifier = modifier
                 .fillMaxSize()
                 .navigationBarsPadding()
-                .background(color = Color_FFFF5632)
-                .statusBarsPadding(),
+                .background(color = Color_FFFF5632),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Image(
@@ -145,7 +144,7 @@ fun LoginScreen(
                 .navigationBarsPadding()
                 .align(Alignment.BottomCenter),
             painter = painterResource(id = com.goalpanzi.mission_mate.core.designsystem.R.drawable.img_login_bottom_animals),
-            contentScale = ContentScale.FillBounds,
+            contentScale = ContentScale.FillWidth,
             contentDescription = null
         )
     }
