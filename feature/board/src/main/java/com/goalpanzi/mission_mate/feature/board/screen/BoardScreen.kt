@@ -3,26 +3,16 @@ package com.goalpanzi.mission_mate.feature.board.screen
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.gestures.animateScrollBy
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.BoxWithConstraints
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -34,46 +24,41 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.goalpanzi.mission_mate.core.designsystem.theme.ColorGray1_FF404249
-import com.goalpanzi.mission_mate.core.designsystem.theme.ColorGray2_FF4F505C
-import com.goalpanzi.mission_mate.core.designsystem.theme.ColorGray5_80F5F6F9
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorWhite_FFFFFFFF
-import com.goalpanzi.mission_mate.core.designsystem.theme.MissionMateTypography
 import com.goalpanzi.mission_mate.feature.board.R
-import com.goalpanzi.mission_mate.feature.board.component.Block
+import com.goalpanzi.mission_mate.feature.board.component.Board
 import com.goalpanzi.mission_mate.feature.board.component.BoardBottomView
 import com.goalpanzi.mission_mate.feature.board.component.BoardTopView
-import com.goalpanzi.mission_mate.feature.board.component.DeleteMissionDialog
-import com.goalpanzi.mission_mate.feature.board.component.Piece
-import com.goalpanzi.mission_mate.feature.board.model.Character
-import com.goalpanzi.mission_mate.feature.board.model.MissionBoardUiModel
-import com.goalpanzi.mission_mate.feature.board.model.MissionUiModel
-import com.goalpanzi.mission_mate.feature.board.model.MissionVerificationUiModel
+import com.goalpanzi.mission_mate.feature.board.component.dialog.BoardEventDialog
+import com.goalpanzi.mission_mate.feature.board.component.dialog.DeleteMissionDialog
+import com.goalpanzi.mission_mate.feature.board.model.MissionState
 import com.goalpanzi.mission_mate.feature.board.model.toCharacter
 import com.goalpanzi.mission_mate.feature.board.model.toUserStory
-import com.goalpanzi.mission_mate.feature.board.util.BoardUtil
+import com.goalpanzi.mission_mate.feature.board.model.uimodel.MissionBoardUiModel
+import com.goalpanzi.mission_mate.feature.board.model.uimodel.MissionUiModel
+import com.goalpanzi.mission_mate.feature.board.model.uimodel.MissionVerificationUiModel
 import com.goalpanzi.mission_mate.feature.onboarding.component.StableImage
-import com.luckyoct.core.model.response.MissionBoardResponse
+import com.luckyoct.core.model.response.BoardReward
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Composable
 fun BoardRoute(
-    onNavigateOnboarding : () -> Unit,
-    onClickSetting : () -> Unit,
+    onNavigateOnboarding: () -> Unit,
+    onClickSetting: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: BoardViewModel = hiltViewModel()
 ) {
     val missionBoardUiModel by viewModel.missionBoardUiModel.collectAsStateWithLifecycle()
     val missionUiModel by viewModel.missionUiModel.collectAsStateWithLifecycle()
     val missionVerificationUiModel by viewModel.missionVerificationUiModel.collectAsStateWithLifecycle()
-    var isShownDeleteMissionDialog by remember {
-        mutableStateOf(false)
-    }
+    val missionState by viewModel.missionState.collectAsStateWithLifecycle()
+    val scrollState = rememberScrollState()
+    var isShownDeleteMissionDialog by remember { mutableStateOf(false) }
+    var isShownBoardRewardDialog by remember { mutableStateOf<BoardReward?>(null) }
 
     LaunchedEffect(key1 = Unit) {
         viewModel.getMissionBoards()
@@ -82,24 +67,28 @@ fun BoardRoute(
 
         launch {
             viewModel.deleteMissionResultEvent.collect {
-                if(it){
+                if (it) {
                     isShownDeleteMissionDialog = false
                     onNavigateOnboarding()
                 }
             }
         }
-    }
 
-    LaunchedEffect(missionUiModel,missionVerificationUiModel) {
-        if(missionUiModel is MissionUiModel.Success && missionVerificationUiModel is MissionVerificationUiModel.Success){
-            if((missionUiModel as MissionUiModel.Success).missionDetailResponse.isStartedMission() &&
-                (missionVerificationUiModel as MissionVerificationUiModel.Success).missionVerificationsResponse.missionVerifications.size == 1){
-                isShownDeleteMissionDialog = true
+        launch {
+            viewModel.boardRewardEvent.collect {
+                delay(500L)
+                isShownBoardRewardDialog = it
             }
         }
     }
 
-    if(isShownDeleteMissionDialog){
+    LaunchedEffect(missionState) {
+        if (missionState == MissionState.DELETABLE) {
+            isShownDeleteMissionDialog = true
+        }
+    }
+
+    if (isShownDeleteMissionDialog) {
         DeleteMissionDialog(
             onDismissRequest = {
                 isShownDeleteMissionDialog = false
@@ -109,24 +98,44 @@ fun BoardRoute(
             }
         )
     }
+    if(isShownBoardRewardDialog != null){
+        BoardEventDialog(
+            reward = isShownBoardRewardDialog!!,
+            onDismissRequest = {
+                isShownBoardRewardDialog = null
+            },
+            onClickOk = {
+                isShownBoardRewardDialog = null
+            }
+        )
+    }
 
     BoardScreen(
+        modifier = modifier,
+        scrollState = scrollState,
         missionBoardUiModel = missionBoardUiModel,
         missionUiModel = missionUiModel,
         missionVerificationUiModel = missionVerificationUiModel,
-        onClickSetting = onClickSetting
+        missionState = missionState,
+        onClickSetting = onClickSetting,
+        onClickVerification = {
+            viewModel.verify()
+        }
     )
 }
 
 @Composable
 fun BoardScreen(
+    scrollState: ScrollState,
     missionBoardUiModel: MissionBoardUiModel,
     missionUiModel: MissionUiModel,
-    missionVerificationUiModel : MissionVerificationUiModel,
-    onClickSetting : () -> Unit,
+    missionVerificationUiModel: MissionVerificationUiModel,
+    missionState : MissionState,
+    onClickSetting: () -> Unit,
+    onClickVerification : () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val scrollState = rememberScrollState()
+
 
     Box(
         modifier = modifier
@@ -145,17 +154,17 @@ fun BoardScreen(
             )
             Board(
                 boardCount = missionBoardUiModel.missionBoardsResponse.missionBoards.size,
-                missionBoards = missionBoardUiModel.missionBoardsResponse.missionBoards,
+                missionBoards = missionBoardUiModel.missionBoardsResponse,
                 numberOfColumns = 3,
-                passedCount = 0,
+                passedCount = missionBoardUiModel.missionBoardsResponse.passedCountByMe,
                 startDateText = stringResource(
                     id = R.string.board_before_start_title,
                     missionUiModel.missionDetailResponse.missionStartLocalDate.monthValue,
                     missionUiModel.missionDetailResponse.missionStartLocalDate.dayOfMonth
                 ),
                 scrollState = scrollState,
-                isStartedMission = missionUiModel.missionDetailResponse.isStartedMission(),
-                hasEnoughPeople = missionVerificationUiModel.missionVerificationsResponse.missionVerifications.size != 1
+                profile = missionVerificationUiModel.missionVerificationsResponse.missionVerifications.first(),
+                missionState = missionState
             )
             BoardTopView(
                 title = missionUiModel.missionDetailResponse.description,
@@ -171,15 +180,15 @@ fun BoardScreen(
             )
 
 
-            if (!(missionUiModel.missionDetailResponse.isStartedMission()
-                        && missionVerificationUiModel.missionVerificationsResponse.missionVerifications.size != 1)) {
+            if (!missionState.enabledVerification()) {
                 Box(
                     modifier = Modifier
                         .wrapContentSize()
                         .padding(
                             top = 180.dp,
                             bottom = if (missionUiModel.missionDetailResponse.isStartedMission()
-                                &&  missionVerificationUiModel.missionVerificationsResponse.missionVerifications.size != 1) 188.dp else 46.dp
+                                && missionVerificationUiModel.missionVerificationsResponse.missionVerifications.size != 1
+                            ) 188.dp else 46.dp
                         )
                         .align(Alignment.Center),
                     contentAlignment = Alignment.TopCenter,
@@ -203,94 +212,14 @@ fun BoardScreen(
             } else {
                 BoardBottomView(
                     modifier = Modifier.align(Alignment.BottomCenter),
-                    onClickButton = {
-
-                    }
+                    missionState = missionState,
+                    onClickButton = onClickVerification
                 )
             }
-        }else {
+        } else {
             CircularProgressIndicator(
                 modifier = Modifier.align(Alignment.Center)
             )
-        }
-    }
-}
-
-@Composable
-fun Board(
-    scrollState: ScrollState,
-    boardCount: Int,
-    passedCount: Int,
-    isStartedMission: Boolean,
-    startDateText: String,
-    missionBoards: List<MissionBoardResponse>,
-    modifier: Modifier = Modifier,
-    numberOfColumns: Int,
-    hasEnoughPeople : Boolean
-) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .navigationBarsPadding()
-            .verticalScroll(scrollState)
-            .statusBarsPadding()
-            .padding(
-                top = 180.dp,
-                start = 24.dp,
-                end = 24.dp,
-                bottom = if (hasEnoughPeople && isStartedMission) 188.dp else 46.dp
-            )
-
-    ) {
-
-        Text(
-            modifier = Modifier.padding(top = 28.dp),
-            text = startDateText,
-            style = MissionMateTypography.heading_md_bold,
-            color = ColorGray1_FF404249
-        )
-        Text(
-            modifier = Modifier.padding(top = 2.dp, bottom = 20.dp),
-            text = stringResource(id = R.string.board_before_start_description),
-            style = MissionMateTypography.body_lg_bold,
-            color = ColorGray2_FF4F505C
-        )
-        BoxWithConstraints {
-            val width = maxWidth
-            Column {
-                BoardUtil.getBlockListByBoardCount(
-                    boardCount,
-                    numberOfColumns,
-                    passedCount
-                ).chunked(numberOfColumns).forEach {
-                    Row() {
-                        it.forEach {
-                            Block(
-                                index = it.index,
-                                eventType = it.blockEventType,
-                                type = it.blockType, modifier = Modifier
-                                    .weight(1f)
-                                    .aspectRatio(1f),
-                                numberOfColumns = numberOfColumns,
-                                isPassed = it.isPassed,
-                                isStartedMission = isStartedMission
-                            )
-                        }
-                    }
-                }
-            }
-            if (hasEnoughPeople) {
-                missionBoards.forEach { block ->
-                    if (block.missionBoardMembers.isNotEmpty()) {
-                        Piece(
-                            index = block.number,
-                            sizePerBlock = width / numberOfColumns,
-                            numberOfColumn = numberOfColumns,
-                            imageId = block.missionBoardMembers.first().characterType.toCharacter().imageId
-                        )
-                    }
-                }
-            }
         }
     }
 }
