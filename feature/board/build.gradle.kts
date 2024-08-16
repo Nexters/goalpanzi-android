@@ -61,6 +61,8 @@ dependencies {
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
 
+    implementation(libs.balloon)
+
     implementation(project(":core:designsystem"))
     implementation(project(":core:navigation"))
     implementation(project(":core:domain"))
