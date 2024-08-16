@@ -2,7 +2,7 @@ package com.goalpanzi.mission_mate.feature.board.util
 
 import androidx.compose.ui.unit.Dp
 
-object PieceUtil {
+object PieceGenerator {
 
     fun getXOffset(
         index : Int,
