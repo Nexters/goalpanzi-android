@@ -22,7 +22,7 @@ import com.goalpanzi.mission_mate.feature.onboarding.component.StableImage
 fun Block(
     index: Int,
     type: BlockType,
-    eventType: BlockEventType,
+    eventType: BlockEventType?,
     numberOfColumns: Int,
     modifier: Modifier = Modifier,
     isPassed: Boolean = false,
@@ -41,7 +41,7 @@ fun Block(
                 if (type == BlockType.START) R.drawable.img_board_start
                 else if (isStartedMission && isPassed) {
                     if (eventType is BlockEventType.Item) {
-                        eventType.boardEventItem.eventType.imageId
+                        eventType.boardEventItem.eventType?.imageId ?: 0
                     } else {
                         when (type) {
                             BlockType.CENTER -> R.drawable.img_board_center_jeju

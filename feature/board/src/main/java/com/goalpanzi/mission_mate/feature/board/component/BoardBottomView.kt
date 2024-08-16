@@ -17,16 +17,19 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.goalpanzi.mission_mate.core.designsystem.component.MissionMateButtonType
 import com.goalpanzi.mission_mate.core.designsystem.component.MissionMateTextButton
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorGray2_FF4F505C
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorWhite_FFFFFFFF
 import com.goalpanzi.mission_mate.core.designsystem.theme.MissionMateTypography
 import com.goalpanzi.mission_mate.feature.board.R
+import com.goalpanzi.mission_mate.feature.board.model.MissionState
 import com.goalpanzi.mission_mate.feature.onboarding.component.StableImage
 
 @Composable
 fun BoardBottomView(
-    onClickButton : () -> Unit,
+    onClickButton: () -> Unit,
+    missionState: MissionState,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -42,7 +45,7 @@ fun BoardBottomView(
             modifier = Modifier.wrapContentWidth(),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(8.dp)
-        ){
+        ) {
             StableImage(drawableResId = com.goalpanzi.mission_mate.core.designsystem.R.drawable.ic_time)
             Text(
                 text = stringResource(id = R.string.board_verification_am_time_limit),
@@ -52,7 +55,11 @@ fun BoardBottomView(
         }
         MissionMateTextButton(
             modifier = Modifier.fillMaxWidth(),
-            textId = R.string.board_verification,
+            textId = when(missionState){
+                MissionState.IN_PROGRESS_NON_MISSION_DAY -> R.string.board_verification_not
+                else -> R.string.board_verification
+            },
+            buttonType = if (missionState.enabledVerification()) MissionMateButtonType.ACTIVE else MissionMateButtonType.DISABLED,
             onClick = onClickButton
         )
     }
@@ -60,8 +67,9 @@ fun BoardBottomView(
 
 @Preview(showBackground = true, backgroundColor = 0xFF000000)
 @Composable
-fun PreviewBoardBottomView(){
+fun PreviewBoardBottomView() {
     BoardBottomView(
+        missionState = MissionState.POST_END,
         onClickButton = {}
     )
 }

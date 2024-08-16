@@ -1,4 +1,4 @@
-package com.goalpanzi.mission_mate.feature.board.component
+package com.goalpanzi.mission_mate.feature.board.component.dialog
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
