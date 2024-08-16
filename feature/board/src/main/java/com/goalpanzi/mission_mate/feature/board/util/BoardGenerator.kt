@@ -2,30 +2,17 @@ package com.goalpanzi.mission_mate.feature.board.util
 
 import com.goalpanzi.mission_mate.feature.board.model.BlockEventType
 import com.goalpanzi.mission_mate.feature.board.model.BlockType
-import com.goalpanzi.mission_mate.feature.board.model.BlockUiModel
+import com.goalpanzi.mission_mate.feature.board.model.uimodel.BlockUiModel
 import com.goalpanzi.mission_mate.feature.board.model.BoardEventItem
-import com.goalpanzi.mission_mate.feature.board.model.EventType
 
-object BoardUtil {
+object BoardGenerator {
 
-    val indicesForPresent =
-        listOf(
-            BoardEventItem(1, EventType.Orange),
-            BoardEventItem(3, EventType.Flower),
-            BoardEventItem(6, EventType.Stone),
-            BoardEventItem(9, EventType.Horse),
-            BoardEventItem(13, EventType.Mountain),
-            BoardEventItem(17, EventType.Waterfall),
-            BoardEventItem(21, EventType.Pig),
-            BoardEventItem(25, EventType.Bong),
-            BoardEventItem(29, EventType.GreenTea),
-            BoardEventItem(31, EventType.Sea)
-        )
 
     fun getBlockListByBoardCount(
         boardCount: Int,
         numberOfColumns: Int,
-        passedCount: Int
+        passedCount: Int,
+        eventList: List<BoardEventItem>
     ): List<BlockUiModel> {
 
         val quotient = boardCount / (numberOfColumns * 2)
@@ -40,20 +27,29 @@ object BoardUtil {
                 numberOfColumns,
                 numberOfColumns,
                 boardCount,
-                passedCount
+                passedCount,
+                eventList
             )
             getBottomRow(
                 blockList,
-                innerQuotient, numberOfColumns, numberOfColumns * 2, boardCount, passedCount
+                innerQuotient, numberOfColumns, numberOfColumns * 2, boardCount, passedCount,
+                eventList
             )
         }
         if (remainder != 0) {
             if (remainder in 1..numberOfColumns) {
-                getTopRow(blockList, quotient, numberOfColumns, remainder, boardCount, passedCount)
+                getTopRow(
+                    blockList, quotient, numberOfColumns, remainder, boardCount, passedCount,
+                    eventList
+                )
             } else {
-                getTopRow(blockList, quotient, numberOfColumns, remainder, boardCount, passedCount)
+                getTopRow(
+                    blockList, quotient, numberOfColumns, remainder, boardCount, passedCount,
+                    eventList
+                )
                 getBottomRow(
-                    blockList, quotient, numberOfColumns, remainder, boardCount, passedCount
+                    blockList, quotient, numberOfColumns, remainder, boardCount, passedCount,
+                    eventList
                 )
             }
         }
@@ -66,7 +62,8 @@ object BoardUtil {
         numberOfColumns: Int,
         remainder: Int,
         boardCount: Int,
-        passedCount: Int
+        passedCount: Int,
+        indicesForPresent: List<BoardEventItem>
     ) {
         for (i in 1..numberOfColumns) {
             val index = quotient * numberOfColumns * 2 + i - 1
@@ -77,13 +74,13 @@ object BoardUtil {
                     index = index,
                     blockType =
                     if (quotient * numberOfColumns * 2 + i - 1 == 0) BlockType.START
-                    else if(index == boardCount - 1) BlockType.CENTER
+                    else if (index == boardCount - 1) BlockType.CENTER
                     else if (i > remainder) BlockType.EMPTY
                     else if (i == 1) BlockType.BOTTOM_LEFT_CORNER
                     else if (i == numberOfColumns) BlockType.TOP_RIGHT_CORNER
                     else BlockType.CENTER,
                     blockEventType =
-                    if (index == boardCount-1) BlockEventType.Goal
+                    if (index == boardCount - 1) BlockEventType.Goal
                     else if (itemEvent != null) BlockEventType.Item(itemEvent)
                     else BlockEventType.None,
                     isEvenGroup = quotient % 2 == 0,
@@ -99,7 +96,8 @@ object BoardUtil {
         numberOfColumns: Int,
         remainder: Int,
         boardCount: Int,
-        passedCount: Int
+        passedCount: Int,
+        indicesForPresent: List<BoardEventItem>
     ) {
         for (i in numberOfColumns * 2 downTo numberOfColumns + 1) {
             val index = quotient * (numberOfColumns * 2) + i - 1
@@ -109,13 +107,13 @@ object BoardUtil {
                     index = index,
                     blockType =
                     if (i > remainder && remainder != 0) BlockType.EMPTY
-                    else if(index == boardCount - 1) BlockType.CENTER
+                    else if (index == boardCount - 1) BlockType.CENTER
                     else if (i == numberOfColumns + 1) BlockType.BOTTOM_RIGHT_CORNER
                     else if (i == numberOfColumns * 2) BlockType.TOP_LEFT_CORNER
                     else BlockType.CENTER,
                     isEvenGroup = quotient % 2 == 0,
                     blockEventType =
-                    if (index == boardCount-1) BlockEventType.Goal
+                    if (index == boardCount - 1) BlockEventType.Goal
                     else if (itemEvent != null) BlockEventType.Item(itemEvent)
                     else BlockEventType.None,
                     isPassed = index <= passedCount
