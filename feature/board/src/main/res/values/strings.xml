@@ -15,5 +15,21 @@
     <string name="board_delete_title">시작일까지 아무도 오지않아\n미션보드를 삭제할게요.</string>
     <string name="board_delete_description">미션보드는 삭제되고\n초기화면으로 이동해요.</string>
 
+    <string name="board_mission_verification_success_dialog_title">인증완료!!\n한 칸 이동했어요.</string>
+    <string name="board_mission_verification_success_dialog_description">대단해요. 오늘도 해냈어요.</string>
+    <string name="board_mission_verification_success_dialog_reward_title">인증완료!!\n\‘%s\’를 획득했어요!</string>
+    <string name="board_mission_verification_success_dialog_reward_description">꾸준히 하면 재밌는 이벤트가 또 나타날걸요?</string>
+    
+    <string name="board_mission_event_orange">감귤 먹기</string>
+    <string name="board_mission_event_canola_flower">유채꽃 보기</string>
+    <string name="board_mission_event_dolharubang">돌하르방 만나기</string>
+    <string name="board_mission_event_horse_riding">승마 체험하기</string>
+    <string name="board_mission_event_halla_mountain">한라산 등반하기</string>
+    <string name="board_mission_event_waterfall">폭포 감상하기</string>
+    <string name="board_mission_event_black_pig">흑돼지 먹기</string>
+    <string name="board_mission_event_sunrise">성산일출봉 보기</string>
+    <string name="board_mission_event_green_tea_field">녹차밭</string>
+    <string name="board_mission_event_beach">바다 보기</string>
+    
     <string name="ok">확인</string>
 </resources>
