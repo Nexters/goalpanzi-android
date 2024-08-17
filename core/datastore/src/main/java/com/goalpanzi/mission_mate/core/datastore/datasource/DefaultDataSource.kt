@@ -7,4 +7,6 @@ interface DefaultDataSource {
     fun clearUserData() : Flow<Unit>
     fun setUserProfile(data: UserProfile) : Flow<Unit>
     fun getUserProfile() : Flow<UserProfile?>
+    fun setMemberId(data: Long) : Flow<Unit>
+    fun getMemberId() : Flow<Long?>
 }

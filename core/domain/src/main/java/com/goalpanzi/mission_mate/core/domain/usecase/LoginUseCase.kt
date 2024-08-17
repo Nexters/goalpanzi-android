@@ -22,6 +22,7 @@ class LoginUseCase @Inject constructor(
                 response.data.also {
                     authDataSource.setAccessToken(it.accessToken).first()
                     authDataSource.setRefreshToken(it.refreshToken).first()
+                    defaultDataSource.setMemberId(it.memberId).first()
                     (it.nickname to it.characterType).let { (nickname, character) ->
                         if (nickname != null && character != null) {
                             defaultDataSource.setUserProfile(
