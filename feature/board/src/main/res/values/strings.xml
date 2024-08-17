@@ -24,7 +24,7 @@
     <string name="board_mission_verification_success_dialog_description">대단해요. 오늘도 해냈어요.</string>
     <string name="board_mission_verification_success_dialog_reward_title">인증완료!!\n\‘%s\’를 획득했어요!</string>
     <string name="board_mission_verification_success_dialog_reward_description">꾸준히 하면 재밌는 이벤트가 또 나타날걸요?</string>
-    
+
     <string name="board_mission_event_orange">감귤 먹기</string>
     <string name="board_mission_event_canola_flower">유채꽃 보기</string>
     <string name="board_mission_event_dolharubang">돌하르방 만나기</string>
@@ -35,6 +35,25 @@
     <string name="board_mission_event_sunrise">성산일출봉 보기</string>
     <string name="board_mission_event_green_tea_field">녹차밭</string>
     <string name="board_mission_event_beach">바다 보기</string>
-    
+
+    <string name="board_finish_rank">%d등</string>
+    <string name="board_finish_description">경쟁이 종료되었어요.</string>
+    <string name="board_finish_sub_description">보드판은 삭제되며\n초기화면으로 돌아가요!</string>
+
+    <string name="board_invitation_dialog_title">시작일까지 초대된 인원과\n경쟁이 자동으로 시작돼요!</string>
+    <string name="board_invitation_dialog_title_color_target">경쟁이 자동으로</string>
+    <string name="board_invitation_dialog_description">경쟁인원은 최소 %d명부터 최대 %d명 이에요!</string>
+    <string name="board_invitation_dialog_copy">친구 초대 코드 복사</string>
+
+    <string name="board_request_delete_title">진행중인 미션을\n삭제하시겠습니까?</string>
+    <string name="board_request_delete_description">미션을 삭제하면\n미션 보드판이 초기화돼요.</string>
+
+    <string name="board_mission_detail_title">경쟁 내용</string>
+    <string name="board_mission_detail_description">*기간 대비 인증 요일을 계산해\n인증횟수(보드판 수)는 총 %d개 가\n생성되었어요.</string>
+    <string name="board_mission_detail_description_color_target">인증횟수(보드판 수)는 총 %d개</string>
+    <string name="board_mission_detail_delete">삭제하기</string>
+
     <string name="ok">확인</string>
+    <string name="cancel">취소</string>
+    <string name="close">닫기</string>
 </resources>
