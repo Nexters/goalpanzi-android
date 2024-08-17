@@ -4,6 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.goalpanzi.mission_mate.core.domain.usecase.DeleteMissionUseCase
+import com.goalpanzi.mission_mate.core.domain.usecase.GetCachedMemberIdUseCase
 import com.goalpanzi.mission_mate.core.domain.usecase.GetMissionBoardsUseCase
 import com.goalpanzi.mission_mate.core.domain.usecase.GetMissionUseCase
 import com.goalpanzi.mission_mate.core.domain.usecase.GetMissionVerificationsUseCase
@@ -29,6 +30,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.flow.stateIn
@@ -41,14 +43,14 @@ class BoardViewModel @Inject constructor(
     private val getMissionBoardsUseCase: GetMissionBoardsUseCase,
     private val getMissionVerificationsUseCase: GetMissionVerificationsUseCase,
     private val deleteMissionUseCase: DeleteMissionUseCase,
-    private val getViewedTooltipUseCase: GetViewedTooltipUseCase,
+    getCachedMemberIdUseCase: GetCachedMemberIdUseCase,
+    getViewedTooltipUseCase: GetViewedTooltipUseCase,
     private val setViewedTooltipUseCase: SetViewedTooltipUseCase,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
     private val missionId: Long = savedStateHandle.get<Long>("missionId")!!
 
-    //private val _viewedTooltip = MutableStateFlow(true)
     val viewedToolTip : StateFlow<Boolean> = getViewedTooltipUseCase().stateIn(
         viewModelScope,
         started = SharingStarted.WhileSubscribed(500),
@@ -70,6 +72,19 @@ class BoardViewModel @Inject constructor(
         MutableStateFlow<MissionVerificationUiModel>(MissionVerificationUiModel.Loading)
     val missionVerificationUiModel: StateFlow<MissionVerificationUiModel> =
         _missionVerificationUiModel.asStateFlow()
+
+    val isHost : StateFlow<Boolean> =
+        combine(
+            getCachedMemberIdUseCase(),
+            missionUiModel.filter { it is MissionUiModel.Success }
+        ){ memberId, mission ->
+            if(mission !is MissionUiModel.Success) return@combine false
+            memberId == mission.missionDetail.hostMemberId
+        }.stateIn(
+            viewModelScope,
+            started = SharingStarted.WhileSubscribed(500),
+            initialValue = false
+        )
 
     val missionState: StateFlow<MissionState> =
         combine(
@@ -176,10 +191,8 @@ class BoardViewModel @Inject constructor(
 
     fun setViewedTooltip(){
         viewModelScope.launch {
-            setViewedTooltipUseCase().catch {
-
-            }.collect {
-
+            setViewedTooltipUseCase().collect{
+                ///
             }
         }
     }
