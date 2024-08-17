@@ -1,16 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="board_before_start_title">경쟁시작 %d월 %d일</string>
+    <string name="board_rank_title">오늘 %d명이 %d칸 이동</string>
+    <string name="board_encourage_title">꾸준하게 완수해봐요!</string>
     <string name="board_before_start_description">해당일에 자동으로 경쟁이 시작돼요.</string>
-    
+    <string name="board_after_start_description">나의 꾸준함 순위는? %d등</string>
+
     <string name="board_verification_am_time_limit">오전 미션 인증은 12시까지에요</string>
-    <string name="board_verification_pm_time_limit">오 미션 인증은 24시까지에요</string>
-    <string name="board_verification_day_title">미션 요일 : </string>
+    <string name="board_verification_pm_time_limit">오후 미션 인증은 24시까지에요</string>
+    <string name="board_verification_all_day_time_limit">종일 미션 인증은 24시까지에요</string>
+    <string name="board_verification_day_title">미션 요일 : %s</string>
 
     <string name="board_verification">오늘 미션 인증하기</string>
     <string name="board_verification_done">오늘 미션 인증 완료!</string>
     <string name="board_verification_closed">오늘 미션 인증 시간 마감</string>
-    <string name="board_verification_not">오늘은 미션일이 아니에요</string>
+    <string name="board_verification_not_day">오늘은 미션일이 아니에요</string>
+    <string name="board_verification_not_time">지금은 미션 인증시간이 아니에요.</string>
 
     <string name="board_delete_title">시작일까지 아무도 오지않아\n미션보드를 삭제할게요.</string>
     <string name="board_delete_description">미션보드는 삭제되고\n초기화면으로 이동해요.</string>
@@ -19,7 +24,7 @@
     <string name="board_mission_verification_success_dialog_description">대단해요. 오늘도 해냈어요.</string>
     <string name="board_mission_verification_success_dialog_reward_title">인증완료!!\n\‘%s\’를 획득했어요!</string>
     <string name="board_mission_verification_success_dialog_reward_description">꾸준히 하면 재밌는 이벤트가 또 나타날걸요?</string>
-    
+
     <string name="board_mission_event_orange">감귤 먹기</string>
     <string name="board_mission_event_canola_flower">유채꽃 보기</string>
     <string name="board_mission_event_dolharubang">돌하르방 만나기</string>
@@ -30,6 +35,25 @@
     <string name="board_mission_event_sunrise">성산일출봉 보기</string>
     <string name="board_mission_event_green_tea_field">녹차밭</string>
     <string name="board_mission_event_beach">바다 보기</string>
-    
+
+    <string name="board_finish_rank">%d등</string>
+    <string name="board_finish_description">경쟁이 종료되었어요.</string>
+    <string name="board_finish_sub_description">보드판은 삭제되며\n초기화면으로 돌아가요!</string>
+
+    <string name="board_invitation_dialog_title">시작일까지 초대된 인원과\n경쟁이 자동으로 시작돼요!</string>
+    <string name="board_invitation_dialog_title_color_target">경쟁이 자동으로</string>
+    <string name="board_invitation_dialog_description">경쟁인원은 최소 %d명부터 최대 %d명 이에요!</string>
+    <string name="board_invitation_dialog_copy">친구 초대 코드 복사</string>
+
+    <string name="board_request_delete_title">진행중인 미션을\n삭제하시겠습니까?</string>
+    <string name="board_request_delete_description">미션을 삭제하면\n미션 보드판이 초기화돼요.</string>
+
+    <string name="board_mission_detail_title">경쟁 내용</string>
+    <string name="board_mission_detail_description">*기간 대비 인증 요일을 계산해\n인증횟수(보드판 수)는 총 %d개 가\n생성되었어요.</string>
+    <string name="board_mission_detail_description_color_target">인증횟수(보드판 수)는 총 %d개</string>
+    <string name="board_mission_detail_delete">삭제하기</string>
+
     <string name="ok">확인</string>
+    <string name="cancel">취소</string>
+    <string name="close">닫기</string>
 </resources>

@@ -61,6 +61,7 @@ fun InvitationCodeTextField(
     contentPadding: PaddingValues = PaddingValues(),
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
+    readOnly : Boolean = false
 ) {
     var isFocused by remember { mutableStateOf(false) }
     BasicTextField(
@@ -79,6 +80,7 @@ fun InvitationCodeTextField(
         keyboardOptions = keyboardOptions,
         keyboardActions = keyboardActions,
         onValueChange = onValueChange,
+        readOnly = readOnly,
         decorationBox = { innerTextField ->
             Box(
                 modifier = Modifier

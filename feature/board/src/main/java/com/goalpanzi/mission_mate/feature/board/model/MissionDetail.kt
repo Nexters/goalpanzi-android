@@ -1,6 +1,6 @@
-package com.luckyoct.core.model.response
+package com.goalpanzi.mission_mate.feature.board.model
 
-import kotlinx.serialization.Serializable
+import com.luckyoct.core.model.response.MissionDetailResponse
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -8,19 +8,17 @@ import java.time.format.DateTimeFormatter
 import java.time.format.TextStyle
 import java.util.Locale
 
-@Serializable
-data class MissionDetailResponse(
+data class MissionDetail(
     val missionId : Long,
     val hostMemberId : Long,
     val description : String,
     val missionStartDate : String,
     val missionEndDate : String,
     val timeOfDay : String,
-    val missionDays : List<String>,
+    val missionDays : List<DayOfWeek>,
     val boardCount : Int,
     val invitationCode : String
-)
-{
+){
     val missionStartLocalDate: LocalDate by lazy {
         val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")
         LocalDate.parse(missionStartDate, formatter)
@@ -31,6 +29,10 @@ data class MissionDetailResponse(
         LocalDateTime.parse(missionEndDate, formatter)
     }
 
+    fun isStartedMission() : Boolean {
+        val currentDate = LocalDate.now()
+        return currentDate.isEqual(missionStartLocalDate) || currentDate.isAfter(missionStartLocalDate)
+    }
     val missionPeriod : String by lazy {
         try {
             val inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")
@@ -48,25 +50,26 @@ data class MissionDetailResponse(
     val missionDaysOfWeekTextLocale : List<String> by lazy {
         try {
             missionDays.map {
-                DayOfWeek.valueOf(it).getDisplayName(TextStyle.SHORT, Locale.getDefault())
+                it.getDisplayName(TextStyle.SHORT, Locale.getDefault())
             }
         }catch (e: Exception){
-            missionDays
+            missionDays.map { it.name }
         }
     }
-//
-//    val missionDaysOfWeek : List<DayOfWeek> by lazy {
-//        try {
-//            missionDays.map {
-//                DayOfWeek.valueOf(it)
-//            }
-//        }catch (e: Exception){
-//            emptyList()
-//        }
-//    }
-//
-//    fun isStartedMission() : Boolean {
-//        val currentDate = LocalDate.now()
-//        return currentDate.isEqual(missionStartLocalDate) || currentDate.isAfter(missionStartLocalDate)
-//    }
+}
+
+fun MissionDetailResponse.toModel() : MissionDetail {
+    return MissionDetail(
+        missionId = missionId,
+        hostMemberId = hostMemberId,
+        description = description,
+        missionStartDate = missionStartDate,
+        missionEndDate = missionEndDate,
+        boardCount = boardCount,
+        invitationCode = invitationCode,
+        missionDays =  missionDays.map {
+            DayOfWeek.valueOf(it)
+        },
+        timeOfDay = timeOfDay
+    )
 }

@@ -2,6 +2,7 @@ package com.goalpanzi.mission_mate.core.datastore.datasource
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
@@ -19,6 +20,7 @@ class DefaultDataSourceImpl @Inject constructor(
     object PreferencesKey {
         val USER_NICKNAME = stringPreferencesKey("USER_NICKNAME")
         val USER_CHARACTER = stringPreferencesKey("USER_CHARACTER")
+        val VIEWED_TOOLTIP = booleanPreferencesKey("VIEWED_TOOLTIP")
         val MEMBER_ID = longPreferencesKey("MEMBER_ID")
     }
 
@@ -47,6 +49,18 @@ class DefaultDataSourceImpl @Inject constructor(
         }
     }
 
+    override fun getViewedTooltip(): Flow<Boolean> = dataStore.data.map { preferences ->
+        val viewed = preferences[PreferencesKey.VIEWED_TOOLTIP]
+        viewed ?: false
+    }
+
+    override fun setViewedTooltip(): Flow<Unit> = flow {
+        dataStore.edit { preferences ->
+            preferences[PreferencesKey.VIEWED_TOOLTIP] = true
+        }
+        emit(Unit)
+    }
+    
     override fun setMemberId(data: Long): Flow<Unit> = flow {
         dataStore.edit { preferences ->
             preferences[PreferencesKey.MEMBER_ID] = data

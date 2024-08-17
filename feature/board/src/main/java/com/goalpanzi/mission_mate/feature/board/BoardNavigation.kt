@@ -6,9 +6,8 @@ import androidx.navigation.NavOptions
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.goalpanzi.mission_mate.core.navigation.RouteModel
+import com.goalpanzi.mission_mate.feature.board.screen.BoardMissionDetailRoute
 import com.goalpanzi.mission_mate.feature.board.screen.BoardRoute
-import com.goalpanzi.mission_mate.feature.onboarding.navigateToOnboarding
 
 internal const val missionIdArg = "missionId"
 
@@ -26,16 +25,43 @@ fun NavController.navigateToBoard(
 
 fun NavGraphBuilder.boardNavGraph(
     onNavigateOnboarding: () -> Unit,
+    onNavigateDetail : (Long) -> Unit,
     onClickSetting : () -> Unit
 ) {
     composable(
         "RouteModel.Board/{$missionIdArg}",
         arguments = listOf(navArgument(missionIdArg) { type = NavType.LongType })
     ) { navBackStackEntry ->
-      //  val missionId = navBackStackEntry.toRoute<RouteModel.Board>().missionId
+        val missionId = navBackStackEntry.arguments?.getLong(missionIdArg)
         BoardRoute(
             onNavigateOnboarding = onNavigateOnboarding,
+            onNavigateDetail = {
+                missionId?.let {
+                    onNavigateDetail(missionId)
+                }
+            },
             onClickSetting = onClickSetting
+        )
+    }
+}
+
+fun NavController.navigateToBoardDetail(
+    missionId: Long
+) {
+    this.navigate("RouteModel.BoardDetail" + "/${missionId}")
+}
+
+fun NavGraphBuilder.boardDetailNavGraph(
+    onDelete: () -> Unit,
+    onBackClick : () -> Unit
+) {
+    composable(
+        "RouteModel.BoardDetail/{$missionIdArg}",
+        arguments = listOf(navArgument(missionIdArg) { type = NavType.LongType })
+    ) {
+        BoardMissionDetailRoute(
+            onDelete = onDelete,
+            onBackClick = onBackClick
         )
     }
 }

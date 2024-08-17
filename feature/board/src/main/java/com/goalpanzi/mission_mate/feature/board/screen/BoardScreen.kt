@@ -32,6 +32,7 @@ import com.goalpanzi.mission_mate.feature.board.R
 import com.goalpanzi.mission_mate.feature.board.component.Board
 import com.goalpanzi.mission_mate.feature.board.component.BoardBottomView
 import com.goalpanzi.mission_mate.feature.board.component.BoardTopView
+import com.goalpanzi.mission_mate.feature.board.component.InvitationCodeDialog
 import com.goalpanzi.mission_mate.feature.board.component.dialog.BoardEventDialog
 import com.goalpanzi.mission_mate.feature.board.component.dialog.DeleteMissionDialog
 import com.goalpanzi.mission_mate.feature.board.model.MissionState
@@ -48,6 +49,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun BoardRoute(
     onNavigateOnboarding: () -> Unit,
+    onNavigateDetail : () -> Unit,
     onClickSetting: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: BoardViewModel = hiltViewModel()
@@ -56,9 +58,11 @@ fun BoardRoute(
     val missionUiModel by viewModel.missionUiModel.collectAsStateWithLifecycle()
     val missionVerificationUiModel by viewModel.missionVerificationUiModel.collectAsStateWithLifecycle()
     val missionState by viewModel.missionState.collectAsStateWithLifecycle()
+
     val scrollState = rememberScrollState()
     var isShownDeleteMissionDialog by remember { mutableStateOf(false) }
     var isShownBoardRewardDialog by remember { mutableStateOf<BoardReward?>(null) }
+    var isShownInvitationCodeDialog by remember { mutableStateOf(false) }
 
     LaunchedEffect(key1 = Unit) {
         viewModel.getMissionBoards()
@@ -109,6 +113,15 @@ fun BoardRoute(
             }
         )
     }
+    if(isShownInvitationCodeDialog){
+        if(missionUiModel !is MissionUiModel.Success) return
+        InvitationCodeDialog(
+            code = (missionUiModel as MissionUiModel.Success).missionDetail.invitationCode,
+            onDismissRequest = {
+                isShownInvitationCodeDialog = !isShownInvitationCodeDialog
+            }
+        )
+    }
 
     BoardScreen(
         modifier = modifier,
@@ -118,6 +131,12 @@ fun BoardRoute(
         missionVerificationUiModel = missionVerificationUiModel,
         missionState = missionState,
         onClickSetting = onClickSetting,
+        onClickFlag = {
+            onNavigateDetail()
+        },
+        onClickAddUser = {
+            isShownInvitationCodeDialog = !isShownInvitationCodeDialog
+        },
         onClickVerification = {
             viewModel.verify()
         }
@@ -133,10 +152,10 @@ fun BoardScreen(
     missionState : MissionState,
     onClickSetting: () -> Unit,
     onClickVerification : () -> Unit,
+    onClickFlag: () -> Unit,
+    onClickAddUser: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-
-
     Box(
         modifier = modifier
             .fillMaxSize()
@@ -153,32 +172,25 @@ fun BoardScreen(
                 contentScale = ContentScale.Crop
             )
             Board(
-                boardCount = missionBoardUiModel.missionBoardsResponse.missionBoards.size,
-                missionBoards = missionBoardUiModel.missionBoardsResponse,
+                missionBoards = missionBoardUiModel.missionBoards,
+                missionDetail = missionUiModel.missionDetail,
                 numberOfColumns = 3,
-                passedCount = missionBoardUiModel.missionBoardsResponse.passedCountByMe,
-                startDateText = stringResource(
-                    id = R.string.board_before_start_title,
-                    missionUiModel.missionDetailResponse.missionStartLocalDate.monthValue,
-                    missionUiModel.missionDetailResponse.missionStartLocalDate.dayOfMonth
-                ),
                 scrollState = scrollState,
                 profile = missionVerificationUiModel.missionVerificationsResponse.missionVerifications.first(),
                 missionState = missionState
             )
             BoardTopView(
-                title = missionUiModel.missionDetailResponse.description,
-                isAddingUserEnabled = false,
+                title = missionUiModel.missionDetail.description,
+                isAddingUserEnabled = true,
                 userList = missionVerificationUiModel.missionVerificationsResponse.missionVerifications.mapIndexed { i, item ->
                     item.toUserStory(
                         isMe = i == 0
                     )
                 },
-                onClickFlag = {},
-                onClickAddUser = {},
+                onClickFlag = onClickFlag,
+                onClickAddUser = onClickAddUser,
                 onClickSetting = onClickSetting,
             )
-
 
             if (!missionState.enabledVerification()) {
                 Box(
@@ -186,20 +198,30 @@ fun BoardScreen(
                         .wrapContentSize()
                         .padding(
                             top = 180.dp,
-                            bottom = if (missionUiModel.missionDetailResponse.isStartedMission()
+                            bottom = if (missionUiModel.missionDetail.isStartedMission()
                                 && missionVerificationUiModel.missionVerificationsResponse.missionVerifications.size != 1
                             ) 188.dp else 46.dp
                         )
                         .align(Alignment.Center),
                     contentAlignment = Alignment.TopCenter,
                 ) {
-                    StableImage(
-                        drawableResId = R.drawable.img_tooltip_mission_delete_warning,
-                        modifier = Modifier
-                            .fillMaxWidth(276f / 390f)
-                            .wrapContentHeight(),
-                        contentScale = ContentScale.FillWidth
-                    )
+                    if(missionState == MissionState.PRE_START_SOLO){
+                        StableImage(
+                            drawableResId = R.drawable.img_tooltip_mission_delete_warning,
+                            modifier = Modifier
+                                .fillMaxWidth(276f / 390f)
+                                .wrapContentHeight(),
+                            contentScale = ContentScale.FillWidth
+                        )
+                    }else if(missionState == MissionState.PRE_START_MULTI) {
+                        StableImage(
+                            drawableResId = R.drawable.img_tooltip_mission_welcome,
+                            modifier = Modifier
+                                .fillMaxWidth(276f / 390f)
+                                .wrapContentHeight(),
+                            contentScale = ContentScale.FillWidth
+                        )
+                    }
                     StableImage(
                         missionVerificationUiModel.missionVerificationsResponse.missionVerifications.first().characterType.toCharacter().imageId,
                         modifier = Modifier
@@ -213,6 +235,7 @@ fun BoardScreen(
                 BoardBottomView(
                     modifier = Modifier.align(Alignment.BottomCenter),
                     missionState = missionState,
+                    missionDetail = missionUiModel.missionDetail,
                     onClickButton = onClickVerification
                 )
             }

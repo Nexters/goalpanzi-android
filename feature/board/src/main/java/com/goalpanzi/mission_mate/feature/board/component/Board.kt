@@ -31,6 +31,8 @@ import com.goalpanzi.mission_mate.core.designsystem.theme.ColorGray2_FF4F505C
 import com.goalpanzi.mission_mate.core.designsystem.theme.MissionMateTypography
 import com.goalpanzi.mission_mate.feature.board.R
 import com.goalpanzi.mission_mate.feature.board.model.BoardEventItem
+import com.goalpanzi.mission_mate.feature.board.model.MissionBoards
+import com.goalpanzi.mission_mate.feature.board.model.MissionDetail
 import com.goalpanzi.mission_mate.feature.board.model.MissionState
 import com.goalpanzi.mission_mate.feature.board.model.toCharacter
 import com.goalpanzi.mission_mate.feature.board.model.toEventType
@@ -43,10 +45,8 @@ import kotlin.math.absoluteValue
 @Composable
 fun Board(
     scrollState: ScrollState,
-    boardCount: Int,
-    passedCount: Int,
-    startDateText: String,
-    missionBoards: MissionBoardsResponse,
+    missionBoards: MissionBoards,
+    missionDetail: MissionDetail,
     numberOfColumns: Int,
     profile: MissionVerificationResponse,
     missionState: MissionState,
@@ -55,8 +55,12 @@ fun Board(
     val statusBar = WindowInsets.statusBars
     val navigationBar = WindowInsets.navigationBars
     val localDensity = LocalDensity.current
-    val statusBarHeight = remember { (statusBar.getTop(localDensity) - statusBar.getBottom(localDensity)).absoluteValue }
-    val navigationBarHeight = remember { (navigationBar.getTop(localDensity) - navigationBar.getBottom(localDensity)).absoluteValue }
+    val statusBarHeight =
+        remember { (statusBar.getTop(localDensity) - statusBar.getBottom(localDensity)).absoluteValue }
+    val navigationBarHeight =
+        remember { (navigationBar.getTop(localDensity) - navigationBar.getBottom(localDensity)).absoluteValue }
+
+
     Box(
         modifier = modifier
             .fillMaxSize()
@@ -75,10 +79,8 @@ fun Board(
             )
         ) {
             BoardContent(
-                boardCount,
-                passedCount,
-                startDateText,
                 missionBoards,
+                missionDetail,
                 numberOfColumns,
                 profile,
                 missionState,
@@ -101,10 +103,8 @@ fun Board(
             )
         ) {
             BoardContent(
-                boardCount,
-                passedCount,
-                startDateText,
                 missionBoards,
+                missionDetail,
                 numberOfColumns,
                 profile,
                 missionState,
@@ -121,14 +121,13 @@ fun Board(
                         clipRect(top = (size.height + navigationBarHeight - (if (missionState.isVisiblePiece()) 188.dp else 46.dp).toPx())) {
                             this@drawWithContent.drawContent()
                         }
-                    }.blur(10.dp,10.dp)
+                    }
+                    .blur(10.dp, 10.dp)
             )
         ) {
             BoardContent(
-                boardCount,
-                passedCount,
-                startDateText,
                 missionBoards,
+                missionDetail,
                 numberOfColumns,
                 profile,
                 missionState,
@@ -143,24 +142,37 @@ fun Board(
 
 @Composable
 fun ColumnScope.BoardContent(
-    boardCount: Int,
-    passedCount: Int,
-    startDateText: String,
-    missionBoards: MissionBoardsResponse,
+    missionBoards: MissionBoards,
+    missionDetail: MissionDetail,
     numberOfColumns: Int,
     profile: MissionVerificationResponse,
     missionState: MissionState,
     modifier: Modifier = Modifier,
 ) {
+    val boardCount = missionBoards.missionBoardList.size
+    val passedCount = missionBoards.passedCountByMe
+    val startDateText = stringResource(
+        id = R.string.board_before_start_title,
+        missionDetail.missionStartLocalDate.monthValue,
+        missionDetail.missionStartLocalDate.dayOfMonth
+    )
     Text(
         modifier = Modifier.padding(top = 28.dp),
-        text = startDateText,
+        text = if (missionState.isRankBoardTitle()) stringResource(
+            id = R.string.board_rank_title,
+            missionBoards.progressCount,1
+        )
+        else if (missionState.isEncourageBoardTitle()) stringResource(id = R.string.board_encourage_title)
+        else startDateText,
         style = MissionMateTypography.heading_md_bold,
         color = ColorGray1_FF404249
     )
     Text(
         modifier = Modifier.padding(top = 2.dp, bottom = 20.dp),
-        text = stringResource(id = R.string.board_before_start_description),
+        text = if (missionState.isRankBoardTitle() || missionState.isEncourageBoardTitle()) stringResource(
+            id = R.string.board_after_start_description,
+            missionBoards.rank
+        ) else stringResource(id = R.string.board_before_start_description),
         style = MissionMateTypography.body_lg_bold,
         color = ColorGray2_FF4F505C
     )
@@ -174,7 +186,7 @@ fun ColumnScope.BoardContent(
                 missionBoards.boardRewardList.map {
                     BoardEventItem(
                         index = it.number,
-                        eventType = it.reward.toEventType()
+                        eventType = it.boardReward.toEventType()
                     )
                 }
             ).chunked(numberOfColumns).forEach {
@@ -195,7 +207,7 @@ fun ColumnScope.BoardContent(
             }
         }
         if (missionState.isVisiblePiece()) {
-            missionBoards.missionBoards.forEach { block ->
+            missionBoards.missionBoardList.forEach { block ->
                 if (block.missionBoardMembers.isNotEmpty()) {
                     Piece(
                         index = block.number,
@@ -204,8 +216,8 @@ fun ColumnScope.BoardContent(
                         sizePerBlock = width / numberOfColumns,
                         numberOfColumn = numberOfColumns,
                         isMe = block.isMyPosition,
-                        imageId = if (block.isMyPosition) profile.characterType.toCharacter().imageId else block.missionBoardMembers.first().characterType.toCharacter().imageId,
-                        imageIdForCount = if (block.isMyPosition) profile.characterType.toCharacter().imageId else block.missionBoardMembers.first().characterType.toCharacter().imageId
+                        imageId = if (block.isMyPosition) profile.characterType.toCharacter().imageId else block.missionBoardMembers.first().character.imageId,
+                        imageIdForCount = if (block.isMyPosition) profile.characterType.toCharacter().imageId else block.missionBoardMembers.first().character.imageId
                     )
                 }
             }

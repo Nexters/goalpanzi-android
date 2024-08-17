@@ -1,9 +1,9 @@
 package com.goalpanzi.mission_mate.feature.board.model.uimodel
 
-import com.luckyoct.core.model.response.MissionBoardsResponse
+import com.goalpanzi.mission_mate.feature.board.model.MissionBoards
 
 sealed class MissionBoardUiModel {
     data object Loading : MissionBoardUiModel()
     data object Error : MissionBoardUiModel()
-    data class Success(val missionBoardsResponse: MissionBoardsResponse) : MissionBoardUiModel()
+    data class Success(val missionBoards : MissionBoards) : MissionBoardUiModel()
 }

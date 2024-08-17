@@ -23,12 +23,16 @@ import com.goalpanzi.mission_mate.core.designsystem.theme.ColorGray2_FF4F505C
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorWhite_FFFFFFFF
 import com.goalpanzi.mission_mate.core.designsystem.theme.MissionMateTypography
 import com.goalpanzi.mission_mate.feature.board.R
+import com.goalpanzi.mission_mate.feature.board.model.MissionDetail
 import com.goalpanzi.mission_mate.feature.board.model.MissionState
 import com.goalpanzi.mission_mate.feature.onboarding.component.StableImage
+import com.goalpanzi.mission_mate.feature.onboarding.model.VerificationTimeType
+import com.goalpanzi.mission_mate.feature.onboarding.util.getStringId
 
 @Composable
 fun BoardBottomView(
     onClickButton: () -> Unit,
+    missionDetail: MissionDetail,
     missionState: MissionState,
     modifier: Modifier = Modifier
 ) {
@@ -48,7 +52,22 @@ fun BoardBottomView(
         ) {
             StableImage(drawableResId = com.goalpanzi.mission_mate.core.designsystem.R.drawable.ic_time)
             Text(
-                text = stringResource(id = R.string.board_verification_am_time_limit),
+                text = when(missionState){
+                    MissionState.IN_PROGRESS_MISSION_DAY_NON_MISSION_TIME,
+                    MissionState.IN_PROGRESS_MISSION_DAY_BEFORE_CONFIRM -> {
+                        stringResource(id = R.string.board_verification_day_title, missionDetail.missionDays.map {
+                            stringResource(id = it.getStringId())
+                        }.joinToString(" "))
+                    }
+                    else -> {
+                        when(VerificationTimeType.valueOf(missionDetail.timeOfDay)){
+                            VerificationTimeType.MORNING -> stringResource(id = R.string.board_verification_am_time_limit)
+                            VerificationTimeType.AFTERNOON -> stringResource(id = R.string.board_verification_pm_time_limit)
+                            VerificationTimeType.EVERYDAY -> stringResource(id = R.string.board_verification_all_day_time_limit)
+                        }
+
+                    }
+                },
                 style = MissionMateTypography.body_lg_bold,
                 color = ColorGray2_FF4F505C
             )
@@ -56,7 +75,10 @@ fun BoardBottomView(
         MissionMateTextButton(
             modifier = Modifier.fillMaxWidth(),
             textId = when(missionState){
-                MissionState.IN_PROGRESS_NON_MISSION_DAY -> R.string.board_verification_not
+                MissionState.IN_PROGRESS_NON_MISSION_DAY -> R.string.board_verification_not_day
+                MissionState.IN_PROGRESS_MISSION_DAY_AFTER_CONFIRM -> R.string.board_verification_done
+                MissionState.IN_PROGRESS_MISSION_DAY_CLOSED -> R.string.board_verification_closed
+                MissionState.IN_PROGRESS_MISSION_DAY_NON_MISSION_TIME -> R.string.board_verification_not_time
                 else -> R.string.board_verification
             },
             buttonType = if (missionState.enabledVerification()) MissionMateButtonType.ACTIVE else MissionMateButtonType.DISABLED,
@@ -70,6 +92,17 @@ fun BoardBottomView(
 fun PreviewBoardBottomView() {
     BoardBottomView(
         missionState = MissionState.POST_END,
+        missionDetail = MissionDetail(
+            missionId = 1,
+            hostMemberId = 2,
+            description = "convallis",
+            missionStartDate = "mnesarchum",
+            missionEndDate = "congue",
+            timeOfDay = "MORNING",
+            missionDays = listOf(),
+            boardCount = 12,
+            invitationCode = "ABDC"
+        ),
         onClickButton = {}
     )
 }

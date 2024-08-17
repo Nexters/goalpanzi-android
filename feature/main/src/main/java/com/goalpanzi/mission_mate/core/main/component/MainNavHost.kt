@@ -8,7 +8,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
-import com.goalpanzi.mission_mate.core.navigation.RouteModel
+import com.goalpanzi.mission_mate.feature.board.boardDetailNavGraph
 import com.goalpanzi.mission_mate.feature.board.boardNavGraph
 import com.goalpanzi.mission_mate.feature.login.loginNavGraph
 import com.goalpanzi.mission_mate.feature.onboarding.boardSetupNavGraph
@@ -89,8 +89,19 @@ internal fun MainNavHost(
                 onNavigateOnboarding = {
                     navigator.navigationToOnboarding()
                 },
+                onNavigateDetail = { missionId ->
+                    navigator.navigationToBoardDetail(missionId)
+                },
                 onClickSetting = {
                     navigator.navigationToSetting()
+                }
+            )
+            boardDetailNavGraph(
+                onDelete = {
+                    navigator.navigationToOnboarding()
+                },
+                onBackClick = {
+                    navigator.popBackStack()
                 }
             )
         }
