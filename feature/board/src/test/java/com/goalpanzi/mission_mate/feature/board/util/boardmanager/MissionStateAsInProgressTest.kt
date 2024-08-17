@@ -21,7 +21,7 @@ class MissionStateAsInProgressTest {
         val memberList = listOf(
             MissionVerificationResponse(
                 nickname = "",
-                image = ""
+                imageUrl = ""
             )
         )
 
@@ -39,7 +39,7 @@ class MissionStateAsInProgressTest {
         val memberList = listOf(
             MissionVerificationResponse(
                 nickname = "",
-                image = ""
+                imageUrl = ""
             )
         )
 
@@ -57,7 +57,7 @@ class MissionStateAsInProgressTest {
         val memberList = listOf(
             MissionVerificationResponse(
                 nickname = "",
-                image = ""
+                imageUrl = ""
             )
         )
 
@@ -72,7 +72,7 @@ class MissionStateAsInProgressTest {
         val todayLocalDateTime = LocalDateTime.of(2024, 8, 14, 10, 0, 0)
         val daysOfWeek = listOf(DayOfWeek.WEDNESDAY, DayOfWeek.FRIDAY)
         val verificationTimeType = VerificationTimeType.MORNING
-        val memberList = listOf(MissionVerificationResponse(nickname = "user", image = "image_url"))
+        val memberList = listOf(MissionVerificationResponse(nickname = "user", imageUrl = "image_url"))
 
         val result = getMissionStateAsInProgress(todayLocalDate, todayLocalDateTime, daysOfWeek, verificationTimeType, memberList)
 

@@ -133,7 +133,7 @@ class MissionStateUtilityMethodTests {
     @Test
     fun isVerifiedInMissionTime_FirstImageEmpty_ReturnsFalse() {
         val memberList = listOf(
-            MissionVerificationResponse(nickname = "", image = "")
+            MissionVerificationResponse(nickname = "", imageUrl = "")
         )
         val result = isVerifiedInMissionTime(memberList)
         assertFalse(result)
@@ -143,7 +143,7 @@ class MissionStateUtilityMethodTests {
     @Test
     fun isVerifiedInMissionTime_FirstImageNotEmpty_ReturnsTrue() {
         val memberList = listOf(
-            MissionVerificationResponse(nickname = "", image = "image_url")
+            MissionVerificationResponse(nickname = "", imageUrl = "image_url")
         )
         val result = isVerifiedInMissionTime(memberList)
         assertTrue(result)

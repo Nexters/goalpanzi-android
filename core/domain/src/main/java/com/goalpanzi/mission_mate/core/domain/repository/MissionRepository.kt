@@ -4,6 +4,7 @@ import com.goalpanzi.mission_mate.core.network.ResultHandler
 import com.luckyoct.core.model.base.NetworkResult
 import com.luckyoct.core.model.response.MissionBoardsResponse
 import com.luckyoct.core.model.response.MissionDetailResponse
+import com.luckyoct.core.model.response.MissionRankResponse
 import com.luckyoct.core.model.response.MissionVerificationsResponse
 
 interface MissionRepository : ResultHandler {
@@ -14,4 +15,6 @@ interface MissionRepository : ResultHandler {
     suspend fun getMissionVerifications(missionId: Long) : NetworkResult<MissionVerificationsResponse>
 
     suspend fun deleteMission(missionId : Long) : NetworkResult<MissionDetailResponse>
+
+    suspend fun getMissionRank(missionId: Long) : NetworkResult<MissionRankResponse>
 }

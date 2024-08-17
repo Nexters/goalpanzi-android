@@ -12,10 +12,13 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -26,6 +29,8 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.goalpanzi.mission_mate.core.designsystem.component.MissionMateButtonType
 import com.goalpanzi.mission_mate.core.designsystem.component.MissionMateTextButton
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorGray1_FF404249
@@ -39,8 +44,43 @@ import com.goalpanzi.mission_mate.feature.board.model.toCharacter
 import com.goalpanzi.mission_mate.feature.onboarding.component.StableImage
 
 @Composable
+fun BoardFinishRoute(
+    onClickSetting: () -> Unit,
+    onClickOk : () -> Unit,
+    modifier: Modifier = Modifier,
+    viewModel : BoardFinishViewModel = hiltViewModel()
+) {
+    val rank by viewModel.rank.collectAsStateWithLifecycle()
+    val userProfile by viewModel.profile.collectAsStateWithLifecycle()
+
+    LaunchedEffect(key1 = Unit) {
+        viewModel.getRankByMissionId()
+        viewModel.getUserProfile()
+    }
+
+
+    if(rank != null && userProfile != null){
+        BoardFinishScreen(
+            modifier = modifier,
+            rank = rank!!,
+            character = userProfile!!.characterType.toCharacter(),
+            onClickOk = onClickOk,
+            onClickSetting = onClickSetting
+        )
+    }else {
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ){
+            CircularProgressIndicator()
+        }
+    }
+
+}
+
+@Composable
 fun BoardFinishScreen(
-    character : String,
+    character : Character,
     rank : Int,
     onClickSetting: () -> Unit,
     onClickOk : () -> Unit,
@@ -95,8 +135,10 @@ fun BoardFinishScreen(
                         contentScale = ContentScale.Crop
                     )
                     StableImage(
-                        modifier = Modifier.fillMaxWidth(212f/390f).aspectRatio(1f),
-                        drawableResId = Character.valueOf(character).imageId
+                        modifier = Modifier
+                            .fillMaxWidth(212f / 390f)
+                            .aspectRatio(1f),
+                        drawableResId = character.imageId
                     )
                 }
 
@@ -137,7 +179,7 @@ fun BoardFinishScreen(
 @Composable
 private fun PreviewBoardFinishScreen() {
     BoardFinishScreen(
-        character = "RABBIT",
+        character = Character.RABBIT,
         rank = 10,
         onClickSetting = {},
         onClickOk = {}

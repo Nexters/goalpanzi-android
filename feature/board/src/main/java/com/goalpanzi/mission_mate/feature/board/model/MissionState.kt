@@ -162,7 +162,7 @@ enum class MissionState {
             memberList : List<MissionVerificationResponse>
         ) : Boolean {
             if(memberList.isEmpty()) return false
-            return memberList.first().image.isNotEmpty()
+            return memberList.first().imageUrl.isNotEmpty()
         }
     }
 }
