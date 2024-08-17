@@ -160,7 +160,7 @@ fun BoardScreen(
             )
             BoardTopView(
                 title = missionUiModel.missionDetail.description,
-                isAddingUserEnabled = false,
+                isAddingUserEnabled = true,
                 userList = missionVerificationUiModel.missionVerificationsResponse.missionVerifications.mapIndexed { i, item ->
                     item.toUserStory(
                         isMe = i == 0
@@ -170,7 +170,6 @@ fun BoardScreen(
                 onClickAddUser = {},
                 onClickSetting = onClickSetting,
             )
-
 
             if (!missionState.enabledVerification()) {
                 Box(

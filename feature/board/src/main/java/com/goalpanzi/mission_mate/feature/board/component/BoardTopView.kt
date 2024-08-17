@@ -28,8 +28,7 @@ fun BoardTopView(
     onClickFlag: () -> Unit,
     onClickAddUser: () -> Unit,
     onClickSetting: () -> Unit,
-    modifier: Modifier = Modifier,
-    isVisibleFlagButton: Boolean = false
+    modifier: Modifier = Modifier
 ) {
     Column(
         modifier = modifier
@@ -41,17 +40,15 @@ fun BoardTopView(
             navigationType = NavigationType.NONE,
             title = title,
             leftActionButtons = {
-                if (isVisibleFlagButton) {
-                    IconButton(
-                        onClick = onClickFlag,
-                        modifier = Modifier.wrapContentSize()
-                    ) {
-                        Icon(
-                            imageVector = ImageVector.vectorResource(id = com.goalpanzi.mission_mate.core.designsystem.R.drawable.ic_flag),
-                            contentDescription = "",
-                            tint = ColorGray1_FF404249
-                        )
-                    }
+                IconButton(
+                    onClick = onClickFlag,
+                    modifier = Modifier.wrapContentSize()
+                ) {
+                    Icon(
+                        imageVector = ImageVector.vectorResource(id = com.goalpanzi.mission_mate.core.designsystem.R.drawable.ic_flag),
+                        contentDescription = "",
+                        tint = ColorGray1_FF404249
+                    )
                 }
             },
             rightActionButtons = {
