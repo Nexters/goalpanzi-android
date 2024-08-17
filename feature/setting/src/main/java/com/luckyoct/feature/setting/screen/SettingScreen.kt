@@ -156,7 +156,7 @@ fun SettingScreen(
                 subContent = {
                     Text(
                         text = stringResource(id = R.string.inquiry_email),
-                        style = MissionMateTypography.body_xl_regular,
+                        style = MissionMateTypography.body_md_regular,
                         color = ColorGray1_FF404249
                     )
                 }

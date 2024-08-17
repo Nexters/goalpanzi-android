@@ -4,6 +4,7 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.luckyoct.core.model.CharacterType
 import com.luckyoct.core.model.UserProfile
@@ -20,6 +21,7 @@ class DefaultDataSourceImpl @Inject constructor(
         val USER_NICKNAME = stringPreferencesKey("USER_NICKNAME")
         val USER_CHARACTER = stringPreferencesKey("USER_CHARACTER")
         val VIEWED_TOOLTIP = booleanPreferencesKey("VIEWED_TOOLTIP")
+        val MEMBER_ID = longPreferencesKey("MEMBER_ID")
     }
 
     override fun clearUserData(): Flow<Unit> = flow {
@@ -57,5 +59,16 @@ class DefaultDataSourceImpl @Inject constructor(
             preferences[PreferencesKey.VIEWED_TOOLTIP] = true
         }
         emit(Unit)
+    }
+    
+    override fun setMemberId(data: Long): Flow<Unit> = flow {
+        dataStore.edit { preferences ->
+            preferences[PreferencesKey.MEMBER_ID] = data
+        }
+        emit(Unit)
+    }
+
+    override fun getMemberId(): Flow<Long?> = dataStore.data.map { preferences ->
+        preferences[PreferencesKey.MEMBER_ID]
     }
 }

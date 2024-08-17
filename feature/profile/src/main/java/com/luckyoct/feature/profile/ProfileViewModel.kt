@@ -110,7 +110,6 @@ class ProfileViewModel @AssistedInject constructor(
 
             when(val response = profileUseCase.saveProfile(nickname, selectedItem.type)) {
                 is NetworkResult.Success -> {
-                    profileUseCase.saveProfile(nickname, selectedItem.type)
                     _isSaveSuccess.emit(true)
                 }
                 is NetworkResult.Exception -> {}
