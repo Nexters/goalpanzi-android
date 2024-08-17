@@ -48,8 +48,12 @@ class BoardViewModel @Inject constructor(
 
     private val missionId: Long = savedStateHandle.get<Long>("missionId")!!
 
-    private val _viewedTooltip = MutableStateFlow(true)
-    val viewedToolTip : StateFlow<Boolean> = _viewedTooltip.asStateFlow()
+    //private val _viewedTooltip = MutableStateFlow(true)
+    val viewedToolTip : StateFlow<Boolean> = getViewedTooltipUseCase().stateIn(
+        viewModelScope,
+        started = SharingStarted.WhileSubscribed(500),
+        initialValue = true
+    )
 
     private val _deleteMissionResultEvent = MutableSharedFlow<Boolean>()
     val deleteMissionResultEvent: SharedFlow<Boolean> = _deleteMissionResultEvent.asSharedFlow()
@@ -167,6 +171,16 @@ class BoardViewModel @Inject constructor(
                 }.collect {
                     _deleteMissionResultEvent.emit(true)
                 }
+        }
+    }
+
+    fun setViewedTooltip(){
+        viewModelScope.launch {
+            setViewedTooltipUseCase().catch {
+
+            }.collect {
+
+            }
         }
     }
 

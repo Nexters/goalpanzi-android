@@ -58,7 +58,7 @@ fun BoardRoute(
     val missionUiModel by viewModel.missionUiModel.collectAsStateWithLifecycle()
     val missionVerificationUiModel by viewModel.missionVerificationUiModel.collectAsStateWithLifecycle()
     val missionState by viewModel.missionState.collectAsStateWithLifecycle()
-
+    val viewedTooltip by viewModel.viewedToolTip.collectAsStateWithLifecycle()
     val scrollState = rememberScrollState()
     var isShownDeleteMissionDialog by remember { mutableStateOf(false) }
     var isShownBoardRewardDialog by remember { mutableStateOf<BoardReward?>(null) }
@@ -125,6 +125,7 @@ fun BoardRoute(
 
     BoardScreen(
         modifier = modifier,
+        viewedTooltip = viewedTooltip,
         scrollState = scrollState,
         missionBoardUiModel = missionBoardUiModel,
         missionUiModel = missionUiModel,
@@ -132,9 +133,11 @@ fun BoardRoute(
         missionState = missionState,
         onClickSetting = onClickSetting,
         onClickFlag = {
+            viewModel.setViewedTooltip()
             onNavigateDetail()
         },
         onClickAddUser = {
+            viewModel.setViewedTooltip()
             isShownInvitationCodeDialog = !isShownInvitationCodeDialog
         },
         onClickVerification = {
@@ -146,6 +149,7 @@ fun BoardRoute(
 @Composable
 fun BoardScreen(
     scrollState: ScrollState,
+    viewedTooltip : Boolean,
     missionBoardUiModel: MissionBoardUiModel,
     missionUiModel: MissionUiModel,
     missionVerificationUiModel: MissionVerificationUiModel,
@@ -182,6 +186,7 @@ fun BoardScreen(
             BoardTopView(
                 title = missionUiModel.missionDetail.description,
                 isAddingUserEnabled = true,
+                viewedTooltip = viewedTooltip,
                 userList = missionVerificationUiModel.missionVerificationsResponse.missionVerifications.mapIndexed { i, item ->
                     item.toUserStory(
                         isMe = i == 0

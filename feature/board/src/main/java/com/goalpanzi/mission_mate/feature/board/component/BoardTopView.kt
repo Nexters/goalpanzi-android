@@ -30,6 +30,7 @@ import com.goalpanzi.mission_mate.feature.onboarding.component.StableImage
 @Composable
 fun BoardTopView(
     title: String,
+    viewedTooltip: Boolean,
     isAddingUserEnabled: Boolean,
     userList: List<UserStory>,
     onClickFlag: () -> Unit,
@@ -71,27 +72,30 @@ fun BoardTopView(
             modifier = Modifier.padding(top = 56.dp),
             userList = userList
         )
-        if (!isAddingUserEnabled) {
-            // datastore 조건 추가
-            StableImage(
-                modifier = Modifier
-                    .align(Alignment.TopEnd)
-                    .padding(end = 43.dp,top = 48.dp)
-                    .width(161.dp),
-                drawableResId = R.drawable.img_tooltip_mission_invitation_code,
-                contentScale = ContentScale.Crop
-            )
-        } else {
-            // datastore 조건 추가
-            StableImage(
-                modifier = Modifier
-                    .align(Alignment.TopStart)
-                    .padding(start = 8.dp, top = 48.dp)
-                    .width(161.dp),
-                drawableResId = R.drawable.img_tooltip_mission_detail,
-                contentScale = ContentScale.Crop
-            )
+        if(!viewedTooltip){
+            if (isAddingUserEnabled) {
+                // datastore 조건 추가
+                StableImage(
+                    modifier = Modifier
+                        .align(Alignment.TopEnd)
+                        .padding(end = 43.dp,top = 48.dp)
+                        .width(161.dp),
+                    drawableResId = R.drawable.img_tooltip_mission_invitation_code,
+                    contentScale = ContentScale.Crop
+                )
+            } else {
+                // datastore 조건 추가
+                StableImage(
+                    modifier = Modifier
+                        .align(Alignment.TopStart)
+                        .padding(start = 8.dp, top = 48.dp)
+                        .width(161.dp),
+                    drawableResId = R.drawable.img_tooltip_mission_detail,
+                    contentScale = ContentScale.Crop
+                )
+            }
         }
+
 
     }
 }
