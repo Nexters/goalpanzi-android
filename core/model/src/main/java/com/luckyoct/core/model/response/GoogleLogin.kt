@@ -9,5 +9,6 @@ data class GoogleLogin(
     val refreshToken: String,
     val nickname: String?,
     val characterType: CharacterType?,
-    val isProfileSet: Boolean
+    val isProfileSet: Boolean,
+    val memberId: Long
 )

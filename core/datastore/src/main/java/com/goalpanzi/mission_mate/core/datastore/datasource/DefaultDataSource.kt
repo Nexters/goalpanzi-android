@@ -9,4 +9,6 @@ interface DefaultDataSource {
     fun getUserProfile() : Flow<UserProfile?>
     fun getViewedTooltip() : Flow<Boolean>
     fun setViewedTooltip() : Flow<Unit>
+    fun setMemberId(data: Long) : Flow<Unit>
+    fun getMemberId() : Flow<Long?>
 }
