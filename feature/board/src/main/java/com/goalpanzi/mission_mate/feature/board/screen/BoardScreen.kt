@@ -1,9 +1,11 @@
 package com.goalpanzi.mission_mate.feature.board.screen
 
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
-import androidx.compose.foundation.gestures.animateScrollBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
@@ -22,8 +24,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -41,6 +43,7 @@ import com.goalpanzi.mission_mate.feature.board.model.toUserStory
 import com.goalpanzi.mission_mate.feature.board.model.uimodel.MissionBoardUiModel
 import com.goalpanzi.mission_mate.feature.board.model.uimodel.MissionUiModel
 import com.goalpanzi.mission_mate.feature.board.model.uimodel.MissionVerificationUiModel
+import com.goalpanzi.mission_mate.feature.board.util.ImageCompressor
 import com.goalpanzi.mission_mate.feature.onboarding.component.StableImage
 import com.luckyoct.core.model.response.BoardReward
 import kotlinx.coroutines.delay
@@ -54,6 +57,7 @@ fun BoardRoute(
     modifier: Modifier = Modifier,
     viewModel: BoardViewModel = hiltViewModel()
 ) {
+    val context = LocalContext.current
     val missionBoardUiModel by viewModel.missionBoardUiModel.collectAsStateWithLifecycle()
     val missionUiModel by viewModel.missionUiModel.collectAsStateWithLifecycle()
     val missionVerificationUiModel by viewModel.missionVerificationUiModel.collectAsStateWithLifecycle()
@@ -65,6 +69,17 @@ fun BoardRoute(
     var isShownDeleteMissionDialog by remember { mutableStateOf(false) }
     var isShownBoardRewardDialog by remember { mutableStateOf<BoardReward?>(null) }
     var isShownInvitationCodeDialog by remember { mutableStateOf(false) }
+
+    val imagePicker = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.PickVisualMedia(),
+        onResult = { imageUri->
+            imageUri?.let { original ->
+                ImageCompressor.getCompressedImage(context ,original).let { compressed ->
+                    viewModel.verify(compressed)
+                }
+            }
+        }
+    )
 
     LaunchedEffect(key1 = Unit) {
         viewModel.getMissionBoards()
@@ -144,7 +159,9 @@ fun BoardRoute(
             isShownInvitationCodeDialog = !isShownInvitationCodeDialog
         },
         onClickVerification = {
-            viewModel.verify()
+            imagePicker.launch(
+                PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+            )
         },
         onClickTooltip = {
             viewModel.setViewedTooltip()
