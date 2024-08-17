@@ -10,6 +10,7 @@ import com.goalpanzi.mission_mate.core.domain.usecase.GetMissionUseCase
 import com.goalpanzi.mission_mate.core.domain.usecase.GetMissionVerificationsUseCase
 import com.goalpanzi.mission_mate.core.domain.usecase.GetViewedTooltipUseCase
 import com.goalpanzi.mission_mate.core.domain.usecase.SetViewedTooltipUseCase
+import com.goalpanzi.mission_mate.core.domain.usecase.VerifyMissionUseCase
 import com.goalpanzi.mission_mate.feature.board.model.MissionState
 import com.goalpanzi.mission_mate.feature.board.model.MissionState.Companion.getMissionState
 import com.goalpanzi.mission_mate.feature.board.model.toModel
@@ -18,7 +19,6 @@ import com.goalpanzi.mission_mate.feature.board.model.uimodel.MissionUiModel
 import com.goalpanzi.mission_mate.feature.board.model.uimodel.MissionVerificationUiModel
 import com.luckyoct.core.model.base.NetworkResult
 import com.luckyoct.core.model.response.BoardReward
-import com.luckyoct.core.model.response.MissionBoardsResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -35,6 +35,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import java.io.File
 import javax.inject.Inject
 
 @HiltViewModel
@@ -46,6 +47,7 @@ class BoardViewModel @Inject constructor(
     getCachedMemberIdUseCase: GetCachedMemberIdUseCase,
     getViewedTooltipUseCase: GetViewedTooltipUseCase,
     private val setViewedTooltipUseCase: SetViewedTooltipUseCase,
+    private val verifyMissionUseCase: VerifyMissionUseCase,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
@@ -197,7 +199,16 @@ class BoardViewModel @Inject constructor(
         }
     }
 
-    fun verify() {
-
+    fun verify(image: File) {
+        viewModelScope.launch {
+            verifyMissionUseCase(missionId, image).collect {
+                when (it) {
+                    is NetworkResult.Success -> {
+                        //TODO : 인증 성공
+                    }
+                    else -> Unit
+                }
+            }
+        }
     }
 }

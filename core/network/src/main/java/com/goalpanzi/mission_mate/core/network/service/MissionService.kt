@@ -4,9 +4,13 @@ import com.luckyoct.core.model.response.MissionBoardsResponse
 import com.luckyoct.core.model.response.MissionDetailResponse
 import com.luckyoct.core.model.response.MissionRankResponse
 import com.luckyoct.core.model.response.MissionVerificationsResponse
+import okhttp3.MultipartBody
 import retrofit2.Response
 import retrofit2.http.DELETE
 import retrofit2.http.GET
+import retrofit2.http.Multipart
+import retrofit2.http.POST
+import retrofit2.http.Part
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -37,4 +41,10 @@ interface MissionService {
         @Query("missionId") missionId : Long
     ) : Response<MissionRankResponse>
 
+    @Multipart
+    @POST("/api/missions/{missionId}/verifications/me")
+    suspend fun verifyMission(
+        @Path("missionId") missionId: Long,
+        @Part imageFile: MultipartBody.Part
+    ) : Response<Unit>
 }
