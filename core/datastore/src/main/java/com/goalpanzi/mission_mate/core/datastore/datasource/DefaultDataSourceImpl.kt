@@ -3,6 +3,7 @@ package com.goalpanzi.mission_mate.core.datastore.datasource
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.luckyoct.core.model.CharacterType
 import com.luckyoct.core.model.UserProfile
@@ -18,6 +19,7 @@ class DefaultDataSourceImpl @Inject constructor(
     object PreferencesKey {
         val USER_NICKNAME = stringPreferencesKey("USER_NICKNAME")
         val USER_CHARACTER = stringPreferencesKey("USER_CHARACTER")
+        val MEMBER_ID = longPreferencesKey("MEMBER_ID")
     }
 
     override fun clearUserData(): Flow<Unit> = flow {
@@ -43,5 +45,16 @@ class DefaultDataSourceImpl @Inject constructor(
         } else {
             null
         }
+    }
+
+    override fun setMemberId(data: Long): Flow<Unit> = flow {
+        dataStore.edit { preferences ->
+            preferences[PreferencesKey.MEMBER_ID] = data
+        }
+        emit(Unit)
+    }
+
+    override fun getMemberId(): Flow<Long?> = dataStore.data.map { preferences ->
+        preferences[PreferencesKey.MEMBER_ID]
     }
 }
