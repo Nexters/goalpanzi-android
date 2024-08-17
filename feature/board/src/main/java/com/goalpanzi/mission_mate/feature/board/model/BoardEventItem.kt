@@ -68,6 +68,6 @@ enum class EventType(
 }
 
 
-fun BoardReward.toEventType(): EventType {
-    return EventType.entries.first { it.name == this.name }
+fun BoardReward.toEventType(): EventType? {
+    return EventType.entries.find { it.name == this.name }
 }

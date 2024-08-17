@@ -1,6 +1,9 @@
 package com.goalpanzi.mission_mate.feature.board.component
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -27,6 +30,7 @@ import com.goalpanzi.mission_mate.feature.board.model.UserStory
 import com.goalpanzi.mission_mate.feature.onboarding.component.StableImage
 
 
+@SuppressLint("UnrememberedMutableInteractionSource")
 @Composable
 fun BoardTopView(
     title: String,
@@ -36,6 +40,7 @@ fun BoardTopView(
     onClickFlag: () -> Unit,
     onClickAddUser: () -> Unit,
     onClickSetting: () -> Unit,
+    onClickTooltip : () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Box(
@@ -78,6 +83,11 @@ fun BoardTopView(
                 StableImage(
                     modifier = Modifier
                         .align(Alignment.TopEnd)
+                        .clickable(
+                            interactionSource = MutableInteractionSource(),
+                            indication = null,
+                            onClick = onClickTooltip
+                        )
                         .padding(end = 43.dp,top = 48.dp)
                         .width(161.dp),
                     drawableResId = R.drawable.img_tooltip_mission_invitation_code,
@@ -88,6 +98,11 @@ fun BoardTopView(
                 StableImage(
                     modifier = Modifier
                         .align(Alignment.TopStart)
+                        .clickable(
+                            interactionSource = MutableInteractionSource(),
+                            indication = null,
+                            onClick = onClickTooltip
+                        )
                         .padding(start = 8.dp, top = 48.dp)
                         .width(161.dp),
                     drawableResId = R.drawable.img_tooltip_mission_detail,

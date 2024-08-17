@@ -134,7 +134,7 @@ enum class MissionState {
             if (isTodayMissionDay(todayLocalDate, daysOfWeek)) {
                 when (verificationTimeType) {
                     VerificationTimeType.AFTERNOON -> {
-                        if(endTime.isAfter(VerificationTimeType.MORNING.getVerificationEndTime(todayLocalDateTime))){
+                        if(!endTime.isAfter(VerificationTimeType.MORNING.getVerificationEndTime(todayLocalDateTime))){
                             return IN_PROGRESS_MISSION_DAY_NON_MISSION_TIME
                         }
                     }

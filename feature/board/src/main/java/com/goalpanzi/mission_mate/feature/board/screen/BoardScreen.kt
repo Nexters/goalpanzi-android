@@ -142,6 +142,9 @@ fun BoardRoute(
         },
         onClickVerification = {
             viewModel.verify()
+        },
+        onClickTooltip = {
+            viewModel.setViewedTooltip()
         }
     )
 }
@@ -158,6 +161,7 @@ fun BoardScreen(
     onClickVerification : () -> Unit,
     onClickFlag: () -> Unit,
     onClickAddUser: () -> Unit,
+    onClickTooltip : () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Box(
@@ -195,9 +199,10 @@ fun BoardScreen(
                 onClickFlag = onClickFlag,
                 onClickAddUser = onClickAddUser,
                 onClickSetting = onClickSetting,
+                onClickTooltip = onClickTooltip
             )
 
-            if (!missionState.enabledVerification()) {
+            if (!missionState.isVisiblePiece()) {
                 Box(
                     modifier = Modifier
                         .wrapContentSize()

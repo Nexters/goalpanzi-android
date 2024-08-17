@@ -95,7 +95,13 @@ fun Board(
                     .drawWithContent {
                         clipRect(
                             top = statusBarHeight + 178.dp.toPx() - 1,
-                            bottom = size.height + navigationBarHeight - (if (missionState.isVisiblePiece()) 188.dp else 46.dp).toPx()
+                            bottom = if (missionState.isVisiblePiece()){
+                                size.height
+                            }else {
+                                size.height + navigationBarHeight - (if (missionState.isVisiblePiece()) 188.dp else 46.dp).toPx()
+                            }
+
+
                         ) {
                             this@drawWithContent.drawContent()
                         }
@@ -111,29 +117,31 @@ fun Board(
                 modifier
             )
         }
-
-        Column(
-            modifier = modifier.modifierWithClipRect(
-                scrollState = scrollState,
-                missionState = missionState,
-                innerModifier = Modifier
-                    .drawWithContent {
-                        clipRect(top = (size.height + navigationBarHeight - (if (missionState.isVisiblePiece()) 188.dp else 46.dp).toPx())) {
-                            this@drawWithContent.drawContent()
+        if (missionState.isVisiblePiece()){
+            Column(
+                modifier = modifier.modifierWithClipRect(
+                    scrollState = scrollState,
+                    missionState = missionState,
+                    innerModifier = Modifier
+                        .drawWithContent {
+                            clipRect(top = (size.height + navigationBarHeight - (if (missionState.isVisiblePiece()) 188.dp else 46.dp).toPx())) {
+                                this@drawWithContent.drawContent()
+                            }
                         }
-                    }
-                    .blur(10.dp, 10.dp)
-            )
-        ) {
-            BoardContent(
-                missionBoards,
-                missionDetail,
-                numberOfColumns,
-                profile,
-                missionState,
-                modifier
-            )
+                        .blur(10.dp, 10.dp)
+                )
+            ) {
+                BoardContent(
+                    missionBoards,
+                    missionDetail,
+                    numberOfColumns,
+                    profile,
+                    missionState,
+                    modifier
+                )
+            }
         }
+
 
 
     }
