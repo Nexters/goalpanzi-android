@@ -15,5 +15,9 @@
     <string name="board_delete_title">시작일까지 아무도 오지않아\n미션보드를 삭제할게요.</string>
     <string name="board_delete_description">미션보드는 삭제되고\n초기화면으로 이동해요.</string>
 
+    <string name="board_finish_rank">%d등</string>
+    <string name="board_finish_description">경쟁이 종료되었어요.</string>
+    <string name="board_finish_sub_description">보드판은 삭제되며\n초기화면으로 돌아가요!</string>
+
     <string name="ok">확인</string>
 </resources>
