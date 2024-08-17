@@ -7,6 +7,6 @@ import kotlinx.serialization.Serializable
 data class MissionVerificationResponse(
     val nickname : String,
     val characterType : CharacterType = CharacterType.RABBIT,
-    val image : String = "",
+    val imageUrl : String = "",
     val verifiedAt : String = ""
 )

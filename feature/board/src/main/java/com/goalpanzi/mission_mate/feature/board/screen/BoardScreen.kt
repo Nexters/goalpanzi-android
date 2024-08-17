@@ -58,6 +58,8 @@ fun BoardRoute(
     val missionUiModel by viewModel.missionUiModel.collectAsStateWithLifecycle()
     val missionVerificationUiModel by viewModel.missionVerificationUiModel.collectAsStateWithLifecycle()
     val missionState by viewModel.missionState.collectAsStateWithLifecycle()
+    val viewedTooltip by viewModel.viewedToolTip.collectAsStateWithLifecycle()
+    val isHost by viewModel.isHost.collectAsStateWithLifecycle()
 
     val scrollState = rememberScrollState()
     var isShownDeleteMissionDialog by remember { mutableStateOf(false) }
@@ -125,20 +127,27 @@ fun BoardRoute(
 
     BoardScreen(
         modifier = modifier,
+        viewedTooltip = viewedTooltip,
         scrollState = scrollState,
         missionBoardUiModel = missionBoardUiModel,
         missionUiModel = missionUiModel,
         missionVerificationUiModel = missionVerificationUiModel,
         missionState = missionState,
+        isHost = isHost,
         onClickSetting = onClickSetting,
         onClickFlag = {
+            viewModel.setViewedTooltip()
             onNavigateDetail()
         },
         onClickAddUser = {
+            viewModel.setViewedTooltip()
             isShownInvitationCodeDialog = !isShownInvitationCodeDialog
         },
         onClickVerification = {
             viewModel.verify()
+        },
+        onClickTooltip = {
+            viewModel.setViewedTooltip()
         }
     )
 }
@@ -146,14 +155,17 @@ fun BoardRoute(
 @Composable
 fun BoardScreen(
     scrollState: ScrollState,
+    viewedTooltip : Boolean,
     missionBoardUiModel: MissionBoardUiModel,
     missionUiModel: MissionUiModel,
     missionVerificationUiModel: MissionVerificationUiModel,
     missionState : MissionState,
+    isHost : Boolean,
     onClickSetting: () -> Unit,
     onClickVerification : () -> Unit,
     onClickFlag: () -> Unit,
     onClickAddUser: () -> Unit,
+    onClickTooltip : () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Box(
@@ -181,7 +193,8 @@ fun BoardScreen(
             )
             BoardTopView(
                 title = missionUiModel.missionDetail.description,
-                isAddingUserEnabled = true,
+                isAddingUserEnabled = isHost,
+                viewedTooltip = viewedTooltip,
                 userList = missionVerificationUiModel.missionVerificationsResponse.missionVerifications.mapIndexed { i, item ->
                     item.toUserStory(
                         isMe = i == 0
@@ -190,9 +203,10 @@ fun BoardScreen(
                 onClickFlag = onClickFlag,
                 onClickAddUser = onClickAddUser,
                 onClickSetting = onClickSetting,
+                onClickTooltip = onClickTooltip
             )
 
-            if (!missionState.enabledVerification()) {
+            if (!missionState.isVisiblePiece()) {
                 Box(
                     modifier = Modifier
                         .wrapContentSize()

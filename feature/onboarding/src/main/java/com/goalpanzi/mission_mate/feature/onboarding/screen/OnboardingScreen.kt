@@ -124,7 +124,7 @@ fun OnboardingScreen(
                         modifier = Modifier.padding(bottom = 52.dp),
                         text = stringResource(id = R.string.onboarding_ready_title),
                         textAlign = TextAlign.Center,
-                        style = MissionMateTypography.heading_sm_regular,
+                        style = MissionMateTypography.heading_sm_bold,
                         color = ColorGray1_FF404249
                     )
                     OutlinedTextBox(

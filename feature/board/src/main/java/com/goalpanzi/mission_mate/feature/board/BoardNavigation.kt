@@ -6,6 +6,7 @@ import androidx.navigation.NavOptions
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.goalpanzi.mission_mate.feature.board.screen.BoardFinishRoute
 import com.goalpanzi.mission_mate.feature.board.screen.BoardMissionDetailRoute
 import com.goalpanzi.mission_mate.feature.board.screen.BoardRoute
 
@@ -62,6 +63,27 @@ fun NavGraphBuilder.boardDetailNavGraph(
         BoardMissionDetailRoute(
             onDelete = onDelete,
             onBackClick = onBackClick
+        )
+    }
+}
+
+fun NavController.navigateToBoardFinish(
+    missionId: Long
+) {
+    this.navigate("RouteModel.BoardFinish" + "/${missionId}")
+}
+
+fun NavGraphBuilder.boardFinishNavGraph(
+    onClickSetting: () -> Unit,
+    onClickOk : () -> Unit,
+) {
+    composable(
+        "RouteModel.BoardFinish/{$missionIdArg}",
+        arguments = listOf(navArgument(missionIdArg) { type = NavType.LongType })
+    ) {
+        BoardFinishRoute(
+            onClickSetting = onClickSetting,
+            onClickOk = onClickOk
         )
     }
 }

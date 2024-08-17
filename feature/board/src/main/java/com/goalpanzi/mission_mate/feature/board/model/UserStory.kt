@@ -14,7 +14,7 @@ fun MissionVerificationResponse.toUserStory(isMe: Boolean = false) : UserStory =
     UserStory(
         nickname = nickname,
         characterType = characterType.toCharacter(),
-        imageUrl = image,
+        imageUrl = imageUrl,
         isVerified = false,
         isMe = isMe
     )

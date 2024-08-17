@@ -5,6 +5,7 @@ import com.goalpanzi.mission_mate.core.network.service.MissionService
 import com.luckyoct.core.model.base.NetworkResult
 import com.luckyoct.core.model.response.MissionBoardsResponse
 import com.luckyoct.core.model.response.MissionDetailResponse
+import com.luckyoct.core.model.response.MissionRankResponse
 import com.luckyoct.core.model.response.MissionVerificationsResponse
 import javax.inject.Inject
 
@@ -25,5 +26,9 @@ class MissionRepositoryImpl @Inject constructor(
 
     override suspend fun deleteMission(missionId: Long): NetworkResult<MissionDetailResponse> = handleResult {
         missionService.deleteMission(missionId)
+    }
+
+    override suspend fun getMissionRank(missionId: Long): NetworkResult<MissionRankResponse> = handleResult {
+        missionService.getMissionRank(missionId)
     }
 }

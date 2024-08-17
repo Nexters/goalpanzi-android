@@ -170,3 +170,6 @@ google-services.json
 /.idea/kotlinc.xml
 
 firebase_credentials.json
+/.idea/inspectionProfiles/Project_Default.xml
+/.idea/deploymentTargetSelector.xml
+/.idea/other.xml
