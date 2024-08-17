@@ -19,5 +19,11 @@
     <string name="board_finish_description">경쟁이 종료되었어요.</string>
     <string name="board_finish_sub_description">보드판은 삭제되며\n초기화면으로 돌아가요!</string>
 
+    <string name="board_invitation_dialog_title">시작일까지 초대된 인원과\n경쟁이 자동으로 시작돼요!</string>
+    <string name="board_invitation_dialog_title_color_target">경쟁이 자동으로</string>
+    <string name="board_invitation_dialog_description">경쟁인원은 최소 %d명부터 최대 %d명 이에요!</string>
+    <string name="board_invitation_dialog_copy">친구 초대 코드 복사</string>
+
     <string name="ok">확인</string>
+    <string name="close">닫기</string>
 </resources>
