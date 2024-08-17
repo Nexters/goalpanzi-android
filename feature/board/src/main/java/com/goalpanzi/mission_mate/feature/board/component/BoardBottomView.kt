@@ -98,10 +98,10 @@ fun PreviewBoardBottomView() {
             description = "convallis",
             missionStartDate = "mnesarchum",
             missionEndDate = "congue",
-            timeOfDay = "cursus",
+            timeOfDay = "MORNING",
             missionDays = listOf(),
             boardCount = 12,
-            invitationCode = "viderer"
+            invitationCode = "ABDC"
         ),
         onClickButton = {}
     )

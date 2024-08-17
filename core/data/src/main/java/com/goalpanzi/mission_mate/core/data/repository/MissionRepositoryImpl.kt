@@ -9,7 +9,7 @@ import com.luckyoct.core.model.response.MissionVerificationsResponse
 import javax.inject.Inject
 
 class MissionRepositoryImpl @Inject constructor(
-    private val missionService: MissionService
+    private val missionService: MissionService,
 ) : MissionRepository {
     override suspend fun getMissionBoards(missionId: Long): NetworkResult<MissionBoardsResponse> = handleResult {
         missionService.getMissionBoards(missionId)

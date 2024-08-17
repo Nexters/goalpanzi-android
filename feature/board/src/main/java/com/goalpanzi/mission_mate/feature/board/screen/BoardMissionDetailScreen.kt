@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,9 +15,11 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -27,6 +30,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorGray1_FF404249
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorGray2_FF4F505C
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorGray3_FF727484
@@ -39,39 +44,68 @@ import com.goalpanzi.mission_mate.core.designsystem.theme.component.MissionMateT
 import com.goalpanzi.mission_mate.core.designsystem.theme.component.NavigationType
 import com.goalpanzi.mission_mate.feature.board.R
 import com.goalpanzi.mission_mate.feature.board.component.RequestDeleteMissionDialog
+import com.goalpanzi.mission_mate.feature.board.model.uimodel.MissionUiModel
 import com.goalpanzi.mission_mate.feature.onboarding.model.VerificationTimeType
 import com.goalpanzi.mission_mate.feature.onboarding.util.styledTextWithHighlights
+import kotlinx.coroutines.launch
 
 @Composable
 fun BoardMissionDetailRoute(
-    onClickDelete : () -> Unit,
+    onDelete : () -> Unit,
     onBackClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: BoardDetailViewModel = hiltViewModel()
 ) {
+    val missionUiModel by viewModel.missionUiModel.collectAsStateWithLifecycle()
     var isShownRequestDeleteMissionDialog by remember { mutableStateOf(false) }
+
+    LaunchedEffect(key1 = Unit) {
+        viewModel.getMission()
+
+        launch {
+            viewModel.deleteMissionResultEvent.collect {
+                if (it) {
+                    isShownRequestDeleteMissionDialog = false
+                    onDelete()
+                }
+            }
+        }
+
+    }
+
     if(isShownRequestDeleteMissionDialog){
         RequestDeleteMissionDialog(
             onDismissRequest = {
                 isShownRequestDeleteMissionDialog = false
             },
             onClickOk = {
-
+                viewModel.deleteMission()
             }
         )
     }
+    if(missionUiModel is MissionUiModel.Success){
+        val missionDetail = (missionUiModel as MissionUiModel.Success).missionDetail
+        BoardMissionDetailScreen(
+            modifier = modifier,
+            boardCount = missionDetail.boardCount ,
+            missionTitle = missionDetail.description,
+            missionPeriod = missionDetail.missionPeriod,
+            missionDays = missionDetail.missionDaysOfWeekTextLocale  ,
+            missionTime = VerificationTimeType.valueOf(missionDetail.timeOfDay),
+            onClickDelete = {
+                isShownRequestDeleteMissionDialog = !isShownRequestDeleteMissionDialog
+            },
+            onBackClick = onBackClick
+        )
+    }else {
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ){
+            CircularProgressIndicator()
+        }
+    }
 
-    BoardMissionDetailScreen(
-        modifier = modifier,
-        boardCount = 12,
-        missionTitle = "매일 유산소 1시간",
-        missionPeriod = "2024.07.24~2024.08.14",
-        missionDays = listOf("월", "수"),
-        missionTime = VerificationTimeType.MORNING,
-        onClickDelete = {
-            isShownRequestDeleteMissionDialog = !isShownRequestDeleteMissionDialog
-        },
-        onBackClick = onBackClick
-    )
 }
 
 @SuppressLint("UnrememberedMutableInteractionSource")
@@ -150,11 +184,13 @@ fun BoardMissionDetailScreen(
                     style = MissionMateTypography.body_lg_bold
                 )
                 Text(
-                    modifier = Modifier.padding(start = 8.dp).clickable(
-                        interactionSource = MutableInteractionSource(),
-                        indication = null,
-                        onClick = onClickDelete
-                    ),
+                    modifier = Modifier
+                        .padding(start = 8.dp)
+                        .clickable(
+                            interactionSource = MutableInteractionSource(),
+                            indication = null,
+                            onClick = onClickDelete
+                        ),
                     text = stringResource(id = R.string.board_mission_detail_delete),
                     color = ColorRed_FFFF5858,
                     style = MissionMateTypography.body_lg_regular
@@ -226,7 +262,7 @@ fun BoardMissionDetailScreen(
 private fun PreviewBoardMissionDetailRoute() {
     BoardMissionDetailRoute(
         onBackClick = {},
-        onClickDelete = {}
+        onDelete = {}
     )
 
 }

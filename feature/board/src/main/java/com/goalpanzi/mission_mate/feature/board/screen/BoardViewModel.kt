@@ -7,6 +7,8 @@ import com.goalpanzi.mission_mate.core.domain.usecase.DeleteMissionUseCase
 import com.goalpanzi.mission_mate.core.domain.usecase.GetMissionBoardsUseCase
 import com.goalpanzi.mission_mate.core.domain.usecase.GetMissionUseCase
 import com.goalpanzi.mission_mate.core.domain.usecase.GetMissionVerificationsUseCase
+import com.goalpanzi.mission_mate.core.domain.usecase.GetViewedTooltipUseCase
+import com.goalpanzi.mission_mate.core.domain.usecase.SetViewedTooltipUseCase
 import com.goalpanzi.mission_mate.feature.board.model.MissionState
 import com.goalpanzi.mission_mate.feature.board.model.MissionState.Companion.getMissionState
 import com.goalpanzi.mission_mate.feature.board.model.toModel
@@ -39,10 +41,15 @@ class BoardViewModel @Inject constructor(
     private val getMissionBoardsUseCase: GetMissionBoardsUseCase,
     private val getMissionVerificationsUseCase: GetMissionVerificationsUseCase,
     private val deleteMissionUseCase: DeleteMissionUseCase,
+    private val getViewedTooltipUseCase: GetViewedTooltipUseCase,
+    private val setViewedTooltipUseCase: SetViewedTooltipUseCase,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
     private val missionId: Long = savedStateHandle.get<Long>("missionId")!!
+
+    private val _viewedTooltip = MutableStateFlow(true)
+    val viewedToolTip : StateFlow<Boolean> = _viewedTooltip.asStateFlow()
 
     private val _deleteMissionResultEvent = MutableSharedFlow<Boolean>()
     val deleteMissionResultEvent: SharedFlow<Boolean> = _deleteMissionResultEvent.asSharedFlow()
