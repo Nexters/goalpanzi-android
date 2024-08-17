@@ -12,6 +12,7 @@ import com.goalpanzi.mission_mate.core.designsystem.theme.ColorWhite_FFFFFFFF
 import com.goalpanzi.mission_mate.feature.board.boardDetailNavGraph
 import com.goalpanzi.mission_mate.feature.board.boardFinishNavGraph
 import com.goalpanzi.mission_mate.feature.board.boardNavGraph
+import com.goalpanzi.mission_mate.feature.board.userStoryNavGraph
 import com.goalpanzi.mission_mate.feature.login.loginNavGraph
 import com.goalpanzi.mission_mate.feature.onboarding.boardSetupNavGraph
 import com.goalpanzi.mission_mate.feature.onboarding.boardSetupSuccessNavGraph
@@ -99,6 +100,9 @@ internal fun MainNavHost(
                 },
                 onClickSetting = {
                     navigator.navigationToSetting()
+                },
+                onNavigateStory = { userStory ->
+                    navigator.navigationToUserStory(userStory)
                 }
             )
             boardDetailNavGraph(
@@ -115,6 +119,11 @@ internal fun MainNavHost(
                 },
                 onClickOk = {
                     navigator.navigationToOnboarding()
+                }
+            )
+            userStoryNavGraph(
+                onClickClose = {
+                    navigator.popBackStack()
                 }
             )
         }

@@ -6,9 +6,11 @@ import androidx.lifecycle.Lifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.goalpanzi.mission_mate.core.navigation.RouteModel
+import com.goalpanzi.mission_mate.feature.board.model.UserStory
 import com.goalpanzi.mission_mate.feature.board.navigateToBoard
 import com.goalpanzi.mission_mate.feature.board.navigateToBoardDetail
 import com.goalpanzi.mission_mate.feature.board.navigateToBoardFinish
+import com.goalpanzi.mission_mate.feature.board.navigateToUserStory
 import com.goalpanzi.mission_mate.feature.login.navigateToLogin
 import com.goalpanzi.mission_mate.feature.onboarding.navigateToBoardSetup
 import com.goalpanzi.mission_mate.feature.onboarding.navigateToBoardSetupSuccess
@@ -79,6 +81,10 @@ class MainNavigator(
     }
     fun navigateToBoardFinish(missionId : Long){
         navController.navigateToBoardFinish(missionId)
+    }
+
+    fun navigationToUserStory(userStory: UserStory) {
+        navController.navigateToUserStory(userStory)
     }
 }
 

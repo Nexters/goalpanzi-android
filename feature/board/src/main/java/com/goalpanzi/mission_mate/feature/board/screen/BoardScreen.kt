@@ -39,6 +39,7 @@ import com.goalpanzi.mission_mate.feature.board.component.dialog.BoardEventDialo
 import com.goalpanzi.mission_mate.feature.board.component.dialog.DeleteMissionDialog
 import com.goalpanzi.mission_mate.feature.board.model.BoardPiece
 import com.goalpanzi.mission_mate.feature.board.model.MissionState
+import com.goalpanzi.mission_mate.feature.board.model.UserStory
 import com.goalpanzi.mission_mate.feature.board.model.toCharacter
 import com.goalpanzi.mission_mate.feature.board.model.toUserStory
 import com.goalpanzi.mission_mate.feature.board.model.uimodel.MissionBoardUiModel
@@ -56,6 +57,7 @@ fun BoardRoute(
     onNavigateDetail: () -> Unit,
     onNavigateFinish : (Long) -> Unit,
     onClickSetting: () -> Unit,
+    onClickStory: (UserStory) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: BoardViewModel = hiltViewModel()
 ) {
@@ -171,7 +173,8 @@ fun BoardRoute(
         },
         onClickTooltip = {
             viewModel.setViewedTooltip()
-        }
+        },
+        onClickStory = onClickStory
     )
 }
 
@@ -190,6 +193,7 @@ fun BoardScreen(
     onClickFlag: () -> Unit,
     onClickAddUser: () -> Unit,
     onClickTooltip: () -> Unit,
+    onClickStory : (UserStory) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Box(
@@ -228,7 +232,8 @@ fun BoardScreen(
                 onClickFlag = onClickFlag,
                 onClickAddUser = onClickAddUser,
                 onClickSetting = onClickSetting,
-                onClickTooltip = onClickTooltip
+                onClickTooltip = onClickTooltip,
+                onClickStory = onClickStory
             )
 
             if (!missionState.isVisiblePiece()) {
