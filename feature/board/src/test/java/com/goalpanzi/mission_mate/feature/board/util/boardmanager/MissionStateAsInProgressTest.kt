@@ -21,7 +21,7 @@ class MissionStateAsInProgressTest {
         val memberList = listOf(
             MissionVerificationResponse(
                 nickname = "",
-                imageUrl = ""
+                imageUrl = "image"
             )
         )
 

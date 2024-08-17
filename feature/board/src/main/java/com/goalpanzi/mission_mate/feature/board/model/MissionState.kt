@@ -134,7 +134,9 @@ enum class MissionState {
             if (isTodayMissionDay(todayLocalDate, daysOfWeek)) {
                 when (verificationTimeType) {
                     VerificationTimeType.AFTERNOON -> {
-                        if(!endTime.isAfter(VerificationTimeType.MORNING.getVerificationEndTime(todayLocalDateTime))){
+                        val startTime = todayLocalDateTime.withHour(12).withMinute(0).withSecond(0).withNano(0)
+                        val target = VerificationTimeType.MORNING.getVerificationEndTime(todayLocalDateTime)
+                        if(target.isBefore(startTime)){
                             return IN_PROGRESS_MISSION_DAY_NON_MISSION_TIME
                         }
                     }
