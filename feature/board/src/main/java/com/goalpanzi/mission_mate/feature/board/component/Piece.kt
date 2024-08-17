@@ -1,11 +1,14 @@
 package com.goalpanzi.mission_mate.feature.board.component
 
 import androidx.annotation.DrawableRes
+import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.animateDpAsState
-import androidx.compose.animation.core.animateOffsetAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.absoluteOffset
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -13,7 +16,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Card
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -24,7 +26,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -32,34 +33,46 @@ import com.goalpanzi.mission_mate.core.designsystem.theme.ColorGray1_FF404249
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorOrange_FFFF5732
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorWhite_FFFFFFFF
 import com.goalpanzi.mission_mate.core.designsystem.theme.MissionMateTypography
-import com.goalpanzi.mission_mate.feature.board.model.PieceOffset
-import com.goalpanzi.mission_mate.feature.board.util.PieceUtil
+import com.goalpanzi.mission_mate.feature.board.util.PieceGenerator
+import com.goalpanzi.mission_mate.feature.onboarding.component.OutlinedBox
 import com.goalpanzi.mission_mate.feature.onboarding.component.StableImage
 
 @Composable
 fun BoxScope.Piece(
     index: Int,
+    count : Int,
+    nickname : String,
     numberOfColumn: Int,
     sizePerBlock: Dp,
+    isMe : Boolean,
     @DrawableRes imageId: Int,
+    @DrawableRes imageIdForCount: Int,
     modifier: Modifier = Modifier
 ) {
     var needMoving by remember {
         mutableStateOf(false)
     }
     val x = animateDpAsState(
-        targetValue = if (needMoving) PieceUtil.getXOffset(
+        targetValue = if (needMoving) PieceGenerator.getXOffset(
             index,
             numberOfColumn,
             sizePerBlock
-        ) else PieceUtil.getXOffset(index-1, numberOfColumn, sizePerBlock)
+        ) else PieceGenerator.getXOffset(index-1, numberOfColumn, sizePerBlock),
+        animationSpec = tween(
+            durationMillis = 500,
+            easing = LinearOutSlowInEasing
+        )
     )
     val y = animateDpAsState(
-        targetValue = if (needMoving) PieceUtil.getYOffset(
+        targetValue = if (needMoving) PieceGenerator.getYOffset(
             index ,
             numberOfColumn,
             sizePerBlock
-        ) else PieceUtil.getYOffset(index-1, numberOfColumn, sizePerBlock)
+        ) else PieceGenerator.getYOffset(index-1, numberOfColumn, sizePerBlock),
+        animationSpec = tween(
+            durationMillis = 500,
+            easing = LinearOutSlowInEasing
+        )
     )
 
 
@@ -77,18 +90,28 @@ fun BoxScope.Piece(
                 sizePerBlock
             )
     ) {
+
         StableImage(
             modifier = Modifier
+                .padding(top = 4.dp)
                 .fillMaxWidth(88f / 114f)
                 .aspectRatio(1f)
                 .align(Alignment.TopCenter),
             drawableResId = imageId,
         )
+        if(count > 1){
+            PieceCountChip(
+                modifier = Modifier.align(Alignment.TopEnd),
+                count = count,
+                imageId = imageIdForCount
+            )
+        }
         PieceNameChip(
             modifier = Modifier.align(
                 Alignment. BottomCenter
             ).padding(bottom = 7.dp),
-            name = "토끼는깡총깡"
+            name = nickname,
+            isMe = isMe
         )
     }
 
@@ -106,7 +129,6 @@ fun PieceNameChip(
         modifier = modifier
             .wrapContentSize()
             .clip(RoundedCornerShape(20.dp))
-
             .background(
                 if(isMe) ColorOrange_FFFF5732 else ColorWhite_FFFFFFFF
             ).padding(horizontal = 8.5.dp, 0.85.dp)
@@ -115,4 +137,33 @@ fun PieceNameChip(
         style = textStyle,
         color = if(isMe) ColorWhite_FFFFFFFF else ColorGray1_FF404249
     )
+}
+
+@Composable
+fun PieceCountChip(
+    @DrawableRes imageId: Int,
+    count : Int,
+    modifier: Modifier = Modifier,
+    textStyle : TextStyle = MissionMateTypography.body_md_bold
+){
+    OutlinedBox(
+        modifier = modifier
+    ){
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(5.dp)
+        ){
+            StableImage(
+                modifier = Modifier.size(22.dp),
+                drawableResId = imageId,
+            )
+            Text(
+                modifier = Modifier.padding(end = 4.dp),
+                text = "$count",
+                style = textStyle,
+                color = ColorWhite_FFFFFFFF
+            )
+        }
+    }
+
 }

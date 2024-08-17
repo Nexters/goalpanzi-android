@@ -52,6 +52,12 @@ material = "1.12.0"
 google-service = "4.4.2"
 firebase = "33.1.2"
 
+## Lottie
+lottie-compose = "6.5.0"
+
+# ETC
+balloon = "1.6.6"
+
 [libraries]
 ## Koitln
 kotlin-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
@@ -114,6 +120,12 @@ material = { group = "com.google.android.material", name = "material", version.r
 
 ## Firebase
 firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebase" }
+
+## Lottie
+lottie-compose = { group = "com.airbnb.android", name = "lottie-compose", version.ref = "lottie-compose"}
+
+## ETC
+balloon = { group = "com.github.skydoves", name = "balloon", version.ref = "balloon" }
 
 [plugins]
 ## Android gradle plugin

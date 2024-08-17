@@ -17,30 +17,31 @@ import com.goalpanzi.mission_mate.core.designsystem.theme.ColorGray1_FF404249
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorWhite_FFFFFFFF
 import com.goalpanzi.mission_mate.core.designsystem.theme.component.MissionMateTopAppBar
 import com.goalpanzi.mission_mate.core.designsystem.theme.component.NavigationType
-import com.goalpanzi.mission_mate.feature.board.model.Character
 import com.goalpanzi.mission_mate.feature.board.model.UserStory
 
 
 @Composable
 fun BoardTopView(
-    title : String,
-    isAddingUserEnabled : Boolean,
-    userList : List<UserStory>,
-    onClickFlag : () -> Unit,
-    onClickAddUser : () -> Unit,
-    onClickSetting : () -> Unit,
+    title: String,
+    isAddingUserEnabled: Boolean,
+    userList: List<UserStory>,
+    onClickFlag: () -> Unit,
+    onClickAddUser: () -> Unit,
+    onClickSetting: () -> Unit,
     modifier: Modifier = Modifier,
-    isVisibleFlagButton : Boolean = false
-){
+    isVisibleFlagButton: Boolean = false
+) {
     Column(
-        modifier = modifier.background(ColorWhite_FFFFFFFF.copy(alpha = 0.5f)).statusBarsPadding()
+        modifier = modifier
+            .background(ColorWhite_FFFFFFFF.copy(alpha = 0.5f))
+            .statusBarsPadding()
     ) {
         MissionMateTopAppBar(
             modifier = modifier,
             navigationType = NavigationType.NONE,
             title = title,
             leftActionButtons = {
-                if(isVisibleFlagButton){
+                if (isVisibleFlagButton) {
                     IconButton(
                         onClick = onClickFlag,
                         modifier = Modifier.wrapContentSize()
@@ -70,16 +71,16 @@ fun BoardTopView(
 
 @Composable
 fun BoardTopViewRightActionButtons(
-    isAddingUserEnabled : Boolean,
-    onClickAddUser : () -> Unit,
-    onClickSetting : () -> Unit,
+    isAddingUserEnabled: Boolean,
+    onClickAddUser: () -> Unit,
+    onClickSetting: () -> Unit,
     modifier: Modifier = Modifier
-){
+) {
     Row(
         modifier = modifier,
         verticalAlignment = Alignment.CenterVertically
-    ){
-        if(isAddingUserEnabled){
+    ) {
+        if (isAddingUserEnabled) {
             IconButton(
                 onClick = onClickAddUser,
                 modifier = Modifier.wrapContentSize()

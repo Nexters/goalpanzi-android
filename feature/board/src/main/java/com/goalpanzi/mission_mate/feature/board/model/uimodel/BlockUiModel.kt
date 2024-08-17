@@ -1,4 +1,7 @@
-package com.goalpanzi.mission_mate.feature.board.model
+package com.goalpanzi.mission_mate.feature.board.model.uimodel
+
+import com.goalpanzi.mission_mate.feature.board.model.BlockEventType
+import com.goalpanzi.mission_mate.feature.board.model.BlockType
 
 data class BlockUiModel(
     val index : Int,

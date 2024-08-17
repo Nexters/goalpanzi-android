@@ -16,7 +16,7 @@ fun MissionDetailResponse.toMissionUiModel() =
         missionId = missionId,
         missionTitle = description,
         missionPeriod = missionPeriod,
-        missionDays = missionDaysOfWeek,
+        missionDays = missionDaysOfWeekTextLocale,
         missionTime = VerificationTimeType.valueOf(timeOfDay),
         missionBoardCount = boardCount
     )

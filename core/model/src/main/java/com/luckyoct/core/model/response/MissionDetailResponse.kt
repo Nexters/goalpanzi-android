@@ -25,6 +25,11 @@ data class MissionDetailResponse(
         LocalDate.parse(missionStartDate, formatter)
     }
 
+    val missionEndLocalDateTime : LocalDateTime by lazy {
+        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")
+        LocalDateTime.parse(missionEndDate, formatter)
+    }
+
     val missionPeriod : String by lazy {
         try {
             val inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")
@@ -39,13 +44,23 @@ data class MissionDetailResponse(
         }
     }
 
-    val missionDaysOfWeek : List<String> by lazy {
+    val missionDaysOfWeekTextLocale : List<String> by lazy {
         try {
             missionDays.map {
                 DayOfWeek.valueOf(it).getDisplayName(TextStyle.SHORT, Locale.getDefault())
             }
         }catch (e: Exception){
             missionDays
+        }
+    }
+
+    val missionDaysOfWeek : List<DayOfWeek> by lazy {
+        try {
+            missionDays.map {
+                DayOfWeek.valueOf(it)
+            }
+        }catch (e: Exception){
+            emptyList()
         }
     }
 
