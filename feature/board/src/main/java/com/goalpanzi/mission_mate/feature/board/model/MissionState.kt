@@ -40,6 +40,21 @@ enum class MissionState {
         return this == IN_PROGRESS_MISSION_DAY_BEFORE_CONFIRM
     }
 
+    fun isRankBoardTitle() : Boolean {
+        return this in setOf(
+            IN_PROGRESS_MISSION_DAY_BEFORE_CONFIRM,
+            IN_PROGRESS_MISSION_DAY_AFTER_CONFIRM
+        )
+    }
+
+    fun isEncourageBoardTitle() : Boolean {
+        return this in setOf(
+            IN_PROGRESS_MISSION_DAY_CLOSED,
+            IN_PROGRESS_NON_MISSION_DAY,
+            IN_PROGRESS_MISSION_DAY_NON_MISSION_TIME
+        )
+    }
+
     companion object {
         fun getMissionState(
             missionBoardUiModel: MissionBoardUiModel,
@@ -54,11 +69,11 @@ enum class MissionState {
 
             return getMissionState(
                 todayLocalDateTime = todayLocalDateTime,
-                startDate = missionUiModel.missionDetailResponse.missionStartLocalDate,
-                endDateTime = missionUiModel.missionDetailResponse.missionEndLocalDateTime,
+                startDate = missionUiModel.missionDetail.missionStartLocalDate,
+                endDateTime = missionUiModel.missionDetail.missionEndLocalDateTime,
                 memberList = missionVerificationUiModel.missionVerificationsResponse.missionVerifications,
-                verificationTimeType = VerificationTimeType.valueOf(missionUiModel.missionDetailResponse.timeOfDay),
-                daysOfWeek = missionUiModel.missionDetailResponse.missionDaysOfWeek
+                verificationTimeType = VerificationTimeType.valueOf(missionUiModel.missionDetail.timeOfDay),
+                daysOfWeek = missionUiModel.missionDetail.missionDays
             )
         }
 

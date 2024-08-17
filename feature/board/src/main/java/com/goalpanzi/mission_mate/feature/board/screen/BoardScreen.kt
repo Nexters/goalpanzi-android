@@ -135,8 +135,6 @@ fun BoardScreen(
     onClickVerification : () -> Unit,
     modifier: Modifier = Modifier
 ) {
-
-
     Box(
         modifier = modifier
             .fillMaxSize()
@@ -153,21 +151,15 @@ fun BoardScreen(
                 contentScale = ContentScale.Crop
             )
             Board(
-                boardCount = missionBoardUiModel.missionBoardsResponse.missionBoards.size,
-                missionBoards = missionBoardUiModel.missionBoardsResponse,
+                missionBoards = missionBoardUiModel.missionBoards,
+                missionDetail = missionUiModel.missionDetail,
                 numberOfColumns = 3,
-                passedCount = missionBoardUiModel.missionBoardsResponse.passedCountByMe,
-                startDateText = stringResource(
-                    id = R.string.board_before_start_title,
-                    missionUiModel.missionDetailResponse.missionStartLocalDate.monthValue,
-                    missionUiModel.missionDetailResponse.missionStartLocalDate.dayOfMonth
-                ),
                 scrollState = scrollState,
                 profile = missionVerificationUiModel.missionVerificationsResponse.missionVerifications.first(),
                 missionState = missionState
             )
             BoardTopView(
-                title = missionUiModel.missionDetailResponse.description,
+                title = missionUiModel.missionDetail.description,
                 isAddingUserEnabled = false,
                 userList = missionVerificationUiModel.missionVerificationsResponse.missionVerifications.mapIndexed { i, item ->
                     item.toUserStory(
@@ -186,7 +178,7 @@ fun BoardScreen(
                         .wrapContentSize()
                         .padding(
                             top = 180.dp,
-                            bottom = if (missionUiModel.missionDetailResponse.isStartedMission()
+                            bottom = if (missionUiModel.missionDetail.isStartedMission()
                                 && missionVerificationUiModel.missionVerificationsResponse.missionVerifications.size != 1
                             ) 188.dp else 46.dp
                         )
@@ -213,6 +205,7 @@ fun BoardScreen(
                 BoardBottomView(
                     modifier = Modifier.align(Alignment.BottomCenter),
                     missionState = missionState,
+                    missionDetail = missionUiModel.missionDetail,
                     onClickButton = onClickVerification
                 )
             }

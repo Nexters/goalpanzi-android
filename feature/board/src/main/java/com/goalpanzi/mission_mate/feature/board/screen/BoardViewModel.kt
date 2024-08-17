@@ -9,6 +9,7 @@ import com.goalpanzi.mission_mate.core.domain.usecase.GetMissionUseCase
 import com.goalpanzi.mission_mate.core.domain.usecase.GetMissionVerificationsUseCase
 import com.goalpanzi.mission_mate.feature.board.model.MissionState
 import com.goalpanzi.mission_mate.feature.board.model.MissionState.Companion.getMissionState
+import com.goalpanzi.mission_mate.feature.board.model.toModel
 import com.goalpanzi.mission_mate.feature.board.model.uimodel.MissionBoardUiModel
 import com.goalpanzi.mission_mate.feature.board.model.uimodel.MissionUiModel
 import com.goalpanzi.mission_mate.feature.board.model.uimodel.MissionVerificationUiModel
@@ -75,9 +76,9 @@ class BoardViewModel @Inject constructor(
     val boardRewardEvent: SharedFlow<BoardReward?> = missionBoardUiModel.map {
         when (it) {
             is MissionBoardUiModel.Success -> {
-                it.missionBoardsResponse.missionBoards.find { result ->
-                    result.isMyPosition && result.number != 0 && result.number != it.missionBoardsResponse.missionBoards.size
-                }?.reward
+                it.missionBoards.missionBoardList.find { result ->
+                    result.isMyPosition && result.number != 0 && result.number != it.missionBoards.missionBoardList.size
+                }?.boardReward
             }
 
             else -> {
@@ -102,7 +103,7 @@ class BoardViewModel @Inject constructor(
                         is NetworkResult.Success -> {
                             _missionBoardUiModel.emit(
                                 MissionBoardUiModel.Success(
-                                    it.data
+                                    it.data.toModel()
                                 )
                             )
                         }
@@ -122,7 +123,7 @@ class BoardViewModel @Inject constructor(
             }.collect {
                 when (it) {
                     is NetworkResult.Success -> {
-                        _missionUiModel.emit(MissionUiModel.Success(it.data))
+                        _missionUiModel.emit(MissionUiModel.Success(it.data.toModel()))
                     }
 
                     else -> {

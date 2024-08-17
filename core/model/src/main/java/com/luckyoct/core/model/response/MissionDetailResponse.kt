@@ -19,7 +19,8 @@ data class MissionDetailResponse(
     val missionDays : List<String>,
     val boardCount : Int,
     val invitationCode : String
-){
+)
+{
     val missionStartLocalDate: LocalDate by lazy {
         val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")
         LocalDate.parse(missionStartDate, formatter)
@@ -53,19 +54,19 @@ data class MissionDetailResponse(
             missionDays
         }
     }
-
-    val missionDaysOfWeek : List<DayOfWeek> by lazy {
-        try {
-            missionDays.map {
-                DayOfWeek.valueOf(it)
-            }
-        }catch (e: Exception){
-            emptyList()
-        }
-    }
-
-    fun isStartedMission() : Boolean {
-        val currentDate = LocalDate.now()
-        return currentDate.isEqual(missionStartLocalDate) || currentDate.isAfter(missionStartLocalDate)
-    }
+//
+//    val missionDaysOfWeek : List<DayOfWeek> by lazy {
+//        try {
+//            missionDays.map {
+//                DayOfWeek.valueOf(it)
+//            }
+//        }catch (e: Exception){
+//            emptyList()
+//        }
+//    }
+//
+//    fun isStartedMission() : Boolean {
+//        val currentDate = LocalDate.now()
+//        return currentDate.isEqual(missionStartLocalDate) || currentDate.isAfter(missionStartLocalDate)
+//    }
 }
