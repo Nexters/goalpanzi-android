@@ -177,7 +177,7 @@ class BoardSetupViewModel @Inject constructor(
                 description = missionTitle,
                 missionStartDate = formatLocalDateToString(startDate),
                 missionEndDate = formatLocalDateToString(endDate),
-                missionDays = selectedDays.value.map { it.name },
+                missionDays = selectedDays.value.sortedBy { it.ordinal }.map { it.name },
                 timeOfDay = timeOfDay,
                 boardCount = filterDatesByDayOfWeek(startDate, endDate, selectedDays.value)
             )
