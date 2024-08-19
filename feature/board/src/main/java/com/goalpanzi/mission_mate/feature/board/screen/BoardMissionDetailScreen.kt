@@ -57,6 +57,7 @@ fun BoardMissionDetailRoute(
     viewModel: BoardDetailViewModel = hiltViewModel()
 ) {
     val missionUiModel by viewModel.missionUiModel.collectAsStateWithLifecycle()
+    val isHost by viewModel.isHost.collectAsStateWithLifecycle()
     var isShownRequestDeleteMissionDialog by remember { mutableStateOf(false) }
 
     LaunchedEffect(key1 = Unit) {
@@ -92,6 +93,7 @@ fun BoardMissionDetailRoute(
             missionPeriod = missionDetail.missionPeriod,
             missionDays = missionDetail.missionDaysOfWeekTextLocale  ,
             missionTime = VerificationTimeType.valueOf(missionDetail.timeOfDay),
+            isHost = isHost,
             onClickDelete = {
                 isShownRequestDeleteMissionDialog = !isShownRequestDeleteMissionDialog
             },
@@ -116,6 +118,7 @@ fun BoardMissionDetailScreen(
     missionPeriod: String,
     missionDays: List<String>,
     missionTime: VerificationTimeType,
+    isHost : Boolean,
     onClickDelete : () -> Unit,
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier
@@ -183,18 +186,20 @@ fun BoardMissionDetailScreen(
                     color = ColorGray1_FF404249,
                     style = MissionMateTypography.body_lg_bold
                 )
-                Text(
-                    modifier = Modifier
-                        .padding(start = 8.dp)
-                        .clickable(
-                            interactionSource = MutableInteractionSource(),
-                            indication = null,
-                            onClick = onClickDelete
-                        ),
-                    text = stringResource(id = R.string.board_mission_detail_delete),
-                    color = ColorRed_FFFF5858,
-                    style = MissionMateTypography.body_lg_regular
-                )
+                if(isHost){
+                    Text(
+                        modifier = Modifier
+                            .padding(start = 8.dp)
+                            .clickable(
+                                interactionSource = MutableInteractionSource(),
+                                indication = null,
+                                onClick = onClickDelete
+                            ),
+                        text = stringResource(id = R.string.board_mission_detail_delete),
+                        color = ColorRed_FFFF5858,
+                        style = MissionMateTypography.body_lg_regular
+                    )
+                }
             }
 
             HorizontalDivider(
