@@ -43,6 +43,8 @@
     <string name="onboarding_invitation_description">친구에게 전송받은\n초대코드 4자리를 입력해주세요!</string>
     <string name="onboarding_invitation_description_color_target">초대코드 4자리</string>
     <string name="onboarding_invitation_error">알맞지 않은 초대코드 입니다! 다시 확인해주세요.</string>
+    <string name="onboarding_invitation_error_exceed_capacity">미션 최대 인원을 초과했습니다.</string>
+    <string name="onboarding_invitation_error_already_start">미션 참여가능 날짜가 아닙니다.</string>
     <string name="onboarding_invitation_dialog_title">초대받은 경쟁이 맞나요?</string>
     <string name="onboarding_invitation_dialog_description">*기간 대비 인증 요일을 계산해\n인증횟수(보드판 수)는 총 %d개 가\n생성되었어요.</string>
     <string name="onboarding_invitation_dialog_description_color_target">인증횟수(보드판 수)는 총 %d개</string>

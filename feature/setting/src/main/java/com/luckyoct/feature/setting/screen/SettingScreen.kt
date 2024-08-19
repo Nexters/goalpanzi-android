@@ -62,7 +62,10 @@ fun SettingRoute(
     LaunchedEffect(true) {
         viewModel.event.collectLatest { event ->
             when (event) {
-                Event.GoToLogin -> { onLogout() }
+                Event.GoToLogin -> {
+                    showLogoutDialog.value = false
+                    onLogout()
+                }
             }
         }
     }

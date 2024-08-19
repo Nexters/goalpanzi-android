@@ -133,12 +133,13 @@ class InvitationCodeViewModel @Inject constructor(
                     }
                     is NetworkResult.Error -> {
                         result.message?.let {
-//                            if(){ //
-//                                _isErrorToastEvent.emit(it)
-//                            }else {
-//
-//                            }
-
+                            if(it.contains("CAN_NOT_JOIN_MISSION")){
+                                _isErrorToastEvent.emit("CAN_NOT_JOIN_MISSION")
+                            }else if(it.contains("EXCEED_MAX_PERSONNEL")){
+                                _isErrorToastEvent.emit("EXCEED_MAX_PERSONNEL")
+                            }else {
+                                _isNotCodeValid.emit(true)
+                            }
                         }
                     }
                     else -> {

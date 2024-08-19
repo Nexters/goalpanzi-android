@@ -16,7 +16,7 @@ interface OnboardingService {
         @Body request: CreateMissionRequest
     ): Response<MissionDetailResponse>
 
-    @GET("/api/missions")
+    @GET("/api/mission:joinable")
     suspend fun getMissionByInvitationCode(
         @Query("invitationCode") invitationCode : String
     ) : Response<MissionDetailResponse>
