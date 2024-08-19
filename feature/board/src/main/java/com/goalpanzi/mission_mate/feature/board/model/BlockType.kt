@@ -11,7 +11,7 @@ enum class BlockType {
 }
 
 sealed class BlockEventType {
-    data object Goal : BlockEventType()
+    data class Goal(val boardEventItem: BoardEventItem) : BlockEventType()
     data class Item(val boardEventItem: BoardEventItem) : BlockEventType()
     data object None : BlockEventType()
 }

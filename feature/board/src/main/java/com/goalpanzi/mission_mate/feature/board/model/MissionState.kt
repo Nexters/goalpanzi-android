@@ -25,6 +25,14 @@ enum class MissionState {
 
     POST_END;                      // 종료_후
 
+    fun isEnabledToInvite() : Boolean {
+        return this in setOf(
+            DELETABLE,
+            PRE_START_SOLO,
+            PRE_START_MULTI
+        )
+    }
+
     fun isVisiblePiece() : Boolean {
         return this in setOf(
             IN_PROGRESS_MISSION_DAY_BEFORE_CONFIRM,

@@ -31,6 +31,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.goalpanzi.mission_mate.core.designsystem.component.LottieImage
 import com.goalpanzi.mission_mate.core.designsystem.component.MissionMateButtonType
 import com.goalpanzi.mission_mate.core.designsystem.component.MissionMateTextButton
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorGray1_FF404249
@@ -56,6 +57,10 @@ fun BoardFinishRoute(
     LaunchedEffect(key1 = Unit) {
         viewModel.getRankByMissionId()
         viewModel.getUserProfile()
+    }
+
+    LaunchedEffect(key1 = Unit) {
+        viewModel.setMissionFinished()
     }
 
 
@@ -141,35 +146,44 @@ fun BoardFinishScreen(
                         drawableResId = character.imageId
                     )
                 }
-
+                LottieImage(
+                    modifier = Modifier.wrapContentSize().align(Alignment.Center),
+                    lottieRes = com.goalpanzi.mission_mate.core.designsystem.R.raw.animation_celebration
+                )
             }
-            Text(
-                modifier = Modifier.padding(top = 8.dp),
-                text = stringResource(id = R.string.board_finish_rank, rank),
-                color = ColorGray1_FF404249,
-                style = MissionMateTypography.heading_xl_bold
-            )
-            Text(
-                modifier = Modifier.padding(top = 20.dp, bottom = 4.dp),
-                text = stringResource(id = R.string.board_finish_description),
-                color = ColorGray1_FF404249,
-                style = MissionMateTypography.title_xl_bold
-            )
-            Text(
-                text = stringResource(id = R.string.board_finish_sub_description),
-                color = ColorGray1_FF404249,
-                style = MissionMateTypography.body_xl_regular,
-                textAlign = TextAlign.Center
-            )
-            MissionMateTextButton(
-                modifier = Modifier
-                    .padding(bottom = 36.dp, start = 24.dp, end = 24.dp, top = 68.dp)
-                    .fillMaxWidth()
-                    .wrapContentHeight(),
-                buttonType = MissionMateButtonType.ACTIVE,
-                textId = com.goalpanzi.mission_mate.feature.onboarding.R.string.start,
-                onClick = onClickOk
-            )
+            Column(
+                modifier = Modifier.background(color = ColorWhite_FFFFFFFF),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(
+                    modifier = Modifier.padding(top = 8.dp),
+                    text = stringResource(id = R.string.board_finish_rank, rank),
+                    color = ColorGray1_FF404249,
+                    style = MissionMateTypography.heading_xl_bold
+                )
+                Text(
+                    modifier = Modifier.padding(top = 20.dp, bottom = 4.dp),
+                    text = stringResource(id = R.string.board_finish_description),
+                    color = ColorGray1_FF404249,
+                    style = MissionMateTypography.title_xl_bold
+                )
+                Text(
+                    text = stringResource(id = R.string.board_finish_sub_description),
+                    color = ColorGray1_FF404249,
+                    style = MissionMateTypography.body_xl_regular,
+                    textAlign = TextAlign.Center
+                )
+                MissionMateTextButton(
+                    modifier = Modifier
+                        .padding(bottom = 36.dp, start = 24.dp, end = 24.dp, top = 68.dp)
+                        .fillMaxWidth()
+                        .wrapContentHeight(),
+                    buttonType = MissionMateButtonType.ACTIVE,
+                    textId = com.goalpanzi.mission_mate.feature.onboarding.R.string.start,
+                    onClick = onClickOk
+                )
+            }
+
         }
     }
 

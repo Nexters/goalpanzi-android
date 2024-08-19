@@ -14,10 +14,6 @@ import com.goalpanzi.mission_mate.core.domain.usecase.SetViewedTooltipUseCase
 import com.goalpanzi.mission_mate.core.domain.usecase.VerifyMissionUseCase
 import com.goalpanzi.mission_mate.feature.board.model.BoardPiece
 import com.goalpanzi.mission_mate.feature.board.model.BoardPieceType
-import com.goalpanzi.mission_mate.feature.board.model.Character
-import com.goalpanzi.mission_mate.feature.board.model.MissionBoard
-import com.goalpanzi.mission_mate.feature.board.model.MissionBoardMember
-import com.goalpanzi.mission_mate.feature.board.model.MissionBoards
 import com.goalpanzi.mission_mate.feature.board.model.MissionState
 import com.goalpanzi.mission_mate.feature.board.model.MissionState.Companion.getMissionState
 import com.goalpanzi.mission_mate.feature.board.model.toBoardPieces
@@ -25,7 +21,6 @@ import com.goalpanzi.mission_mate.feature.board.model.toModel
 import com.goalpanzi.mission_mate.feature.board.model.uimodel.MissionBoardUiModel
 import com.goalpanzi.mission_mate.feature.board.model.uimodel.MissionUiModel
 import com.goalpanzi.mission_mate.feature.board.model.uimodel.MissionVerificationUiModel
-import com.luckyoct.core.model.UserProfile
 import com.luckyoct.core.model.base.NetworkResult
 import com.luckyoct.core.model.response.BoardReward
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -38,11 +33,9 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.flow.filterNotNull
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import java.io.File
@@ -50,19 +43,19 @@ import javax.inject.Inject
 
 @HiltViewModel
 class BoardViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
+    getCachedMemberIdUseCase: GetCachedMemberIdUseCase,
+    getViewedTooltipUseCase: GetViewedTooltipUseCase,
     private val getMissionUseCase: GetMissionUseCase,
     private val getMissionBoardsUseCase: GetMissionBoardsUseCase,
     private val getMissionVerificationsUseCase: GetMissionVerificationsUseCase,
     private val deleteMissionUseCase: DeleteMissionUseCase,
-    getCachedMemberIdUseCase: GetCachedMemberIdUseCase,
-    getViewedTooltipUseCase: GetViewedTooltipUseCase,
     private val profileUseCase: ProfileUseCase,
     private val setViewedTooltipUseCase: SetViewedTooltipUseCase,
-    private val verifyMissionUseCase: VerifyMissionUseCase,
-    savedStateHandle: SavedStateHandle
+    private val verifyMissionUseCase: VerifyMissionUseCase
 ) : ViewModel() {
 
-    private val missionId: Long = savedStateHandle.get<Long>("missionId")!!
+    val missionId: Long = savedStateHandle.get<Long>("missionId")!!
 
     val viewedToolTip : StateFlow<Boolean> = getViewedTooltipUseCase().stateIn(
         viewModelScope,
@@ -195,9 +188,7 @@ class BoardViewModel @Inject constructor(
 
     fun setViewedTooltip(){
         viewModelScope.launch {
-            setViewedTooltipUseCase().collect{
-                ///
-            }
+            setViewedTooltipUseCase().collect()
         }
     }
 
@@ -225,7 +216,7 @@ class BoardViewModel @Inject constructor(
                                 it.number == myBoardPiece.index
                             }
                             _boardPieces.emit(
-                                buildList<BoardPiece> {
+                                buildList {
                                     addAll(
                                         boardPieces.value.map {
                                             if(it.isMe) it.copy(
@@ -263,7 +254,7 @@ class BoardViewModel @Inject constructor(
                             delay(400)
                             _boardRewardEvent.emit(
                                 missionBoardList.find {
-                                    myBoardPiece.index + 1 == it.number && myBoardPiece.index + 1 != missionBoardList.lastIndex
+                                    myBoardPiece.index + 1 == it.number
                                 }?.boardReward
                             )
                         }

@@ -81,7 +81,7 @@ object BoardManager {
                     else if (i == numberOfColumns) BlockType.TOP_RIGHT_CORNER
                     else BlockType.CENTER,
                     blockEventType =
-                    if (index == boardCount - 1) BlockEventType.Goal
+                    if (itemEvent != null && index == boardCount - 1) BlockEventType.Goal(itemEvent)
                     else if (itemEvent != null) BlockEventType.Item(itemEvent)
                     else BlockEventType.None,
                     isEvenGroup = quotient % 2 == 0,
@@ -114,7 +114,7 @@ object BoardManager {
                     else BlockType.CENTER,
                     isEvenGroup = quotient % 2 == 0,
                     blockEventType =
-                    if (index == boardCount - 1) BlockEventType.Goal
+                    if (itemEvent != null && index == boardCount - 1) BlockEventType.Goal(itemEvent)
                     else if (itemEvent != null) BlockEventType.Item(itemEvent)
                     else BlockEventType.None,
                     isPassed = index <= passedCount

@@ -1,6 +1,5 @@
 package com.goalpanzi.mission_mate.feature.onboarding.screen.invitation
 
-import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -9,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.goalpanzi.mission_mate.core.domain.usecase.GetMissionByInvitationCodeUseCase
 import com.goalpanzi.mission_mate.core.domain.usecase.JoinMissionUseCase
+import com.goalpanzi.mission_mate.core.domain.usecase.SetMissionJoinedUseCase
 import com.goalpanzi.mission_mate.feature.onboarding.model.CodeResultEvent
 import com.goalpanzi.mission_mate.feature.onboarding.model.JoinResultEvent
 import com.goalpanzi.mission_mate.feature.onboarding.model.toMissionUiModel
@@ -22,6 +22,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filterNot
 import kotlinx.coroutines.flow.map
@@ -34,7 +35,8 @@ import javax.inject.Inject
 @HiltViewModel
 class InvitationCodeViewModel @Inject constructor(
     private val getMissionByInvitationCodeUseCase : GetMissionByInvitationCodeUseCase,
-    private val joinMissionUseCase : JoinMissionUseCase
+    private val joinMissionUseCase : JoinMissionUseCase,
+    private val setMissionJoinedUseCase: SetMissionJoinedUseCase
 ) : ViewModel() {
 
     var codeFirst by mutableStateOf("")
@@ -165,6 +167,9 @@ class InvitationCodeViewModel @Inject constructor(
             ).catch {
 
             }.collect {
+                //
+                setMissionJoinedUseCase(true).collect()
+
                 _joinResultEvent.emit(
                     JoinResultEvent.Success(missionId)
                 )

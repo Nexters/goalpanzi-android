@@ -27,5 +27,7 @@ interface OnboardingService {
     ) : Response<Unit>
 
     @GET("/api/mission-members/me")
-    suspend fun getJoinedMissions() : Response<MissionsResponse>
+    suspend fun getJoinedMissions(
+        @Query("filter") filter : String = "PENDING,ONGOING"
+    ) : Response<MissionsResponse>
 }

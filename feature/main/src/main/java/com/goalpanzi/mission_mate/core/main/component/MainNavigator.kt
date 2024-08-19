@@ -8,6 +8,7 @@ import androidx.navigation.compose.rememberNavController
 import com.goalpanzi.mission_mate.core.navigation.RouteModel
 import com.goalpanzi.mission_mate.feature.board.navigateToBoard
 import com.goalpanzi.mission_mate.feature.board.navigateToBoardDetail
+import com.goalpanzi.mission_mate.feature.board.navigateToBoardFinish
 import com.goalpanzi.mission_mate.feature.login.navigateToLogin
 import com.goalpanzi.mission_mate.feature.onboarding.navigateToBoardSetup
 import com.goalpanzi.mission_mate.feature.onboarding.navigateToBoardSetupSuccess
@@ -75,6 +76,9 @@ class MainNavigator(
 
     fun navigationToBoardDetail(missionId : Long) {
         navController.navigateToBoardDetail(missionId)
+    }
+    fun navigateToBoardFinish(missionId : Long){
+        navController.navigateToBoardFinish(missionId)
     }
 }
 

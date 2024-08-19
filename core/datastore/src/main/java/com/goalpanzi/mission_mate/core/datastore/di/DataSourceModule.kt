@@ -4,6 +4,8 @@ import com.goalpanzi.mission_mate.core.datastore.datasource.AuthDataSource
 import com.goalpanzi.mission_mate.core.datastore.datasource.AuthDataSourceImpl
 import com.goalpanzi.mission_mate.core.datastore.datasource.DefaultDataSource
 import com.goalpanzi.mission_mate.core.datastore.datasource.DefaultDataSourceImpl
+import com.goalpanzi.mission_mate.core.datastore.datasource.MissionDataSource
+import com.goalpanzi.mission_mate.core.datastore.datasource.MissionDataSourceImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -23,4 +25,8 @@ abstract class DataSourceModule {
         defaultDataSource: DefaultDataSourceImpl
     ): DefaultDataSource
 
+    @Binds
+    abstract fun bindMissionDataSource(
+        missionDataSource: MissionDataSourceImpl
+    ): MissionDataSource
 }

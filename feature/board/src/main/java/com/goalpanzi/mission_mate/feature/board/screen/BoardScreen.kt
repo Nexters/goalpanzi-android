@@ -54,6 +54,7 @@ import kotlinx.coroutines.launch
 fun BoardRoute(
     onNavigateOnboarding: () -> Unit,
     onNavigateDetail: () -> Unit,
+    onNavigateFinish : (Long) -> Unit,
     onClickSetting: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: BoardViewModel = hiltViewModel()
@@ -108,6 +109,8 @@ fun BoardRoute(
     LaunchedEffect(missionState) {
         if (missionState == MissionState.DELETABLE) {
             isShownDeleteMissionDialog = true
+        }else if(missionState == MissionState.POST_END){
+            onNavigateFinish(viewModel.missionId)
         }
     }
 
@@ -215,7 +218,7 @@ fun BoardScreen(
             )
             BoardTopView(
                 title = missionUiModel.missionDetail.description,
-                isAddingUserEnabled = isHost,
+                isAddingUserEnabled = isHost && missionState.isEnabledToInvite(),
                 viewedTooltip = viewedTooltip,
                 userList = missionVerificationUiModel.missionVerificationsResponse.missionVerifications.mapIndexed { i, item ->
                     item.toUserStory(
