@@ -1,6 +1,5 @@
 package com.goalpanzi.mission_mate.feature.onboarding.screen.boardsetup
 
-import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -8,6 +7,7 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.goalpanzi.mission_mate.core.domain.usecase.CreateMissionUseCase
+import com.goalpanzi.mission_mate.core.domain.usecase.SetMissionJoinedUseCase
 import com.goalpanzi.mission_mate.feature.onboarding.model.BoardSetupResult
 import com.goalpanzi.mission_mate.feature.onboarding.model.VerificationTimeType
 import com.goalpanzi.mission_mate.feature.onboarding.util.DateUtils.filterDatesByDayOfWeek
@@ -24,6 +24,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -34,7 +35,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class BoardSetupViewModel @Inject constructor(
-    private val createMissionUseCase : CreateMissionUseCase
+    private val createMissionUseCase : CreateMissionUseCase,
+    private val setMissionJoinedUseCase: SetMissionJoinedUseCase
 ) : ViewModel() {
 
     private val _setupEvent = MutableSharedFlow<BoardSetupResult>()
@@ -177,13 +179,14 @@ class BoardSetupViewModel @Inject constructor(
                 description = missionTitle,
                 missionStartDate = formatLocalDateToString(startDate),
                 missionEndDate = formatLocalDateToString(endDate),
-                missionDays = selectedDays.value.map { it.name },
+                missionDays = selectedDays.value.sortedBy { it.ordinal }.map { it.name },
                 timeOfDay = timeOfDay,
                 boardCount = filterDatesByDayOfWeek(startDate, endDate, selectedDays.value)
             )
         ).collect { result ->
             when(result){
                 is NetworkResult.Success -> {
+                    setMissionJoinedUseCase(true).collect()
                     _setupEvent.emit(BoardSetupResult.Success(result.data))
                 }
                 else -> {

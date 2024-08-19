@@ -52,21 +52,12 @@ fun BoardBottomView(
         ) {
             StableImage(drawableResId = com.goalpanzi.mission_mate.core.designsystem.R.drawable.ic_time)
             Text(
-                text = when(missionState){
-                    MissionState.IN_PROGRESS_MISSION_DAY_NON_MISSION_TIME,
-                    MissionState.IN_PROGRESS_MISSION_DAY_BEFORE_CONFIRM -> {
-                        stringResource(id = R.string.board_verification_day_title, missionDetail.missionDays.map {
-                            stringResource(id = it.getStringId())
-                        }.joinToString(" "))
-                    }
-                    else -> {
-                        when(VerificationTimeType.valueOf(missionDetail.timeOfDay)){
-                            VerificationTimeType.MORNING -> stringResource(id = R.string.board_verification_am_time_limit)
-                            VerificationTimeType.AFTERNOON -> stringResource(id = R.string.board_verification_pm_time_limit)
-                            VerificationTimeType.EVERYDAY -> stringResource(id = R.string.board_verification_all_day_time_limit)
-                        }
-
-                    }
+                text = missionDetail.missionDays.map {
+                    stringResource(id = it.getStringId())
+                }.joinToString(" ") + " | " + when(VerificationTimeType.valueOf(missionDetail.timeOfDay)){
+                    VerificationTimeType.MORNING -> stringResource(id = R.string.board_verification_am_time_limit)
+                    VerificationTimeType.AFTERNOON -> stringResource(id = R.string.board_verification_pm_time_limit)
+                    VerificationTimeType.EVERYDAY -> stringResource(id = R.string.board_verification_all_day_time_limit)
                 },
                 style = MissionMateTypography.body_lg_bold,
                 color = ColorGray2_FF4F505C

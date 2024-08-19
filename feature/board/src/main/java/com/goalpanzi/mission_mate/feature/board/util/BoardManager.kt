@@ -1,11 +1,12 @@
 package com.goalpanzi.mission_mate.feature.board.util
 
+import androidx.compose.ui.unit.Density
 import com.goalpanzi.mission_mate.feature.board.model.BlockEventType
 import com.goalpanzi.mission_mate.feature.board.model.BlockType
 import com.goalpanzi.mission_mate.feature.board.model.uimodel.BlockUiModel
 import com.goalpanzi.mission_mate.feature.board.model.BoardEventItem
 
-object BoardGenerator {
+object BoardManager {
 
 
     fun getBlockListByBoardCount(
@@ -80,7 +81,7 @@ object BoardGenerator {
                     else if (i == numberOfColumns) BlockType.TOP_RIGHT_CORNER
                     else BlockType.CENTER,
                     blockEventType =
-                    if (index == boardCount - 1) BlockEventType.Goal
+                    if (itemEvent != null && index == boardCount - 1) BlockEventType.Goal(itemEvent)
                     else if (itemEvent != null) BlockEventType.Item(itemEvent)
                     else BlockEventType.None,
                     isEvenGroup = quotient % 2 == 0,
@@ -113,7 +114,7 @@ object BoardGenerator {
                     else BlockType.CENTER,
                     isEvenGroup = quotient % 2 == 0,
                     blockEventType =
-                    if (index == boardCount - 1) BlockEventType.Goal
+                    if (itemEvent != null && index == boardCount - 1) BlockEventType.Goal(itemEvent)
                     else if (itemEvent != null) BlockEventType.Item(itemEvent)
                     else BlockEventType.None,
                     isPassed = index <= passedCount
@@ -121,4 +122,14 @@ object BoardGenerator {
             )
         }
     }
+
+    fun getPositionScrollToMyIndex(
+        myIndex : Int,
+        numberOfColumns: Int,
+        blockSize : Int,
+        localDensity: Density
+    ) : Int {
+        return ((myIndex / numberOfColumns) * (blockSize)  * localDensity.density).toInt()
+    }
+
 }

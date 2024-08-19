@@ -87,7 +87,10 @@ class MissionStateTest {
         val todayLocalDateTime = LocalDateTime.of(2024, 8, 16, 0, 0, 0)
         val startDate = LocalDate.of(2024, 8, 13)
         val endDateTime = LocalDateTime.of(2024, 8, 15, 23, 59, 59)
-        val memberList = listOf(MissionVerificationResponse(nickname = "user", imageUrl = "image_url"))
+        val memberList = listOf(
+            MissionVerificationResponse(nickname = "user", imageUrl = "image_url"),
+            MissionVerificationResponse(nickname = "user1", imageUrl = "image_url")
+        )
         val verificationTimeType = VerificationTimeType.MORNING
         val daysOfWeek = listOf(DayOfWeek.WEDNESDAY, DayOfWeek.FRIDAY)
 
@@ -100,7 +103,10 @@ class MissionStateTest {
         val todayLocalDateTime = LocalDateTime.of(2024, 8, 15, 12, 0, 0)
         val startDate = LocalDate.of(2024, 8, 13)
         val endDateTime = LocalDateTime.of(2024, 8, 15, 0, 0, 0)
-        val memberList = listOf(MissionVerificationResponse(nickname = "user", imageUrl = "image_url"))
+        val memberList = listOf(
+            MissionVerificationResponse(nickname = "user", imageUrl = "image_url"),
+            MissionVerificationResponse(nickname = "user1", imageUrl = "image_url")
+        )
         val verificationTimeType = VerificationTimeType.MORNING
         val daysOfWeek = listOf(DayOfWeek.WEDNESDAY, DayOfWeek.FRIDAY)
 
@@ -113,7 +119,10 @@ class MissionStateTest {
         val todayLocalDateTime = LocalDateTime.of(2024, 8, 15, 12, 0, 0)
         val startDate = LocalDate.of(2024, 8, 13)
         val endDateTime = LocalDateTime.of(2024, 8, 15, 0, 0, 0)
-        val memberList = listOf(MissionVerificationResponse(nickname = "user", imageUrl = "image_url"))
+        val memberList = listOf(
+            MissionVerificationResponse(nickname = "user", imageUrl = "image_url"),
+            MissionVerificationResponse(nickname = "user1", imageUrl = "image_url")
+        )
         val verificationTimeType = VerificationTimeType.AFTERNOON
         val daysOfWeek = listOf(DayOfWeek.WEDNESDAY, DayOfWeek.FRIDAY)
 

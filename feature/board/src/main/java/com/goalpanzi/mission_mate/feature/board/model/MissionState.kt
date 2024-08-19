@@ -25,6 +25,14 @@ enum class MissionState {
 
     POST_END;                      // 종료_후
 
+    fun isEnabledToInvite() : Boolean {
+        return this in setOf(
+            DELETABLE,
+            PRE_START_SOLO,
+            PRE_START_MULTI
+        )
+    }
+
     fun isVisiblePiece() : Boolean {
         return this in setOf(
             IN_PROGRESS_MISSION_DAY_BEFORE_CONFIRM,
@@ -88,7 +96,7 @@ enum class MissionState {
             val todayLocalDate = todayLocalDateTime.toLocalDate()
 
             return if (!startDate.isAfter(todayLocalDate)) {
-                if (memberList.isEmpty())
+                if (memberList.size <= 1)
                     DELETABLE
                 else {
                     if (isPassedEndTime(todayLocalDateTime, endDateTime, verificationTimeType)) {
@@ -141,6 +149,8 @@ enum class MissionState {
                         }
                     }
                     else -> {
+                        if(isVerifiedInMissionTime(memberList))
+                            return IN_PROGRESS_MISSION_DAY_AFTER_CONFIRM
                         if(todayLocalDateTime.isAfter(endTime)){
                             return IN_PROGRESS_MISSION_DAY_CLOSED
                         }

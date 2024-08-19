@@ -8,6 +8,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
+import com.goalpanzi.mission_mate.core.designsystem.theme.ColorWhite_FFFFFFFF
 import com.goalpanzi.mission_mate.feature.board.boardDetailNavGraph
 import com.goalpanzi.mission_mate.feature.board.boardFinishNavGraph
 import com.goalpanzi.mission_mate.feature.board.boardNavGraph
@@ -31,7 +32,7 @@ internal fun MainNavHost(
     Box(
         modifier = modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.surfaceDim)
+            .background(ColorWhite_FFFFFFFF)
     ) {
         NavHost(
             navController = navigator.navController,
@@ -92,6 +93,9 @@ internal fun MainNavHost(
                 },
                 onNavigateDetail = { missionId ->
                     navigator.navigationToBoardDetail(missionId)
+                },
+                onNavigateFinish = { missionId ->
+                    navigator.navigateToBoardFinish(missionId)
                 },
                 onClickSetting = {
                     navigator.navigationToSetting()

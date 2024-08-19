@@ -1,6 +1,5 @@
 package com.goalpanzi.mission_mate.feature.onboarding.screen.invitation
 
-import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -9,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.goalpanzi.mission_mate.core.domain.usecase.GetMissionByInvitationCodeUseCase
 import com.goalpanzi.mission_mate.core.domain.usecase.JoinMissionUseCase
+import com.goalpanzi.mission_mate.core.domain.usecase.SetMissionJoinedUseCase
 import com.goalpanzi.mission_mate.feature.onboarding.model.CodeResultEvent
 import com.goalpanzi.mission_mate.feature.onboarding.model.JoinResultEvent
 import com.goalpanzi.mission_mate.feature.onboarding.model.toMissionUiModel
@@ -22,6 +22,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filterNot
 import kotlinx.coroutines.flow.map
@@ -34,7 +35,8 @@ import javax.inject.Inject
 @HiltViewModel
 class InvitationCodeViewModel @Inject constructor(
     private val getMissionByInvitationCodeUseCase : GetMissionByInvitationCodeUseCase,
-    private val joinMissionUseCase : JoinMissionUseCase
+    private val joinMissionUseCase : JoinMissionUseCase,
+    private val setMissionJoinedUseCase: SetMissionJoinedUseCase
 ) : ViewModel() {
 
     var codeFirst by mutableStateOf("")
@@ -63,6 +65,9 @@ class InvitationCodeViewModel @Inject constructor(
 
     private val _isNotCodeValid = MutableStateFlow(false)
     val isNotCodeValid: StateFlow<Boolean> = _isNotCodeValid.asStateFlow()
+
+    private val _isErrorToastEvent = MutableSharedFlow<String>()
+    val isErrorToastEvent: SharedFlow<String> = _isErrorToastEvent.asSharedFlow()
 
     val enabledButton: StateFlow<Boolean> =
         combine(
@@ -128,6 +133,17 @@ class InvitationCodeViewModel @Inject constructor(
                             CodeResultEvent.Success(result.data.toMissionUiModel())
                         )
                     }
+                    is NetworkResult.Error -> {
+                        result.message?.let {
+                            if(it.contains("CAN_NOT_JOIN_MISSION")){
+                                _isErrorToastEvent.emit("CAN_NOT_JOIN_MISSION")
+                            }else if(it.contains("EXCEED_MAX_PERSONNEL")){
+                                _isErrorToastEvent.emit("EXCEED_MAX_PERSONNEL")
+                            }else {
+                                _isNotCodeValid.emit(true)
+                            }
+                        }
+                    }
                     else -> {
                         _isNotCodeValid.emit(true)
                     }
@@ -151,7 +167,9 @@ class InvitationCodeViewModel @Inject constructor(
             ).catch {
 
             }.collect {
-                Log.d("123123","Joined")
+                //
+                setMissionJoinedUseCase(true).collect()
+
                 _joinResultEvent.emit(
                     JoinResultEvent.Success(missionId)
                 )

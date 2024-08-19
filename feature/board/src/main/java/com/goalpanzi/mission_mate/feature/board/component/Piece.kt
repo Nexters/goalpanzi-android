@@ -19,6 +19,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -33,52 +34,45 @@ import com.goalpanzi.mission_mate.core.designsystem.theme.ColorGray1_FF404249
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorOrange_FFFF5732
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorWhite_FFFFFFFF
 import com.goalpanzi.mission_mate.core.designsystem.theme.MissionMateTypography
+import com.goalpanzi.mission_mate.feature.board.model.BoardPiece
+import com.goalpanzi.mission_mate.feature.board.model.BoardPieceType
 import com.goalpanzi.mission_mate.feature.board.util.PieceGenerator
 import com.goalpanzi.mission_mate.feature.onboarding.component.OutlinedBox
 import com.goalpanzi.mission_mate.feature.onboarding.component.StableImage
 
 @Composable
 fun BoxScope.Piece(
-    index: Int,
-    count : Int,
-    nickname : String,
+    boardPiece: BoardPiece,
     numberOfColumn: Int,
     sizePerBlock: Dp,
-    isMe : Boolean,
-    @DrawableRes imageId: Int,
-    @DrawableRes imageIdForCount: Int,
     modifier: Modifier = Modifier
 ) {
-    var needMoving by remember {
-        mutableStateOf(false)
+    val isAnimated by remember(boardPiece) {
+        derivedStateOf { boardPiece.boardPieceType == BoardPieceType.MOVED }
     }
     val x = animateDpAsState(
-        targetValue = if (needMoving) PieceGenerator.getXOffset(
-            index,
+        targetValue = if (isAnimated) PieceGenerator.getXOffset(
+            boardPiece.index + 1,
             numberOfColumn,
             sizePerBlock
-        ) else PieceGenerator.getXOffset(index-1, numberOfColumn, sizePerBlock),
+        ) else PieceGenerator.getXOffset(boardPiece.index , numberOfColumn, sizePerBlock),
         animationSpec = tween(
             durationMillis = 500,
             easing = LinearOutSlowInEasing
         )
     )
     val y = animateDpAsState(
-        targetValue = if (needMoving) PieceGenerator.getYOffset(
-            index ,
+        targetValue = if (isAnimated) PieceGenerator.getYOffset(
+            boardPiece.index  + 1,
             numberOfColumn,
             sizePerBlock
-        ) else PieceGenerator.getYOffset(index-1, numberOfColumn, sizePerBlock),
+        ) else PieceGenerator.getYOffset(boardPiece.index , numberOfColumn, sizePerBlock),
         animationSpec = tween(
             durationMillis = 500,
             easing = LinearOutSlowInEasing
         )
     )
 
-
-    LaunchedEffect(key1 = index) {
-        needMoving = true
-    }
 
     Box(
         modifier = modifier
@@ -90,29 +84,33 @@ fun BoxScope.Piece(
                 sizePerBlock
             )
     ) {
-
-        StableImage(
-            modifier = Modifier
-                .padding(top = 4.dp)
-                .fillMaxWidth(88f / 114f)
-                .aspectRatio(1f)
-                .align(Alignment.TopCenter),
-            drawableResId = imageId,
-        )
-        if(count > 1){
-            PieceCountChip(
-                modifier = Modifier.align(Alignment.TopEnd),
-                count = count,
-                imageId = imageIdForCount
+        if(boardPiece.boardPieceType != BoardPieceType.HIDDEN){
+            StableImage(
+                modifier = Modifier
+                    .padding(top = 4.dp)
+                    .fillMaxWidth(88f / 114f)
+                    .aspectRatio(1f)
+                    .align(Alignment.TopCenter),
+                drawableResId = boardPiece.drawableRes,
+            )
+            if(boardPiece.count > 1){
+                PieceCountChip(
+                    modifier = Modifier.align(Alignment.TopEnd),
+                    count = boardPiece.count,
+                    imageId = boardPiece.drawableRes
+                )
+            }
+            PieceNameChip(
+                modifier = Modifier
+                    .align(
+                        Alignment.BottomCenter
+                    )
+                    .padding(bottom = 7.dp),
+                name = boardPiece.nickname,
+                isMe = boardPiece.isMe
             )
         }
-        PieceNameChip(
-            modifier = Modifier.align(
-                Alignment. BottomCenter
-            ).padding(bottom = 7.dp),
-            name = nickname,
-            isMe = isMe
-        )
+
     }
 
 
@@ -130,8 +128,9 @@ fun PieceNameChip(
             .wrapContentSize()
             .clip(RoundedCornerShape(20.dp))
             .background(
-                if(isMe) ColorOrange_FFFF5732 else ColorWhite_FFFFFFFF
-            ).padding(horizontal = 8.5.dp, 0.85.dp)
+                if (isMe) ColorOrange_FFFF5732 else ColorWhite_FFFFFFFF
+            )
+            .padding(horizontal = 8.5.dp, 0.85.dp)
         ,
         text = name,
         style = textStyle,

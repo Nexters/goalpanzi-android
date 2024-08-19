@@ -49,7 +49,9 @@ data class MissionDetail(
 
     val missionDaysOfWeekTextLocale : List<String> by lazy {
         try {
-            missionDays.map {
+            missionDays.sortedBy {
+                it.ordinal
+            }.map {
                 it.getDisplayName(TextStyle.SHORT, Locale.getDefault())
             }
         }catch (e: Exception){

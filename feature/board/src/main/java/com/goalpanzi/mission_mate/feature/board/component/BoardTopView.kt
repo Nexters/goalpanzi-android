@@ -94,7 +94,6 @@ fun BoardTopView(
                     contentScale = ContentScale.Crop
                 )
             } else {
-                // datastore 조건 추가
                 StableImage(
                     modifier = Modifier
                         .align(Alignment.TopStart)

@@ -18,11 +18,16 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.graphics.drawscope.clipRect
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -31,13 +36,13 @@ import com.goalpanzi.mission_mate.core.designsystem.theme.ColorGray2_FF4F505C
 import com.goalpanzi.mission_mate.core.designsystem.theme.MissionMateTypography
 import com.goalpanzi.mission_mate.feature.board.R
 import com.goalpanzi.mission_mate.feature.board.model.BoardEventItem
+import com.goalpanzi.mission_mate.feature.board.model.BoardPiece
 import com.goalpanzi.mission_mate.feature.board.model.MissionBoards
 import com.goalpanzi.mission_mate.feature.board.model.MissionDetail
 import com.goalpanzi.mission_mate.feature.board.model.MissionState
-import com.goalpanzi.mission_mate.feature.board.model.toCharacter
 import com.goalpanzi.mission_mate.feature.board.model.toEventType
-import com.goalpanzi.mission_mate.feature.board.util.BoardGenerator
-import com.luckyoct.core.model.response.MissionBoardsResponse
+import com.goalpanzi.mission_mate.feature.board.util.BoardManager
+import com.goalpanzi.mission_mate.feature.board.util.BoardManager.getPositionScrollToMyIndex
 import com.luckyoct.core.model.response.MissionVerificationResponse
 import kotlin.math.absoluteValue
 
@@ -48,6 +53,7 @@ fun Board(
     missionBoards: MissionBoards,
     missionDetail: MissionDetail,
     numberOfColumns: Int,
+    boardPieces: List<BoardPiece>,
     profile: MissionVerificationResponse,
     missionState: MissionState,
     modifier: Modifier = Modifier,
@@ -55,11 +61,30 @@ fun Board(
     val statusBar = WindowInsets.statusBars
     val navigationBar = WindowInsets.navigationBars
     val localDensity = LocalDensity.current
+    val configuration = LocalConfiguration.current
     val statusBarHeight =
         remember { (statusBar.getTop(localDensity) - statusBar.getBottom(localDensity)).absoluteValue }
     val navigationBarHeight =
         remember { (navigationBar.getTop(localDensity) - navigationBar.getBottom(localDensity)).absoluteValue }
+    val isVisiblePieces by remember(missionState) { derivedStateOf { missionState.isVisiblePiece() } }
+    val myIndex by remember(missionBoards) {
+        derivedStateOf {
+            missionBoards.missionBoardList.find {
+                it.isMyPosition
+            }?.number ?: 0
+        }
+    }
 
+    LaunchedEffect(myIndex) {
+        scrollState.animateScrollTo(
+            getPositionScrollToMyIndex(
+                myIndex = myIndex,
+                numberOfColumns = numberOfColumns,
+                blockSize = (configuration.screenWidthDp - 48) / numberOfColumns,
+                localDensity = localDensity
+            )
+        )
+    }
 
     Box(
         modifier = modifier
@@ -68,7 +93,7 @@ fun Board(
         Column(
             modifier = modifier.modifierWithClipRect(
                 scrollState = scrollState,
-                missionState = missionState,
+                isVisiblePieces = isVisiblePieces,
                 innerModifier = Modifier
                     .drawWithContent {
                         clipRect(bottom = statusBarHeight + 178.dp.toPx()) {
@@ -82,26 +107,26 @@ fun Board(
                 missionBoards,
                 missionDetail,
                 numberOfColumns,
+                boardPieces,
                 profile,
                 missionState,
+                isVisiblePieces = isVisiblePieces,
                 modifier
             )
         }
         Column(
             modifier = modifier.modifierWithClipRect(
                 scrollState = scrollState,
-                missionState = missionState,
+                isVisiblePieces = isVisiblePieces,
                 innerModifier = Modifier
                     .drawWithContent {
                         clipRect(
                             top = statusBarHeight + 178.dp.toPx() - 1,
-                            bottom = if (missionState.isVisiblePiece()){
+                            bottom = if (!isVisiblePieces) {
                                 size.height
-                            }else {
-                                size.height + navigationBarHeight - (if (missionState.isVisiblePiece()) 188.dp else 46.dp).toPx()
+                            } else {
+                                size.height + navigationBarHeight - 188.dp.toPx()
                             }
-
-
                         ) {
                             this@drawWithContent.drawContent()
                         }
@@ -112,19 +137,21 @@ fun Board(
                 missionBoards,
                 missionDetail,
                 numberOfColumns,
+                boardPieces,
                 profile,
                 missionState,
+                isVisiblePieces = isVisiblePieces,
                 modifier
             )
         }
-        if (missionState.isVisiblePiece()){
+        if (isVisiblePieces) {
             Column(
                 modifier = modifier.modifierWithClipRect(
                     scrollState = scrollState,
-                    missionState = missionState,
+                    isVisiblePieces = isVisiblePieces,
                     innerModifier = Modifier
                         .drawWithContent {
-                            clipRect(top = (size.height + navigationBarHeight - (if (missionState.isVisiblePiece()) 188.dp else 46.dp).toPx())) {
+                            clipRect(top = (size.height + navigationBarHeight - 188.dp.toPx())) {
                                 this@drawWithContent.drawContent()
                             }
                         }
@@ -135,8 +162,10 @@ fun Board(
                     missionBoards,
                     missionDetail,
                     numberOfColumns,
+                    boardPieces,
                     profile,
                     missionState,
+                    isVisiblePieces = isVisiblePieces,
                     modifier
                 )
             }
@@ -150,8 +179,10 @@ fun ColumnScope.BoardContent(
     missionBoards: MissionBoards,
     missionDetail: MissionDetail,
     numberOfColumns: Int,
+    boardPieces: List<BoardPiece>,
     profile: MissionVerificationResponse,
     missionState: MissionState,
+    isVisiblePieces: Boolean,
     modifier: Modifier = Modifier,
 ) {
     val boardCount = missionBoards.missionBoardList.size
@@ -165,7 +196,7 @@ fun ColumnScope.BoardContent(
         modifier = Modifier.padding(top = 28.dp),
         text = if (missionState.isRankBoardTitle()) stringResource(
             id = R.string.board_rank_title,
-            missionBoards.progressCount,1
+            missionBoards.progressCount, 1
         )
         else if (missionState.isEncourageBoardTitle()) stringResource(id = R.string.board_encourage_title)
         else startDateText,
@@ -184,7 +215,7 @@ fun ColumnScope.BoardContent(
     BoxWithConstraints {
         val width = maxWidth
         Column {
-            BoardGenerator.getBlockListByBoardCount(
+            BoardManager.getBlockListByBoardCount(
                 boardCount,
                 numberOfColumns,
                 passedCount,
@@ -205,26 +236,22 @@ fun ColumnScope.BoardContent(
                                 .aspectRatio(1f),
                             numberOfColumns = numberOfColumns,
                             isPassed = it.isPassed,
-                            isStartedMission = missionState.isVisiblePiece()
+                            isStartedMission = isVisiblePieces
                         )
                     }
                 }
             }
         }
-        if (missionState.isVisiblePiece()) {
-            missionBoards.missionBoardList.forEach { block ->
-                if (block.missionBoardMembers.isNotEmpty()) {
+        if (isVisiblePieces) {
+            boardPieces.forEach { piece ->
+                key(piece.nickname) {
                     Piece(
-                        index = block.number,
-                        count = block.missionBoardMembers.size,
-                        nickname = if (block.isMyPosition) profile.nickname else block.missionBoardMembers.first().nickname,
+                        boardPiece = piece,
                         sizePerBlock = width / numberOfColumns,
                         numberOfColumn = numberOfColumns,
-                        isMe = block.isMyPosition,
-                        imageId = if (block.isMyPosition) profile.characterType.toCharacter().imageId else block.missionBoardMembers.first().character.imageId,
-                        imageIdForCount = if (block.isMyPosition) profile.characterType.toCharacter().imageId else block.missionBoardMembers.first().character.imageId
                     )
                 }
+
             }
         }
     }
@@ -233,7 +260,7 @@ fun ColumnScope.BoardContent(
 @SuppressLint("ModifierFactoryUnreferencedReceiver")
 fun Modifier.modifierWithClipRect(
     scrollState: ScrollState,
-    missionState: MissionState,
+    isVisiblePieces: Boolean,
     innerModifier: Modifier,
     modifier: Modifier = Modifier,
 ): Modifier {
@@ -247,6 +274,6 @@ fun Modifier.modifierWithClipRect(
             top = 180.dp,
             start = 24.dp,
             end = 24.dp,
-            bottom = if (missionState.isVisiblePiece()) 188.dp else 46.dp
+            bottom = if (isVisiblePieces) 188.dp else 46.dp
         )
 }

@@ -27,6 +27,7 @@ fun NavController.navigateToBoard(
 fun NavGraphBuilder.boardNavGraph(
     onNavigateOnboarding: () -> Unit,
     onNavigateDetail : (Long) -> Unit,
+    onNavigateFinish : (Long) -> Unit,
     onClickSetting : () -> Unit
 ) {
     composable(
@@ -41,6 +42,7 @@ fun NavGraphBuilder.boardNavGraph(
                     onNavigateDetail(missionId)
                 }
             },
+            onNavigateFinish = onNavigateFinish,
             onClickSetting = onClickSetting
         )
     }

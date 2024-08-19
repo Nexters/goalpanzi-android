@@ -16,6 +16,7 @@ import com.goalpanzi.mission_mate.core.designsystem.theme.MissionMateTypography
 import com.goalpanzi.mission_mate.feature.board.R
 import com.goalpanzi.mission_mate.feature.board.model.BlockEventType
 import com.goalpanzi.mission_mate.feature.board.model.BlockType
+import com.goalpanzi.mission_mate.feature.board.model.EventType
 import com.goalpanzi.mission_mate.feature.onboarding.component.StableImage
 
 @Composable
@@ -42,7 +43,9 @@ fun Block(
                 else if (isStartedMission && isPassed) {
                     if (eventType is BlockEventType.Item) {
                         eventType.boardEventItem.eventType?.imageId ?: 0
-                    } else {
+                    } else if(eventType is BlockEventType.Goal){
+                        eventType.boardEventItem.eventType?.imageId ?: 0
+                    }else {
                         when (type) {
                             BlockType.CENTER -> R.drawable.img_board_center_jeju
                             BlockType.TOP_LEFT_CORNER -> R.drawable.img_board_left_top_jeju
@@ -73,7 +76,7 @@ fun Block(
                 color = ColorWhite_FFFFFFFF,
                 style = MissionMateTypography.title_lg_bold
             )
-        } else if (eventType is BlockEventType.Goal) {
+        } else if (eventType is BlockEventType.Goal && !isPassed) {
             Text(
                 modifier = Modifier.align(Alignment.Center),
                 text = "GOAL",
@@ -93,8 +96,6 @@ fun Block(
                     drawableResId = R.drawable.img_present
                 )
             }
-
         }
     }
-
 }

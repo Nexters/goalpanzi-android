@@ -4,12 +4,14 @@ import com.luckyoct.core.model.response.MissionBoardMembersResponse
 
 data class MissionBoardMember(
     val nickname : String,
-    val character : Character
+    val character : Character,
+ //   val memberId : Long
 )
 
 fun MissionBoardMembersResponse.toModel() : MissionBoardMember {
     return MissionBoardMember(
         nickname = nickname,
-        character = characterType.toCharacter()
+        character = characterType.toCharacter(),
+       // memberId = memberId
     )
 }

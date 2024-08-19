@@ -16,7 +16,7 @@ interface OnboardingService {
         @Body request: CreateMissionRequest
     ): Response<MissionDetailResponse>
 
-    @GET("/api/missions")
+    @GET("/api/mission:joinable")
     suspend fun getMissionByInvitationCode(
         @Query("invitationCode") invitationCode : String
     ) : Response<MissionDetailResponse>
@@ -27,5 +27,7 @@ interface OnboardingService {
     ) : Response<Unit>
 
     @GET("/api/mission-members/me")
-    suspend fun getJoinedMissions() : Response<MissionsResponse>
+    suspend fun getJoinedMissions(
+        @Query("filter") filter : String = "PENDING,ONGOING"
+    ) : Response<MissionsResponse>
 }

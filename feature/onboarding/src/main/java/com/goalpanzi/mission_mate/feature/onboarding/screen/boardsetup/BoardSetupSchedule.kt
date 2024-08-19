@@ -22,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorBlack_FF000000
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorGray1_FF404249
@@ -221,7 +222,8 @@ fun DayItem(
             text = stringResource(id = dayOfWeek.getStringId()),
             color = if (selected && enabled) ColorWhite_FFFFFFFF
             else if(enabled) ColorGray1_FF404249 else ColorGray1_FF404249.copy(0.3f),
-            style = MissionMateTypography.body_lg_regular
+            style = MissionMateTypography.body_lg_regular,
+            textAlign = TextAlign.Center
         )
     }
 }
