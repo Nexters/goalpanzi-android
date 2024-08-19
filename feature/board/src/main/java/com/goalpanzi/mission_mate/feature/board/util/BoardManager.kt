@@ -1,11 +1,12 @@
 package com.goalpanzi.mission_mate.feature.board.util
 
+import androidx.compose.ui.unit.Density
 import com.goalpanzi.mission_mate.feature.board.model.BlockEventType
 import com.goalpanzi.mission_mate.feature.board.model.BlockType
 import com.goalpanzi.mission_mate.feature.board.model.uimodel.BlockUiModel
 import com.goalpanzi.mission_mate.feature.board.model.BoardEventItem
 
-object BoardGenerator {
+object BoardManager {
 
 
     fun getBlockListByBoardCount(
@@ -121,4 +122,14 @@ object BoardGenerator {
             )
         }
     }
+
+    fun getPositionScrollToMyIndex(
+        myIndex : Int,
+        numberOfColumns: Int,
+        blockSize : Int,
+        localDensity: Density
+    ) : Int {
+        return ((myIndex / numberOfColumns) * (blockSize)  * localDensity.density).toInt()
+    }
+
 }

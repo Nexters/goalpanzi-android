@@ -64,6 +64,9 @@ class InvitationCodeViewModel @Inject constructor(
     private val _isNotCodeValid = MutableStateFlow(false)
     val isNotCodeValid: StateFlow<Boolean> = _isNotCodeValid.asStateFlow()
 
+    private val _isErrorToastEvent = MutableSharedFlow<String>()
+    val isErrorToastEvent: SharedFlow<String> = _isErrorToastEvent.asSharedFlow()
+
     val enabledButton: StateFlow<Boolean> =
         combine(
             isNotCodeFirstEmpty.map { it.isNotEmpty() },
@@ -128,6 +131,16 @@ class InvitationCodeViewModel @Inject constructor(
                             CodeResultEvent.Success(result.data.toMissionUiModel())
                         )
                     }
+                    is NetworkResult.Error -> {
+                        result.message?.let {
+//                            if(){ //
+//                                _isErrorToastEvent.emit(it)
+//                            }else {
+//
+//                            }
+
+                        }
+                    }
                     else -> {
                         _isNotCodeValid.emit(true)
                     }
@@ -151,7 +164,6 @@ class InvitationCodeViewModel @Inject constructor(
             ).catch {
 
             }.collect {
-                Log.d("123123","Joined")
                 _joinResultEvent.emit(
                     JoinResultEvent.Success(missionId)
                 )

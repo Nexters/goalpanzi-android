@@ -6,9 +6,9 @@
     <string name="board_before_start_description">해당일에 자동으로 경쟁이 시작돼요.</string>
     <string name="board_after_start_description">나의 꾸준함 순위는? %d등</string>
 
-    <string name="board_verification_am_time_limit">오전 미션 인증은 12시까지에요</string>
-    <string name="board_verification_pm_time_limit">오후 미션 인증은 24시까지에요</string>
-    <string name="board_verification_all_day_time_limit">종일 미션 인증은 24시까지에요</string>
+    <string name="board_verification_am_time_limit">오전 00~12시</string>
+    <string name="board_verification_pm_time_limit">오후 12~24시</string>
+    <string name="board_verification_all_day_time_limit">종일 00~24시</string>
     <string name="board_verification_day_title">미션 요일 : %s</string>
 
     <string name="board_verification">오늘 미션 인증하기</string>

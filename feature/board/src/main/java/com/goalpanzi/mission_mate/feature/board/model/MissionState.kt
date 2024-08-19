@@ -88,7 +88,7 @@ enum class MissionState {
             val todayLocalDate = todayLocalDateTime.toLocalDate()
 
             return if (!startDate.isAfter(todayLocalDate)) {
-                if (memberList.isEmpty())
+                if (memberList.size == 1)
                     DELETABLE
                 else {
                     if (isPassedEndTime(todayLocalDateTime, endDateTime, verificationTimeType)) {
@@ -141,6 +141,8 @@ enum class MissionState {
                         }
                     }
                     else -> {
+                        if(isVerifiedInMissionTime(memberList))
+                            return IN_PROGRESS_MISSION_DAY_AFTER_CONFIRM
                         if(todayLocalDateTime.isAfter(endTime)){
                             return IN_PROGRESS_MISSION_DAY_CLOSED
                         }
