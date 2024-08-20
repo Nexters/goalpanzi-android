@@ -11,6 +11,7 @@ import com.goalpanzi.mission_mate.feature.board.navigateToBoard
 import com.goalpanzi.mission_mate.feature.board.navigateToBoardDetail
 import com.goalpanzi.mission_mate.feature.board.navigateToBoardFinish
 import com.goalpanzi.mission_mate.feature.board.navigateToUserStory
+import com.goalpanzi.mission_mate.feature.board.navigateToVerificationPreview
 import com.goalpanzi.mission_mate.feature.login.navigateToLogin
 import com.goalpanzi.mission_mate.feature.onboarding.navigateToBoardSetup
 import com.goalpanzi.mission_mate.feature.onboarding.navigateToBoardSetupSuccess
@@ -85,6 +86,10 @@ class MainNavigator(
 
     fun navigationToUserStory(userStory: UserStory) {
         navController.navigateToUserStory(userStory)
+    }
+
+    fun navigationToVerificationPreview(missionId: Long, imageUrl : String) {
+        navController.navigateToVerificationPreview(missionId, imageUrl)
     }
 }
 

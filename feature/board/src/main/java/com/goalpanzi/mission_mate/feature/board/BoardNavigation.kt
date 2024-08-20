@@ -12,6 +12,7 @@ import com.goalpanzi.mission_mate.feature.board.screen.BoardFinishRoute
 import com.goalpanzi.mission_mate.feature.board.screen.BoardMissionDetailRoute
 import com.goalpanzi.mission_mate.feature.board.screen.BoardRoute
 import com.goalpanzi.mission_mate.feature.board.screen.UserStoryScreen
+import com.goalpanzi.mission_mate.feature.board.screen.VerificationPreviewRoute
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
 
@@ -37,7 +38,8 @@ fun NavGraphBuilder.boardNavGraph(
     onNavigateDetail : (Long) -> Unit,
     onNavigateFinish : (Long) -> Unit,
     onNavigateStory: (UserStory) -> Unit,
-    onClickSetting: () -> Unit
+    onClickSetting: () -> Unit,
+    onNavigateToPreview: (Long, String) -> Unit
 ) {
     composable(
         "RouteModel.Board/{$missionIdArg}",
@@ -53,7 +55,8 @@ fun NavGraphBuilder.boardNavGraph(
             },
             onNavigateFinish = onNavigateFinish,
             onClickSetting = onClickSetting,
-            onClickStory = onNavigateStory
+            onClickStory = onNavigateStory,
+            onPreviewImage = onNavigateToPreview
         )
     }
 }
@@ -146,5 +149,33 @@ fun NavGraphBuilder.userStoryNavGraph(
                 onClickClose = onClickClose
             )
         }
+    }
+}
+
+fun NavController.navigateToVerificationPreview(
+    missionId: Long,
+    imageUrl: String
+) {
+    val encodedUrl = URLEncoder.encode(imageUrl, StandardCharsets.UTF_8.toString())
+    this.navigate("RouteModel.VerificationPreview" + "/${missionId}" +"/${encodedUrl}")
+}
+
+fun NavGraphBuilder.verificationPreviewNavGraph(
+    onClickClose: () -> Unit
+) {
+    composable(
+        route = "RouteModel.VerificationPreview/{$missionIdArg}/{$imageUrlArg}",
+        arguments = listOf(
+            navArgument(missionIdArg) {
+              type = NavType.LongType
+            },
+            navArgument(imageUrlArg) {
+                type = NavType.StringType
+            }
+        )
+    ) {
+        VerificationPreviewRoute(
+            onClickClose = onClickClose
+        )
     }
 }

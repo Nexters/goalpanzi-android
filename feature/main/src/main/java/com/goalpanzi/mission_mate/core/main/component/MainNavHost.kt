@@ -13,6 +13,7 @@ import com.goalpanzi.mission_mate.feature.board.boardDetailNavGraph
 import com.goalpanzi.mission_mate.feature.board.boardFinishNavGraph
 import com.goalpanzi.mission_mate.feature.board.boardNavGraph
 import com.goalpanzi.mission_mate.feature.board.userStoryNavGraph
+import com.goalpanzi.mission_mate.feature.board.verificationPreviewNavGraph
 import com.goalpanzi.mission_mate.feature.login.loginNavGraph
 import com.goalpanzi.mission_mate.feature.onboarding.boardSetupNavGraph
 import com.goalpanzi.mission_mate.feature.onboarding.boardSetupSuccessNavGraph
@@ -103,6 +104,9 @@ internal fun MainNavHost(
                 },
                 onNavigateStory = { userStory ->
                     navigator.navigationToUserStory(userStory)
+                },
+                onNavigateToPreview = { missionId, imageUrl ->
+                    navigator.navigationToVerificationPreview(missionId, imageUrl)
                 }
             )
             boardDetailNavGraph(
@@ -122,6 +126,11 @@ internal fun MainNavHost(
                 }
             )
             userStoryNavGraph(
+                onClickClose = {
+                    navigator.popBackStack()
+                }
+            )
+            verificationPreviewNavGraph(
                 onClickClose = {
                     navigator.popBackStack()
                 }

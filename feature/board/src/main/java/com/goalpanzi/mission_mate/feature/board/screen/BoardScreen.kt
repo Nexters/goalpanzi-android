@@ -58,6 +58,7 @@ fun BoardRoute(
     onNavigateFinish : (Long) -> Unit,
     onClickSetting: () -> Unit,
     onClickStory: (UserStory) -> Unit,
+    onPreviewImage: (Long, String) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: BoardViewModel = hiltViewModel()
 ) {
@@ -79,9 +80,10 @@ fun BoardRoute(
         contract = ActivityResultContracts.PickVisualMedia(),
         onResult = { imageUri ->
             imageUri?.let { original ->
-                ImageCompressor.getCompressedImage(context, original).let { compressed ->
-                    viewModel.verify(compressed)
-                }
+                onPreviewImage(viewModel.missionId, original.toString())
+//                ImageCompressor.getCompressedImage(context, original).let { compressed ->
+//                    viewModel.verify(compressed)
+//                }
             }
         }
     )
