@@ -1,5 +1,6 @@
 package com.goalpanzi.mission_mate.feature.board
 
+import android.net.Uri
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
