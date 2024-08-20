@@ -63,6 +63,8 @@ dependencies {
 
     implementation(libs.balloon)
 
+    implementation(libs.coil.compose)
+
     implementation(project(":core:designsystem"))
     implementation(project(":core:navigation"))
     implementation(project(":core:domain"))

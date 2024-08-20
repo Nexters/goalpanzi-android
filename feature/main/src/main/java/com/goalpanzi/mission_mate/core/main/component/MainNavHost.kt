@@ -4,7 +4,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
@@ -12,6 +11,8 @@ import com.goalpanzi.mission_mate.core.designsystem.theme.ColorWhite_FFFFFFFF
 import com.goalpanzi.mission_mate.feature.board.boardDetailNavGraph
 import com.goalpanzi.mission_mate.feature.board.boardFinishNavGraph
 import com.goalpanzi.mission_mate.feature.board.boardNavGraph
+import com.goalpanzi.mission_mate.feature.board.userStoryNavGraph
+import com.goalpanzi.mission_mate.feature.board.verificationPreviewNavGraph
 import com.goalpanzi.mission_mate.feature.login.loginNavGraph
 import com.goalpanzi.mission_mate.feature.onboarding.boardSetupNavGraph
 import com.goalpanzi.mission_mate.feature.onboarding.boardSetupSuccessNavGraph
@@ -99,6 +100,12 @@ internal fun MainNavHost(
                 },
                 onClickSetting = {
                     navigator.navigationToSetting()
+                },
+                onNavigateStory = { userStory ->
+                    navigator.navigationToUserStory(userStory)
+                },
+                onNavigateToPreview = { missionId, imageUrl ->
+                    navigator.navigationToVerificationPreview(missionId, imageUrl)
                 }
             )
             boardDetailNavGraph(
@@ -115,6 +122,22 @@ internal fun MainNavHost(
                 },
                 onClickOk = {
                     navigator.navigationToOnboarding()
+                }
+            )
+            userStoryNavGraph(
+                onClickClose = {
+                    navigator.popBackStack()
+                }
+            )
+            verificationPreviewNavGraph(
+                onClickClose = {
+                    navigator.popBackStack()
+                },
+                onUploadSuccess = {
+                    navigator.popBackStack()
+                    navigator.navController.currentBackStackEntry
+                        ?.savedStateHandle
+                        ?.set(it, true)
                 }
             )
         }

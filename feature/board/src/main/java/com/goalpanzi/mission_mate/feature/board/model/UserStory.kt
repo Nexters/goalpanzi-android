@@ -7,7 +7,8 @@ data class UserStory(
     val characterType : Character,
     val imageUrl : String,
     val isVerified : Boolean,
-    val isMe : Boolean = false
+    val isMe : Boolean = false,
+    val verifiedAt : String
 )
 
 fun MissionVerificationResponse.toUserStory(isMe: Boolean = false) : UserStory =
@@ -15,6 +16,7 @@ fun MissionVerificationResponse.toUserStory(isMe: Boolean = false) : UserStory =
         nickname = nickname,
         characterType = characterType.toCharacter(),
         imageUrl = imageUrl,
-        isVerified = false,
-        isMe = isMe
+        isVerified = imageUrl.isNotEmpty(),
+        isMe = isMe,
+        verifiedAt = verifiedAt
     )

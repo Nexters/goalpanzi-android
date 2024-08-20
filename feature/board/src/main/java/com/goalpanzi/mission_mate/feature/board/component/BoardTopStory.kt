@@ -1,8 +1,11 @@
 package com.goalpanzi.mission_mate.feature.board.component
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -22,6 +25,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.paint
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -38,7 +42,8 @@ import com.goalpanzi.mission_mate.feature.board.model.UserStory
 @Composable
 fun BoardTopStory(
     userList: List<UserStory>,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onClickStory: (UserStory) -> Unit,
 ) {
     LazyRow(
         modifier = modifier,
@@ -48,7 +53,8 @@ fun BoardTopStory(
         if (userList.isNotEmpty()) {
             items(userList) { userStory ->
                 UserStoryItem(
-                    userStory = userStory
+                    userStory = userStory,
+                    onClickStory = onClickStory
                 )
             }
         } else {
@@ -63,10 +69,12 @@ fun BoardTopStory(
     }
 }
 
+@SuppressLint("UnrememberedMutableInteractionSource")
 @Composable
 fun UserStoryItem(
     userStory: UserStory,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onClickStory: (UserStory) -> Unit
 ) {
     Box(
         modifier = modifier
@@ -82,14 +90,19 @@ fun UserStoryItem(
                 .height(64.dp)
                 .width(64.dp)
                 .then(
-                    if (userStory.isVerified) Modifier.border(
-                        3.dp, OrangeGradient_FFFF5F3C_FFFFAE50,
-                        CircleShape
-                    )
-                    else Modifier.border(
-                        3.dp, ColorWhite_FFFFFFFF,
-                        CircleShape
-                    )
+                    if (userStory.isVerified) {
+                        Modifier
+                            .border(3.dp, OrangeGradient_FFFF5F3C_FFFFAE50, CircleShape)
+                            .clickable(
+                                interactionSource = MutableInteractionSource(),
+                                indication = null,
+                                onClick = { onClickStory(userStory) }
+                            )
+                    } else {
+                        Modifier
+                            .border(3.dp, ColorWhite_FFFFFFFF, CircleShape)
+                            .alpha(0.5f)
+                    }
                 )
                 .paint(
                     painter = painterResource(userStory.characterType.backgroundId),
