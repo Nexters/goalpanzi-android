@@ -189,7 +189,7 @@ fun VerificationPreviewScreen(
                             )
                         }
                     }
-
+                    
                     MissionMateButton(
                         modifier = Modifier
                             .align(Alignment.BottomCenter)
