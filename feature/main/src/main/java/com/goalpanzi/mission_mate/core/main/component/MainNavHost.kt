@@ -4,7 +4,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
@@ -133,6 +132,12 @@ internal fun MainNavHost(
             verificationPreviewNavGraph(
                 onClickClose = {
                     navigator.popBackStack()
+                },
+                onUploadSuccess = {
+                    navigator.popBackStack()
+                    navigator.navController.currentBackStackEntry
+                        ?.savedStateHandle
+                        ?.set(it, true)
                 }
             )
         }
