@@ -3,6 +3,7 @@ package com.goalpanzi.mission_mate.core.network.service
 import com.luckyoct.core.model.response.MissionBoardsResponse
 import com.luckyoct.core.model.response.MissionDetailResponse
 import com.luckyoct.core.model.response.MissionRankResponse
+import com.luckyoct.core.model.response.MissionVerificationResponse
 import com.luckyoct.core.model.response.MissionVerificationsResponse
 import okhttp3.MultipartBody
 import retrofit2.Response
@@ -47,4 +48,10 @@ interface MissionService {
         @Path("missionId") missionId: Long,
         @Part imageFile: MultipartBody.Part
     ) : Response<Unit>
+
+    @GET("/api/missions/{missionId}/verifications/me/{number}")
+    suspend fun getMyMissionVerification(
+        @Path("missionId") missionId: Long,
+        @Path("number") number: Int
+    ) : Response<MissionVerificationResponse>
 }

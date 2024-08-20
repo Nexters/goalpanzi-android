@@ -1,5 +1,6 @@
 package com.goalpanzi.mission_mate.feature.board.component
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -25,6 +26,7 @@ fun Block(
     type: BlockType,
     eventType: BlockEventType?,
     numberOfColumns: Int,
+    onClickPassedBlock : (Int) -> Unit,
     modifier: Modifier = Modifier,
     isPassed: Boolean = false,
     isStartedMission: Boolean = false
@@ -37,7 +39,15 @@ fun Block(
             Spacer(modifier = modifier)
         } else {
             StableImage(
-                modifier = modifier,
+                modifier = modifier.then(
+                    if(isStartedMission && isPassed){
+                        Modifier.clickable {
+                            onClickPassedBlock(index)
+                        }
+                    }else {
+                        Modifier
+                    }
+                ),
                 drawableResId =
                 if (type == BlockType.START) R.drawable.img_board_start
                 else if (isStartedMission && isPassed) {
