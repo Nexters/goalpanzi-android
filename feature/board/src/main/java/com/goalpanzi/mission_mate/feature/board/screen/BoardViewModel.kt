@@ -200,6 +200,7 @@ class BoardViewModel @Inject constructor(
     }
 
     fun onVerifySuccess() {
+        if(missionState.value != MissionState.IN_PROGRESS_MISSION_DAY_BEFORE_CONFIRM) return
         viewModelScope.launch {
             // 내 캐릭터
             val myBoardPiece = boardPieces.value.find { it.isMe }
