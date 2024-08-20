@@ -1,5 +1,6 @@
 package com.goalpanzi.mission_mate.feature.board
 
+import android.net.Uri
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
@@ -12,6 +13,7 @@ import com.goalpanzi.mission_mate.feature.board.screen.BoardFinishRoute
 import com.goalpanzi.mission_mate.feature.board.screen.BoardMissionDetailRoute
 import com.goalpanzi.mission_mate.feature.board.screen.BoardRoute
 import com.goalpanzi.mission_mate.feature.board.screen.UserStoryScreen
+import com.goalpanzi.mission_mate.feature.board.screen.VerificationPreviewRoute
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
 
@@ -20,6 +22,7 @@ internal const val userCharacterTypeArg = "userCharacterType"
 internal const val nicknameArg = "nickname"
 internal const val dateArg = "date"
 internal const val imageUrlArg = "imageUrl"
+internal const val isUploadSuccessArg = "isUploadSuccess"
 
 fun NavController.navigateToBoard(
     missionId: Long,
@@ -37,13 +40,15 @@ fun NavGraphBuilder.boardNavGraph(
     onNavigateDetail : (Long) -> Unit,
     onNavigateFinish : (Long) -> Unit,
     onNavigateStory: (UserStory) -> Unit,
-    onClickSetting: () -> Unit
+    onClickSetting: () -> Unit,
+    onNavigateToPreview: (Long, Uri) -> Unit
 ) {
     composable(
         "RouteModel.Board/{$missionIdArg}",
         arguments = listOf(navArgument(missionIdArg) { type = NavType.LongType })
     ) { navBackStackEntry ->
         val missionId = navBackStackEntry.arguments?.getLong(missionIdArg)
+        val isUploadSuccess = navBackStackEntry.savedStateHandle.get<Boolean>(isUploadSuccessArg)
         BoardRoute(
             onNavigateOnboarding = onNavigateOnboarding,
             onNavigateDetail = {
@@ -53,7 +58,9 @@ fun NavGraphBuilder.boardNavGraph(
             },
             onNavigateFinish = onNavigateFinish,
             onClickSetting = onClickSetting,
-            onClickStory = onNavigateStory
+            onClickStory = onNavigateStory,
+            onPreviewImage = onNavigateToPreview,
+            isUploadSuccess = isUploadSuccess ?: false
         )
     }
 }
@@ -146,5 +153,35 @@ fun NavGraphBuilder.userStoryNavGraph(
                 onClickClose = onClickClose
             )
         }
+    }
+}
+
+fun NavController.navigateToVerificationPreview(
+    missionId: Long,
+    imageUrl: Uri
+) {
+    val encodedUrl = URLEncoder.encode(imageUrl.toString(), StandardCharsets.UTF_8.toString())
+    this.navigate("RouteModel.VerificationPreview" + "/${missionId}" +"/${encodedUrl}")
+}
+
+fun NavGraphBuilder.verificationPreviewNavGraph(
+    onClickClose: () -> Unit,
+    onUploadSuccess: (key: String) -> Unit
+) {
+    composable(
+        route = "RouteModel.VerificationPreview/{$missionIdArg}/{$imageUrlArg}",
+        arguments = listOf(
+            navArgument(missionIdArg) {
+              type = NavType.LongType
+            },
+            navArgument(imageUrlArg) {
+                type = NavType.StringType
+            }
+        )
+    ) {
+        VerificationPreviewRoute(
+            onClickClose = onClickClose,
+            onUploadSuccess = { onUploadSuccess(isUploadSuccessArg) }
+        )
     }
 }

@@ -57,7 +57,7 @@ class BoardViewModel @Inject constructor(
 
     val missionId: Long = savedStateHandle.get<Long>("missionId")!!
 
-    val viewedToolTip : StateFlow<Boolean> = getViewedTooltipUseCase().stateIn(
+    val viewedToolTip: StateFlow<Boolean> = getViewedTooltipUseCase().stateIn(
         viewModelScope,
         started = SharingStarted.WhileSubscribed(500),
         initialValue = true
@@ -79,12 +79,12 @@ class BoardViewModel @Inject constructor(
     val missionVerificationUiModel: StateFlow<MissionVerificationUiModel> =
         _missionVerificationUiModel.asStateFlow()
 
-    val isHost : StateFlow<Boolean> =
+    val isHost: StateFlow<Boolean> =
         combine(
             getCachedMemberIdUseCase(),
             missionUiModel.filter { it is MissionUiModel.Success }
-        ){ memberId, mission ->
-            if(mission !is MissionUiModel.Success) return@combine false
+        ) { memberId, mission ->
+            if (mission !is MissionUiModel.Success) return@combine false
             memberId == mission.missionDetail.hostMemberId
         }.stateIn(
             viewModelScope,
@@ -108,7 +108,7 @@ class BoardViewModel @Inject constructor(
     val boardRewardEvent: SharedFlow<BoardReward?> = _boardRewardEvent.asSharedFlow()
 
     private val _boardPieces = MutableStateFlow<List<BoardPiece>>(emptyList())
-    val boardPieces : StateFlow<List<BoardPiece>> = _boardPieces.asStateFlow()
+    val boardPieces: StateFlow<List<BoardPiece>> = _boardPieces.asStateFlow()
 
     fun getMissionBoards() {
         viewModelScope.launch {
@@ -186,88 +186,78 @@ class BoardViewModel @Inject constructor(
         }
     }
 
-    fun setViewedTooltip(){
+    fun setViewedTooltip() {
         viewModelScope.launch {
             setViewedTooltipUseCase().collect()
         }
     }
 
-    fun verify(image: File) {
+    fun onVerifySuccess() {
         viewModelScope.launch {
-            verifyMissionUseCase(missionId, image).collect {
-                when (it) {
-                    is NetworkResult.Success -> {
-                        // 내 캐릭터
-                        val myBoardPiece = boardPieces.value.find { it.isMe }
-                        val missionBoard = missionBoardUiModel.value
-                        if(myBoardPiece != null && missionBoard is MissionBoardUiModel.Success){
-                            val missionBoardList = missionBoard.missionBoards.missionBoardList
-                            // 내 캐릭터보다 한칸 앞션 캐릭터
-                            val nextBoardPiece = missionBoardList.filter { block ->
-                                block.missionBoardMembers.isNotEmpty()
-                            }.find {
-                                it.number == myBoardPiece.index + 1
-                            }
+            // 내 캐릭터
+            val myBoardPiece = boardPieces.value.find { it.isMe }
+            val missionBoard = missionBoardUiModel.value
+            if (myBoardPiece != null && missionBoard is MissionBoardUiModel.Success) {
+                val missionBoardList = missionBoard.missionBoards.missionBoardList
+                // 내 캐릭터보다 한칸 앞션 캐릭터
+                val nextBoardPiece = missionBoardList.filter { block ->
+                    block.missionBoardMembers.isNotEmpty()
+                }.find {
+                    it.number == myBoardPiece.index + 1
+                }
 
-                            // 내 캐릭터와 같이 있던 캐릭터
-                            val prevBoardPiece = missionBoardList.filter { block ->
-                                block.missionBoardMembers.size >= 2
-                            }.find {
-                                it.number == myBoardPiece.index
+                // 내 캐릭터와 같이 있던 캐릭터
+                val prevBoardPiece = missionBoardList.filter { block ->
+                    block.missionBoardMembers.size >= 2
+                }.find {
+                    it.number == myBoardPiece.index
+                }
+                _boardPieces.emit(
+                    buildList {
+                        addAll(
+                            boardPieces.value.map {
+                                if (it.isMe) it.copy(
+                                    boardPieceType = BoardPieceType.MOVED,
+                                    count = if (nextBoardPiece != null) nextBoardPiece.missionBoardMembers.size + 1 else 1
+                                ) else if (nextBoardPiece != null && it.index == nextBoardPiece.number) {
+                                    it.copy(boardPieceType = BoardPieceType.HIDDEN)
+                                } else it
                             }
-                            _boardPieces.emit(
-                                buildList {
-                                    addAll(
-                                        boardPieces.value.map {
-                                            if(it.isMe) it.copy(
-                                                boardPieceType = BoardPieceType.MOVED,
-                                                count = if(nextBoardPiece != null) nextBoardPiece.missionBoardMembers.size + 1 else 1
-                                            )else if(nextBoardPiece != null && it.index == nextBoardPiece.number){
-                                                it.copy(boardPieceType = BoardPieceType.HIDDEN)
-                                            } else it
-                                        }
-                                    )
-                                    if(prevBoardPiece != null){
-                                        val target = prevBoardPiece.missionBoardMembers.first {
-                                            it.nickname != myBoardPiece.nickname
-                                        }
-                                        add(
-                                            BoardPiece(
-                                                count = prevBoardPiece.missionBoardMembers.size - 1,
-                                                nickname = target.nickname,
-                                                drawableRes = target.character.imageId,
-                                                index = prevBoardPiece.number,
-                                                isMe = false
-                                            )
-                                        )
-                                    }
-                                }
-                            )
-
-                            _missionBoardUiModel.emit(
-                                missionBoard.copy(
-                                    missionBoards = missionBoard.missionBoards.copy(
-                                        passedCountByMe = missionBoard.missionBoards.passedCountByMe + 1
-                                    )
+                        )
+                        if (prevBoardPiece != null) {
+                            val target = prevBoardPiece.missionBoardMembers.first {
+                                it.nickname != myBoardPiece.nickname
+                            }
+                            add(
+                                BoardPiece(
+                                    count = prevBoardPiece.missionBoardMembers.size - 1,
+                                    nickname = target.nickname,
+                                    drawableRes = target.character.imageId,
+                                    index = prevBoardPiece.number,
+                                    isMe = false
                                 )
                             )
-                            delay(400)
-                            _boardRewardEvent.emit(
-                                missionBoardList.find {
-                                    myBoardPiece.index + 1 == it.number
-                                }?.boardReward
-                            )
                         }
-                        getMissionBoards()
-                        getMission()
-                        getMissionVerification()
                     }
-                    else -> Unit
-                }
+                )
+
+                _missionBoardUiModel.emit(
+                    missionBoard.copy(
+                        missionBoards = missionBoard.missionBoards.copy(
+                            passedCountByMe = missionBoard.missionBoards.passedCountByMe + 1
+                        )
+                    )
+                )
+                delay(400)
+                _boardRewardEvent.emit(
+                    missionBoardList.find {
+                        myBoardPiece.index + 1 == it.number
+                    }?.boardReward
+                )
             }
+            getMissionBoards()
+            getMission()
+            getMissionVerification()
         }
     }
-
-
-
 }
