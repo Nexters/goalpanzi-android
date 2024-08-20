@@ -6,6 +6,7 @@ import com.luckyoct.core.model.base.NetworkResult
 import com.luckyoct.core.model.response.MissionBoardsResponse
 import com.luckyoct.core.model.response.MissionDetailResponse
 import com.luckyoct.core.model.response.MissionRankResponse
+import com.luckyoct.core.model.response.MissionVerificationResponse
 import com.luckyoct.core.model.response.MissionVerificationsResponse
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
@@ -50,4 +51,11 @@ class MissionRepositoryImpl @Inject constructor(
             )
             missionService.verifyMission(missionId, requestFile)
         }
+
+    override suspend fun getMyMissionVerification(
+        missionId: Long,
+        number: Int
+    ): NetworkResult<MissionVerificationResponse> = handleResult {
+        missionService.getMyMissionVerification(missionId,number)
+    }
 }

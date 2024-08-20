@@ -111,6 +111,11 @@ fun BoardRoute(
                 isShownBoardRewardDialog = it
             }
         }
+        launch {
+            viewModel.myMissionVerification.collect {
+                onClickStory(it)
+            }
+        }
     }
 
     LaunchedEffect(missionState) {
@@ -185,7 +190,10 @@ fun BoardRoute(
         onClickTooltip = {
             viewModel.setViewedTooltip()
         },
-        onClickStory = onClickStory
+        onClickStory = onClickStory,
+        onClickMyVerificationBoardBlock = {
+            viewModel.getMyMissionVerification(it)
+        }
     )
 }
 
@@ -205,6 +213,7 @@ fun BoardScreen(
     onClickAddUser: () -> Unit,
     onClickTooltip: () -> Unit,
     onClickStory : (UserStory) -> Unit,
+    onClickMyVerificationBoardBlock : (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Box(
@@ -229,7 +238,8 @@ fun BoardScreen(
                 boardPieces = boardPieces,
                 scrollState = scrollState,
                 profile = missionVerificationUiModel.missionVerificationsResponse.missionVerifications.first(),
-                missionState = missionState
+                missionState = missionState,
+                onClickPassedBlock = onClickMyVerificationBoardBlock
             )
             BoardTopView(
                 title = missionUiModel.missionDetail.description,

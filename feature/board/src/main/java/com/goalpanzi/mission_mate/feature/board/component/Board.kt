@@ -56,6 +56,7 @@ fun Board(
     boardPieces: List<BoardPiece>,
     profile: MissionVerificationResponse,
     missionState: MissionState,
+    onClickPassedBlock : (Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val statusBar = WindowInsets.statusBars
@@ -111,6 +112,7 @@ fun Board(
                 profile,
                 missionState,
                 isVisiblePieces = isVisiblePieces,
+                onClickPassedBlock = onClickPassedBlock,
                 modifier
             )
         }
@@ -141,6 +143,7 @@ fun Board(
                 profile,
                 missionState,
                 isVisiblePieces = isVisiblePieces,
+                onClickPassedBlock = onClickPassedBlock,
                 modifier
             )
         }
@@ -166,6 +169,7 @@ fun Board(
                     profile,
                     missionState,
                     isVisiblePieces = isVisiblePieces,
+                    onClickPassedBlock = onClickPassedBlock,
                     modifier
                 )
             }
@@ -183,6 +187,7 @@ fun ColumnScope.BoardContent(
     profile: MissionVerificationResponse,
     missionState: MissionState,
     isVisiblePieces: Boolean,
+    onClickPassedBlock : (Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val boardCount = missionBoards.missionBoardList.size
@@ -235,6 +240,7 @@ fun ColumnScope.BoardContent(
                                 .weight(1f)
                                 .aspectRatio(1f),
                             numberOfColumns = numberOfColumns,
+                            onClickPassedBlock = onClickPassedBlock,
                             isPassed = it.isPassed,
                             isStartedMission = isVisiblePieces
                         )

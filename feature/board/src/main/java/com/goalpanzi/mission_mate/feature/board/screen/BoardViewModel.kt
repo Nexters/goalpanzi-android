@@ -8,6 +8,7 @@ import com.goalpanzi.mission_mate.core.domain.usecase.GetCachedMemberIdUseCase
 import com.goalpanzi.mission_mate.core.domain.usecase.GetMissionBoardsUseCase
 import com.goalpanzi.mission_mate.core.domain.usecase.GetMissionUseCase
 import com.goalpanzi.mission_mate.core.domain.usecase.GetMissionVerificationsUseCase
+import com.goalpanzi.mission_mate.core.domain.usecase.GetMyMissionVerificationUseCase
 import com.goalpanzi.mission_mate.core.domain.usecase.GetViewedTooltipUseCase
 import com.goalpanzi.mission_mate.core.domain.usecase.ProfileUseCase
 import com.goalpanzi.mission_mate.core.domain.usecase.SetViewedTooltipUseCase
@@ -16,7 +17,9 @@ import com.goalpanzi.mission_mate.feature.board.model.BoardPiece
 import com.goalpanzi.mission_mate.feature.board.model.BoardPieceType
 import com.goalpanzi.mission_mate.feature.board.model.MissionState
 import com.goalpanzi.mission_mate.feature.board.model.MissionState.Companion.getMissionState
+import com.goalpanzi.mission_mate.feature.board.model.UserStory
 import com.goalpanzi.mission_mate.feature.board.model.toBoardPieces
+import com.goalpanzi.mission_mate.feature.board.model.toCharacter
 import com.goalpanzi.mission_mate.feature.board.model.toModel
 import com.goalpanzi.mission_mate.feature.board.model.uimodel.MissionBoardUiModel
 import com.goalpanzi.mission_mate.feature.board.model.uimodel.MissionUiModel
@@ -52,7 +55,8 @@ class BoardViewModel @Inject constructor(
     private val deleteMissionUseCase: DeleteMissionUseCase,
     private val profileUseCase: ProfileUseCase,
     private val setViewedTooltipUseCase: SetViewedTooltipUseCase,
-    private val verifyMissionUseCase: VerifyMissionUseCase
+    private val verifyMissionUseCase: VerifyMissionUseCase,
+    private val getMyMissionVerificationUseCase : GetMyMissionVerificationUseCase,
 ) : ViewModel() {
 
     val missionId: Long = savedStateHandle.get<Long>("missionId")!!
@@ -62,6 +66,9 @@ class BoardViewModel @Inject constructor(
         started = SharingStarted.WhileSubscribed(500),
         initialValue = true
     )
+
+    private val _myMissionVerification = MutableSharedFlow<UserStory>()
+    val myMissionVerification : SharedFlow<UserStory> = _myMissionVerification.asSharedFlow()
 
     private val _deleteMissionResultEvent = MutableSharedFlow<Boolean>()
     val deleteMissionResultEvent: SharedFlow<Boolean> = _deleteMissionResultEvent.asSharedFlow()
@@ -193,6 +200,7 @@ class BoardViewModel @Inject constructor(
     }
 
     fun onVerifySuccess() {
+        if(missionState.value != MissionState.IN_PROGRESS_MISSION_DAY_BEFORE_CONFIRM) return
         viewModelScope.launch {
             // 내 캐릭터
             val myBoardPiece = boardPieces.value.find { it.isMe }
@@ -260,4 +268,39 @@ class BoardViewModel @Inject constructor(
             getMissionVerification()
         }
     }
+
+    fun getMyMissionVerification(
+        number : Int
+    ){
+        viewModelScope.launch {
+            getMyMissionVerificationUseCase(
+                missionId,
+                number
+            ).catch {
+
+            }.collect {
+                when(it){
+                    is NetworkResult.Success -> {
+                        _myMissionVerification.emit(
+                            UserStory(
+                                characterType = it.data.characterType.toCharacter(),
+                                imageUrl = it.data.imageUrl,
+                                isVerified = true,
+                                nickname = it.data.nickname,
+                                verifiedAt = it.data.verifiedAt
+                            )
+                        )
+                    }
+                    else -> {
+
+                    }
+                }
+
+
+
+            }
+
+        }
+    }
+
 }

@@ -5,6 +5,7 @@ import com.luckyoct.core.model.base.NetworkResult
 import com.luckyoct.core.model.response.MissionBoardsResponse
 import com.luckyoct.core.model.response.MissionDetailResponse
 import com.luckyoct.core.model.response.MissionRankResponse
+import com.luckyoct.core.model.response.MissionVerificationResponse
 import com.luckyoct.core.model.response.MissionVerificationsResponse
 import java.io.File
 
@@ -20,4 +21,6 @@ interface MissionRepository : ResultHandler {
     suspend fun getMissionRank(missionId: Long) : NetworkResult<MissionRankResponse>
 
     suspend fun verifyMission(missionId: Long, image: File) : NetworkResult<Unit>
+
+    suspend fun getMyMissionVerification(missionId: Long, number : Int) : NetworkResult<MissionVerificationResponse>
 }
