@@ -1,5 +1,6 @@
 package com.goalpanzi.mission_mate.core.main.component
 
+import android.net.Uri
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.lifecycle.Lifecycle
@@ -88,7 +89,7 @@ class MainNavigator(
         navController.navigateToUserStory(userStory)
     }
 
-    fun navigationToVerificationPreview(missionId: Long, imageUrl : String) {
+    fun navigationToVerificationPreview(missionId: Long, imageUrl : Uri) {
         navController.navigateToVerificationPreview(missionId, imageUrl)
     }
 }

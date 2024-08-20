@@ -20,7 +20,11 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.paint
@@ -31,15 +35,25 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.net.toUri
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.goalpanzi.mission_mate.core.designsystem.component.MissionMateButton
+import com.goalpanzi.mission_mate.core.designsystem.component.MissionMateButtonType
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorBlack_FF000000
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorWhite_FFFFFFFF
 import com.goalpanzi.mission_mate.core.designsystem.theme.MissionMateTypography
+import com.goalpanzi.mission_mate.feature.board.R
+import com.goalpanzi.mission_mate.feature.board.model.Character
+import com.goalpanzi.mission_mate.feature.board.util.ImageCompressor
+import kotlinx.coroutines.flow.collectLatest
+import java.io.File
 import java.net.URLDecoder
 import java.nio.charset.StandardCharsets
 import java.time.LocalDateTime
@@ -48,22 +62,48 @@ import java.time.format.DateTimeFormatter
 @Composable
 fun VerificationPreviewRoute(
     onClickClose: () -> Unit,
+    onUploadSuccess: () -> Unit,
     viewModel: VerificationPreviewViewModel = hiltViewModel()
 ) {
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    var showProgress by rememberSaveable { mutableStateOf(false) }
+
+    LaunchedEffect(Unit) {
+        viewModel.eventFlow.collectLatest {
+            when (it) {
+                UploadEvent.Loading -> {
+                    showProgress = true
+                }
+                UploadEvent.Success -> {
+                    showProgress = false
+                    onUploadSuccess()
+                }
+                UploadEvent.Error -> {
+                    showProgress = false
+                }
+            }
+        }
+    }
 
     VerificationPreviewScreen(
         onClickClose = onClickClose,
-        uiState = uiState
+        uiState = uiState,
+        onClickUpload = viewModel::uploadImage
     )
+
+    if (showProgress) {
+       ProgressBar()
+    }
 }
 
 @Composable
 fun VerificationPreviewScreen(
     onClickClose: () -> Unit,
-    uiState: VerificationPreviewUiState
+    uiState: VerificationPreviewUiState,
+    onClickUpload: (File) -> Unit
 ) {
+    val context = LocalContext.current
     val dateTime = LocalDateTime.now()
     val formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd")
 
@@ -82,8 +122,8 @@ fun VerificationPreviewScreen(
                 VerificationPreviewUiState.Loading -> VerificationPreviewLoading()
                 is VerificationPreviewUiState.Success -> {
                     AsyncImage(
-                        model = ImageRequest.Builder(LocalContext.current)
-                            .data(URLDecoder.decode(uiState.imageUrl, StandardCharsets.UTF_8.toString()))
+                        model = ImageRequest.Builder(context)
+                            .data(uiState.imageUrl)
                             .build(),
                         contentDescription = null,
                         modifier = Modifier.fillMaxSize(),
@@ -149,6 +189,25 @@ fun VerificationPreviewScreen(
                             )
                         }
                     }
+
+                    MissionMateButton(
+                        modifier = Modifier
+                            .align(Alignment.BottomCenter)
+                            .padding(horizontal = 24.dp, vertical = 36.dp)
+                            .fillMaxWidth()
+                            .navigationBarsPadding(),
+                        buttonType = MissionMateButtonType.ACTIVE,
+                        onClick = {
+                            val file = ImageCompressor.getCompressedImage(context, uiState.imageUrl.toUri())
+                            onClickUpload(file)
+                        }
+                    ) {
+                        Text(
+                            text = stringResource(id = R.string.upload),
+                            style = MissionMateTypography.body_xl_bold,
+                            color = ColorWhite_FFFFFFFF
+                        )
+                    }
                 }
             }
         }
@@ -167,4 +226,31 @@ fun VerificationPreviewLoading() {
             modifier = Modifier.align(Alignment.Center)
         )
     }
+}
+
+@Composable
+fun ProgressBar() {
+    Box(
+        modifier = Modifier
+            .statusBarsPadding()
+            .navigationBarsPadding()
+    ) {
+        CircularProgressIndicator(
+            modifier = Modifier.align(Alignment.Center)
+        )
+    }
+}
+
+@Preview
+@Composable
+fun VerificationPreviewScreenPreview() {
+    VerificationPreviewScreen(
+        onClickClose = {},
+        uiState = VerificationPreviewUiState.Success(
+            character = Character.RABBIT,
+            nickname = "닉네임",
+            imageUrl = ""
+        ),
+        onClickUpload = {}
+    )
 }

@@ -1,5 +1,7 @@
 package com.goalpanzi.mission_mate.feature.board.screen
 
+import android.content.Intent
+import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -45,7 +47,6 @@ import com.goalpanzi.mission_mate.feature.board.model.toUserStory
 import com.goalpanzi.mission_mate.feature.board.model.uimodel.MissionBoardUiModel
 import com.goalpanzi.mission_mate.feature.board.model.uimodel.MissionUiModel
 import com.goalpanzi.mission_mate.feature.board.model.uimodel.MissionVerificationUiModel
-import com.goalpanzi.mission_mate.feature.board.util.ImageCompressor
 import com.goalpanzi.mission_mate.feature.onboarding.component.StableImage
 import com.luckyoct.core.model.response.BoardReward
 import kotlinx.coroutines.delay
@@ -58,7 +59,8 @@ fun BoardRoute(
     onNavigateFinish : (Long) -> Unit,
     onClickSetting: () -> Unit,
     onClickStory: (UserStory) -> Unit,
-    onPreviewImage: (Long, String) -> Unit,
+    onPreviewImage: (Long, Uri) -> Unit,
+    isUploadSuccess: Boolean,
     modifier: Modifier = Modifier,
     viewModel: BoardViewModel = hiltViewModel()
 ) {
@@ -80,10 +82,11 @@ fun BoardRoute(
         contract = ActivityResultContracts.PickVisualMedia(),
         onResult = { imageUri ->
             imageUri?.let { original ->
-                onPreviewImage(viewModel.missionId, original.toString())
-//                ImageCompressor.getCompressedImage(context, original).let { compressed ->
-//                    viewModel.verify(compressed)
-//                }
+                context.contentResolver.takePersistableUriPermission(
+                    original,
+                    Intent.FLAG_GRANT_READ_URI_PERMISSION
+                )
+                onPreviewImage(viewModel.missionId, original)
             }
         }
     )
@@ -120,6 +123,12 @@ fun BoardRoute(
             isShownDeleteMissionDialog = true
         }else if(missionState == MissionState.POST_END){
             onNavigateFinish(viewModel.missionId)
+        }
+    }
+
+    LaunchedEffect(key1 = isUploadSuccess) {
+        if (isUploadSuccess) {
+            viewModel.onVerifySuccess()
         }
     }
 
