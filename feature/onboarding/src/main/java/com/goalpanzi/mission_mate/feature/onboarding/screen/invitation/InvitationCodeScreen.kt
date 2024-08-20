@@ -34,6 +34,7 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -136,7 +137,7 @@ fun InvitationCodeRoute(
     }
     hasInvitationDialogData?.let { mission ->
         InvitationDialog(
-            count = 13,
+            count = mission.missionBoardCount,
             missionTitle = mission.missionTitle,
             missionPeriod = mission.missionPeriod,
             missionDays = mission.missionDays,
@@ -233,7 +234,8 @@ fun InvitationCodeScreen(
                     .aspectRatio(1f),
                 text = codeFirst,
                 keyboardOptions = KeyboardOptions(
-                    imeAction = ImeAction.Next
+                    imeAction = ImeAction.Next,
+                    capitalization = KeyboardCapitalization.Characters
                 ),
                 isError = isNotCodeValid,
                 onValueChange = onCodeFirstChange
@@ -244,7 +246,8 @@ fun InvitationCodeScreen(
                     .aspectRatio(1f),
                 text = codeSecond,
                 keyboardOptions = KeyboardOptions(
-                    imeAction = ImeAction.Next
+                    imeAction = ImeAction.Next,
+                    capitalization = KeyboardCapitalization.Characters
                 ),
                 isError = isNotCodeValid,
                 onValueChange = onCodeSecondChange
@@ -255,7 +258,8 @@ fun InvitationCodeScreen(
                     .aspectRatio(1f),
                 text = codeThird,
                 keyboardOptions = KeyboardOptions(
-                    imeAction = ImeAction.Next
+                    imeAction = ImeAction.Next,
+                    capitalization = KeyboardCapitalization.Characters
                 ),
                 isError = isNotCodeValid,
                 onValueChange = onCodeThirdChange
@@ -265,6 +269,9 @@ fun InvitationCodeScreen(
                     .weight(1f)
                     .aspectRatio(1f),
                 text = codeFourth,
+                keyboardOptions = KeyboardOptions(
+                    capitalization = KeyboardCapitalization.Characters
+                ),
                 isError = isNotCodeValid,
                 onValueChange = onCodeFourthChange
             )
