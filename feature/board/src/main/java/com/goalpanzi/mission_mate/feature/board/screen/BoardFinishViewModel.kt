@@ -6,8 +6,8 @@ import androidx.lifecycle.viewModelScope
 import com.goalpanzi.mission_mate.core.domain.usecase.GetMissionRankUseCase
 import com.goalpanzi.mission_mate.core.domain.usecase.ProfileUseCase
 import com.goalpanzi.mission_mate.core.domain.usecase.SetMissionJoinedUseCase
-import com.luckyoct.core.model.UserProfile
-import com.luckyoct.core.model.base.NetworkResult
+import com.goalpanzi.core.model.UserProfile
+import com.goalpanzi.core.model.base.NetworkResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

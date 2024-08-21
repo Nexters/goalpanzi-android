@@ -2,9 +2,9 @@ package com.goalpanzi.mission_mate.core.domain.usecase
 
 import com.goalpanzi.mission_mate.core.datastore.datasource.DefaultDataSource
 import com.goalpanzi.mission_mate.core.domain.repository.ProfileRepository
-import com.luckyoct.core.model.CharacterType
-import com.luckyoct.core.model.UserProfile
-import com.luckyoct.core.model.base.NetworkResult
+import com.goalpanzi.core.model.CharacterType
+import com.goalpanzi.core.model.UserProfile
+import com.goalpanzi.core.model.base.NetworkResult
 import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 

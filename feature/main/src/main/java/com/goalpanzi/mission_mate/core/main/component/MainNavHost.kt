@@ -18,10 +18,10 @@ import com.goalpanzi.mission_mate.feature.onboarding.boardSetupNavGraph
 import com.goalpanzi.mission_mate.feature.onboarding.boardSetupSuccessNavGraph
 import com.goalpanzi.mission_mate.feature.onboarding.invitationCodeNavGraph
 import com.goalpanzi.mission_mate.feature.onboarding.onboardingNavGraph
-import com.luckyoct.feature.profile.profileNavGraph
-import com.luckyoct.feature.setting.navigation.privacyPolicyNavGraph
-import com.luckyoct.feature.setting.navigation.servicePolicyNavGraph
-import com.luckyoct.feature.setting.navigation.settingNavGraph
+import com.goalpanzi.mission_mate.feature.profile.profileNavGraph
+import com.goalpanzi.mission_mate.feature.setting.navigation.privacyPolicyNavGraph
+import com.goalpanzi.mission_mate.feature.setting.navigation.servicePolicyNavGraph
+import com.goalpanzi.mission_mate.feature.setting.navigation.settingNavGraph
 
 @Composable
 internal fun MainNavHost(

@@ -3,7 +3,7 @@ package com.goalpanzi.mission_mate.feature.board.util.boardmanager
 import com.goalpanzi.mission_mate.feature.board.model.MissionState
 import com.goalpanzi.mission_mate.feature.board.model.MissionState.Companion.getMissionStateAsInProgress
 import com.goalpanzi.mission_mate.feature.onboarding.model.VerificationTimeType
-import com.luckyoct.core.model.response.MissionVerificationResponse
+import com.goalpanzi.core.model.response.MissionVerificationResponse
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import java.time.DayOfWeek

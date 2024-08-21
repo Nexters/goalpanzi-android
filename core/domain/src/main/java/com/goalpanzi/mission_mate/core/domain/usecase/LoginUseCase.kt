@@ -3,9 +3,9 @@ package com.goalpanzi.mission_mate.core.domain.usecase
 import com.goalpanzi.mission_mate.core.datastore.datasource.AuthDataSource
 import com.goalpanzi.mission_mate.core.datastore.datasource.DefaultDataSource
 import com.goalpanzi.mission_mate.core.domain.repository.AuthRepository
-import com.luckyoct.core.model.UserProfile
-import com.luckyoct.core.model.base.NetworkResult
-import com.luckyoct.core.model.response.GoogleLogin
+import com.goalpanzi.core.model.UserProfile
+import com.goalpanzi.core.model.base.NetworkResult
+import com.goalpanzi.core.model.response.GoogleLogin
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking

@@ -1,6 +1,6 @@
 package com.goalpanzi.mission_mate.feature.board.model.uimodel
 
-import com.luckyoct.core.model.response.MissionVerificationsResponse
+import com.goalpanzi.core.model.response.MissionVerificationsResponse
 
 sealed class MissionVerificationUiModel {
     data object Loading : MissionVerificationUiModel()

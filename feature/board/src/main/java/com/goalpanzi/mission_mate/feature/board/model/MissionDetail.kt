@@ -1,6 +1,6 @@
 package com.goalpanzi.mission_mate.feature.board.model
 
-import com.luckyoct.core.model.response.MissionDetailResponse
+import com.goalpanzi.core.model.response.MissionDetailResponse
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.LocalDateTime

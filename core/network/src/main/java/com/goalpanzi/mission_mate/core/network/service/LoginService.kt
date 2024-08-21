@@ -1,7 +1,7 @@
 package com.goalpanzi.mission_mate.core.network.service
 
-import com.luckyoct.core.model.response.GoogleLogin
-import com.luckyoct.core.model.request.GoogleLoginRequest
+import com.goalpanzi.core.model.response.GoogleLogin
+import com.goalpanzi.core.model.request.GoogleLoginRequest
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE

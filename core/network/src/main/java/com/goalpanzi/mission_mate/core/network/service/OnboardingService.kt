@@ -1,9 +1,9 @@
 package com.goalpanzi.mission_mate.core.network.service
 
-import com.luckyoct.core.model.request.CreateMissionRequest
-import com.luckyoct.core.model.request.JoinMissionRequest
-import com.luckyoct.core.model.response.MissionDetailResponse
-import com.luckyoct.core.model.response.MissionsResponse
+import com.goalpanzi.core.model.request.CreateMissionRequest
+import com.goalpanzi.core.model.request.JoinMissionRequest
+import com.goalpanzi.core.model.response.MissionDetailResponse
+import com.goalpanzi.core.model.response.MissionsResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET

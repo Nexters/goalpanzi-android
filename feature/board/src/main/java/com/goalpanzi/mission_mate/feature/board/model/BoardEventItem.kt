@@ -3,7 +3,7 @@ package com.goalpanzi.mission_mate.feature.board.model
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import com.goalpanzi.mission_mate.feature.board.R
-import com.luckyoct.core.model.response.BoardReward
+import com.goalpanzi.core.model.response.BoardReward
 
 data class BoardEventItem(
     val index: Int,

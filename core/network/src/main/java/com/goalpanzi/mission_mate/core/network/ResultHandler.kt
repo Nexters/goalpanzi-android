@@ -1,6 +1,6 @@
 package com.goalpanzi.mission_mate.core.network
 
-import com.luckyoct.core.model.base.NetworkResult
+import com.goalpanzi.core.model.base.NetworkResult
 import retrofit2.HttpException
 import retrofit2.Response
 

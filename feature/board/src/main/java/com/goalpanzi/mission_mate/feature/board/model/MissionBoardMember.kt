@@ -1,6 +1,6 @@
 package com.goalpanzi.mission_mate.feature.board.model
 
-import com.luckyoct.core.model.response.MissionBoardMembersResponse
+import com.goalpanzi.core.model.response.MissionBoardMembersResponse
 
 data class MissionBoardMember(
     val nickname : String,

@@ -24,8 +24,8 @@ import com.goalpanzi.mission_mate.feature.board.model.toModel
 import com.goalpanzi.mission_mate.feature.board.model.uimodel.MissionBoardUiModel
 import com.goalpanzi.mission_mate.feature.board.model.uimodel.MissionUiModel
 import com.goalpanzi.mission_mate.feature.board.model.uimodel.MissionVerificationUiModel
-import com.luckyoct.core.model.base.NetworkResult
-import com.luckyoct.core.model.response.BoardReward
+import com.goalpanzi.core.model.base.NetworkResult
+import com.goalpanzi.core.model.response.BoardReward
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -41,7 +41,6 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import java.io.File
 import javax.inject.Inject
 
 @HiltViewModel

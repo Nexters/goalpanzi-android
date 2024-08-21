@@ -1,9 +1,8 @@
 package com.goalpanzi.mission_mate.feature.board.model
 
-import com.luckyoct.core.model.UserProfile
-import com.luckyoct.core.model.response.BoardReward
-import com.luckyoct.core.model.response.MissionBoardResponse
-import com.luckyoct.core.model.response.MissionBoardsResponse
+import com.goalpanzi.core.model.UserProfile
+import com.goalpanzi.core.model.response.BoardReward
+import com.goalpanzi.core.model.response.MissionBoardsResponse
 
 data class MissionBoards(
     val missionBoardList : List<MissionBoard>,

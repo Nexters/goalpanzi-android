@@ -1,7 +1,7 @@
 package com.goalpanzi.mission_mate.core.domain.usecase
 
 import com.goalpanzi.mission_mate.core.domain.repository.MissionRepository
-import com.luckyoct.core.model.base.NetworkResult
+import com.goalpanzi.core.model.base.NetworkResult
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import java.io.File

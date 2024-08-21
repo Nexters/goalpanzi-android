@@ -48,7 +48,7 @@ import com.goalpanzi.mission_mate.feature.board.model.uimodel.MissionBoardUiMode
 import com.goalpanzi.mission_mate.feature.board.model.uimodel.MissionUiModel
 import com.goalpanzi.mission_mate.feature.board.model.uimodel.MissionVerificationUiModel
 import com.goalpanzi.mission_mate.feature.onboarding.component.StableImage
-import com.luckyoct.core.model.response.BoardReward
+import com.goalpanzi.core.model.response.BoardReward
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 

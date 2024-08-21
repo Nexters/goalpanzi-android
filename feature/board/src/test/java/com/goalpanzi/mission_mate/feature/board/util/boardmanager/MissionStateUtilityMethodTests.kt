@@ -4,7 +4,7 @@ import com.goalpanzi.mission_mate.feature.board.model.MissionState.Companion.isP
 import com.goalpanzi.mission_mate.feature.board.model.MissionState.Companion.isTodayMissionDay
 import com.goalpanzi.mission_mate.feature.board.model.MissionState.Companion.isVerifiedInMissionTime
 import com.goalpanzi.mission_mate.feature.onboarding.model.VerificationTimeType
-import com.luckyoct.core.model.response.MissionVerificationResponse
+import com.goalpanzi.core.model.response.MissionVerificationResponse
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test

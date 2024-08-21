@@ -8,8 +8,8 @@ import com.goalpanzi.mission_mate.core.domain.usecase.VerifyMissionUseCase
 import com.goalpanzi.mission_mate.feature.board.imageUrlArg
 import com.goalpanzi.mission_mate.feature.board.missionIdArg
 import com.goalpanzi.mission_mate.feature.board.model.Character
-import com.luckyoct.core.model.UserProfile
-import com.luckyoct.core.model.base.NetworkResult
+import com.goalpanzi.core.model.UserProfile
+import com.goalpanzi.core.model.base.NetworkResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharingStarted

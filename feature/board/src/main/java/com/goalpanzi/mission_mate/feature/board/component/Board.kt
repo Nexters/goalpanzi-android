@@ -43,7 +43,7 @@ import com.goalpanzi.mission_mate.feature.board.model.MissionState
 import com.goalpanzi.mission_mate.feature.board.model.toEventType
 import com.goalpanzi.mission_mate.feature.board.util.BoardManager
 import com.goalpanzi.mission_mate.feature.board.util.BoardManager.getPositionScrollToMyIndex
-import com.luckyoct.core.model.response.MissionVerificationResponse
+import com.goalpanzi.core.model.response.MissionVerificationResponse
 import kotlin.math.absoluteValue
 
 

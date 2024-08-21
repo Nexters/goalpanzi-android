@@ -2,14 +2,13 @@ package com.goalpanzi.mission_mate.core.network
 
 import com.goalpanzi.mission_mate.core.datastore.datasource.AuthDataSource
 import com.goalpanzi.mission_mate.core.network.service.TokenService
-import com.luckyoct.core.model.request.TokenReissueRequest
+import com.goalpanzi.core.model.request.TokenReissueRequest
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
-import okhttp3.Request
 import okhttp3.Response
 import java.net.HttpURLConnection
 import javax.inject.Inject

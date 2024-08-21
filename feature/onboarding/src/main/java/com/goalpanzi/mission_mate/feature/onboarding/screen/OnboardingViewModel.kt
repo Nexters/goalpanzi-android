@@ -6,7 +6,7 @@ import com.goalpanzi.mission_mate.core.domain.usecase.GetJoinedMissionsUseCase
 import com.goalpanzi.mission_mate.core.domain.usecase.GetMissionJoinedUseCase
 import com.goalpanzi.mission_mate.feature.onboarding.model.OnboardingResultEvent
 import com.goalpanzi.mission_mate.feature.onboarding.model.OnboardingUiModel
-import com.luckyoct.core.model.base.NetworkResult
+import com.goalpanzi.core.model.base.NetworkResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow

@@ -6,7 +6,6 @@ import androidx.compose.runtime.remember
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.goalpanzi.mission_mate.core.navigation.RouteModel
 import com.goalpanzi.mission_mate.feature.board.model.UserStory
 import com.goalpanzi.mission_mate.feature.board.navigateToBoard
 import com.goalpanzi.mission_mate.feature.board.navigateToBoardDetail
@@ -18,11 +17,11 @@ import com.goalpanzi.mission_mate.feature.onboarding.navigateToBoardSetup
 import com.goalpanzi.mission_mate.feature.onboarding.navigateToBoardSetupSuccess
 import com.goalpanzi.mission_mate.feature.onboarding.navigateToInvitationCode
 import com.goalpanzi.mission_mate.feature.onboarding.navigateToOnboarding
-import com.luckyoct.feature.profile.navigateToProfileCreate
-import com.luckyoct.feature.profile.navigateToProfileSetting
-import com.luckyoct.feature.setting.navigation.navigateToPrivacyPolicy
-import com.luckyoct.feature.setting.navigation.navigateToServicePolicy
-import com.luckyoct.feature.setting.navigation.navigateToSetting
+import com.goalpanzi.mission_mate.feature.profile.navigateToProfileCreate
+import com.goalpanzi.mission_mate.feature.profile.navigateToProfileSetting
+import com.goalpanzi.mission_mate.feature.setting.navigation.navigateToPrivacyPolicy
+import com.goalpanzi.mission_mate.feature.setting.navigation.navigateToServicePolicy
+import com.goalpanzi.mission_mate.feature.setting.navigation.navigateToSetting
 
 class MainNavigator(
     val navController: NavHostController
