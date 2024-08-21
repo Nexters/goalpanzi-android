@@ -37,11 +37,13 @@ import com.goalpanzi.mission_mate.core.designsystem.theme.ColorOrange_FFFF5732
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorWhite_FFFFFFFF
 import com.goalpanzi.mission_mate.core.designsystem.theme.MissionMateTypography
 import com.goalpanzi.mission_mate.core.designsystem.theme.OrangeGradient_FFFF5F3C_FFFFAE50
+import com.goalpanzi.mission_mate.feature.board.model.MissionState
 import com.goalpanzi.mission_mate.feature.board.model.UserStory
 
 @Composable
 fun BoardTopStory(
     userList: List<UserStory>,
+    missionState : MissionState,
     modifier: Modifier = Modifier,
     onClickStory: (UserStory) -> Unit,
 ) {
@@ -54,6 +56,7 @@ fun BoardTopStory(
             items(userList) { userStory ->
                 UserStoryItem(
                     userStory = userStory,
+                    missionState = missionState,
                     onClickStory = onClickStory
                 )
             }
@@ -73,6 +76,7 @@ fun BoardTopStory(
 @Composable
 fun UserStoryItem(
     userStory: UserStory,
+    missionState : MissionState,
     modifier: Modifier = Modifier,
     onClickStory: (UserStory) -> Unit
 ) {
@@ -90,7 +94,10 @@ fun UserStoryItem(
                 .height(64.dp)
                 .width(64.dp)
                 .then(
-                    if (userStory.isVerified) {
+                    if(missionState.isEnabledToInvite() && userStory.isMe){
+                        Modifier .border(3.dp, ColorWhite_FFFFFFFF, CircleShape)
+                    }
+                    else if (userStory.isVerified) {
                         Modifier
                             .border(3.dp, OrangeGradient_FFFF5F3C_FFFFAE50, CircleShape)
                             .clickable(

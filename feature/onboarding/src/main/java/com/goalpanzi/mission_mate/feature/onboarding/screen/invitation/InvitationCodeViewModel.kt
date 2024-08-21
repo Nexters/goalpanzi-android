@@ -13,6 +13,7 @@ import com.goalpanzi.mission_mate.feature.onboarding.model.CodeResultEvent
 import com.goalpanzi.mission_mate.feature.onboarding.model.JoinResultEvent
 import com.goalpanzi.mission_mate.feature.onboarding.model.toMissionUiModel
 import com.goalpanzi.core.model.base.NetworkResult
+import com.goalpanzi.mission_mate.feature.board.model.toModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -24,6 +25,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.filterNot
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.shareIn
@@ -41,25 +43,25 @@ class InvitationCodeViewModel @Inject constructor(
     var codeFirst by mutableStateOf("")
         private set
 
-    private val codeFirstFlow =
+    private val isNotCodeFirstEmpty =
         snapshotFlow { codeFirst }
 
     var codeSecond by mutableStateOf("")
         private set
 
-    private val codeSecondFlow =
+    private val isNotCodeSecondEmpty =
         snapshotFlow { codeSecond }
 
     var codeThird by mutableStateOf("")
         private set
 
-    private val codeThirdFlow =
+    private val isNotCodeThirdEmpty =
         snapshotFlow { codeThird }
 
     var codeFourth by mutableStateOf("")
         private set
 
-    private val codeFourthFlow =
+    private val isNotCodeFourthEmpty =
         snapshotFlow { codeFourth }
 
     private val _isNotCodeValid = MutableStateFlow(false)
@@ -70,10 +72,10 @@ class InvitationCodeViewModel @Inject constructor(
 
     val enabledButton: StateFlow<Boolean> =
         combine(
-            codeFirstFlow.map { it.isNotEmpty() },
-            codeSecondFlow.map { it.isNotEmpty() },
-            codeThirdFlow.map { it.isNotEmpty() },
-            codeFourthFlow.map { it.isNotEmpty() },
+            isNotCodeFirstEmpty.map { it.isNotEmpty() },
+            isNotCodeSecondEmpty.map { it.isNotEmpty() },
+            isNotCodeThirdEmpty.map { it.isNotEmpty() },
+            isNotCodeFourthEmpty.map { it.isNotEmpty() },
             isNotCodeValid
         ) { isNotFirstEmpty, isNotSecondEmpty, isNotThirdEmpty, isNotFourthEmpty, isNotValid ->
             isNotFirstEmpty && isNotSecondEmpty && isNotThirdEmpty && isNotFourthEmpty && !isNotValid
@@ -85,10 +87,9 @@ class InvitationCodeViewModel @Inject constructor(
 
     val codeInputActionEvent: SharedFlow<CodeActionEvent> =
         merge(
-            codeFirstFlow.map { if(it.isNotEmpty()) CodeActionEvent.FIRST_DONE  else CodeActionEvent.FIRST_CLEAR },
-            codeSecondFlow.map { if(it.isNotEmpty()) CodeActionEvent.SECOND_DONE  else CodeActionEvent.SECOND_CLEAR },
-            codeThirdFlow.map { if(it.isNotEmpty()) CodeActionEvent.THIRD_DONE  else CodeActionEvent.THIRD_CLEAR },
-            codeFourthFlow.map { if(it.isNotEmpty()) CodeActionEvent.FOURTH_DONE  else CodeActionEvent.FOURTH_CLEAR }
+            isNotCodeFirstEmpty.filterNot { it.isEmpty() }.map { CodeActionEvent.FIRST_DONE },
+            isNotCodeSecondEmpty.filterNot { it.isEmpty() }.map { CodeActionEvent.SECOND_DONE },
+            isNotCodeThirdEmpty.filterNot { it.isEmpty() }.map { CodeActionEvent.THIRD_DONE }
         ).shareIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(500)
@@ -130,7 +131,7 @@ class InvitationCodeViewModel @Inject constructor(
                 when(result){
                     is NetworkResult.Success -> {
                         _codeResultEvent.emit(
-                            CodeResultEvent.Success(result.data.toMissionUiModel())
+                            CodeResultEvent.Success(result.data.toModel().toMissionUiModel())
                         )
                     }
                     is NetworkResult.Error -> {
