@@ -11,7 +11,7 @@ val ColorGray3_FF727484 = Color(0xFF727484)
 
 val ColorGray4_FFE5E5E5 = Color(0xFFE5E5E5)
 val ColorGray5_FFF5F6F9 = Color(0xFFF5F6F9)
-val ColorGray5_80F5F6F9 = Color(0x80F5F6F9)
+val ColorGray5_80F5F6F9_opacity_50 = Color(0x80F5F6F9)
 val ColorDisabled_FFB3B3B3 = Color(0xFFB3B3B3)
 
 val ColorRed_FFFF5858 = Color(0xFFFF5858)

@@ -34,9 +34,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.goalpanzi.mission_mate.core.designsystem.R
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorGray1_FF404249
+import com.goalpanzi.mission_mate.core.designsystem.theme.ColorGray2_FF4F505C
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorGray3_FF727484
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorGray4_FFE5E5E5
-import com.goalpanzi.mission_mate.core.designsystem.theme.ColorGray5_80F5F6F9
+import com.goalpanzi.mission_mate.core.designsystem.theme.ColorGray5_FFF5F6F9
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorRed_FFFF5858
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorWhite_FFFFFFFF
 import com.goalpanzi.mission_mate.core.designsystem.theme.MissionMateTypography
@@ -57,8 +58,9 @@ fun MissionMateTextField(
     guidanceColor : Color = Color(0xFF4F505C),
     errorColor : Color = Color(0xFFFF6464),
     containerColor: Color = ColorWhite_FFFFFFFF,
-    unfocusedHintColor: Color = ColorGray5_80F5F6F9,
-    borderStroke: BorderStroke = BorderStroke(1.dp, ColorGray4_FFE5E5E5),
+    unfocusedContainerColor: Color = ColorGray5_FFF5F6F9,
+    unfocusedHintColor: Color = ColorGray3_FF727484,
+    borderStroke: BorderStroke = BorderStroke(1.dp, ColorGray5_FFF5F6F9),
     focusedBorderStroke: BorderStroke = BorderStroke(1.dp, ColorGray4_FFE5E5E5),
     errorBorderStroke: BorderStroke = BorderStroke(2.dp, ColorRed_FFFF5858),
     shape: Shape = RoundedCornerShape(12.dp),
@@ -101,7 +103,8 @@ fun MissionMateTextField(
                             shape = shape
                         )
                         .background(
-                            if (!isFocused && text.isEmpty()) unfocusedHintColor
+                            if(text.isNotEmpty()) containerColor
+                            else if (!isFocused) unfocusedContainerColor
                             else containerColor
                         )
                         .padding(contentPadding),
@@ -111,7 +114,7 @@ fun MissionMateTextField(
                         Text(
                             text = hintId?.let { stringResource(id = it) } ?: "",
                             style = hintStyle,
-                            color = hintColor
+                            color = if(isFocused) hintColor else unfocusedHintColor
                         )
                     }
                     innerTextField()

@@ -30,10 +30,11 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.goalpanzi.mission_mate.core.designsystem.theme.ColorDisabled_FFB3B3B3
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorGray1_FF404249
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorGray3_FF727484
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorGray4_FFE5E5E5
-import com.goalpanzi.mission_mate.core.designsystem.theme.ColorGray5_80F5F6F9
+import com.goalpanzi.mission_mate.core.designsystem.theme.ColorGray5_FFF5F6F9
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorRed_FFFF5858
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorWhite_FFFFFFFF
 import com.goalpanzi.mission_mate.core.designsystem.theme.MissionMateTypography
@@ -48,10 +49,10 @@ fun InvitationCodeTextField(
     textStyle: TextStyle = MissionMateTypography.heading_md_bold,
     hintStyle: TextStyle = MissionMateTypography.heading_md_bold,
     textColor: Color = ColorGray1_FF404249,
-    hintColor: Color = ColorGray3_FF727484,
+    hintColor: Color = ColorDisabled_FFB3B3B3,
     containerColor: Color = ColorWhite_FFFFFFFF,
-    unfocusedHintColor: Color = ColorGray5_80F5F6F9,
-    borderStroke: BorderStroke = BorderStroke(1.dp, ColorGray5_80F5F6F9),
+    unfocusedHintColor: Color = ColorGray5_FFF5F6F9,
+    borderStroke: BorderStroke = BorderStroke(1.dp, ColorGray5_FFF5F6F9),
     focusedBorderStroke: BorderStroke = BorderStroke(1.dp, ColorGray4_FFE5E5E5),
     errorBorderStroke: BorderStroke = BorderStroke(2.dp, ColorRed_FFFF5858),
     shape: Shape = RoundedCornerShape(12.dp),
@@ -92,7 +93,8 @@ fun InvitationCodeTextField(
                         shape = shape
                     )
                     .background(
-                        if (!isFocused && text.isEmpty()) unfocusedHintColor
+                        if(text.isNotEmpty()) containerColor
+                        else if (!isFocused ) unfocusedHintColor
                         else containerColor
                     )
                     .padding(contentPadding),

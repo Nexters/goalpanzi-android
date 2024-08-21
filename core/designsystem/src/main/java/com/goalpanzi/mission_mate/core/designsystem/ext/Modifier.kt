@@ -1,6 +1,8 @@
 package com.goalpanzi.mission_mate.core.designsystem.ext
 
 import android.graphics.BlurMaskFilter
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Size
@@ -39,4 +41,17 @@ fun Modifier.dropShadow(
         canvas.drawOutline(shadowOutline, paint)
         canvas.restore()
     }
+}
+
+fun Modifier.clickableWithoutRipple(
+    onClick : () -> Unit,
+) : Modifier {
+    return then(
+        Modifier.clickable(
+            interactionSource = MutableInteractionSource(),
+            indication = null,
+            onClick = onClick
+        )
+    )
+
 }

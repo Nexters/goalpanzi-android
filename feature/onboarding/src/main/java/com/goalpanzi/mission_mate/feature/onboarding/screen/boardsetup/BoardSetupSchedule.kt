@@ -29,7 +29,6 @@ import com.goalpanzi.mission_mate.core.designsystem.theme.ColorGray1_FF404249
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorGray2_FF4F505C
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorGray3_FF727484
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorGray4_FFE5E5E5
-import com.goalpanzi.mission_mate.core.designsystem.theme.ColorGray5_80F5F6F9
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorGray5_FFF5F6F9
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorWhite_FFFFFFFF
 import com.goalpanzi.mission_mate.core.designsystem.theme.MissionMateTypography
@@ -107,7 +106,7 @@ fun Period(
                 border = if (startDate.isBlank()) null else BorderStroke(1.dp, ColorGray4_FFE5E5E5),
                 shape = RoundedCornerShape(12.dp),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = if (startDate.isBlank()) ColorGray5_80F5F6F9 else ColorWhite_FFFFFFFF
+                    containerColor = if (startDate.isBlank()) ColorGray5_FFF5F6F9 else ColorWhite_FFFFFFFF
                 ),
                 contentPadding = PaddingValues(horizontal = 16.dp),
                 onClick = onClickStartDate
@@ -132,7 +131,7 @@ fun Period(
                 border = if (endDate.isBlank()) null else BorderStroke(1.dp, ColorGray4_FFE5E5E5),
                 shape = RoundedCornerShape(12.dp),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = if (endDate.isBlank()) ColorGray5_80F5F6F9 else ColorWhite_FFFFFFFF
+                    containerColor = if (endDate.isBlank()) ColorGray5_FFF5F6F9 else ColorWhite_FFFFFFFF
                 ),
                 contentPadding = PaddingValues(horizontal = 16.dp),
                 onClick = onClickEndDate

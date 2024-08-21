@@ -35,6 +35,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.goalpanzi.mission_mate.core.designsystem.component.MissionMateButtonType
 import com.goalpanzi.mission_mate.core.designsystem.component.MissionMateTextButton
+import com.goalpanzi.mission_mate.core.designsystem.ext.clickableWithoutRipple
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorGray2_FF4F505C
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorOrange_FFFF5732
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorWhite_FFFFFFFF
@@ -64,6 +65,8 @@ fun BoardSetupRoute(
     val keyboardController = LocalSoftwareKeyboardController.current
     val localFocusManager = LocalFocusManager.current
     val pagerState = rememberPagerState { BoardSetupStep.entries.size }
+
+    val isNotTitleValid by viewModel.isNotTitleValid.collectAsStateWithLifecycle()
 
     val startDate by viewModel.startDate.collectAsStateWithLifecycle()
     val endDate by viewModel.endDate.collectAsStateWithLifecycle()
@@ -129,13 +132,10 @@ fun BoardSetupRoute(
     }
 
     BoardSetupScreen(
-        modifier = Modifier.clickable(
-            MutableInteractionSource(),
-            null,
-            onClick = {
-                keyboardController?.hide()
-            }
-        ),
+        modifier = Modifier.clickableWithoutRipple {
+            keyboardController?.hide()
+            localFocusManager.clearFocus()
+        },
         currentStep = currentStep,
         missionTitle = viewModel.missionTitle,
         startDate = startDate?.let {
@@ -148,6 +148,7 @@ fun BoardSetupRoute(
         count = filterDatesByDayOfWeek(startDate, endDate, selectedDays),
         selectedVerificationTimeType = selectedVerificationTimeType,
         enabledDaysOfWeek = enabledDaysOfWeek,
+        isNotTitleValid = isNotTitleValid,
         enabledButton = enabledButton,
         pagerState = pagerState,
         onClickNextStep = viewModel::updateCurrentStepToNext,
@@ -184,6 +185,7 @@ fun BoardSetupScreen(
     count : Int,
     selectedVerificationTimeType: VerificationTimeType?,
     enabledDaysOfWeek : Set<DayOfWeek>,
+    isNotTitleValid : Boolean,
     enabledButton: Boolean,
     pagerState : PagerState,
     onClickNextStep: () -> Unit,
@@ -221,6 +223,7 @@ fun BoardSetupScreen(
                 0 -> {
                     BoardSetupMission(
                         missionTitle = missionTitle,
+                        isNotTitleValid = isNotTitleValid,
                         onTitleChange = onMissionTitleChange,
                     )
                 }

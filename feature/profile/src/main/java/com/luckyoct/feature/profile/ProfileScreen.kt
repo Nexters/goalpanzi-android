@@ -40,6 +40,8 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.paint
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -50,6 +52,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.goalpanzi.mission_mate.core.designsystem.component.MissionMateButtonType
 import com.goalpanzi.mission_mate.core.designsystem.component.MissionMateTextButton
 import com.goalpanzi.mission_mate.core.designsystem.component.MissionMateTextFieldGroup
+import com.goalpanzi.mission_mate.core.designsystem.ext.clickableWithoutRipple
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorGray1_FF404249
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorGray5_FFF5F6F9
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorWhite_FFFFFFFF
@@ -83,6 +86,9 @@ fun ProfileRoute(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val isInvalidNickname by viewModel.isInvalidNickname.collectAsStateWithLifecycle()
 
+    val keyboardController = LocalSoftwareKeyboardController.current
+    val localFocusManager = LocalFocusManager.current
+
     LaunchedEffect(true) {
         viewModel.isSaveSuccess.collectLatest {
             if (it) onSaveSuccess()
@@ -91,6 +97,10 @@ fun ProfileRoute(
 
     Box(
         modifier = Modifier
+            .clickableWithoutRipple {
+                keyboardController?.hide()
+                localFocusManager.clearFocus()
+            }
             .fillMaxSize()
             .background(color = ColorWhite_FFFFFFFF)
             .systemBarsPadding()
