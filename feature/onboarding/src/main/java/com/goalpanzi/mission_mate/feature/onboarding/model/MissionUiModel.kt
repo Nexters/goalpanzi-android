@@ -11,7 +11,7 @@ data class MissionUiModel(
     val missionBoardCount : Int
 )
 
-fun MissionDetailResponse.toMissionUiModel() =
+fun MissionDetail.toMissionUiModel() =
     MissionUiModel(
         missionId = missionId,
         missionTitle = description,
