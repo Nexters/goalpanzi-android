@@ -250,6 +250,7 @@ fun BoardScreen(
                         isMe = i == 0
                     )
                 },
+                missionState = missionState,
                 onClickFlag = onClickFlag,
                 onClickAddUser = onClickAddUser,
                 onClickSetting = onClickSetting,

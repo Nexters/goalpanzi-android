@@ -25,6 +25,7 @@ import com.goalpanzi.mission_mate.core.designsystem.theme.ColorWhite_FFFFFFFF
 import com.goalpanzi.mission_mate.core.designsystem.theme.component.MissionMateTopAppBar
 import com.goalpanzi.mission_mate.core.designsystem.theme.component.NavigationType
 import com.goalpanzi.mission_mate.feature.board.R
+import com.goalpanzi.mission_mate.feature.board.model.MissionState
 import com.goalpanzi.mission_mate.feature.board.model.UserStory
 import com.goalpanzi.mission_mate.feature.onboarding.component.StableImage
 
@@ -36,6 +37,7 @@ fun BoardTopView(
     viewedTooltip: Boolean,
     isAddingUserEnabled: Boolean,
     userList: List<UserStory>,
+    missionState : MissionState,
     onClickFlag: () -> Unit,
     onClickAddUser: () -> Unit,
     onClickSetting: () -> Unit,
@@ -76,6 +78,7 @@ fun BoardTopView(
         BoardTopStory(
             modifier = Modifier.padding(top = 56.dp),
             userList = userList,
+            missionState = missionState,
             onClickStory = onClickStory
         )
         if(!viewedTooltip){
