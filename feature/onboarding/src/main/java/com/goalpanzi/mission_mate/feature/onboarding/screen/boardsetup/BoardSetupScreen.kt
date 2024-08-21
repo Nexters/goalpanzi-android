@@ -35,6 +35,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.goalpanzi.mission_mate.core.designsystem.component.MissionMateButtonType
 import com.goalpanzi.mission_mate.core.designsystem.component.MissionMateTextButton
+import com.goalpanzi.mission_mate.core.designsystem.ext.clickableWithoutRipple
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorGray2_FF4F505C
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorOrange_FFFF5732
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorWhite_FFFFFFFF
@@ -129,13 +130,10 @@ fun BoardSetupRoute(
     }
 
     BoardSetupScreen(
-        modifier = Modifier.clickable(
-            MutableInteractionSource(),
-            null,
-            onClick = {
-                keyboardController?.hide()
-            }
-        ),
+        modifier = Modifier.clickableWithoutRipple {
+            keyboardController?.hide()
+            localFocusManager.clearFocus()
+        },
         currentStep = currentStep,
         missionTitle = viewModel.missionTitle,
         startDate = startDate?.let {

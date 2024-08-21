@@ -3,6 +3,7 @@ package com.goalpanzi.mission_mate.feature.onboarding.screen.invitation
 import android.widget.Toast
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -40,6 +41,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.goalpanzi.mission_mate.core.designsystem.component.MissionMateButtonType
 import com.goalpanzi.mission_mate.core.designsystem.component.MissionMateTextButton
+import com.goalpanzi.mission_mate.core.designsystem.ext.clickableWithoutRipple
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorGray1_FF404249
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorGray2_FF4F505C
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorOrange_FFFF5732
@@ -166,7 +168,11 @@ fun InvitationCodeRoute(
         },
         onBackClick = onBackClick,
         isNotCodeValid = isNotCodeValid,
-        enabledButton = enabledButton
+        enabledButton = enabledButton,
+        modifier = Modifier.clickableWithoutRipple {
+            keyboardController?.hide()
+            localFocusManager.clearFocus()
+        }
     )
 }
 
