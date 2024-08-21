@@ -21,8 +21,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.paint
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
@@ -34,7 +38,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.goalpanzi.core.model.CharacterType
+import com.goalpanzi.core.model.UserProfile
+import com.goalpanzi.core.model.response.ProfileResponse
+import com.goalpanzi.mission_mate.core.designsystem.component.MissionMateDialog
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorGray1_FF404249
+import com.goalpanzi.mission_mate.core.designsystem.theme.ColorGray2_FF4F505C
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorWhite_FFFFFFFF
 import com.goalpanzi.mission_mate.core.designsystem.theme.MissionMateTypography
 import com.goalpanzi.mission_mate.core.designsystem.theme.component.MissionMateTopAppBar
@@ -45,7 +54,7 @@ import com.goalpanzi.mission_mate.feature.onboarding.component.OutlinedTextBox
 import com.goalpanzi.mission_mate.feature.onboarding.component.StableImage
 import com.goalpanzi.mission_mate.feature.onboarding.model.OnboardingResultEvent
 import com.goalpanzi.mission_mate.feature.onboarding.model.OnboardingUiModel
-import com.goalpanzi.core.model.response.ProfileResponse
+import kotlinx.coroutines.flow.collectLatest
 import com.goalpanzi.mission_mate.core.designsystem.R as designSystemResource
 
 @Composable
@@ -54,23 +63,31 @@ fun OnboardingRoute(
     onClickBoardSetup: () -> Unit,
     onClickInvitationCode: () -> Unit,
     onClickSetting: () -> Unit,
-    onNavigateMissionBoard : (Long) -> Unit,
+    onNavigateMissionBoard: (Long) -> Unit,
     viewModel: OnboardingViewModel = hiltViewModel()
 ) {
     val onboardingUiModel by viewModel.onboardingUiModel.collectAsStateWithLifecycle()
+    var profileCreateSuccessData by remember { mutableStateOf<UserProfile?>(null) }
 
     LaunchedEffect(key1 = Unit) {
         viewModel.getJoinedMissions()
 
         viewModel.onboardingResultEvent.collect { result ->
-            when(result){
+            when (result) {
                 is OnboardingResultEvent.SuccessWithJoinedMissions -> {
                     onNavigateMissionBoard(result.mission.missionId)
                 }
+
                 is OnboardingResultEvent.Error -> {
                     // 에러
                 }
             }
+        }
+    }
+
+    LaunchedEffect(key1 = Unit) {
+        viewModel.profileCreateSuccessEvent.collectLatest {
+            it?.let { profileCreateSuccessData = it }
         }
     }
 
@@ -81,6 +98,16 @@ fun OnboardingRoute(
         onClickInvitationCode = onClickInvitationCode,
         onClickSetting = onClickSetting
     )
+
+    profileCreateSuccessData?.let {
+        ProfileCreateSuccessDialog(
+            nickname = it.nickname,
+            character = it.characterType,
+            onClickOk = {
+                profileCreateSuccessData = null
+            }
+        )
+    }
 }
 
 @Composable
@@ -102,7 +129,7 @@ fun OnboardingScreen(
             contentDescription = null,
             contentScale = ContentScale.FillWidth
         )
-        when(onboardingUiModel){
+        when (onboardingUiModel) {
             is OnboardingUiModel.Success -> {
                 Column(
                     modifier = modifier
@@ -149,7 +176,7 @@ fun OnboardingScreen(
                             modifier = Modifier
                                 .fillMaxWidth(0.564f)
                                 .wrapContentHeight(),
-                            drawableResId = when(onboardingUiModel.profileResponse.characterType){
+                            drawableResId = when (onboardingUiModel.profileResponse.characterType) {
                                 "CAT" -> designSystemResource.drawable.img_cat_selected
                                 "DOG" -> designSystemResource.drawable.img_dog_selected
                                 "RABBIT" -> designSystemResource.drawable.img_rabbit_selected
@@ -173,9 +200,11 @@ fun OnboardingScreen(
                             imageId = designSystemResource.drawable.ic_creating_board,
                             onClick = onClickBoardSetup
                         )
-                        Spacer(modifier = Modifier
-                            .height(1.dp)
-                            .weight(24f / 324f))
+                        Spacer(
+                            modifier = Modifier
+                                .height(1.dp)
+                                .weight(24f / 324f)
+                        )
                         OnboardingNavigationButton(
                             modifier = Modifier.weight(162f / 324f),
                             titleId = R.string.onboarding_code_title,
@@ -186,6 +215,7 @@ fun OnboardingScreen(
                     }
                 }
             }
+
             is OnboardingUiModel.Loading -> {
                 CircularProgressIndicator(
                     modifier = Modifier.align(Alignment.Center)
@@ -205,10 +235,74 @@ fun TopBarSetting(
         modifier = Modifier.wrapContentSize()
     ) {
         Icon(
-            imageVector = ImageVector.vectorResource(id = com.goalpanzi.mission_mate.core.designsystem.R.drawable.ic_setting),
+            imageVector = ImageVector.vectorResource(id = designSystemResource.drawable.ic_setting),
             contentDescription = "",
             tint = ColorGray1_FF404249
         )
+    }
+}
+
+@Composable
+fun ProfileCreateSuccessDialog(
+    nickname: String,
+    character: CharacterType,
+    onClickOk: () -> Unit
+) {
+    MissionMateDialog(
+        onDismissRequest = {},
+        onClickOk = onClickOk,
+        okTextId = R.string.confirm
+    ) {
+        Column(
+            modifier = Modifier
+                .wrapContentHeight(),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = stringResource(
+                    id = R.string.onboarding_profile_create_dialog_title,
+                    nickname
+                ),
+                style = MissionMateTypography.title_xl_bold,
+                textAlign = TextAlign.Center,
+                color = ColorGray1_FF404249
+            )
+            Text(
+                modifier = Modifier.padding(top = 12.dp),
+                text = stringResource(id = R.string.onboarding_profile_create_dialog_description),
+                style = MissionMateTypography.body_lg_regular,
+                textAlign = TextAlign.Center,
+                color = ColorGray2_FF4F505C
+            )
+            Image(
+                painter = painterResource(
+                    id = when (character) {
+                        CharacterType.RABBIT -> designSystemResource.drawable.img_rabbit_selected
+                        CharacterType.CAT -> designSystemResource.drawable.img_cat_selected
+                        CharacterType.DOG -> designSystemResource.drawable.img_dog_selected
+                        CharacterType.PANDA -> designSystemResource.drawable.img_panda_selected
+                        CharacterType.BEAR -> designSystemResource.drawable.img_bear_selected
+                        CharacterType.BIRD -> designSystemResource.drawable.img_bird_selected
+                    }
+                ),
+                contentDescription = null,
+                modifier = Modifier
+                    .padding(vertical = 32.dp)
+                    .paint(
+                        painter = painterResource(
+                            when (character) {
+                                CharacterType.RABBIT -> designSystemResource.drawable.background_rabbit
+                                CharacterType.CAT -> designSystemResource.drawable.background_cat
+                                CharacterType.DOG -> designSystemResource.drawable.background_dog
+                                CharacterType.PANDA -> designSystemResource.drawable.background_panda
+                                CharacterType.BEAR -> designSystemResource.drawable.background_bear
+                                CharacterType.BIRD -> designSystemResource.drawable.background_bird
+                            }
+                        ),
+                        contentScale = ContentScale.FillWidth,
+                    )
+            )
+        }
     }
 }
 
@@ -225,5 +319,15 @@ fun OnboardingScreenPreview() {
         onClickBoardSetup = {},
         onClickInvitationCode = {},
         onClickSetting = {}
+    )
+}
+
+@Preview
+@Composable
+fun ProfileCreateSuccessDialogPreview() {
+    ProfileCreateSuccessDialog(
+        nickname = "Test",
+        character = CharacterType.CAT,
+        onClickOk = {}
     )
 }

@@ -3,22 +3,48 @@ package com.goalpanzi.mission_mate.feature.onboarding
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
+import androidx.navigation.NavType
 import androidx.navigation.compose.composable
-import com.goalpanzi.mission_mate.core.navigation.OnboardingRouteModel
-import com.goalpanzi.mission_mate.core.navigation.RouteModel
+import androidx.navigation.navArgument
 import com.goalpanzi.mission_mate.feature.onboarding.screen.OnboardingRoute
 import com.goalpanzi.mission_mate.feature.onboarding.screen.boardsetup.BoardSetupRoute
 import com.goalpanzi.mission_mate.feature.onboarding.screen.boardsetup.BoardSetupSuccessScreen
 import com.goalpanzi.mission_mate.feature.onboarding.screen.invitation.InvitationCodeRoute
 
+internal const val isAfterProfileCreateArg = "isAfterProfileCreate"
+
 fun NavController.navigateToOnboarding(
+    isAfterProfileCreate: Boolean = false,
     navOptions: NavOptions? = androidx.navigation.navOptions {
-        popUpTo(this@navigateToOnboarding.graph.id){
+        popUpTo(this@navigateToOnboarding.graph.id) {
             inclusive = true
         }
     }
 ) {
-    this.navigate("RouteModel.Onboarding",navOptions = navOptions)
+    this.navigate("RouteModel.Onboarding" + "?isAfterProfileCreate=${isAfterProfileCreate}", navOptions = navOptions)
+}
+
+fun NavGraphBuilder.onboardingNavGraph(
+    onClickBoardSetup: () -> Unit,
+    onClickInvitationCode: () -> Unit,
+    onClickSetting: () -> Unit,
+    onNavigateMissionBoard: (Long) -> Unit
+) {
+    composable(
+        "RouteModel.Onboarding?${isAfterProfileCreateArg}={$isAfterProfileCreateArg}",
+        arguments = listOf(
+            navArgument(isAfterProfileCreateArg) {
+                type = NavType.BoolType
+            }
+        )
+    ) {
+        OnboardingRoute(
+            onClickBoardSetup = onClickBoardSetup,
+            onClickInvitationCode = onClickInvitationCode,
+            onClickSetting = onClickSetting,
+            onNavigateMissionBoard = onNavigateMissionBoard
+        )
+    }
 }
 
 fun NavController.navigateToBoardSetup() {
@@ -27,32 +53,16 @@ fun NavController.navigateToBoardSetup() {
 
 fun NavController.navigateToBoardSetupSuccess(
     navOptions: NavOptions? = androidx.navigation.navOptions {
-        popUpTo(this@navigateToBoardSetupSuccess.graph.id){
+        popUpTo(this@navigateToBoardSetupSuccess.graph.id) {
             inclusive = true
         }
     }
 ) {
-    this.navigate("OnboardingRouteModel.BoardSetupSuccess",navOptions = navOptions)
+    this.navigate("OnboardingRouteModel.BoardSetupSuccess", navOptions = navOptions)
 }
 
 fun NavController.navigateToInvitationCode() {
     this.navigate("OnboardingRouteModel.InvitationCode")
-}
-
-fun NavGraphBuilder.onboardingNavGraph(
-    onClickBoardSetup: () -> Unit,
-    onClickInvitationCode: () -> Unit,
-    onClickSetting: () -> Unit,
-    onNavigateMissionBoard : (Long) -> Unit
-) {
-    composable("RouteModel.Onboarding") {
-        OnboardingRoute(
-            onClickBoardSetup = onClickBoardSetup,
-            onClickInvitationCode = onClickInvitationCode,
-            onClickSetting = onClickSetting,
-            onNavigateMissionBoard = onNavigateMissionBoard
-        )
-    }
 }
 
 fun NavGraphBuilder.boardSetupNavGraph(

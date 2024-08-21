@@ -72,7 +72,7 @@ internal fun MainNavHost(
                 }
             )
             profileNavGraph(
-                onSaveSuccess = { navigator.navigationToOnboarding() },
+                onSaveSuccess = { navigator.navigationToOnboarding(isAfterProfileCreate = true) },
                 onBackClick = { navigator.popBackStack() }
             )
             settingNavGraph(

@@ -45,8 +45,8 @@ class MainNavigator(
         navController.navigateToProfileSetting()
     }
 
-    fun navigationToOnboarding() {
-        navController.navigateToOnboarding()
+    fun navigationToOnboarding(isAfterProfileCreate: Boolean = false) {
+        navController.navigateToOnboarding(isAfterProfileCreate)
     }
 
     fun navigationToBoardSetup() {
