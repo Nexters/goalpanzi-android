@@ -13,4 +13,6 @@
     <string name="panda_name">하나만팬다</string>
     <string name="bear_name">할건끝내곰</string>
     <string name="bird_name">할때까지해뱁새</string>
+
+    <string name="profile_update_success">프로필이 저장되었어요.</string>
 </resources>

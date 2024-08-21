@@ -12,10 +12,12 @@ class ProfileUseCase @Inject constructor(
     private val profileRepository: ProfileRepository,
     private val defaultDataSource: DefaultDataSource
 ) {
-    suspend fun saveProfile(nickname: String, type: CharacterType) = profileRepository.saveProfile(nickname, type).also {
-        if (it is NetworkResult.Success) {
-            defaultDataSource.setUserProfile(UserProfile(nickname, type)).first()
+    suspend fun saveProfile(nickname: String, type: CharacterType, isEqualNickname: Boolean) =
+        profileRepository.saveProfile(nickname, type, isEqualNickname).also {
+            if (it is NetworkResult.Success) {
+                defaultDataSource.setUserProfile(UserProfile(nickname, type)).first()
+            }
         }
-    }
+
     suspend fun getProfile(): UserProfile? = defaultDataSource.getUserProfile().first()
 }
