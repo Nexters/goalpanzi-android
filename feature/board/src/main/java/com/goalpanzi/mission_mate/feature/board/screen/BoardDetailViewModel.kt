@@ -3,15 +3,12 @@ package com.goalpanzi.mission_mate.feature.board.screen
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.goalpanzi.core.model.base.NetworkResult
 import com.goalpanzi.mission_mate.core.domain.usecase.DeleteMissionUseCase
 import com.goalpanzi.mission_mate.core.domain.usecase.GetCachedMemberIdUseCase
 import com.goalpanzi.mission_mate.core.domain.usecase.GetMissionUseCase
 import com.goalpanzi.mission_mate.feature.board.model.toModel
 import com.goalpanzi.mission_mate.feature.board.model.uimodel.MissionUiModel
-import com.goalpanzi.core.model.base.NetworkResult
-import com.goalpanzi.core.model.UserProfile
-import com.goalpanzi.core.model.base.NetworkResult
-import com.goalpanzi.core.model.toModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -23,7 +20,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject

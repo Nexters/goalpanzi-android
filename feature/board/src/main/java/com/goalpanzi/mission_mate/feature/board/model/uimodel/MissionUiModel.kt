@@ -1,6 +1,6 @@
 package com.goalpanzi.mission_mate.feature.board.model.uimodel
 
-import com.luckyoct.core.model.MissionDetail
+import com.goalpanzi.mission_mate.feature.board.model.MissionDetail
 
 
 sealed class MissionUiModel {

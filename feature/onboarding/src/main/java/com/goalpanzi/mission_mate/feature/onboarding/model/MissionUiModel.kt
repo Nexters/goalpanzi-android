@@ -1,6 +1,6 @@
 package com.goalpanzi.mission_mate.feature.onboarding.model
 
-import com.goalpanzi.core.model.response.MissionDetailResponse
+import com.goalpanzi.mission_mate.feature.board.model.MissionDetail
 
 data class MissionUiModel(
     val missionId : Long,

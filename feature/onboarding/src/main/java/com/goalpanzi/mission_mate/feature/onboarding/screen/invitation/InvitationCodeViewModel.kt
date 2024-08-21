@@ -13,7 +13,7 @@ import com.goalpanzi.mission_mate.feature.onboarding.model.CodeResultEvent
 import com.goalpanzi.mission_mate.feature.onboarding.model.JoinResultEvent
 import com.goalpanzi.mission_mate.feature.onboarding.model.toMissionUiModel
 import com.goalpanzi.core.model.base.NetworkResult
-import com.goalpanzi.core.model.toModel
+import com.goalpanzi.mission_mate.feature.board.model.toModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow

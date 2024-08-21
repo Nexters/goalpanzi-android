@@ -243,7 +243,7 @@ fun BoardScreen(
             )
             BoardTopView(
                 title = missionUiModel.missionDetail.description,
-                isAddingUserEnabled = isHost && missionState.isEnabledToInvite(),
+                isAddingUserEnabled = missionState.isEnabledToInvite(),//&& isHost  ,
                 viewedTooltip = viewedTooltip,
                 userList = missionVerificationUiModel.missionVerificationsResponse.missionVerifications.mapIndexed { i, item ->
                     item.toUserStory(
