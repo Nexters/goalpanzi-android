@@ -42,6 +42,9 @@ class BoardSetupViewModel @Inject constructor(
     private val _setupEvent = MutableSharedFlow<BoardSetupResult>()
     val setupEvent: SharedFlow<BoardSetupResult> = _setupEvent.asSharedFlow()
 
+    private val _isNotTitleValid = MutableStateFlow(false)
+    val isNotTitleValid: StateFlow<Boolean> = _isNotTitleValid.asStateFlow()
+
     private val _currentStep = MutableStateFlow(BoardSetupStep.MISSION)
     val currentStep: StateFlow<BoardSetupStep> = _currentStep.asStateFlow()
 
@@ -129,7 +132,9 @@ class BoardSetupViewModel @Inject constructor(
     }
 
     fun updateMissionTitle(title: String) {
-        if (title.length <= MISSION_TITLE_MAX_LENGTH) missionTitle = title
+        missionTitle = title
+        _isNotTitleValid.value = title.length in 1.. 3 || title.length > 12
+
     }
 
     fun updateStartDate(date: Long) {

@@ -16,6 +16,7 @@ import com.goalpanzi.mission_mate.feature.onboarding.R
 @Composable
 fun BoardSetupMission(
     missionTitle: String,
+    isNotTitleValid : Boolean,
     onTitleChange: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -37,6 +38,7 @@ fun BoardSetupMission(
             modifier = modifier.fillMaxWidth(),
             text = missionTitle,
             onValueChange = onTitleChange,
+            isError = isNotTitleValid,
             useMaxLength = true,
             maxLength = 12,
             titleId = R.string.onboarding_board_setup_mission_input_title,

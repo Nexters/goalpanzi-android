@@ -66,6 +66,8 @@ fun BoardSetupRoute(
     val localFocusManager = LocalFocusManager.current
     val pagerState = rememberPagerState { BoardSetupStep.entries.size }
 
+    val isNotTitleValid by viewModel.isNotTitleValid.collectAsStateWithLifecycle()
+
     val startDate by viewModel.startDate.collectAsStateWithLifecycle()
     val endDate by viewModel.endDate.collectAsStateWithLifecycle()
     val selectedDays by viewModel.selectedDays.collectAsStateWithLifecycle()
@@ -146,6 +148,7 @@ fun BoardSetupRoute(
         count = filterDatesByDayOfWeek(startDate, endDate, selectedDays),
         selectedVerificationTimeType = selectedVerificationTimeType,
         enabledDaysOfWeek = enabledDaysOfWeek,
+        isNotTitleValid = isNotTitleValid,
         enabledButton = enabledButton,
         pagerState = pagerState,
         onClickNextStep = viewModel::updateCurrentStepToNext,
@@ -182,6 +185,7 @@ fun BoardSetupScreen(
     count : Int,
     selectedVerificationTimeType: VerificationTimeType?,
     enabledDaysOfWeek : Set<DayOfWeek>,
+    isNotTitleValid : Boolean,
     enabledButton: Boolean,
     pagerState : PagerState,
     onClickNextStep: () -> Unit,
@@ -219,6 +223,7 @@ fun BoardSetupScreen(
                 0 -> {
                     BoardSetupMission(
                         missionTitle = missionTitle,
+                        isNotTitleValid = isNotTitleValid,
                         onTitleChange = onMissionTitleChange,
                     )
                 }
