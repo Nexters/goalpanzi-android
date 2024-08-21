@@ -14,6 +14,7 @@ import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -48,6 +49,9 @@ class ProfileViewModel @AssistedInject constructor(
     private val _isInvalidNickname = MutableStateFlow(false)
     val isInvalidNickname = _isInvalidNickname.asStateFlow()
 
+    private val _isNotChangedProfileInput = MutableStateFlow(true)
+    val isNotChangedProfileInput : StateFlow<Boolean> = _isNotChangedProfileInput.asStateFlow()
+
     private val _isSaveSuccess = MutableSharedFlow<Boolean>()
     val isSaveSuccess = _isSaveSuccess.asSharedFlow()
 
@@ -61,6 +65,7 @@ class ProfileViewModel @AssistedInject constructor(
                             set(0, get(0).copy(isSelected = true))
                         }
                     )
+                    _isNotChangedProfileInput.emit(false)
                 }
 
                 ProfileSettingType.SETTING -> {
@@ -76,6 +81,7 @@ class ProfileViewModel @AssistedInject constructor(
                             set(index, get(index).copy(isSelected = true))
                         }
                     )
+                    _isNotChangedProfileInput.emit(true)
                 }
             }
         }
@@ -88,6 +94,10 @@ class ProfileViewModel @AssistedInject constructor(
                 it.copy(isSelected = it == character)
             }
         )
+        viewModelScope.launch {
+            _isNotChangedProfileInput.emit(profileUseCase.getProfile()?.characterType == character.type)
+        }
+
     }
 
     fun resetNicknameErrorState() {
@@ -101,7 +111,14 @@ class ProfileViewModel @AssistedInject constructor(
                 it.isSelected
             } ?: return@launch
 
-            when(val response = profileUseCase.saveProfile(nickname, selectedItem.type)) {
+            when(
+                val response = profileUseCase
+                    .saveProfile(
+                        nickname = nickname,
+                        type = selectedItem.type,
+                        isEqualNickname = profileUseCase.getProfile()?.nickname == nickname
+                    )
+            ) {
                 is NetworkResult.Success -> {
                     _isSaveSuccess.emit(true)
                 }

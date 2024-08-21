@@ -9,9 +9,13 @@ import javax.inject.Inject
 
 class ProfileRepositoryImpl @Inject constructor(
     private val profileService: ProfileService
-): ProfileRepository {
-    override suspend fun saveProfile(nickname: String, type: CharacterType): NetworkResult<Unit> = handleResult {
-        val request = SaveProfileRequest.createRequest(nickname, type)
+) : ProfileRepository {
+    override suspend fun saveProfile(
+        nickname: String,
+        type: CharacterType,
+        isEqualNickname: Boolean
+    ): NetworkResult<Unit> = handleResult {
+        val request = SaveProfileRequest.createRequest(if(isEqualNickname)null else nickname, type)
         profileService.saveProfile(request)
     }
 }
