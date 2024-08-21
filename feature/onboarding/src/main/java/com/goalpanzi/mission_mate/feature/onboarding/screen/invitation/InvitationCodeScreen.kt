@@ -86,6 +86,13 @@ fun InvitationCodeRoute(
                         localFocusManager.moveFocus(FocusDirection.Next)
                     }
 
+                    CodeActionEvent.SECOND_CLEAR,
+                    CodeActionEvent.THIRD_CLEAR,
+                    CodeActionEvent.FOURTH_CLEAR -> {
+                        delay(80)
+                        localFocusManager.moveFocus(FocusDirection.Previous)
+                    }
+
                     else -> {
 
                     }
