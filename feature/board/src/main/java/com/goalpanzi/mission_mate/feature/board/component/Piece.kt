@@ -14,6 +14,8 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
@@ -28,6 +30,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorGray1_FF404249
@@ -125,7 +128,8 @@ fun PieceNameChip(
 ){
     Text(
         modifier = modifier
-            .wrapContentSize()
+            .widthIn(min = 90.dp)
+            .wrapContentHeight()
             .clip(RoundedCornerShape(20.dp))
             .background(
                 if (isMe) ColorOrange_FFFF5732 else ColorWhite_FFFFFFFF
@@ -134,7 +138,8 @@ fun PieceNameChip(
         ,
         text = name,
         style = textStyle,
-        color = if(isMe) ColorWhite_FFFFFFFF else ColorGray1_FF404249
+        color = if(isMe) ColorWhite_FFFFFFFF else ColorGray1_FF404249,
+        textAlign = TextAlign.Center
     )
 }
 
