@@ -1,10 +1,10 @@
 package com.goalpanzi.mission_mate.core.domain.repository
 
 import com.goalpanzi.mission_mate.core.network.ResultHandler
-import com.luckyoct.core.model.base.NetworkResult
-import com.luckyoct.core.model.request.CreateMissionRequest
-import com.luckyoct.core.model.response.MissionDetailResponse
-import com.luckyoct.core.model.response.MissionsResponse
+import com.goalpanzi.core.model.base.NetworkResult
+import com.goalpanzi.core.model.request.CreateMissionRequest
+import com.goalpanzi.core.model.response.MissionDetailResponse
+import com.goalpanzi.core.model.response.MissionsResponse
 
 interface OnboardingRepository : ResultHandler {
     suspend fun createMission(

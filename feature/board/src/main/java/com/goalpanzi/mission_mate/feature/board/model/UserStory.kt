@@ -1,6 +1,6 @@
 package com.goalpanzi.mission_mate.feature.board.model
 
-import com.luckyoct.core.model.response.MissionVerificationResponse
+import com.goalpanzi.core.model.response.MissionVerificationResponse
 
 data class UserStory(
     val nickname : String,

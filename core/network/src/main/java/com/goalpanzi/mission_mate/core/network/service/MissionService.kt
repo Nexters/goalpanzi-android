@@ -1,10 +1,10 @@
 package com.goalpanzi.mission_mate.core.network.service
 
-import com.luckyoct.core.model.response.MissionBoardsResponse
-import com.luckyoct.core.model.response.MissionDetailResponse
-import com.luckyoct.core.model.response.MissionRankResponse
-import com.luckyoct.core.model.response.MissionVerificationResponse
-import com.luckyoct.core.model.response.MissionVerificationsResponse
+import com.goalpanzi.core.model.response.MissionBoardsResponse
+import com.goalpanzi.core.model.response.MissionDetailResponse
+import com.goalpanzi.core.model.response.MissionRankResponse
+import com.goalpanzi.core.model.response.MissionVerificationResponse
+import com.goalpanzi.core.model.response.MissionVerificationsResponse
 import okhttp3.MultipartBody
 import retrofit2.Response
 import retrofit2.http.DELETE

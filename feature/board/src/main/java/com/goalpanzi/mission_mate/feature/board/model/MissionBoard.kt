@@ -1,7 +1,7 @@
 package com.goalpanzi.mission_mate.feature.board.model
 
-import com.luckyoct.core.model.response.BoardReward
-import com.luckyoct.core.model.response.MissionBoardResponse
+import com.goalpanzi.core.model.response.BoardReward
+import com.goalpanzi.core.model.response.MissionBoardResponse
 
 data class MissionBoard(
     val number : Int,

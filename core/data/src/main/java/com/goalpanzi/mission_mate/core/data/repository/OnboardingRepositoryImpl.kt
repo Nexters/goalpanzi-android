@@ -2,11 +2,11 @@ package com.goalpanzi.mission_mate.core.data.repository
 
 import com.goalpanzi.mission_mate.core.domain.repository.OnboardingRepository
 import com.goalpanzi.mission_mate.core.network.service.OnboardingService
-import com.luckyoct.core.model.base.NetworkResult
-import com.luckyoct.core.model.request.CreateMissionRequest
-import com.luckyoct.core.model.request.JoinMissionRequest
-import com.luckyoct.core.model.response.MissionDetailResponse
-import com.luckyoct.core.model.response.MissionsResponse
+import com.goalpanzi.core.model.base.NetworkResult
+import com.goalpanzi.core.model.request.CreateMissionRequest
+import com.goalpanzi.core.model.request.JoinMissionRequest
+import com.goalpanzi.core.model.response.MissionDetailResponse
+import com.goalpanzi.core.model.response.MissionsResponse
 import javax.inject.Inject
 
 class OnboardingRepositoryImpl @Inject constructor(

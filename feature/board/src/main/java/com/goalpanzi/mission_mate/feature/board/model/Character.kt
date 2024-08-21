@@ -1,7 +1,7 @@
 package com.goalpanzi.mission_mate.feature.board.model
 
 import androidx.annotation.DrawableRes
-import com.luckyoct.core.model.CharacterType
+import com.goalpanzi.core.model.CharacterType
 
 enum class Character(
     @DrawableRes val imageId: Int,

@@ -4,7 +4,7 @@ import com.goalpanzi.mission_mate.feature.board.model.uimodel.MissionBoardUiMode
 import com.goalpanzi.mission_mate.feature.board.model.uimodel.MissionUiModel
 import com.goalpanzi.mission_mate.feature.board.model.uimodel.MissionVerificationUiModel
 import com.goalpanzi.mission_mate.feature.onboarding.model.VerificationTimeType
-import com.luckyoct.core.model.response.MissionVerificationResponse
+import com.goalpanzi.core.model.response.MissionVerificationResponse
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.LocalDateTime

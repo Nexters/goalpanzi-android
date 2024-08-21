@@ -2,8 +2,8 @@ package com.goalpanzi.mission_mate.core.data.repository
 
 import com.goalpanzi.mission_mate.core.domain.repository.AuthRepository
 import com.goalpanzi.mission_mate.core.network.service.LoginService
-import com.luckyoct.core.model.base.NetworkResult
-import com.luckyoct.core.model.request.GoogleLoginRequest
+import com.goalpanzi.core.model.base.NetworkResult
+import com.goalpanzi.core.model.request.GoogleLoginRequest
 import javax.inject.Inject
 
 class AuthRepositoryImpl @Inject constructor(

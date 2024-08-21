@@ -14,8 +14,8 @@ import com.goalpanzi.mission_mate.feature.onboarding.util.DateUtils.filterDatesB
 import com.goalpanzi.mission_mate.feature.onboarding.util.DateUtils.formatLocalDateToString
 import com.goalpanzi.mission_mate.feature.onboarding.util.DateUtils.isDifferenceTargetDaysOrMore
 import com.goalpanzi.mission_mate.feature.onboarding.util.DateUtils.longToLocalDate
-import com.luckyoct.core.model.base.NetworkResult
-import com.luckyoct.core.model.request.CreateMissionRequest
+import com.goalpanzi.core.model.base.NetworkResult
+import com.goalpanzi.core.model.request.CreateMissionRequest
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow

@@ -45,7 +45,7 @@ import com.goalpanzi.mission_mate.feature.onboarding.component.OutlinedTextBox
 import com.goalpanzi.mission_mate.feature.onboarding.component.StableImage
 import com.goalpanzi.mission_mate.feature.onboarding.model.OnboardingResultEvent
 import com.goalpanzi.mission_mate.feature.onboarding.model.OnboardingUiModel
-import com.luckyoct.core.model.response.ProfileResponse
+import com.goalpanzi.core.model.response.ProfileResponse
 import com.goalpanzi.mission_mate.core.designsystem.R as designSystemResource
 
 @Composable

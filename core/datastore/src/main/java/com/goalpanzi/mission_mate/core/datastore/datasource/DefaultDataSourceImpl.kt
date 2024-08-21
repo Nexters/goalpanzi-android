@@ -6,8 +6,8 @@ import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
-import com.luckyoct.core.model.CharacterType
-import com.luckyoct.core.model.UserProfile
+import com.goalpanzi.core.model.CharacterType
+import com.goalpanzi.core.model.UserProfile
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
