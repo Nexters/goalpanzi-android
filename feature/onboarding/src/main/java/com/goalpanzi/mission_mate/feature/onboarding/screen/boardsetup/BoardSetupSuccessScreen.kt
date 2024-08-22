@@ -59,7 +59,7 @@ fun BoardSetupSuccessScreen(
             Text(
                 modifier = Modifier
                     .statusBarsPadding()
-                    .padding(top = 48.dp, bottom = 52.dp),
+                    .padding(top = 56.dp, bottom = 52.dp),
                 text = stringResource(id = R.string.onboarding_board_setup_success_title),
                 style = MissionMateTypography.heading_sm_bold,
                 color = ColorGray1_FF404249,

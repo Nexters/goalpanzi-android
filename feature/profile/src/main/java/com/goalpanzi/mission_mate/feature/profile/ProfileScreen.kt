@@ -49,6 +49,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.goalpanzi.core.model.CharacterType
 import com.goalpanzi.mission_mate.core.designsystem.component.MissionMateButtonType
 import com.goalpanzi.mission_mate.core.designsystem.component.MissionMateTextButton
 import com.goalpanzi.mission_mate.core.designsystem.component.MissionMateTextFieldGroup
@@ -59,12 +60,10 @@ import com.goalpanzi.mission_mate.core.designsystem.theme.ColorWhite_FFFFFFFF
 import com.goalpanzi.mission_mate.core.designsystem.theme.MissionMateTypography
 import com.goalpanzi.mission_mate.core.designsystem.theme.component.MissionMateTopAppBar
 import com.goalpanzi.mission_mate.core.designsystem.theme.component.NavigationType
-import com.goalpanzi.core.model.CharacterType
 import com.goalpanzi.mission_mate.feature.profile.model.CharacterListItem
 import com.goalpanzi.mission_mate.feature.profile.model.ProfileUiState
 import com.luckyoct.feature.profile.R
 import dagger.hilt.android.EntryPointAccessors
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 
 @Composable
@@ -87,7 +86,7 @@ fun ProfileRoute(
     val viewModel = profileViewModel(profileSettingType = profileSettingType)
     val context = LocalContext.current
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    val isInvalidNickname by viewModel.isInvalidNickname.collectAsStateWithLifecycle()
+    val isNicknameDuplicated by viewModel.isNicknameDuplicated.collectAsStateWithLifecycle()
     val isNotChangedProfileInput by viewModel.isNotChangedProfileInput.collectAsStateWithLifecycle()
 
     val keyboardController = LocalSoftwareKeyboardController.current
@@ -131,8 +130,8 @@ fun ProfileRoute(
                 viewModel.saveProfile(it)
             },
             onBackClick = onBackClick,
-            isInvalidNickname = isInvalidNickname,
-            resetNicknameErrorState = { viewModel.resetNicknameErrorState() }
+            isNicknameDuplicated = isNicknameDuplicated,
+            resetNicknameErrorState = { viewModel.resetNicknameErrorState() },
         )
     }
 }
@@ -146,7 +145,7 @@ fun ProfileContent(
     onClickCharacter: (CharacterListItem) -> Unit = {},
     onClickSave: (String) -> Unit = {},
     onBackClick: (() -> Unit)? = null,
-    isInvalidNickname: Boolean,
+    isNicknameDuplicated: Boolean,
     resetNicknameErrorState: () -> Unit
 ) {
     Column(
@@ -175,8 +174,7 @@ fun ProfileContent(
                     isNotChangedProfileInput = isNotChangedProfileInput,
                     onClickCharacter = onClickCharacter,
                     onClickSave = onClickSave,
-                    isInvalidNickname = isInvalidNickname,
-                    resetNicknameErrorState = resetNicknameErrorState
+                    isNicknameDuplicated = isNicknameDuplicated,
                 )
             }
         }
@@ -192,12 +190,17 @@ fun ColumnScope.ProfileScreen(
     isNotChangedProfileInput: Boolean,
     onClickCharacter: (CharacterListItem) -> Unit,
     onClickSave: (String) -> Unit,
-    isInvalidNickname: Boolean,
-    resetNicknameErrorState: () -> Unit = {}
+    isNicknameDuplicated: Boolean,
 ) {
     var nicknameInput by remember { mutableStateOf(initialNickname) }
     val scrollState = rememberScrollState()
     val regex = Regex("^[가-힣ㅏ-ㅣㄱ-ㅎa-zA-Z0-9]{1,6}$")
+    var invalidNicknameError by remember { mutableStateOf(false) }
+
+    LaunchedEffect(nicknameInput) {
+        if (nicknameInput.isEmpty()) return@LaunchedEffect
+        invalidNicknameError = (nicknameInput.length > 6 || regex.matches(nicknameInput).not())
+    }
 
     Column(
         modifier = modifier
@@ -216,7 +219,7 @@ fun ColumnScope.ProfileScreen(
             ),
             modifier = modifier
                 .align(Alignment.CenterHorizontally)
-                .padding(top = 48.dp),
+                .padding(top = if (profileSettingType == ProfileSettingType.SETTING) 0.dp else 56.dp),
             style = MissionMateTypography.heading_sm_bold,
             color = ColorGray1_FF404249
         )
@@ -245,15 +248,10 @@ fun ColumnScope.ProfileScreen(
                 .fillMaxWidth()
                 .wrapContentHeight(),
             text = nicknameInput,
-            onValueChange = {
-                if (regex.matches(it) || it.isEmpty()) {
-                    nicknameInput = it
-                }
-                resetNicknameErrorState()
-            },
+            onValueChange = { nicknameInput = it },
             hintId = R.string.nickname_hint,
-            guidanceId = if (isInvalidNickname) R.string.err_duplicated_nickname else R.string.nickname_input_guide,
-            isError = isInvalidNickname
+            guidanceId = if (isNicknameDuplicated) R.string.err_duplicated_nickname else R.string.nickname_input_guide,
+            isError = invalidNicknameError || isNicknameDuplicated
         )
     }
 
@@ -262,20 +260,23 @@ fun ColumnScope.ProfileScreen(
             .padding(bottom = 36.dp, start = 24.dp, end = 24.dp)
             .fillMaxWidth(),
         textId = R.string.save,
-        buttonType =
-        if (profileSettingType == ProfileSettingType.CREATE) {
-            if (nicknameInput.trim().isEmpty()) {
-                MissionMateButtonType.DISABLED
-            } else {
-                MissionMateButtonType.ACTIVE
+        buttonType = when (profileSettingType) {
+            ProfileSettingType.CREATE -> {
+                if (nicknameInput.trim().isEmpty() || invalidNicknameError) {
+                    MissionMateButtonType.DISABLED
+                } else {
+                    MissionMateButtonType.ACTIVE
+                }
             }
-        } else {
-            if ((initialNickname == nicknameInput && isNotChangedProfileInput) ||
-                nicknameInput.trim().isEmpty()
-            ) {
-                MissionMateButtonType.DISABLED
-            } else {
-                MissionMateButtonType.ACTIVE
+
+            ProfileSettingType.SETTING -> {
+                if ((initialNickname == nicknameInput && isNotChangedProfileInput) ||
+                    nicknameInput.trim().isEmpty() || invalidNicknameError
+                ) {
+                    MissionMateButtonType.DISABLED
+                } else {
+                    MissionMateButtonType.ACTIVE
+                }
             }
         },
         onClick = { onClickSave(nicknameInput) }
@@ -409,8 +410,8 @@ fun ColumnScope.ProfileScreenPreview() {
         ),
         onClickCharacter = {},
         onClickSave = {},
-        isInvalidNickname = false,
-        isNotChangedProfileInput = false
+        isNicknameDuplicated = false,
+        isNotChangedProfileInput = false,
     )
 }
 
