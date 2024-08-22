@@ -1,8 +1,5 @@
 package com.goalpanzi.mission_mate.feature.profile
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -46,17 +43,14 @@ class ProfileViewModel @AssistedInject constructor(
 
     private val defaultCharacters = CharacterListItem.createDefaultList()
 
-    var nickname by mutableStateOf("")
-        private set
-
     private val _uiState = MutableStateFlow<ProfileUiState>(ProfileUiState.Loading)
     val uiState = _uiState.asStateFlow()
 
-    private val _isInvalidNickname = MutableStateFlow(false)
-    val isInvalidNickname = _isInvalidNickname.asStateFlow()
+    private val _isNicknameDuplicated = MutableStateFlow(false)
+    val isNicknameDuplicated = _isNicknameDuplicated.asStateFlow()
 
     private val _isNotChangedProfileInput = MutableStateFlow(true)
-    val isNotChangedProfileInput : StateFlow<Boolean> = _isNotChangedProfileInput.asStateFlow()
+    val isNotChangedProfileInput: StateFlow<Boolean> = _isNotChangedProfileInput.asStateFlow()
 
     private val _isSaveSuccess = MutableSharedFlow<Boolean>()
     val isSaveSuccess = _isSaveSuccess.asSharedFlow()
@@ -93,10 +87,19 @@ class ProfileViewModel @AssistedInject constructor(
         }
     }
 
-    fun updateNickname(input: String) {
-        nickname = input
-
-    }
+//    fun updateNickname(input: String) {
+//        viewModelScope.launch {
+//            _invalidNicknameError.emit(
+//                if (input.length > 6) {
+//                    InvalidNicknameError.TooLong
+//                } else if (input.contains(Regex("[^가-힣a-zA-Z0-9]"))) {
+//                    InvalidNicknameError.IncludeSpecial
+//                } else {
+//                    InvalidNicknameError.Duplicated
+//                }
+//            )
+//        }
+//    }
 
     fun selectCharacter(character: CharacterListItem) {
         val state = uiState.value as? ProfileUiState.Success ?: return
@@ -112,7 +115,7 @@ class ProfileViewModel @AssistedInject constructor(
     }
 
     fun resetNicknameErrorState() {
-        _isInvalidNickname.value = false
+        _isNicknameDuplicated.value = false
     }
 
     fun saveProfile(nickname: String) {
@@ -122,7 +125,7 @@ class ProfileViewModel @AssistedInject constructor(
                 it.isSelected
             } ?: return@launch
 
-            when(
+            when (
                 val response = profileUseCase
                     .saveProfile(
                         nickname = nickname,
@@ -133,10 +136,11 @@ class ProfileViewModel @AssistedInject constructor(
                 is NetworkResult.Success -> {
                     _isSaveSuccess.emit(true)
                 }
+
                 is NetworkResult.Exception -> {}
                 is NetworkResult.Error -> {
                     if (response.code == 409) {
-                        _isInvalidNickname.emit(true)
+                        _isNicknameDuplicated.emit(true)
                     }
                 }
             }
