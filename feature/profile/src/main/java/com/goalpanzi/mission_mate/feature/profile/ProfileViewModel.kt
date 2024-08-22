@@ -1,5 +1,8 @@
 package com.goalpanzi.mission_mate.feature.profile
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -43,6 +46,9 @@ class ProfileViewModel @AssistedInject constructor(
 
     private val defaultCharacters = CharacterListItem.createDefaultList()
 
+    var nickname by mutableStateOf("")
+        private set
+
     private val _uiState = MutableStateFlow<ProfileUiState>(ProfileUiState.Loading)
     val uiState = _uiState.asStateFlow()
 
@@ -85,6 +91,11 @@ class ProfileViewModel @AssistedInject constructor(
                 }
             }
         }
+    }
+
+    fun updateNickname(input: String) {
+        nickname = input
+
     }
 
     fun selectCharacter(character: CharacterListItem) {
