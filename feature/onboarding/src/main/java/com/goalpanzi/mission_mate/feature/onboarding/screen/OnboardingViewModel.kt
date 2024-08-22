@@ -3,13 +3,14 @@ package com.goalpanzi.mission_mate.feature.onboarding.screen
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.goalpanzi.core.model.UserProfile
+import com.goalpanzi.core.model.base.NetworkResult
 import com.goalpanzi.mission_mate.core.domain.usecase.GetJoinedMissionsUseCase
 import com.goalpanzi.mission_mate.core.domain.usecase.GetMissionJoinedUseCase
 import com.goalpanzi.mission_mate.core.domain.usecase.ProfileUseCase
 import com.goalpanzi.mission_mate.feature.onboarding.isAfterProfileCreateArg
 import com.goalpanzi.mission_mate.feature.onboarding.model.OnboardingResultEvent
 import com.goalpanzi.mission_mate.feature.onboarding.model.OnboardingUiModel
-import com.goalpanzi.core.model.base.NetworkResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -20,8 +21,6 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -38,21 +37,20 @@ class OnboardingViewModel @Inject constructor(
     val onboardingUiModel: StateFlow<OnboardingUiModel> = _onboardingUiModel.asStateFlow()
 
     private val _onboardingResultEvent = MutableSharedFlow<OnboardingResultEvent>()
-    val onboardingResultEvent: SharedFlow<OnboardingResultEvent> = _onboardingResultEvent.asSharedFlow()
+    val onboardingResultEvent: SharedFlow<OnboardingResultEvent> =
+        _onboardingResultEvent.asSharedFlow()
 
-    val profileCreateSuccessEvent = savedStateHandle
-        .getStateFlow(isAfterProfileCreateArg, false)
-        .flatMapLatest {
-            flow {
-                emit(
-                    if (it) {
-                        profileUseCase.getProfile()
-                    } else {
-                        null
-                    }
-                )
+    val profileCreateSuccessEvent = MutableSharedFlow<UserProfile?>()
+
+    init {
+        viewModelScope.launch {
+            savedStateHandle.get<Boolean>(isAfterProfileCreateArg)?.let {
+                if (it) {
+                    profileCreateSuccessEvent.emit(profileUseCase.getProfile())
+                }
             }
         }
+    }
 
     fun getJoinedMissions() {
         viewModelScope.launch {
