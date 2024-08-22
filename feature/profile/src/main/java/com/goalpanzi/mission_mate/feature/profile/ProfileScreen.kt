@@ -1,6 +1,7 @@
 package com.goalpanzi.mission_mate.feature.profile
 
 import android.app.Activity
+import android.content.res.Configuration
 import android.widget.Toast
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
@@ -39,6 +40,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.paint
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
@@ -130,8 +132,7 @@ fun ProfileRoute(
                 viewModel.saveProfile(it)
             },
             onBackClick = onBackClick,
-            isNicknameDuplicated = isNicknameDuplicated,
-            resetNicknameErrorState = { viewModel.resetNicknameErrorState() },
+            isNicknameDuplicated = isNicknameDuplicated
         )
     }
 }
@@ -145,8 +146,7 @@ fun ProfileContent(
     onClickCharacter: (CharacterListItem) -> Unit = {},
     onClickSave: (String) -> Unit = {},
     onBackClick: (() -> Unit)? = null,
-    isNicknameDuplicated: Boolean,
-    resetNicknameErrorState: () -> Unit
+    isNicknameDuplicated: Boolean
 ) {
     Column(
         modifier = modifier
@@ -174,7 +174,7 @@ fun ProfileContent(
                     isNotChangedProfileInput = isNotChangedProfileInput,
                     onClickCharacter = onClickCharacter,
                     onClickSave = onClickSave,
-                    isNicknameDuplicated = isNicknameDuplicated,
+                    isNicknameDuplicated = isNicknameDuplicated
                 )
             }
         }
@@ -196,6 +196,7 @@ fun ColumnScope.ProfileScreen(
     val scrollState = rememberScrollState()
     val regex = Regex("^[가-힣ㅏ-ㅣㄱ-ㅎa-zA-Z0-9]{1,6}$")
     var invalidNicknameError by remember { mutableStateOf(false) }
+    val configuration = LocalConfiguration.current
 
     LaunchedEffect(nicknameInput) {
         if (nicknameInput.isEmpty()) return@LaunchedEffect
@@ -228,7 +229,7 @@ fun ColumnScope.ProfileScreen(
             Box(
                 modifier = modifier
                     .padding(top = 32.dp)
-                    .size(220.dp)
+                    .size(configuration.screenWidthDp.dp * 0.55f)
                     .align(Alignment.CenterHorizontally)
             ) {
                 CharacterLargeImage(
@@ -239,6 +240,7 @@ fun ColumnScope.ProfileScreen(
         }
         CharacterRow(
             characters = characters,
+            configuration = configuration,
             onClick = onClickCharacter
         )
 
@@ -304,6 +306,7 @@ fun CharacterLargeImage(
 @Composable
 fun CharacterRow(
     modifier: Modifier = Modifier,
+    configuration: Configuration,
     characters: List<CharacterListItem>,
     onClick: (CharacterListItem) -> Unit
 ) {
@@ -325,6 +328,7 @@ fun CharacterRow(
         items(items = characters, key = { it.imageResId }) {
             CharacterElement(
                 character = it,
+                configuration = configuration,
                 onClick = onClick
             )
         }
@@ -335,11 +339,15 @@ fun CharacterRow(
 fun CharacterElement(
     modifier: Modifier = Modifier,
     character: CharacterListItem,
+    configuration: Configuration = LocalConfiguration.current,
     onClick: (CharacterListItem) -> Unit = {}
 ) {
     Box(
         modifier = modifier
-            .size(width = 100.dp, height = 124.dp)
+            .size(
+                width = configuration.screenWidthDp.dp * 100f / 390f,
+                height = configuration.screenWidthDp.dp * 100f / 390f * 1.24f
+            )
             .alpha(if (character.isSelected) 1f else 0.3f)
             .clickable(
                 indication = null,
@@ -411,7 +419,7 @@ fun ColumnScope.ProfileScreenPreview() {
         onClickCharacter = {},
         onClickSave = {},
         isNicknameDuplicated = false,
-        isNotChangedProfileInput = false,
+        isNotChangedProfileInput = false
     )
 }
 
