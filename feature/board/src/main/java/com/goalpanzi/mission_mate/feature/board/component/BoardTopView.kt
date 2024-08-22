@@ -92,7 +92,7 @@ fun BoardTopView(
                             indication = null,
                             onClick = onClickTooltip
                         )
-                        .padding(end = 43.dp,top = 48.dp)
+                        .padding(end = 43.dp,top = 56.dp)
                         .width(161.dp),
                     drawableResId = R.drawable.img_tooltip_mission_invitation_code,
                     contentScale = ContentScale.Crop
@@ -106,7 +106,7 @@ fun BoardTopView(
                             indication = null,
                             onClick = onClickTooltip
                         )
-                        .padding(start = 8.dp, top = 48.dp)
+                        .padding(start = 8.dp, top = 56.dp)
                         .width(161.dp),
                     drawableResId = R.drawable.img_tooltip_mission_detail,
                     contentScale = ContentScale.Crop

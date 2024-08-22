@@ -216,7 +216,7 @@ fun ColumnScope.ProfileScreen(
             ),
             modifier = modifier
                 .align(Alignment.CenterHorizontally)
-                .padding(top = 48.dp),
+                .padding(top = if(profileSettingType == ProfileSettingType.SETTING) 0.dp else 56.dp),
             style = MissionMateTypography.heading_sm_bold,
             color = ColorGray1_FF404249
         )
