@@ -274,7 +274,7 @@ fun BoardScreen(
                     modifier = Modifier
                         .wrapContentSize()
                         .padding(
-                            top = 180.dp,
+                            top = 195.dp,
                             bottom = if (missionState.isVisiblePiece()) 188.dp else 46.dp
                         )
                         .align(Alignment.Center),
@@ -300,7 +300,7 @@ fun BoardScreen(
                     StableImage(
                         missionVerificationUiModel.missionVerificationsResponse.missionVerifications.first().characterType.toCharacter().imageId,
                         modifier = Modifier
-                            .padding(top = 85.dp)
+                            .padding(top = 75.dp)
                             .fillMaxWidth(240f / 390f)
                             .aspectRatio(1f)
                     )
