@@ -63,6 +63,7 @@ import com.goalpanzi.mission_mate.core.designsystem.theme.MissionMateTypography
 import com.goalpanzi.mission_mate.core.designsystem.theme.component.MissionMateTopAppBar
 import com.goalpanzi.mission_mate.core.designsystem.theme.component.NavigationType
 import com.goalpanzi.mission_mate.feature.profile.model.CharacterListItem
+import com.goalpanzi.mission_mate.feature.profile.model.CharacterListItem.Companion.createDefaultList
 import com.goalpanzi.mission_mate.feature.profile.model.ProfileUiState
 import com.luckyoct.feature.profile.R
 import dagger.hilt.android.EntryPointAccessors
@@ -233,7 +234,7 @@ fun ColumnScope.ProfileScreen(
                     .align(Alignment.CenterHorizontally)
             ) {
                 CharacterLargeImage(
-                    imageResId = it.imageResId,
+                    imageResId = it.defaultImageResId,
                     backgroundResId = it.backgroundResId
                 )
             }
@@ -299,7 +300,7 @@ fun CharacterLargeImage(
             .paint(
                 painter = painterResource(backgroundResId),
                 contentScale = ContentScale.FillWidth,
-            )
+            ).padding(20.dp)
     )
 }
 
@@ -325,7 +326,7 @@ fun CharacterRow(
         contentPadding = PaddingValues(horizontal = 24.dp),
         state = scrollState
     ) {
-        items(items = characters, key = { it.imageResId }) {
+        items(items = characters, key = { it.selectedImageResId }) {
             CharacterElement(
                 character = it,
                 configuration = configuration,
@@ -356,7 +357,7 @@ fun CharacterElement(
             )
     ) {
         Image(
-            painter = painterResource(id = character.imageResId),
+            painter = painterResource(id = character.selectedImageResId),
             contentDescription = null,
         )
 
@@ -386,36 +387,7 @@ fun ColumnScope.ProfileScreenPreview() {
     ProfileScreen(
         profileSettingType = ProfileSettingType.CREATE,
         initialNickname = "",
-        characters = listOf(
-            CharacterListItem(
-                type = CharacterType.RABBIT,
-                imageResId = com.goalpanzi.mission_mate.core.designsystem.R.drawable.img_rabbit_selected,
-                nameResId = R.string.rabbit_name,
-                isSelected = true,
-                backgroundResId = com.goalpanzi.mission_mate.core.designsystem.R.drawable.background_rabbit
-            ),
-            CharacterListItem(
-                type = CharacterType.CAT,
-                imageResId = com.goalpanzi.mission_mate.core.designsystem.R.drawable.img_cat_selected,
-                nameResId = R.string.cat_name,
-                isSelected = false,
-                backgroundResId = com.goalpanzi.mission_mate.core.designsystem.R.drawable.background_cat
-            ),
-            CharacterListItem(
-                type = CharacterType.DOG,
-                imageResId = com.goalpanzi.mission_mate.core.designsystem.R.drawable.img_dog_selected,
-                nameResId = R.string.dog_name,
-                isSelected = false,
-                backgroundResId = com.goalpanzi.mission_mate.core.designsystem.R.drawable.background_dog
-            ),
-            CharacterListItem(
-                type = CharacterType.PANDA,
-                imageResId = com.goalpanzi.mission_mate.core.designsystem.R.drawable.img_panda_selected,
-                nameResId = R.string.panda_name,
-                isSelected = false,
-                backgroundResId = com.goalpanzi.mission_mate.core.designsystem.R.drawable.background_panda
-            ),
-        ),
+        characters = createDefaultList(),
         onClickCharacter = {},
         onClickSave = {},
         isNicknameDuplicated = false,
@@ -429,7 +401,8 @@ fun CharacterElementPreview() {
     CharacterElement(
         character = CharacterListItem(
             type = CharacterType.CAT,
-            imageResId = com.goalpanzi.mission_mate.core.designsystem.R.drawable.img_cat_selected,
+            selectedImageResId = com.goalpanzi.mission_mate.core.designsystem.R.drawable.img_cat_selected,
+            defaultImageResId = com.goalpanzi.mission_mate.core.designsystem.R.drawable.img_cat_default,
             nameResId = R.string.cat_name,
             isSelected = false,
             backgroundResId = com.goalpanzi.mission_mate.core.designsystem.R.drawable.background_cat
