@@ -2,6 +2,7 @@ package com.goalpanzi.mission_mate.feature.board.screen
 
 import android.content.Intent
 import android.net.Uri
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -116,6 +117,15 @@ fun BoardRoute(
                 onClickStory(it)
             }
         }
+        launch {
+            viewModel.missionError.collect {
+                if(it != null){
+                    Toast.makeText(context,context.getString(R.string.board_mission_not_exist), Toast.LENGTH_SHORT).show()
+                    onNavigateOnboarding()
+                    return@collect
+                }
+            }
+        }
     }
 
     LaunchedEffect(missionState) {
@@ -195,6 +205,7 @@ fun BoardRoute(
             viewModel.getMyMissionVerification(it)
         }
     )
+
 }
 
 @Composable
@@ -263,7 +274,7 @@ fun BoardScreen(
                     modifier = Modifier
                         .wrapContentSize()
                         .padding(
-                            top = 180.dp,
+                            top = 195.dp,
                             bottom = if (missionState.isVisiblePiece()) 188.dp else 46.dp
                         )
                         .align(Alignment.Center),
@@ -289,7 +300,7 @@ fun BoardScreen(
                     StableImage(
                         missionVerificationUiModel.missionVerificationsResponse.missionVerifications.first().characterType.toCharacter().imageId,
                         modifier = Modifier
-                            .padding(top = 85.dp)
+                            .padding(top = 75.dp)
                             .fillMaxWidth(240f / 390f)
                             .aspectRatio(1f)
                     )

@@ -83,7 +83,7 @@ fun UserStoryItem(
     Box(
         modifier = modifier
             .height(98.dp)
-            .width(70.dp),
+            .widthIn(min = 70.dp),
         contentAlignment = Alignment.TopCenter
     ) {
         Image(
@@ -94,10 +94,7 @@ fun UserStoryItem(
                 .height(64.dp)
                 .width(64.dp)
                 .then(
-                    if(missionState.isEnabledToInvite() && userStory.isMe){
-                        Modifier .border(3.dp, ColorWhite_FFFFFFFF, CircleShape)
-                    }
-                    else if (userStory.isVerified) {
+                    if (userStory.isVerified) {
                         Modifier
                             .border(3.dp, OrangeGradient_FFFF5F3C_FFFFAE50, CircleShape)
                             .clickable(
@@ -108,7 +105,7 @@ fun UserStoryItem(
                     } else {
                         Modifier
                             .border(3.dp, ColorWhite_FFFFFFFF, CircleShape)
-                            .alpha(0.5f)
+                            .alpha(if(userStory.isMe) 1f else 0.5f)
                     }
                 )
                 .paint(
@@ -140,10 +137,10 @@ fun UserStoryItem(
                 )
                 .border(
                     1.dp,
-                    color = ColorGray5_FFF5F6F9.copy(alpha = 0.5f),
+                    color = ColorWhite_FFFFFFFF.copy(alpha = 0.75f),
                     shape = RoundedCornerShape(20.dp)
                 )
-                .padding(vertical = 1.dp, horizontal = 4.dp)
+                .padding(vertical = 1.dp, horizontal = 5.dp)
                 .align(Alignment.BottomCenter),
             text = userStory.nickname,
             textAlign = TextAlign.Center,
@@ -151,19 +148,6 @@ fun UserStoryItem(
             style = MissionMateTypography.body_sm_regular
 
         )
-//        Box(
-//            modifier = modifier
-//                .size(64.dp)
-//                .paint(
-//                    painter = painterResource(id = R.drawable.img_sea)
-//                )
-//                //.background(color = userStory.characterType.color, shape = CircleShape)
-//                //.border(1.dp, color = if(userStory.isVerified)  )
-//                // .align(Alignment.CenterHorizontally)
-//        ) {
-//         //   CharacterLargeImage(imageResId = it.imageResId)
-//        }
-        //  StableImage(drawableResId = )
     }
 }
 

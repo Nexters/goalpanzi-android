@@ -109,7 +109,7 @@ internal fun MainNavHost(
                 }
             )
             boardDetailNavGraph(
-                onDelete = {
+                onNavigateOnboarding = {
                     navigator.navigationToOnboarding()
                 },
                 onBackClick = {

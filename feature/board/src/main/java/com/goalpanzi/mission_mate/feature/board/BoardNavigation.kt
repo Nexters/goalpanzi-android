@@ -72,7 +72,7 @@ fun NavController.navigateToBoardDetail(
 }
 
 fun NavGraphBuilder.boardDetailNavGraph(
-    onDelete: () -> Unit,
+    onNavigateOnboarding: () -> Unit,
     onBackClick: () -> Unit
 ) {
     composable(
@@ -80,7 +80,7 @@ fun NavGraphBuilder.boardDetailNavGraph(
         arguments = listOf(navArgument(missionIdArg) { type = NavType.LongType })
     ) {
         BoardMissionDetailRoute(
-            onDelete = onDelete,
+            onNavigateOnboarding = onNavigateOnboarding,
             onBackClick = onBackClick
         )
     }
