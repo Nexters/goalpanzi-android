@@ -43,25 +43,25 @@ class InvitationCodeViewModel @Inject constructor(
     var codeFirst by mutableStateOf("")
         private set
 
-    private val isNotCodeFirstEmpty =
+    private val codeFirstFlow =
         snapshotFlow { codeFirst }
 
     var codeSecond by mutableStateOf("")
         private set
 
-    private val isNotCodeSecondEmpty =
+    private val codeSecondFlow =
         snapshotFlow { codeSecond }
 
     var codeThird by mutableStateOf("")
         private set
 
-    private val isNotCodeThirdEmpty =
+    private val codeThirdFlow =
         snapshotFlow { codeThird }
 
     var codeFourth by mutableStateOf("")
         private set
 
-    private val isNotCodeFourthEmpty =
+    private val codeFourthFlow =
         snapshotFlow { codeFourth }
 
     private val _isNotCodeValid = MutableStateFlow(false)
@@ -72,10 +72,10 @@ class InvitationCodeViewModel @Inject constructor(
 
     val enabledButton: StateFlow<Boolean> =
         combine(
-            isNotCodeFirstEmpty.map { it.isNotEmpty() },
-            isNotCodeSecondEmpty.map { it.isNotEmpty() },
-            isNotCodeThirdEmpty.map { it.isNotEmpty() },
-            isNotCodeFourthEmpty.map { it.isNotEmpty() },
+            codeFirstFlow.map { it.isNotEmpty() },
+            codeSecondFlow.map { it.isNotEmpty() },
+            codeThirdFlow.map { it.isNotEmpty() },
+            codeFourthFlow.map { it.isNotEmpty() },
             isNotCodeValid
         ) { isNotFirstEmpty, isNotSecondEmpty, isNotThirdEmpty, isNotFourthEmpty, isNotValid ->
             isNotFirstEmpty && isNotSecondEmpty && isNotThirdEmpty && isNotFourthEmpty && !isNotValid
@@ -85,15 +85,8 @@ class InvitationCodeViewModel @Inject constructor(
             initialValue = false
         )
 
-    val codeInputActionEvent: SharedFlow<CodeActionEvent> =
-        merge(
-            isNotCodeFirstEmpty.filterNot { it.isEmpty() }.map { CodeActionEvent.FIRST_DONE },
-            isNotCodeSecondEmpty.filterNot { it.isEmpty() }.map { CodeActionEvent.SECOND_DONE },
-            isNotCodeThirdEmpty.filterNot { it.isEmpty() }.map { CodeActionEvent.THIRD_DONE }
-        ).shareIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(500)
-        )
+    private val _codeInputActionEvent = MutableSharedFlow<CodeActionEvent>()
+    val codeInputActionEvent: SharedFlow<CodeActionEvent> = _codeInputActionEvent.asSharedFlow()
 
     private val _codeResultEvent = MutableSharedFlow<CodeResultEvent>()
     val codeResultEvent: SharedFlow<CodeResultEvent> = _codeResultEvent.asSharedFlow()
@@ -102,23 +95,39 @@ class InvitationCodeViewModel @Inject constructor(
     val joinResultEvent: SharedFlow<JoinResultEvent> = _joinResultEvent.asSharedFlow()
 
     fun updateCodeFirst(code: String) {
+        if(code == " ") return
         if (isNotCodeValid.value) resetCodeValidState()
         if (code.length <= 1) codeFirst = code
+        viewModelScope.launch {
+            _codeInputActionEvent.emit(if(code.isNotEmpty()) CodeActionEvent.FIRST_DONE  else CodeActionEvent.FIRST_CLEAR)
+        }
     }
 
     fun updateCodeSecond(code: String) {
+        if(code == " ") return
         if (isNotCodeValid.value) resetCodeValidState()
         if (code.length <= 1) codeSecond = code
+        viewModelScope.launch {
+            _codeInputActionEvent.emit(if(code.isNotEmpty()) CodeActionEvent.SECOND_DONE  else CodeActionEvent.SECOND_CLEAR)
+        }
     }
 
     fun updateCodeThird(code: String) {
+        if(code == " ") return
         if (isNotCodeValid.value) resetCodeValidState()
         if (code.length <= 1) codeThird = code
+        viewModelScope.launch {
+            _codeInputActionEvent.emit(if(code.isNotEmpty()) CodeActionEvent.THIRD_DONE  else CodeActionEvent.THIRD_CLEAR)
+        }
     }
 
     fun updateCodeFourth(code: String) {
+        if(code == " ") return
         if (isNotCodeValid.value) resetCodeValidState()
         if (code.length <= 1) codeFourth = code
+        viewModelScope.launch {
+            _codeInputActionEvent.emit(if(code.isNotEmpty()) CodeActionEvent.FOURTH_DONE else CodeActionEvent.FOURTH_CLEAR)
+        }
     }
 
     fun checkCode() {
