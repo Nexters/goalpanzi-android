@@ -37,7 +37,7 @@
     <string name="onboarding_board_setup_verification_time_input_title">인증 시간</string>
     <string name="onboarding_board_setup_verification_time_input_content_am">오전\n00~12시</string>
     <string name="onboarding_board_setup_verification_time_input_content_pm">오후\n12~00시</string>
-    <string name="onboarding_board_setup_verification_time_input_content_all">종일\n00~00시</string>
+    <string name="onboarding_board_setup_verification_time_input_content_all">종일\n00~24시</string>
 
     <string name="onboarding_board_setup_success_title">미션설정 완료!\n이제 시작해볼까요?</string>
     <string name="onboarding_board_setup_success_description">친구와 함께 꾸준히 미션을 완수해\n세계 곳곳을 경험해봐요!</string>
