@@ -94,10 +94,7 @@ fun UserStoryItem(
                 .height(64.dp)
                 .width(64.dp)
                 .then(
-                    if(missionState.isEnabledToInvite() && userStory.isMe){
-                        Modifier .border(3.dp, ColorWhite_FFFFFFFF, CircleShape)
-                    }
-                    else if (userStory.isVerified) {
+                    if (userStory.isVerified) {
                         Modifier
                             .border(3.dp, OrangeGradient_FFFF5F3C_FFFFAE50, CircleShape)
                             .clickable(
@@ -108,7 +105,7 @@ fun UserStoryItem(
                     } else {
                         Modifier
                             .border(3.dp, ColorWhite_FFFFFFFF, CircleShape)
-                            .alpha(0.5f)
+                            .alpha(if(userStory.isMe) 1f else 0.5f)
                     }
                 )
                 .paint(
