@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
@@ -274,23 +275,13 @@ fun ProfileCreateSuccessDialog(
                 textAlign = TextAlign.Center,
                 color = ColorGray2_FF4F505C
             )
-            Image(
-                painter = painterResource(
-                    id = when (character) {
-                        CharacterType.RABBIT -> designSystemResource.drawable.img_rabbit_selected
-                        CharacterType.CAT -> designSystemResource.drawable.img_cat_selected
-                        CharacterType.DOG -> designSystemResource.drawable.img_dog_selected
-                        CharacterType.PANDA -> designSystemResource.drawable.img_panda_selected
-                        CharacterType.BEAR -> designSystemResource.drawable.img_bear_selected
-                        CharacterType.BIRD -> designSystemResource.drawable.img_bird_selected
-                    }
-                ),
-                contentDescription = null,
+            Box(
                 modifier = Modifier
                     .padding(vertical = 32.dp)
+                    .size(180.dp)
                     .paint(
                         painter = painterResource(
-                            when (character) {
+                            id = when (character) {
                                 CharacterType.RABBIT -> designSystemResource.drawable.background_rabbit
                                 CharacterType.CAT -> designSystemResource.drawable.background_cat
                                 CharacterType.DOG -> designSystemResource.drawable.background_dog
@@ -301,7 +292,26 @@ fun ProfileCreateSuccessDialog(
                         ),
                         contentScale = ContentScale.FillWidth,
                     )
-            )
+            ) {
+                Image(
+                    painter = painterResource(
+                        id = when (character) {
+                            CharacterType.RABBIT -> designSystemResource.drawable.img_rabbit_default
+                            CharacterType.CAT -> designSystemResource.drawable.img_cat_default
+                            CharacterType.DOG -> designSystemResource.drawable.img_dog_default
+                            CharacterType.PANDA -> designSystemResource.drawable.img_panda_default
+                            CharacterType.BEAR -> designSystemResource.drawable.img_bear_default
+                            CharacterType.BIRD -> designSystemResource.drawable.img_bird_default
+                        }
+                    ),
+                    contentDescription = null,
+                    contentScale = ContentScale.FillWidth,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(18.dp)
+                        .align(Alignment.Center)
+                )
+            }
         }
     }
 }
@@ -327,7 +337,7 @@ fun OnboardingScreenPreview() {
 fun ProfileCreateSuccessDialogPreview() {
     ProfileCreateSuccessDialog(
         nickname = "Test",
-        character = CharacterType.CAT,
+        character = CharacterType.RABBIT,
         onClickOk = {}
     )
 }

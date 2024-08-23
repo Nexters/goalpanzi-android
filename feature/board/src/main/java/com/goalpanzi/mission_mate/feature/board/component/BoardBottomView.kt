@@ -27,7 +27,6 @@ import com.goalpanzi.mission_mate.feature.board.model.MissionDetail
 import com.goalpanzi.mission_mate.feature.board.model.MissionState
 import com.goalpanzi.mission_mate.feature.onboarding.component.StableImage
 import com.goalpanzi.mission_mate.feature.onboarding.model.VerificationTimeType
-import com.goalpanzi.mission_mate.feature.onboarding.util.getStringId
 
 @Composable
 fun BoardBottomView(
@@ -52,9 +51,7 @@ fun BoardBottomView(
         ) {
             StableImage(drawableResId = com.goalpanzi.mission_mate.core.designsystem.R.drawable.ic_time)
             Text(
-                text = missionDetail.missionDays.map {
-                    stringResource(id = it.getStringId())
-                }.joinToString(" ") + " | " + when(VerificationTimeType.valueOf(missionDetail.timeOfDay)){
+                text = missionDetail.missionDaysOfWeekTextLocale.joinToString(" ") + " | " + when(VerificationTimeType.valueOf(missionDetail.timeOfDay)){
                     VerificationTimeType.MORNING -> stringResource(id = R.string.board_verification_am_time_limit)
                     VerificationTimeType.AFTERNOON -> stringResource(id = R.string.board_verification_pm_time_limit)
                     VerificationTimeType.EVERYDAY -> stringResource(id = R.string.board_verification_all_day_time_limit)
