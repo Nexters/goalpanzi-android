@@ -128,7 +128,8 @@ fun PieceNameChip(
 ){
     Text(
         modifier = modifier
-            .widthIn(min = 90.dp)
+            .padding(horizontal = 12.dp)
+            .fillMaxWidth()
             .wrapContentHeight()
             .clip(RoundedCornerShape(20.dp))
             .background(
