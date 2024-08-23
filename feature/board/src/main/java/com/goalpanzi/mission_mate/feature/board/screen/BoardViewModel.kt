@@ -17,6 +17,7 @@ import com.goalpanzi.mission_mate.core.domain.usecase.SetViewedTooltipUseCase
 import com.goalpanzi.mission_mate.core.domain.usecase.VerifyMissionUseCase
 import com.goalpanzi.mission_mate.feature.board.model.BoardPiece
 import com.goalpanzi.mission_mate.feature.board.model.BoardPieceType
+import com.goalpanzi.mission_mate.feature.board.model.MissionError
 import com.goalpanzi.mission_mate.feature.board.model.MissionState
 import com.goalpanzi.mission_mate.feature.board.model.MissionState.Companion.getMissionState
 import com.goalpanzi.mission_mate.feature.board.model.UserStory
@@ -65,6 +66,9 @@ class BoardViewModel @Inject constructor(
         started = SharingStarted.WhileSubscribed(500),
         initialValue = true
     )
+
+    private val _missionError = MutableStateFlow<MissionError?>(null)
+    val missionError : StateFlow<MissionError?> =_missionError.asStateFlow()
 
     private val _myMissionVerification = MutableSharedFlow<UserStory>()
     val myMissionVerification : SharedFlow<UserStory> = _myMissionVerification.asSharedFlow()
@@ -139,6 +143,7 @@ class BoardViewModel @Inject constructor(
 
                         else -> {
                             _missionBoardUiModel.emit(MissionBoardUiModel.Error)
+                            _missionError.emit(MissionError.NOT_EXIST)
                         }
                     }
                 }
@@ -157,6 +162,7 @@ class BoardViewModel @Inject constructor(
 
                     else -> {
                         _missionUiModel.emit(MissionUiModel.Error)
+                        _missionError.emit(MissionError.NOT_EXIST)
                     }
                 }
             }
@@ -175,6 +181,7 @@ class BoardViewModel @Inject constructor(
 
                     else -> {
                         _missionVerificationUiModel.emit(MissionVerificationUiModel.Error)
+                        _missionError.emit(MissionError.NOT_EXIST)
                     }
                 }
             }

@@ -2,6 +2,7 @@ package com.goalpanzi.mission_mate.feature.board.screen
 
 import android.content.Intent
 import android.net.Uri
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -116,6 +117,15 @@ fun BoardRoute(
                 onClickStory(it)
             }
         }
+        launch {
+            viewModel.missionError.collect {
+                if(it != null){
+                    Toast.makeText(context,context.getString(R.string.board_mission_not_exist), Toast.LENGTH_SHORT).show()
+                    onNavigateOnboarding()
+                    return@collect
+                }
+            }
+        }
     }
 
     LaunchedEffect(missionState) {
@@ -195,6 +205,7 @@ fun BoardRoute(
             viewModel.getMyMissionVerification(it)
         }
     )
+
 }
 
 @Composable

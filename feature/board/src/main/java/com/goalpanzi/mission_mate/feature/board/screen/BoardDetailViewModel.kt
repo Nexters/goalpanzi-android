@@ -7,6 +7,7 @@ import com.goalpanzi.core.model.base.NetworkResult
 import com.goalpanzi.mission_mate.core.domain.usecase.DeleteMissionUseCase
 import com.goalpanzi.mission_mate.core.domain.usecase.GetCachedMemberIdUseCase
 import com.goalpanzi.mission_mate.core.domain.usecase.GetMissionUseCase
+import com.goalpanzi.mission_mate.feature.board.model.MissionError
 import com.goalpanzi.mission_mate.feature.board.model.toModel
 import com.goalpanzi.mission_mate.feature.board.model.uimodel.MissionUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -40,6 +41,9 @@ class BoardDetailViewModel @Inject constructor(
         initialValue = null
     )
 
+    private val _missionError = MutableSharedFlow<MissionError>()
+    val missionError : SharedFlow<MissionError> =_missionError.asSharedFlow()
+
     private val _deleteMissionResultEvent = MutableSharedFlow<Boolean>()
     val deleteMissionResultEvent: SharedFlow<Boolean> = _deleteMissionResultEvent.asSharedFlow()
 
@@ -72,6 +76,7 @@ class BoardDetailViewModel @Inject constructor(
 
                     else -> {
                         _missionUiModel.emit(MissionUiModel.Error)
+                        _missionError.emit(MissionError.NOT_EXIST)
                     }
                 }
             }

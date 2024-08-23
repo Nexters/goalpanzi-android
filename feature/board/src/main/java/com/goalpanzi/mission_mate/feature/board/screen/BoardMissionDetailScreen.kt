@@ -1,6 +1,7 @@
 package com.goalpanzi.mission_mate.feature.board.screen
 
 import android.annotation.SuppressLint
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -26,6 +27,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -51,11 +53,12 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun BoardMissionDetailRoute(
-    onDelete : () -> Unit,
+    onNavigateOnboarding : () -> Unit,
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: BoardDetailViewModel = hiltViewModel()
 ) {
+    val context = LocalContext.current
     val missionUiModel by viewModel.missionUiModel.collectAsStateWithLifecycle()
     val isHost by viewModel.isHost.collectAsStateWithLifecycle()
     var isShownRequestDeleteMissionDialog by remember { mutableStateOf(false) }
@@ -67,8 +70,15 @@ fun BoardMissionDetailRoute(
             viewModel.deleteMissionResultEvent.collect {
                 if (it) {
                     isShownRequestDeleteMissionDialog = false
-                    onDelete()
+                    onNavigateOnboarding()
                 }
+            }
+        }
+
+        launch {
+            viewModel.missionError.collect {
+                Toast.makeText(context,context.getString(R.string.board_mission_not_exist),Toast.LENGTH_SHORT).show()
+                onNavigateOnboarding()
             }
         }
 
@@ -267,7 +277,7 @@ fun BoardMissionDetailScreen(
 private fun PreviewBoardMissionDetailRoute() {
     BoardMissionDetailRoute(
         onBackClick = {},
-        onDelete = {}
+        onNavigateOnboarding = {}
     )
 
 }
