@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="profile_create">프로필 만들기</string>
+    <string name="profile_setting_title">프로필 수정</string>
+    <string name="nickname_hint">닉네임 입력</string>
+    <string name="nickname_input_guide">1~6자, 한글, 영문 또는 숫자를 입력하세요.</string>
+    <string name="save">저장하기</string>
+    <string name="err_duplicated_nickname">이미 존재하는 회원 닉네임이에요.</string>
+
+    <string name="rabbit_name">뚝심토끼</string>
+    <string name="cat_name">포기란없다냥</string>
+    <string name="dog_name">끝까지해볼개</string>
+    <string name="panda_name">하나만팬다</string>
+    <string name="bear_name">할건끝내곰</string>
+    <string name="bird_name">할때까지해뱁새</string>
+
+    <string name="profile_update_success">프로필이 저장되었어요.</string>
+</resources>

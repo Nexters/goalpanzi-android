@@ -1,6 +1,6 @@
 [versions]
 ## Android gradle plugin
-agp = "8.4.0"
+agp = "8.4.2"
 
 ## Kotlin
 kotlin = "2.0.0"
@@ -11,9 +11,9 @@ coroutine = "1.9.0-RC"
 
 ## AndroidX
 androidxCoreKtx = "1.13.1"
-androidxLifecycleKtx = "2.8.3"
+androidxLifecycleKtx = "2.8.4"
 androidxAppcompat = "1.7.0"
-androidxActivity = "1.9.0"
+androidxActivity = "1.9.1"
 
 ## Compose
 composeBom = "2024.06.00"
@@ -30,7 +30,7 @@ kotest = "5.9.0"
 mockk = "1.13.11"
 
 ## Hilt
-hilt = "2.51"
+hilt = "2.51.1"
 hilt-navigation-compose = "1.2.0"
 
 ## Network
@@ -42,6 +42,21 @@ dataStore-preferences = "1.1.1"
 
 ## Image Loader
 coil-compose = "2.5.0"
+
+## Google OAuth
+credential = "1.2.2"
+identity = "1.1.1"
+material = "1.12.0"
+
+## Google Service
+google-service = "4.4.2"
+firebase = "33.1.2"
+
+## Lottie
+lottie-compose = "6.5.0"
+
+# ETC
+balloon = "1.6.6"
 
 [libraries]
 ## Koitln
@@ -69,7 +84,7 @@ androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-toolin
 androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
-androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigation-compose" }
+androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigation-compose" }
 
 ## Test
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -97,6 +112,21 @@ dataStore = { module = "androidx.datastore:datastore-preferences", version.ref =
 ## Image Loader
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil-compose" }
 
+## Google OAuth
+credentials = { group = "androidx.credentials", name = "credentials", version.ref = "credential" }
+credentials-auth = { group = "androidx.credentials", name = "credentials-play-services-auth", version.ref = "credential" }
+google-id = { group = "com.google.android.libraries.identity.googleid", name = "googleid", version = "identity" }
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+
+## Firebase
+firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebase" }
+
+## Lottie
+lottie-compose = { group = "com.airbnb.android", name = "lottie-compose", version.ref = "lottie-compose"}
+
+## ETC
+balloon = { group = "com.github.skydoves", name = "balloon", version.ref = "balloon" }
+
 [plugins]
 ## Android gradle plugin
 android-application = { id = "com.android.application", version.ref = "agp" }
@@ -107,12 +137,16 @@ jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = 
 kotlin-plugin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize",  version.ref = "kotlin"  }
 
 ## KSP
 kotlin-ksp = { id = "com.google.devtools.ksp" , version.ref = "ksp"}
 
 ## Hilt
 hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
+
+## Google Service
+google-service = { id = "com.google.gms.google-services", version.ref = "google-service" }
 
 [bundles]
 coroutines = ["coroutines-core", "coroutines-android"]
