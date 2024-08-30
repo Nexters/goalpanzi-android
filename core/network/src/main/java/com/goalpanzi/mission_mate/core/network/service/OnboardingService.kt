@@ -1,9 +1,9 @@
 package com.goalpanzi.mission_mate.core.network.service
 
-import com.goalpanzi.core.model.request.CreateMissionRequest
-import com.goalpanzi.core.model.request.JoinMissionRequest
-import com.goalpanzi.core.model.response.MissionDetailResponse
-import com.goalpanzi.core.model.response.MissionsResponse
+import com.goalpanzi.mission_mate.core.network.model.request.CreateMissionRequest
+import com.goalpanzi.mission_mate.core.network.model.request.JoinMissionRequest
+import com.goalpanzi.mission_mate.core.network.model.response.MissionDetailResponse
+import com.goalpanzi.mission_mate.core.network.model.response.MissionsResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET

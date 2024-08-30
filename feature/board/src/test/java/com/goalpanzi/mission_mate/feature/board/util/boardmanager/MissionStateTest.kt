@@ -1,9 +1,9 @@
 package com.goalpanzi.mission_mate.feature.board.util.boardmanager
 
+import com.goalpanzi.mission_mate.core.domain.model.mission.MissionVerification
 import com.goalpanzi.mission_mate.feature.board.model.MissionState
 import com.goalpanzi.mission_mate.feature.board.model.MissionState.Companion.getMissionState
 import com.goalpanzi.mission_mate.feature.onboarding.model.VerificationTimeType
-import com.goalpanzi.core.model.response.MissionVerificationResponse
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import java.time.DayOfWeek
@@ -18,7 +18,7 @@ class MissionStateTest {
         val todayLocalDateTime = LocalDateTime.of(2024, 8, 14, 10, 0, 0) // 오전 10시
         val startDate = LocalDate.of(2024, 8, 14) // 시작 날짜가 오늘
         val endDateTime = LocalDateTime.of(2024, 8, 15, 23, 59, 59)
-        val memberList = emptyList<MissionVerificationResponse>()
+        val memberList = emptyList<MissionVerification>()
         val verificationTimeType = VerificationTimeType.MORNING
         val daysOfWeek = listOf(DayOfWeek.WEDNESDAY, DayOfWeek.FRIDAY)
 
@@ -38,7 +38,7 @@ class MissionStateTest {
         val todayLocalDateTime = LocalDateTime.of(2024, 8, 16, 10, 0, 0) // 오전 10시
         val startDate = LocalDate.of(2024, 8, 14)
         val endDateTime = LocalDateTime.of(2024, 8, 15, 23, 59, 59)
-        val memberList = emptyList<MissionVerificationResponse>()
+        val memberList = emptyList<MissionVerification>()
         val verificationTimeType = VerificationTimeType.MORNING
         val daysOfWeek = listOf(DayOfWeek.WEDNESDAY, DayOfWeek.FRIDAY)
 
@@ -58,7 +58,12 @@ class MissionStateTest {
         val todayLocalDateTime = LocalDateTime.of(2024, 8, 14, 10, 0, 0)
         val startDate = LocalDate.of(2024, 8, 15)
         val endDateTime = LocalDateTime.of(2024, 8, 20, 23, 59, 59)
-        val memberList = listOf(MissionVerificationResponse(nickname = "user", imageUrl = "image_url"))
+        val memberList = listOf(
+            MissionVerification(
+                nickname = "user",
+                imageUrl = "image_url"
+            )
+        )
         val verificationTimeType = VerificationTimeType.MORNING
         val daysOfWeek = listOf(DayOfWeek.WEDNESDAY, DayOfWeek.FRIDAY)
 
@@ -72,8 +77,14 @@ class MissionStateTest {
         val startDate = LocalDate.of(2024, 8, 15)
         val endDateTime = LocalDateTime.of(2024, 8, 20, 23, 59, 59)
         val memberList = listOf(
-            MissionVerificationResponse(nickname = "user1", imageUrl = "image_url"),
-            MissionVerificationResponse(nickname = "user2", imageUrl = "image_url")
+            MissionVerification(
+                nickname = "user1",
+                imageUrl = "image_url"
+            ),
+            MissionVerification(
+                nickname = "user2",
+                imageUrl = "image_url"
+            )
         )
         val verificationTimeType = VerificationTimeType.MORNING
         val daysOfWeek = listOf(DayOfWeek.WEDNESDAY, DayOfWeek.FRIDAY)
@@ -88,8 +99,14 @@ class MissionStateTest {
         val startDate = LocalDate.of(2024, 8, 13)
         val endDateTime = LocalDateTime.of(2024, 8, 15, 23, 59, 59)
         val memberList = listOf(
-            MissionVerificationResponse(nickname = "user", imageUrl = "image_url"),
-            MissionVerificationResponse(nickname = "user1", imageUrl = "image_url")
+            MissionVerification(
+                nickname = "user",
+                imageUrl = "image_url"
+            ),
+            MissionVerification(
+                nickname = "user1",
+                imageUrl = "image_url"
+            )
         )
         val verificationTimeType = VerificationTimeType.MORNING
         val daysOfWeek = listOf(DayOfWeek.WEDNESDAY, DayOfWeek.FRIDAY)
@@ -104,8 +121,14 @@ class MissionStateTest {
         val startDate = LocalDate.of(2024, 8, 13)
         val endDateTime = LocalDateTime.of(2024, 8, 15, 0, 0, 0)
         val memberList = listOf(
-            MissionVerificationResponse(nickname = "user", imageUrl = "image_url"),
-            MissionVerificationResponse(nickname = "user1", imageUrl = "image_url")
+            MissionVerification(
+                nickname = "user",
+                imageUrl = "image_url"
+            ),
+            MissionVerification(
+                nickname = "user1",
+                imageUrl = "image_url"
+            )
         )
         val verificationTimeType = VerificationTimeType.MORNING
         val daysOfWeek = listOf(DayOfWeek.WEDNESDAY, DayOfWeek.FRIDAY)
@@ -120,8 +143,14 @@ class MissionStateTest {
         val startDate = LocalDate.of(2024, 8, 13)
         val endDateTime = LocalDateTime.of(2024, 8, 15, 0, 0, 0)
         val memberList = listOf(
-            MissionVerificationResponse(nickname = "user", imageUrl = "image_url"),
-            MissionVerificationResponse(nickname = "user1", imageUrl = "image_url")
+            MissionVerification(
+                nickname = "user",
+                imageUrl = "image_url"
+            ),
+            MissionVerification(
+                nickname = "user1",
+                imageUrl = "image_url"
+            )
         )
         val verificationTimeType = VerificationTimeType.AFTERNOON
         val daysOfWeek = listOf(DayOfWeek.WEDNESDAY, DayOfWeek.FRIDAY)

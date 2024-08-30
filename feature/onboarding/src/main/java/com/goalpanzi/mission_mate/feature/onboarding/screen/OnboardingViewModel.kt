@@ -3,10 +3,10 @@ package com.goalpanzi.mission_mate.feature.onboarding.screen
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.goalpanzi.core.model.UserProfile
-import com.goalpanzi.core.model.base.NetworkResult
-import com.goalpanzi.mission_mate.core.domain.usecase.GetJoinedMissionsUseCase
-import com.goalpanzi.mission_mate.core.domain.usecase.GetMissionJoinedUseCase
+import com.goalpanzi.mission_mate.core.domain.model.UserProfile
+import com.goalpanzi.mission_mate.core.domain.model.base.DomainResult
+import com.goalpanzi.mission_mate.core.domain.usecase.mission.GetJoinedMissionsUseCase
+import com.goalpanzi.mission_mate.core.domain.usecase.mission.GetMissionJoinedUseCase
 import com.goalpanzi.mission_mate.core.domain.usecase.ProfileUseCase
 import com.goalpanzi.mission_mate.feature.onboarding.isAfterProfileCreateArg
 import com.goalpanzi.mission_mate.feature.onboarding.model.OnboardingResultEvent
@@ -63,7 +63,7 @@ class OnboardingViewModel @Inject constructor(
                     _onboardingResultEvent.emit(OnboardingResultEvent.Error)
                 }.collect { result ->
                     when (result) {
-                        is NetworkResult.Success -> {
+                        is DomainResult.Success -> {
                             result.data.missions.let { missions ->
                                 if (missions.isNotEmpty() && isJoined != false) {
                                     _onboardingResultEvent.emit(

@@ -3,11 +3,11 @@ package com.goalpanzi.mission_mate.feature.board.screen
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.goalpanzi.mission_mate.core.domain.usecase.GetMissionRankUseCase
+import com.goalpanzi.mission_mate.core.domain.usecase.mission.GetMissionRankUseCase
 import com.goalpanzi.mission_mate.core.domain.usecase.ProfileUseCase
-import com.goalpanzi.mission_mate.core.domain.usecase.SetMissionJoinedUseCase
-import com.goalpanzi.core.model.UserProfile
-import com.goalpanzi.core.model.base.NetworkResult
+import com.goalpanzi.mission_mate.core.domain.usecase.mission.SetMissionJoinedUseCase
+import com.goalpanzi.mission_mate.core.domain.model.UserProfile
+import com.goalpanzi.mission_mate.core.domain.model.base.DomainResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -46,7 +46,7 @@ class BoardFinishViewModel @Inject constructor(
                     _rank.emit(null)
                 }.collect {
                     when(it){
-                        is NetworkResult.Success -> {
+                        is DomainResult.Success -> {
                             _rank.emit(it.data.rank)
                         }
                         else -> {

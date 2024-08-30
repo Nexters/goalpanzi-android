@@ -1,11 +1,11 @@
 package com.goalpanzi.mission_mate.core.domain.usecase
 
-import com.goalpanzi.mission_mate.core.datastore.datasource.DefaultDataSource
+import com.goalpanzi.mission_mate.core.domain.repository.DefaultRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class SetViewedTooltipUseCase @Inject constructor(
-    private val defaultDataSource: DefaultDataSource
+    private val defaultRepository: DefaultRepository
 ) {
-    operator fun invoke(): Flow<Unit> = defaultDataSource.setViewedTooltip()
+    operator fun invoke(): Flow<Unit> = defaultRepository.setViewedTooltip()
 }

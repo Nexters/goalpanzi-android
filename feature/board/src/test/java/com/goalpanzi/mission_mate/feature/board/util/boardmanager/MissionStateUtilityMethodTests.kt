@@ -1,10 +1,10 @@
 package com.goalpanzi.mission_mate.feature.board.util.boardmanager
 
+import com.goalpanzi.mission_mate.core.domain.model.mission.MissionVerification
 import com.goalpanzi.mission_mate.feature.board.model.MissionState.Companion.isPassedEndTime
 import com.goalpanzi.mission_mate.feature.board.model.MissionState.Companion.isTodayMissionDay
 import com.goalpanzi.mission_mate.feature.board.model.MissionState.Companion.isVerifiedInMissionTime
 import com.goalpanzi.mission_mate.feature.onboarding.model.VerificationTimeType
-import com.goalpanzi.core.model.response.MissionVerificationResponse
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -124,7 +124,7 @@ class MissionStateUtilityMethodTests {
     // 인증 멤버 목록이 비어있으면 false를 반환한다
     @Test
     fun isVerifiedInMissionTime_EmptyList_ReturnsFalse() {
-        val memberList = emptyList<MissionVerificationResponse>()
+        val memberList = emptyList<MissionVerification>()
         val result = isVerifiedInMissionTime(memberList)
         assertFalse(result)
     }
@@ -133,7 +133,10 @@ class MissionStateUtilityMethodTests {
     @Test
     fun isVerifiedInMissionTime_FirstImageEmpty_ReturnsFalse() {
         val memberList = listOf(
-            MissionVerificationResponse(nickname = "", imageUrl = "")
+            MissionVerification(
+                nickname = "",
+                imageUrl = ""
+            )
         )
         val result = isVerifiedInMissionTime(memberList)
         assertFalse(result)
@@ -143,7 +146,10 @@ class MissionStateUtilityMethodTests {
     @Test
     fun isVerifiedInMissionTime_FirstImageNotEmpty_ReturnsTrue() {
         val memberList = listOf(
-            MissionVerificationResponse(nickname = "", imageUrl = "image_url")
+            MissionVerification(
+                nickname = "",
+                imageUrl = "image_url"
+            )
         )
         val result = isVerifiedInMissionTime(memberList)
         assertTrue(result)

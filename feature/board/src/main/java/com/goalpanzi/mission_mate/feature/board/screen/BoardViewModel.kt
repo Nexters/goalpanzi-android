@@ -3,18 +3,18 @@ package com.goalpanzi.mission_mate.feature.board.screen
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.goalpanzi.core.model.base.NetworkResult
-import com.goalpanzi.core.model.response.BoardReward
-import com.goalpanzi.mission_mate.core.domain.usecase.DeleteMissionUseCase
+import com.goalpanzi.mission_mate.core.domain.model.base.DomainResult
+import com.goalpanzi.mission_mate.core.domain.model.mission.BoardReward
 import com.goalpanzi.mission_mate.core.domain.usecase.GetCachedMemberIdUseCase
-import com.goalpanzi.mission_mate.core.domain.usecase.GetMissionBoardsUseCase
-import com.goalpanzi.mission_mate.core.domain.usecase.GetMissionUseCase
-import com.goalpanzi.mission_mate.core.domain.usecase.GetMissionVerificationsUseCase
-import com.goalpanzi.mission_mate.core.domain.usecase.GetMyMissionVerificationUseCase
 import com.goalpanzi.mission_mate.core.domain.usecase.GetViewedTooltipUseCase
 import com.goalpanzi.mission_mate.core.domain.usecase.ProfileUseCase
 import com.goalpanzi.mission_mate.core.domain.usecase.SetViewedTooltipUseCase
-import com.goalpanzi.mission_mate.core.domain.usecase.VerifyMissionUseCase
+import com.goalpanzi.mission_mate.core.domain.usecase.mission.DeleteMissionUseCase
+import com.goalpanzi.mission_mate.core.domain.usecase.mission.GetMissionBoardsUseCase
+import com.goalpanzi.mission_mate.core.domain.usecase.mission.GetMissionUseCase
+import com.goalpanzi.mission_mate.core.domain.usecase.mission.GetMissionVerificationsUseCase
+import com.goalpanzi.mission_mate.core.domain.usecase.mission.GetMyMissionVerificationUseCase
+import com.goalpanzi.mission_mate.core.domain.usecase.mission.VerifyMissionUseCase
 import com.goalpanzi.mission_mate.feature.board.model.BoardPiece
 import com.goalpanzi.mission_mate.feature.board.model.BoardPieceType
 import com.goalpanzi.mission_mate.feature.board.model.MissionError
@@ -22,8 +22,8 @@ import com.goalpanzi.mission_mate.feature.board.model.MissionState
 import com.goalpanzi.mission_mate.feature.board.model.MissionState.Companion.getMissionState
 import com.goalpanzi.mission_mate.feature.board.model.UserStory
 import com.goalpanzi.mission_mate.feature.board.model.toBoardPieces
-import com.goalpanzi.mission_mate.feature.board.model.toCharacter
-import com.goalpanzi.mission_mate.feature.board.model.toModel
+import com.goalpanzi.mission_mate.feature.board.model.toCharacterUiModel
+import com.goalpanzi.mission_mate.feature.board.model.toUiModel
 import com.goalpanzi.mission_mate.feature.board.model.uimodel.MissionBoardUiModel
 import com.goalpanzi.mission_mate.feature.board.model.uimodel.MissionUiModel
 import com.goalpanzi.mission_mate.feature.board.model.uimodel.MissionVerificationUiModel
@@ -127,14 +127,14 @@ class BoardViewModel @Inject constructor(
                     _missionBoardUiModel.emit(MissionBoardUiModel.Error)
                 }.collect {
                     when (it) {
-                        is NetworkResult.Success -> {
+                        is DomainResult.Success -> {
                             _missionBoardUiModel.emit(
                                 MissionBoardUiModel.Success(
-                                    it.data.toModel()
+                                    it.data.toUiModel()
                                 )
                             )
                             _boardPieces.emit(
-                                it.data.toModel().toBoardPieces(
+                                it.data.toUiModel().toBoardPieces(
                                     profileUseCase.getProfile()
                                 )
                             )
@@ -156,8 +156,8 @@ class BoardViewModel @Inject constructor(
                 _missionUiModel.emit(MissionUiModel.Error)
             }.collect {
                 when (it) {
-                    is NetworkResult.Success -> {
-                        _missionUiModel.emit(MissionUiModel.Success(it.data.toModel()))
+                    is DomainResult.Success -> {
+                        _missionUiModel.emit(MissionUiModel.Success(it.data))
                     }
 
                     else -> {
@@ -175,7 +175,7 @@ class BoardViewModel @Inject constructor(
                 _missionVerificationUiModel.emit(MissionVerificationUiModel.Error)
             }.collect {
                 when (it) {
-                    is NetworkResult.Success -> {
+                    is DomainResult.Success -> {
                         _missionVerificationUiModel.emit(MissionVerificationUiModel.Success(it.data))
                     }
 
@@ -246,7 +246,7 @@ class BoardViewModel @Inject constructor(
                                 BoardPiece(
                                     count = prevBoardPiece.missionBoardMembers.size - 1,
                                     nickname = target.nickname,
-                                    drawableRes = target.character.imageId,
+                                    drawableRes = target.characterType.toCharacterUiModel().imageId,
                                     index = prevBoardPiece.number,
                                     isMe = false
                                 )
@@ -266,7 +266,7 @@ class BoardViewModel @Inject constructor(
                 _boardRewardEvent.emit(
                     missionBoardList.find {
                         myBoardPiece.index + 1 == it.number
-                    }?.boardReward
+                    }?.reward
                 )
             }
             getMissionBoards()
@@ -286,10 +286,10 @@ class BoardViewModel @Inject constructor(
 
             }.collect {
                 when(it){
-                    is NetworkResult.Success -> {
+                    is DomainResult.Success -> {
                         _myMissionVerification.emit(
                             UserStory(
-                                characterType = it.data.characterType.toCharacter(),
+                                characterUiModelType = it.data.characterType.toCharacterUiModel(),
                                 imageUrl = it.data.imageUrl,
                                 isVerified = true,
                                 nickname = it.data.nickname,

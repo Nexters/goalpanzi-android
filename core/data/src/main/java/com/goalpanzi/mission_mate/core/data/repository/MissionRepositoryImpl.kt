@@ -1,13 +1,23 @@
 package com.goalpanzi.mission_mate.core.data.repository
 
+import com.goalpanzi.mission_mate.core.data.handleResult
+import com.goalpanzi.mission_mate.core.data.mapper.toModel
+import com.goalpanzi.mission_mate.core.datastore.datasource.MissionDataSource
 import com.goalpanzi.mission_mate.core.domain.repository.MissionRepository
 import com.goalpanzi.mission_mate.core.network.service.MissionService
-import com.goalpanzi.core.model.base.NetworkResult
-import com.goalpanzi.core.model.response.MissionBoardsResponse
-import com.goalpanzi.core.model.response.MissionDetailResponse
-import com.goalpanzi.core.model.response.MissionRankResponse
-import com.goalpanzi.core.model.response.MissionVerificationResponse
-import com.goalpanzi.core.model.response.MissionVerificationsResponse
+import com.goalpanzi.mission_mate.core.domain.model.base.DomainResult
+import com.goalpanzi.mission_mate.core.domain.model.base.convert
+import com.goalpanzi.mission_mate.core.domain.model.mission.MissionBoards
+import com.goalpanzi.mission_mate.core.domain.model.mission.MissionDetail
+import com.goalpanzi.mission_mate.core.domain.model.mission.MissionRank
+import com.goalpanzi.mission_mate.core.domain.model.mission.MissionVerification
+import com.goalpanzi.mission_mate.core.domain.model.mission.MissionVerifications
+import com.goalpanzi.mission_mate.core.network.model.response.MissionBoardsResponse
+import com.goalpanzi.mission_mate.core.network.model.response.MissionDetailResponse
+import com.goalpanzi.mission_mate.core.network.model.response.MissionRankResponse
+import com.goalpanzi.mission_mate.core.network.model.response.MissionVerificationResponse
+import com.goalpanzi.mission_mate.core.network.model.response.MissionVerificationsResponse
+import kotlinx.coroutines.flow.Flow
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
@@ -16,33 +26,44 @@ import javax.inject.Inject
 
 class MissionRepositoryImpl @Inject constructor(
     private val missionService: MissionService,
+    private val missionDataSource: MissionDataSource
 ) : MissionRepository {
-    override suspend fun getMissionBoards(missionId: Long): NetworkResult<MissionBoardsResponse> =
+    override suspend fun getMissionBoards(missionId: Long): DomainResult<MissionBoards> =
         handleResult {
             missionService.getMissionBoards(missionId)
+        }.convert {
+            it.toModel()
         }
 
-    override suspend fun getMission(missionId: Long): NetworkResult<MissionDetailResponse> =
+    override suspend fun getMission(missionId: Long): DomainResult<MissionDetail> =
         handleResult {
             missionService.getMission(missionId)
+        }.convert {
+            it.toModel()
         }
 
-    override suspend fun getMissionVerifications(missionId: Long): NetworkResult<MissionVerificationsResponse> =
+    override suspend fun getMissionVerifications(missionId: Long): DomainResult<MissionVerifications> =
         handleResult {
             missionService.getMissionVerifications(missionId)
+        }.convert {
+            it.toModel()
         }
 
-    override suspend fun deleteMission(missionId: Long): NetworkResult<MissionDetailResponse> =
+    override suspend fun deleteMission(missionId: Long): DomainResult<MissionDetail> =
         handleResult {
             missionService.deleteMission(missionId)
+        }.convert {
+            it.toModel()
         }
 
-    override suspend fun getMissionRank(missionId: Long): NetworkResult<MissionRankResponse> =
+    override suspend fun getMissionRank(missionId: Long): DomainResult<MissionRank> =
         handleResult {
             missionService.getMissionRank(missionId)
+        }.convert {
+            it.toModel()
         }
 
-    override suspend fun verifyMission(missionId: Long, image: File): NetworkResult<Unit> =
+    override suspend fun verifyMission(missionId: Long, image: File): DomainResult<Unit> =
         handleResult {
             val requestFile = MultipartBody.Part.createFormData(
                 "imageFile",
@@ -55,7 +76,15 @@ class MissionRepositoryImpl @Inject constructor(
     override suspend fun getMyMissionVerification(
         missionId: Long,
         number: Int
-    ): NetworkResult<MissionVerificationResponse> = handleResult {
+    ): DomainResult<MissionVerification> = handleResult {
         missionService.getMyMissionVerification(missionId,number)
+    }.convert {
+        it.toModel()
     }
+
+    override fun clearMissionData(): Flow<Unit> = missionDataSource.clearMissionData()
+
+    override fun setIsMissionJoined(data: Boolean): Flow<Unit> = missionDataSource.setIsMissionJoined(data)
+
+    override fun getIsMissionJoined(): Flow<Boolean?> = missionDataSource.getIsMissionJoined()
 }

@@ -87,7 +87,7 @@ fun UserStoryItem(
         contentAlignment = Alignment.TopCenter
     ) {
         Image(
-            painter = painterResource(id = userStory.characterType.imageId),
+            painter = painterResource(id = userStory.characterUiModelType.imageId),
             contentDescription = null,
             modifier = Modifier
                 .padding(top = 8.dp)
@@ -109,7 +109,7 @@ fun UserStoryItem(
                     }
                 )
                 .paint(
-                    painter = painterResource(userStory.characterType.backgroundId),
+                    painter = painterResource(userStory.characterUiModelType.backgroundId),
                     contentScale = ContentScale.FillWidth
                 )
                 .padding(5.dp),

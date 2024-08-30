@@ -1,10 +1,12 @@
 package com.goalpanzi.mission_mate.core.data.repository
 
+import com.goalpanzi.mission_mate.core.data.handleResult
+import com.goalpanzi.mission_mate.core.data.mapper.toResponse
 import com.goalpanzi.mission_mate.core.domain.repository.ProfileRepository
 import com.goalpanzi.mission_mate.core.network.service.ProfileService
-import com.goalpanzi.core.model.CharacterType
-import com.goalpanzi.core.model.base.NetworkResult
-import com.goalpanzi.core.model.request.SaveProfileRequest
+import com.goalpanzi.mission_mate.core.domain.model.CharacterType
+import com.goalpanzi.mission_mate.core.domain.model.base.DomainResult
+import com.goalpanzi.mission_mate.core.network.model.request.SaveProfileRequest
 import javax.inject.Inject
 
 class ProfileRepositoryImpl @Inject constructor(
@@ -14,8 +16,8 @@ class ProfileRepositoryImpl @Inject constructor(
         nickname: String,
         type: CharacterType,
         isEqualNickname: Boolean
-    ): NetworkResult<Unit> = handleResult {
-        val request = SaveProfileRequest.createRequest(if(isEqualNickname)null else nickname, type)
+    ): DomainResult<Unit> = handleResult {
+        val request = SaveProfileRequest.createRequest(if(isEqualNickname)null else nickname, type.toResponse())
         profileService.saveProfile(request)
     }
 }

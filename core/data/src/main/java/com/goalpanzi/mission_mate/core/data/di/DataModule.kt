@@ -1,10 +1,12 @@
 package com.goalpanzi.mission_mate.core.data.di
 
 import com.goalpanzi.mission_mate.core.data.repository.AuthRepositoryImpl
+import com.goalpanzi.mission_mate.core.data.repository.DefaultRepositoryImpl
 import com.goalpanzi.mission_mate.core.data.repository.MissionRepositoryImpl
 import com.goalpanzi.mission_mate.core.data.repository.OnboardingRepositoryImpl
 import com.goalpanzi.mission_mate.core.data.repository.ProfileRepositoryImpl
 import com.goalpanzi.mission_mate.core.domain.repository.AuthRepository
+import com.goalpanzi.mission_mate.core.domain.repository.DefaultRepository
 import com.goalpanzi.mission_mate.core.domain.repository.MissionRepository
 import com.goalpanzi.mission_mate.core.domain.repository.OnboardingRepository
 import com.goalpanzi.mission_mate.core.domain.repository.ProfileRepository
@@ -28,4 +30,8 @@ internal abstract class DataModule {
 
     @Binds
     abstract fun bindMissionRepository(impl: MissionRepositoryImpl): MissionRepository
+
+    @Binds
+    abstract fun bindDefaultRepository(impl: DefaultRepositoryImpl): DefaultRepository
+
 }

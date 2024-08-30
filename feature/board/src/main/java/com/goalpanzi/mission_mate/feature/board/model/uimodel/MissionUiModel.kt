@@ -1,6 +1,6 @@
 package com.goalpanzi.mission_mate.feature.board.model.uimodel
 
-import com.goalpanzi.mission_mate.feature.board.model.MissionDetail
+import com.goalpanzi.mission_mate.core.domain.model.mission.MissionDetail
 
 
 sealed class MissionUiModel {

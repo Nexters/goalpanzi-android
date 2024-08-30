@@ -1,23 +1,22 @@
 package com.goalpanzi.mission_mate.core.domain.repository
 
-import com.goalpanzi.mission_mate.core.network.ResultHandler
-import com.goalpanzi.core.model.base.NetworkResult
-import com.goalpanzi.core.model.request.CreateMissionRequest
-import com.goalpanzi.core.model.response.MissionDetailResponse
-import com.goalpanzi.core.model.response.MissionsResponse
+import com.goalpanzi.mission_mate.core.domain.model.base.DomainResult
+import com.goalpanzi.mission_mate.core.domain.model.mission.CreateMissionBody
+import com.goalpanzi.mission_mate.core.domain.model.mission.MissionDetail
+import com.goalpanzi.mission_mate.core.domain.model.mission.Missions
 
-interface OnboardingRepository : ResultHandler {
+interface OnboardingRepository  {
     suspend fun createMission(
-        missionRequest: CreateMissionRequest
-    ): NetworkResult<MissionDetailResponse>
+        createMissionBody: CreateMissionBody
+    ): DomainResult<MissionDetail>
 
     suspend fun getMissionByInvitationCode(
         invitationCode : String
-    ) : NetworkResult<MissionDetailResponse>
+    ) : DomainResult<MissionDetail>
 
     suspend fun joinMission(
         invitationCode: String
-    ) : NetworkResult<Unit>
+    ) : DomainResult<Unit>
 
-    suspend fun getJoinedMissions() : NetworkResult<MissionsResponse>
+    suspend fun getJoinedMissions() : DomainResult<Missions>
 }

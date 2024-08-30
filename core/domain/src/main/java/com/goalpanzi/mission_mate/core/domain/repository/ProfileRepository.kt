@@ -1,9 +1,8 @@
 package com.goalpanzi.mission_mate.core.domain.repository
 
-import com.goalpanzi.mission_mate.core.network.ResultHandler
-import com.goalpanzi.core.model.CharacterType
-import com.goalpanzi.core.model.base.NetworkResult
+import com.goalpanzi.mission_mate.core.domain.model.CharacterType
+import com.goalpanzi.mission_mate.core.domain.model.base.DomainResult
 
-interface ProfileRepository: ResultHandler {
-    suspend fun saveProfile(nickname: String, type: CharacterType, isEqualNickname : Boolean): NetworkResult<Unit>
+interface ProfileRepository {
+    suspend fun saveProfile(nickname: String, type: CharacterType, isEqualNickname : Boolean): DomainResult<Unit>
 }

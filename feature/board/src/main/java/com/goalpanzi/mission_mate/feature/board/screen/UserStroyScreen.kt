@@ -36,7 +36,7 @@ import coil.request.ImageRequest
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorBlack_FF000000
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorWhite_FFFFFFFF
 import com.goalpanzi.mission_mate.core.designsystem.theme.MissionMateTypography
-import com.goalpanzi.mission_mate.feature.board.model.Character
+import com.goalpanzi.mission_mate.feature.board.model.CharacterUiModel
 import java.net.URLDecoder
 import java.nio.charset.StandardCharsets
 import java.time.LocalDateTime
@@ -44,7 +44,7 @@ import java.time.format.DateTimeFormatter
 
 @Composable
 fun UserStoryScreen(
-    character: Character = Character.RABBIT,
+    characterUiModel: CharacterUiModel = CharacterUiModel.RABBIT,
     nickname: String = "",
     verifiedAt: String = "",
     imageUrl: String = "",
@@ -94,11 +94,11 @@ fun UserStoryScreen(
                         .size(28.dp)
                         .border(1.dp, ColorWhite_FFFFFFFF, CircleShape)
                         .paint(
-                            painter = painterResource(character.backgroundId),
+                            painter = painterResource(characterUiModel.backgroundId),
                             contentScale = ContentScale.FillWidth
                         )
                         .padding(5.dp),
-                    painter = painterResource(character.imageId),
+                    painter = painterResource(characterUiModel.imageId),
                     contentDescription = ""
                 )
                 Text(
