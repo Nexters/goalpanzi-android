@@ -59,6 +59,8 @@ import com.goalpanzi.mission_mate.feature.board.util.BoardManager.getPositionScr
 import com.goalpanzi.core.model.response.MissionVerificationResponse
 import kotlin.math.absoluteValue
 
+
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun Board(
     scrollState: ScrollState,
@@ -103,94 +105,101 @@ fun Board(
             )
         )
     }
-    Box(
-        modifier = modifier
-            .fillMaxSize()
-    ) {
-        Column(
-            modifier = modifier.modifierWithClipRect(
-                scrollState = scrollState,
-                isVisiblePieces = isVisiblePieces,
-                innerModifier = Modifier
-                    .drawWithContent {
-                        clipRect(bottom = statusBarHeight.toPx() + 178.dp.toPx()) {
-                            this@drawWithContent.drawContent()
-                        }
-                    }
-                    .blur(10.dp, 10.dp),
-            )
-        ) {
-            BoardContent(
-                missionBoards,
-                missionDetail,
-                numberOfColumns,
-                boardPieces,
-                profile,
-                missionState,
-                isVisiblePieces = isVisiblePieces,
-                onClickPassedBlock = onClickPassedBlock,
-                modifier
-            )
-        }
-        Column(
-            modifier = modifier.modifierWithClipRect(
-                scrollState = scrollState,
-                isVisiblePieces = isVisiblePieces,
-                innerModifier = Modifier
-                    .drawWithContent {
-                        clipRect(
-                            top = statusBarHeight.toPx() + 178.dp.toPx() - 1,
-                            bottom = if (!isVisiblePieces) {
-                                size.height
-                            } else {
-                                size.height + navigationBarHeight.toPx() - bottomViewHeight.toPx() + 1.dp.toPx()
-                            }
-                        ) {
-                            this@drawWithContent.drawContent()
-                        }
-                    }
-            )
-        ) {
-            BoardContent(
-                missionBoards,
-                missionDetail,
-                numberOfColumns,
-                boardPieces,
-                profile,
-                missionState,
-                isVisiblePieces = isVisiblePieces,
-                onClickPassedBlock = onClickPassedBlock,
-                modifier
-            )
-        }
-        if (isVisiblePieces) {
-            Column(
-                modifier = modifier.modifierWithClipRect(
-                    scrollState = scrollState,
-                    isVisiblePieces = isVisiblePieces,
-                    innerModifier = Modifier
-                        .drawWithContent {
-                            clipRect(top = (size.height + navigationBarHeight.toPx() - bottomViewHeight.toPx() + 1.dp.toPx())) {
-                                this@drawWithContent.drawContent()
-                            }
-                        }
-                        .blur(10.dp, 10.dp)
-                )
+    CompositionLocalProvider(
+        LocalOverscrollConfiguration provides null,
+        content = {
+            Box(
+                modifier = modifier
+                    .fillMaxSize()
             ) {
-                BoardContent(
-                    missionBoards,
-                    missionDetail,
-                    numberOfColumns,
-                    boardPieces,
-                    profile,
-                    missionState,
-                    isVisiblePieces = isVisiblePieces,
-                    onClickPassedBlock = onClickPassedBlock,
-                    modifier
-                )
+                Column(
+                    modifier = modifier.modifierWithClipRect(
+                        scrollState = scrollState,
+                        isVisiblePieces = isVisiblePieces,
+                        innerModifier = Modifier
+                            .drawWithContent {
+                                clipRect(bottom = statusBarHeight.toPx() + 178.dp.toPx()) {
+                                    this@drawWithContent.drawContent()
+                                }
+                            }
+                            .blur(10.dp, 10.dp),
+                    )
+                ) {
+                    BoardContent(
+                        missionBoards,
+                        missionDetail,
+                        numberOfColumns,
+                        boardPieces,
+                        profile,
+                        missionState,
+                        isVisiblePieces = isVisiblePieces,
+                        onClickPassedBlock = onClickPassedBlock,
+                        modifier
+                    )
+                }
+                Column(
+                    modifier = modifier.modifierWithClipRect(
+                        scrollState = scrollState,
+                        isVisiblePieces = isVisiblePieces,
+                        innerModifier = Modifier
+                            .drawWithContent {
+                                clipRect(
+                                    top = statusBarHeight.toPx() + 178.dp.toPx() - 1,
+                                    bottom = if (!isVisiblePieces) {
+                                        size.height
+                                    } else {
+                                        size.height + navigationBarHeight.toPx() - bottomViewHeight.toPx() + 1.dp.toPx()
+                                    }
+                                ) {
+                                    this@drawWithContent.drawContent()
+                                }
+                            }
+                    )
+                ) {
+                    BoardContent(
+                        missionBoards,
+                        missionDetail,
+                        numberOfColumns,
+                        boardPieces,
+                        profile,
+                        missionState,
+                        isVisiblePieces = isVisiblePieces,
+                        onClickPassedBlock = onClickPassedBlock,
+                        modifier
+                    )
+                }
+                if (isVisiblePieces) {
+                    Column(
+                        modifier = modifier.modifierWithClipRect(
+                            scrollState = scrollState,
+                            isVisiblePieces = isVisiblePieces,
+                            innerModifier = Modifier
+                                .drawWithContent {
+                                    clipRect(top = (size.height + navigationBarHeight.toPx() - bottomViewHeight.toPx() + 1.dp.toPx())) {
+                                        this@drawWithContent.drawContent()
+                                    }
+                                }
+                                .blur(10.dp, 10.dp)
+                        )
+                    ) {
+                        BoardContent(
+                            missionBoards,
+                            missionDetail,
+                            numberOfColumns,
+                            boardPieces,
+                            profile,
+                            missionState,
+                            isVisiblePieces = isVisiblePieces,
+                            onClickPassedBlock = onClickPassedBlock,
+                            modifier
+                        )
+                    }
+                }
             }
         }
-    }
+    )
+
+
 }
 
 @Composable
