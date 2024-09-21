@@ -1,18 +1,18 @@
 package com.goalpanzi.mission_mate.core.domain.usecase
 
 import com.goalpanzi.mission_mate.core.domain.repository.AuthRepository
-import com.goalpanzi.mission_mate.core.domain.repository.DefaultRepository
+import com.goalpanzi.mission_mate.core.domain.repository.UserRepository
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class AccountDeleteUseCase @Inject constructor(
     private val authRepository: AuthRepository,
-    private val defaultRepository: DefaultRepository
+    private val userRepository: UserRepository
 ) {
     operator fun invoke() = flow {
         authRepository.requestAccountDelete()
-        defaultRepository.clearUserData().first()
+        userRepository.clearUserData().first()
         emit(Unit)
     }
 }
