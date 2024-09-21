@@ -1,6 +1,6 @@
 package com.goalpanzi.mission_mate.feature.board.model
 
-import com.goalpanzi.mission_mate.core.domain.model.mission.MissionBoardMembers
+import com.goalpanzi.mission_mate.core.domain.mission.model.MissionBoardMembers
 
 data class MissionBoardMemberUiModel(
     val nickname : String,

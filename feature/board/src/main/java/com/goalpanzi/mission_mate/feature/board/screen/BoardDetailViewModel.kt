@@ -3,10 +3,10 @@ package com.goalpanzi.mission_mate.feature.board.screen
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.goalpanzi.mission_mate.core.domain.model.base.DomainResult
-import com.goalpanzi.mission_mate.core.domain.usecase.GetCachedMemberIdUseCase
-import com.goalpanzi.mission_mate.core.domain.usecase.mission.DeleteMissionUseCase
-import com.goalpanzi.mission_mate.core.domain.usecase.mission.GetMissionUseCase
+import com.goalpanzi.mission_mate.core.domain.common.DomainResult
+import com.goalpanzi.mission_mate.core.domain.mission.usecase.DeleteMissionUseCase
+import com.goalpanzi.mission_mate.core.domain.mission.usecase.GetMissionUseCase
+import com.goalpanzi.mission_mate.core.domain.user.usecase.GetCachedMemberIdUseCase
 import com.goalpanzi.mission_mate.feature.board.model.MissionError
 import com.goalpanzi.mission_mate.feature.board.model.uimodel.MissionUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel

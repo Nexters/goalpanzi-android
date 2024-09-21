@@ -1,7 +1,7 @@
 package com.goalpanzi.mission_mate.core.data.user.di
 
 import com.goalpanzi.mission_mate.core.data.user.repository.UserRepositoryImpl
-import com.goalpanzi.mission_mate.core.domain.repository.UserRepository
+import com.goalpanzi.mission_mate.core.domain.user.repository.UserRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

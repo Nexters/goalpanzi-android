@@ -33,7 +33,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorWhite_FFFFFFFF
-import com.goalpanzi.mission_mate.core.domain.model.mission.BoardReward
+import com.goalpanzi.mission_mate.core.domain.mission.model.BoardReward
 import com.goalpanzi.mission_mate.feature.board.R
 import com.goalpanzi.mission_mate.feature.board.component.Board
 import com.goalpanzi.mission_mate.feature.board.component.BoardBottomView

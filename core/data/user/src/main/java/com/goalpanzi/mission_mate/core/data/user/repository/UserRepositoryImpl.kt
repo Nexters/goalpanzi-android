@@ -5,10 +5,10 @@ import com.goalpanzi.mission_mate.core.data.common.mapper.toResponse
 import com.goalpanzi.mission_mate.core.data.user.mapper.toDto
 import com.goalpanzi.mission_mate.core.data.user.mapper.toModel
 import com.goalpanzi.mission_mate.core.datastore.datasource.DefaultDataSource
-import com.goalpanzi.mission_mate.core.domain.model.CharacterType
-import com.goalpanzi.mission_mate.core.domain.model.UserProfile
-import com.goalpanzi.mission_mate.core.domain.model.base.DomainResult
-import com.goalpanzi.mission_mate.core.domain.repository.UserRepository
+import com.goalpanzi.mission_mate.core.domain.common.DomainResult
+import com.goalpanzi.mission_mate.core.domain.common.model.user.CharacterType
+import com.goalpanzi.mission_mate.core.domain.common.model.user.UserProfile
+import com.goalpanzi.mission_mate.core.domain.user.repository.UserRepository
 import com.goalpanzi.mission_mate.core.network.model.request.SaveProfileRequest
 import com.goalpanzi.mission_mate.core.network.service.ProfileService
 import kotlinx.coroutines.flow.Flow

@@ -72,7 +72,9 @@ dependencies {
 
     implementation(project(":core:designsystem"))
     implementation(project(":core:navigation"))
-    implementation(project(":core:domain"))
+    implementation(project(":core:domain:auth"))
+    implementation(project(":core:domain:user"))
+    implementation(project(":core:domain:common"))
 
     implementation(project(":feature:profile"))
 }

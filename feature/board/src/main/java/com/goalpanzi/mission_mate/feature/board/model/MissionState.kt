@@ -1,6 +1,6 @@
 package com.goalpanzi.mission_mate.feature.board.model
 
-import com.goalpanzi.mission_mate.core.domain.model.mission.MissionVerification
+import com.goalpanzi.mission_mate.core.domain.mission.model.MissionVerification
 import com.goalpanzi.mission_mate.feature.board.model.uimodel.MissionBoardUiModel
 import com.goalpanzi.mission_mate.feature.board.model.uimodel.MissionUiModel
 import com.goalpanzi.mission_mate.feature.board.model.uimodel.MissionVerificationUiModel

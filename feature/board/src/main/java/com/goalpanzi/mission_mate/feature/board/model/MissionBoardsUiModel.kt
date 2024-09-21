@@ -1,9 +1,9 @@
 package com.goalpanzi.mission_mate.feature.board.model
 
-import com.goalpanzi.mission_mate.core.domain.model.UserProfile
-import com.goalpanzi.mission_mate.core.domain.model.mission.BoardReward
-import com.goalpanzi.mission_mate.core.domain.model.mission.MissionBoard
-import com.goalpanzi.mission_mate.core.domain.model.mission.MissionBoards
+import com.goalpanzi.mission_mate.core.domain.common.model.user.UserProfile
+import com.goalpanzi.mission_mate.core.domain.mission.model.BoardReward
+import com.goalpanzi.mission_mate.core.domain.mission.model.MissionBoard
+import com.goalpanzi.mission_mate.core.domain.mission.model.MissionBoards
 
 data class MissionBoardsUiModel(
     val missionBoardList : List<MissionBoard>,

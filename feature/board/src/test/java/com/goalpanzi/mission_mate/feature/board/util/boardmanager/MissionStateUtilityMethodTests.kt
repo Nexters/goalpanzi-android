@@ -1,6 +1,6 @@
 package com.goalpanzi.mission_mate.feature.board.util.boardmanager
 
-import com.goalpanzi.mission_mate.core.domain.model.mission.MissionVerification
+import com.goalpanzi.mission_mate.core.domain.mission.model.MissionVerification
 import com.goalpanzi.mission_mate.feature.board.model.MissionState.Companion.isPassedEndTime
 import com.goalpanzi.mission_mate.feature.board.model.MissionState.Companion.isTodayMissionDay
 import com.goalpanzi.mission_mate.feature.board.model.MissionState.Companion.isVerifiedInMissionTime

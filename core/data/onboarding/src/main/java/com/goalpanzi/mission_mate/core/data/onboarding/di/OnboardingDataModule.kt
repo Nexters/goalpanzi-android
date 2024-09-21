@@ -1,7 +1,7 @@
 package com.goalpanzi.mission_mate.core.data.onboarding.di
 
 import com.goalpanzi.mission_mate.core.data.onboarding.repository.OnboardingRepositoryImpl
-import com.goalpanzi.mission_mate.core.domain.repository.OnboardingRepository
+import com.goalpanzi.mission_mate.core.domain.onboarding.repository.OnboardingRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

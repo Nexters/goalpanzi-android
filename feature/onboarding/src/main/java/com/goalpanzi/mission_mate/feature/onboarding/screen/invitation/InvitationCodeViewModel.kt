@@ -6,10 +6,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.goalpanzi.mission_mate.core.domain.model.base.DomainResult
-import com.goalpanzi.mission_mate.core.domain.usecase.mission.GetMissionByInvitationCodeUseCase
-import com.goalpanzi.mission_mate.core.domain.usecase.mission.JoinMissionUseCase
-import com.goalpanzi.mission_mate.core.domain.usecase.mission.SetMissionJoinedUseCase
+import com.goalpanzi.mission_mate.core.domain.common.DomainResult
+import com.goalpanzi.mission_mate.core.domain.mission.usecase.SetMissionJoinedUseCase
+import com.goalpanzi.mission_mate.core.domain.onboarding.usecase.GetMissionByInvitationCodeUseCase
+import com.goalpanzi.mission_mate.core.domain.onboarding.usecase.JoinMissionUseCase
 import com.goalpanzi.mission_mate.feature.onboarding.model.CodeResultEvent
 import com.goalpanzi.mission_mate.feature.onboarding.model.JoinResultEvent
 import com.goalpanzi.mission_mate.feature.onboarding.model.toMissionUiModel

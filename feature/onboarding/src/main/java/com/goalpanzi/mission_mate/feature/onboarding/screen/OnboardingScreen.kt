@@ -39,8 +39,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.goalpanzi.mission_mate.core.domain.model.CharacterType
-import com.goalpanzi.mission_mate.core.domain.model.UserProfile
 import com.goalpanzi.mission_mate.core.designsystem.component.MissionMateDialog
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorGray1_FF404249
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorGray2_FF4F505C
@@ -48,6 +46,8 @@ import com.goalpanzi.mission_mate.core.designsystem.theme.ColorWhite_FFFFFFFF
 import com.goalpanzi.mission_mate.core.designsystem.theme.MissionMateTypography
 import com.goalpanzi.mission_mate.core.designsystem.theme.component.MissionMateTopAppBar
 import com.goalpanzi.mission_mate.core.designsystem.theme.component.NavigationType
+import com.goalpanzi.mission_mate.core.domain.common.model.user.CharacterType
+import com.goalpanzi.mission_mate.core.domain.common.model.user.UserProfile
 import com.goalpanzi.mission_mate.feature.onboarding.R
 import com.goalpanzi.mission_mate.feature.onboarding.component.OnboardingNavigationButton
 import com.goalpanzi.mission_mate.feature.onboarding.component.OutlinedTextBox

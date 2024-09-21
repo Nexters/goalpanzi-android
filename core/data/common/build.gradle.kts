@@ -44,8 +44,8 @@ dependencies {
 
     ksp(libs.hilt.compiler)
     implementation(libs.hilt.android)
+    implementation(project(":core:domain:common"))
 
-    implementation(project(":core:domain"))
     implementation(project(":core:network"))
     implementation(project(":core:datastore"))
 }

@@ -1,7 +1,7 @@
 package com.goalpanzi.mission_mate.feature.board.model
 
 import androidx.annotation.DrawableRes
-import com.goalpanzi.mission_mate.core.domain.model.CharacterType
+import com.goalpanzi.mission_mate.core.domain.common.model.user.CharacterType
 
 enum class CharacterUiModel(
     @DrawableRes val imageId: Int,

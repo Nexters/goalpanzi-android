@@ -2,7 +2,7 @@ package com.goalpanzi.mission_mate.feature.board.model
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
-import com.goalpanzi.mission_mate.core.domain.model.mission.BoardReward
+import com.goalpanzi.mission_mate.core.domain.mission.model.BoardReward
 import com.goalpanzi.mission_mate.feature.board.R
 
 data class BoardEventItem(

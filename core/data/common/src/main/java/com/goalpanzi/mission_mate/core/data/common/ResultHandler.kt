@@ -1,6 +1,6 @@
 package com.goalpanzi.mission_mate.core.data.common
 
-import com.goalpanzi.mission_mate.core.domain.model.base.DomainResult
+import com.goalpanzi.mission_mate.core.domain.common.DomainResult
 import retrofit2.HttpException
 import retrofit2.Response
 

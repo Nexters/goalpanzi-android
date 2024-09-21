@@ -1,30 +1,23 @@
 package com.goalpanzi.mission_mate.core.board.mapper
 
 import com.goalpanzi.mission_mate.core.data.common.mapper.toModel
-import com.goalpanzi.mission_mate.core.domain.model.mission.BoardReward
-import com.goalpanzi.mission_mate.core.domain.model.mission.CreateMissionBody
-import com.goalpanzi.mission_mate.core.domain.model.mission.Mission
-import com.goalpanzi.mission_mate.core.domain.model.mission.MissionBoard
-import com.goalpanzi.mission_mate.core.domain.model.mission.MissionBoardMembers
-import com.goalpanzi.mission_mate.core.domain.model.mission.MissionBoards
-import com.goalpanzi.mission_mate.core.domain.model.mission.MissionDetail
-import com.goalpanzi.mission_mate.core.domain.model.mission.MissionRank
-import com.goalpanzi.mission_mate.core.domain.model.mission.MissionVerification
-import com.goalpanzi.mission_mate.core.domain.model.mission.MissionVerifications
-import com.goalpanzi.mission_mate.core.domain.model.mission.Missions
-import com.goalpanzi.mission_mate.core.network.model.request.CreateMissionRequest
+import com.goalpanzi.mission_mate.core.domain.mission.model.BoardReward
+import com.goalpanzi.mission_mate.core.domain.mission.model.MissionBoard
+import com.goalpanzi.mission_mate.core.domain.mission.model.MissionBoardMembers
+import com.goalpanzi.mission_mate.core.domain.mission.model.MissionBoards
+import com.goalpanzi.mission_mate.core.domain.mission.model.MissionDetail
+import com.goalpanzi.mission_mate.core.domain.mission.model.MissionRank
+import com.goalpanzi.mission_mate.core.domain.mission.model.MissionVerification
+import com.goalpanzi.mission_mate.core.domain.mission.model.MissionVerifications
 import com.goalpanzi.mission_mate.core.network.model.response.BoardRewardResponse
 import com.goalpanzi.mission_mate.core.network.model.response.MissionBoardMembersResponse
 import com.goalpanzi.mission_mate.core.network.model.response.MissionBoardResponse
 import com.goalpanzi.mission_mate.core.network.model.response.MissionBoardsResponse
 import com.goalpanzi.mission_mate.core.network.model.response.MissionDetailResponse
 import com.goalpanzi.mission_mate.core.network.model.response.MissionRankResponse
-import com.goalpanzi.mission_mate.core.network.model.response.MissionResponse
 import com.goalpanzi.mission_mate.core.network.model.response.MissionVerificationResponse
 import com.goalpanzi.mission_mate.core.network.model.response.MissionVerificationsResponse
-import com.goalpanzi.mission_mate.core.network.model.response.MissionsResponse
 import java.time.DayOfWeek
-
 
 
 fun MissionBoardsResponse.toModel() : MissionBoards {
@@ -83,5 +76,21 @@ fun MissionVerificationResponse.toModel() : MissionVerification {
 fun MissionRankResponse.toModel() : MissionRank {
     return MissionRank(
         rank = rank
+    )
+}
+
+fun MissionDetailResponse.toModel() : MissionDetail {
+    return MissionDetail(
+        missionId = missionId,
+        hostMemberId = hostMemberId,
+        description = description,
+        missionStartDate = missionStartDate,
+        missionEndDate = missionEndDate,
+        boardCount = boardCount,
+        invitationCode = invitationCode,
+        missionDays =  missionDays.map {
+            DayOfWeek.valueOf(it)
+        },
+        timeOfDay = timeOfDay
     )
 }

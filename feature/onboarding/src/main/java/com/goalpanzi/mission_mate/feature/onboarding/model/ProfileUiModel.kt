@@ -1,6 +1,6 @@
 package com.goalpanzi.mission_mate.feature.onboarding.model
 
-import com.goalpanzi.mission_mate.core.domain.model.UserProfile
+import com.goalpanzi.mission_mate.core.domain.common.model.user.UserProfile
 
 
 sealed class OnboardingUiModel {

@@ -46,7 +46,9 @@ dependencies {
     implementation(libs.hilt.android)
 
     implementation(project(":core:data:common"))
-    implementation(project(":core:domain"))
+    implementation(project(":core:domain:common"))
+    implementation(project(":core:domain:setting"))
+    implementation(project(":core:domain:setting"))
     implementation(project(":core:network"))
     implementation(project(":core:datastore"))
 }

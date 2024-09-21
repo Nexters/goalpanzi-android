@@ -3,11 +3,11 @@ package com.goalpanzi.mission_mate.feature.board.screen
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.goalpanzi.mission_mate.core.domain.usecase.mission.GetMissionRankUseCase
-import com.goalpanzi.mission_mate.core.domain.usecase.ProfileUseCase
-import com.goalpanzi.mission_mate.core.domain.usecase.mission.SetMissionJoinedUseCase
-import com.goalpanzi.mission_mate.core.domain.model.UserProfile
-import com.goalpanzi.mission_mate.core.domain.model.base.DomainResult
+import com.goalpanzi.mission_mate.core.domain.common.DomainResult
+import com.goalpanzi.mission_mate.core.domain.common.model.user.UserProfile
+import com.goalpanzi.mission_mate.core.domain.mission.usecase.GetMissionRankUseCase
+import com.goalpanzi.mission_mate.core.domain.mission.usecase.SetMissionJoinedUseCase
+import com.goalpanzi.mission_mate.core.domain.user.usecase.ProfileUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

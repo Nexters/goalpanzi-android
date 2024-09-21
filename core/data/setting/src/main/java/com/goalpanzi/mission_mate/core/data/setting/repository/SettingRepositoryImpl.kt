@@ -1,7 +1,7 @@
 package com.goalpanzi.mission_mate.core.data.setting.repository
 
 import com.goalpanzi.mission_mate.core.datastore.datasource.DefaultDataSource
-import com.goalpanzi.mission_mate.core.domain.repository.SettingRepository
+import com.goalpanzi.mission_mate.core.domain.setting.repository.SettingRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 

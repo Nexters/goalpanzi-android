@@ -7,7 +7,7 @@ import androidx.credentials.GetCredentialRequest
 import androidx.credentials.GetCredentialResponse
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.goalpanzi.mission_mate.core.domain.usecase.login.LoginUseCase
+import com.goalpanzi.mission_mate.core.domain.auth.usecase.LoginUseCase
 import com.google.android.libraries.identity.googleid.GetSignInWithGoogleOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.google.android.libraries.identity.googleid.GoogleIdTokenParsingException

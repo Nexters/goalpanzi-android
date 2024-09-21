@@ -34,8 +34,8 @@ import androidx.compose.ui.unit.dp
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorGray1_FF404249
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorGray2_FF4F505C
 import com.goalpanzi.mission_mate.core.designsystem.theme.MissionMateTypography
-import com.goalpanzi.mission_mate.core.domain.model.mission.MissionDetail
-import com.goalpanzi.mission_mate.core.domain.model.mission.MissionVerification
+import com.goalpanzi.mission_mate.core.domain.mission.model.MissionDetail
+import com.goalpanzi.mission_mate.core.domain.mission.model.MissionVerification
 import com.goalpanzi.mission_mate.feature.board.R
 import com.goalpanzi.mission_mate.feature.board.model.BoardEventItem
 import com.goalpanzi.mission_mate.feature.board.model.BoardPiece

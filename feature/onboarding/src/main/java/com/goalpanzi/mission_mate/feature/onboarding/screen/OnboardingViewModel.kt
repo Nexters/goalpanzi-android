@@ -3,11 +3,11 @@ package com.goalpanzi.mission_mate.feature.onboarding.screen
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.goalpanzi.mission_mate.core.domain.model.UserProfile
-import com.goalpanzi.mission_mate.core.domain.model.base.DomainResult
-import com.goalpanzi.mission_mate.core.domain.usecase.mission.GetJoinedMissionsUseCase
-import com.goalpanzi.mission_mate.core.domain.usecase.mission.GetMissionJoinedUseCase
-import com.goalpanzi.mission_mate.core.domain.usecase.ProfileUseCase
+import com.goalpanzi.mission_mate.core.domain.common.DomainResult
+import com.goalpanzi.mission_mate.core.domain.common.model.user.UserProfile
+import com.goalpanzi.mission_mate.core.domain.mission.usecase.GetMissionJoinedUseCase
+import com.goalpanzi.mission_mate.core.domain.onboarding.usecase.GetJoinedMissionsUseCase
+import com.goalpanzi.mission_mate.core.domain.user.usecase.ProfileUseCase
 import com.goalpanzi.mission_mate.feature.onboarding.isAfterProfileCreateArg
 import com.goalpanzi.mission_mate.feature.onboarding.model.OnboardingResultEvent
 import com.goalpanzi.mission_mate.feature.onboarding.model.OnboardingUiModel

@@ -3,9 +3,9 @@ package com.goalpanzi.mission_mate.core.data.auth.repository
 import com.goalpanzi.mission_mate.core.data.auth.mapper.toModel
 import com.goalpanzi.mission_mate.core.data.common.handleResult
 import com.goalpanzi.mission_mate.core.datastore.datasource.AuthDataSource
-import com.goalpanzi.mission_mate.core.domain.model.base.DomainResult
-import com.goalpanzi.mission_mate.core.domain.model.base.convert
-import com.goalpanzi.mission_mate.core.domain.repository.AuthRepository
+import com.goalpanzi.mission_mate.core.domain.auth.repository.AuthRepository
+import com.goalpanzi.mission_mate.core.domain.common.DomainResult
+import com.goalpanzi.mission_mate.core.domain.common.convert
 import com.goalpanzi.mission_mate.core.network.model.request.GoogleLoginRequest
 import com.goalpanzi.mission_mate.core.network.service.LoginService
 import kotlinx.coroutines.flow.Flow

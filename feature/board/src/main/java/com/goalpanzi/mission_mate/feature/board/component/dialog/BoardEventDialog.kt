@@ -32,7 +32,7 @@ import com.goalpanzi.mission_mate.core.designsystem.theme.ColorGray2_FF4F505C
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorGray3_FF727484
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorWhite_FFFFFFFF
 import com.goalpanzi.mission_mate.core.designsystem.theme.MissionMateTypography
-import com.goalpanzi.mission_mate.core.domain.model.mission.BoardReward
+import com.goalpanzi.mission_mate.core.domain.mission.model.BoardReward
 import com.goalpanzi.mission_mate.feature.board.R
 import com.goalpanzi.mission_mate.feature.board.model.toEventType
 import com.goalpanzi.mission_mate.feature.onboarding.component.StableImage
