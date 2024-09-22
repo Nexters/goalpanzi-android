@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
@@ -40,8 +39,8 @@ import com.goalpanzi.mission_mate.core.designsystem.theme.MissionMateTypography
 import com.goalpanzi.mission_mate.core.designsystem.theme.component.MissionMateTopAppBar
 import com.goalpanzi.mission_mate.core.designsystem.theme.component.NavigationType
 import com.goalpanzi.mission_mate.feature.board.R
-import com.goalpanzi.mission_mate.feature.board.model.Character
-import com.goalpanzi.mission_mate.feature.board.model.toCharacter
+import com.goalpanzi.mission_mate.feature.board.model.CharacterUiModel
+import com.goalpanzi.mission_mate.feature.board.model.toCharacterUiModel
 import com.goalpanzi.mission_mate.feature.onboarding.component.StableImage
 
 @Composable
@@ -68,7 +67,7 @@ fun BoardFinishRoute(
         BoardFinishScreen(
             modifier = modifier,
             rank = rank!!,
-            character = userProfile!!.characterType.toCharacter(),
+            characterUiModel = userProfile!!.characterType.toCharacterUiModel(),
             onClickOk = onClickOk,
             onClickSetting = onClickSetting
         )
@@ -85,7 +84,7 @@ fun BoardFinishRoute(
 
 @Composable
 fun BoardFinishScreen(
-    character : Character,
+    characterUiModel : CharacterUiModel,
     rank : Int,
     onClickSetting: () -> Unit,
     onClickOk : () -> Unit,
@@ -143,7 +142,7 @@ fun BoardFinishScreen(
                         modifier = Modifier
                             .fillMaxWidth(212f / 390f)
                             .aspectRatio(1f),
-                        drawableResId = character.imageId
+                        drawableResId = characterUiModel.imageId
                     )
                 }
                 LottieImage(
@@ -193,7 +192,7 @@ fun BoardFinishScreen(
 @Composable
 private fun PreviewBoardFinishScreen() {
     BoardFinishScreen(
-        character = Character.RABBIT,
+        characterUiModel = CharacterUiModel.RABBIT,
         rank = 10,
         onClickSetting = {},
         onClickOk = {}

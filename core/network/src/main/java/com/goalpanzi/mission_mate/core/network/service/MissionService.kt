@@ -1,10 +1,10 @@
 package com.goalpanzi.mission_mate.core.network.service
 
-import com.goalpanzi.core.model.response.MissionBoardsResponse
-import com.goalpanzi.core.model.response.MissionDetailResponse
-import com.goalpanzi.core.model.response.MissionRankResponse
-import com.goalpanzi.core.model.response.MissionVerificationResponse
-import com.goalpanzi.core.model.response.MissionVerificationsResponse
+import com.goalpanzi.mission_mate.core.network.model.response.MissionBoardsResponse
+import com.goalpanzi.mission_mate.core.network.model.response.MissionDetailResponse
+import com.goalpanzi.mission_mate.core.network.model.response.MissionRankResponse
+import com.goalpanzi.mission_mate.core.network.model.response.MissionVerificationResponse
+import com.goalpanzi.mission_mate.core.network.model.response.MissionVerificationsResponse
 import okhttp3.MultipartBody
 import retrofit2.Response
 import retrofit2.http.DELETE

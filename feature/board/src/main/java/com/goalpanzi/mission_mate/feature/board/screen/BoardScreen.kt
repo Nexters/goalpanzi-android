@@ -33,6 +33,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorWhite_FFFFFFFF
+import com.goalpanzi.mission_mate.core.domain.mission.model.BoardReward
 import com.goalpanzi.mission_mate.feature.board.R
 import com.goalpanzi.mission_mate.feature.board.component.Board
 import com.goalpanzi.mission_mate.feature.board.component.BoardBottomView
@@ -43,13 +44,12 @@ import com.goalpanzi.mission_mate.feature.board.component.dialog.DeleteMissionDi
 import com.goalpanzi.mission_mate.feature.board.model.BoardPiece
 import com.goalpanzi.mission_mate.feature.board.model.MissionState
 import com.goalpanzi.mission_mate.feature.board.model.UserStory
-import com.goalpanzi.mission_mate.feature.board.model.toCharacter
+import com.goalpanzi.mission_mate.feature.board.model.toCharacterUiModel
 import com.goalpanzi.mission_mate.feature.board.model.toUserStory
 import com.goalpanzi.mission_mate.feature.board.model.uimodel.MissionBoardUiModel
 import com.goalpanzi.mission_mate.feature.board.model.uimodel.MissionUiModel
 import com.goalpanzi.mission_mate.feature.board.model.uimodel.MissionVerificationUiModel
 import com.goalpanzi.mission_mate.feature.onboarding.component.StableImage
-import com.goalpanzi.core.model.response.BoardReward
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -248,7 +248,7 @@ fun BoardScreen(
                 numberOfColumns = 3,
                 boardPieces = boardPieces,
                 scrollState = scrollState,
-                profile = missionVerificationUiModel.missionVerificationsResponse.missionVerifications.first(),
+                profile = missionVerificationUiModel.missionVerifications.missionVerifications.first(),
                 missionState = missionState,
                 onClickPassedBlock = onClickMyVerificationBoardBlock
             )
@@ -256,7 +256,7 @@ fun BoardScreen(
                 title = missionUiModel.missionDetail.description,
                 isAddingUserEnabled = missionState.isEnabledToInvite(),//&& isHost  ,
                 viewedTooltip = viewedTooltip,
-                userList = missionVerificationUiModel.missionVerificationsResponse.missionVerifications.mapIndexed { i, item ->
+                userList = missionVerificationUiModel.missionVerifications.missionVerifications.mapIndexed { i, item ->
                     item.toUserStory(
                         isMe = i == 0
                     )
@@ -298,7 +298,7 @@ fun BoardScreen(
                         )
                     }
                     StableImage(
-                        missionVerificationUiModel.missionVerificationsResponse.missionVerifications.first().characterType.toCharacter().imageId,
+                        missionVerificationUiModel.missionVerifications.missionVerifications.first().characterType.toCharacterUiModel().imageId,
                         modifier = Modifier
                             .padding(top = 75.dp)
                             .fillMaxWidth(240f / 390f)

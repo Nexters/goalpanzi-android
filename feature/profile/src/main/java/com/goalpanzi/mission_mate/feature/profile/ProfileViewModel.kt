@@ -3,10 +3,10 @@ package com.goalpanzi.mission_mate.feature.profile
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.goalpanzi.mission_mate.core.domain.usecase.ProfileUseCase
-import com.goalpanzi.core.model.CharacterType
-import com.goalpanzi.core.model.UserProfile
-import com.goalpanzi.core.model.base.NetworkResult
+import com.goalpanzi.mission_mate.core.domain.common.DomainResult
+import com.goalpanzi.mission_mate.core.domain.common.model.user.CharacterType
+import com.goalpanzi.mission_mate.core.domain.common.model.user.UserProfile
+import com.goalpanzi.mission_mate.core.domain.user.usecase.ProfileUseCase
 import com.goalpanzi.mission_mate.feature.profile.model.CharacterListItem
 import com.goalpanzi.mission_mate.feature.profile.model.ProfileUiState
 import dagger.assisted.Assisted
@@ -133,12 +133,12 @@ class ProfileViewModel @AssistedInject constructor(
                         isEqualNickname = profileUseCase.getProfile()?.nickname == nickname
                     )
             ) {
-                is NetworkResult.Success -> {
+                is DomainResult.Success -> {
                     _isSaveSuccess.emit(true)
                 }
 
-                is NetworkResult.Exception -> {}
-                is NetworkResult.Error -> {
+                is DomainResult.Exception -> {}
+                is DomainResult.Error -> {
                     if (response.code == 409) {
                         _isNicknameDuplicated.emit(true)
                     }

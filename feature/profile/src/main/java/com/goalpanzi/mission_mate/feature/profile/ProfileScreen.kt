@@ -51,7 +51,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.goalpanzi.core.model.CharacterType
 import com.goalpanzi.mission_mate.core.designsystem.component.MissionMateButtonType
 import com.goalpanzi.mission_mate.core.designsystem.component.MissionMateTextButton
 import com.goalpanzi.mission_mate.core.designsystem.component.MissionMateTextFieldGroup
@@ -62,6 +61,7 @@ import com.goalpanzi.mission_mate.core.designsystem.theme.ColorWhite_FFFFFFFF
 import com.goalpanzi.mission_mate.core.designsystem.theme.MissionMateTypography
 import com.goalpanzi.mission_mate.core.designsystem.theme.component.MissionMateTopAppBar
 import com.goalpanzi.mission_mate.core.designsystem.theme.component.NavigationType
+import com.goalpanzi.mission_mate.core.domain.common.model.user.CharacterType
 import com.goalpanzi.mission_mate.feature.profile.model.CharacterListItem
 import com.goalpanzi.mission_mate.feature.profile.model.CharacterListItem.Companion.createDefaultList
 import com.goalpanzi.mission_mate.feature.profile.model.ProfileUiState

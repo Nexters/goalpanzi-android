@@ -19,18 +19,32 @@ dependencyResolutionManagement {
     }
 }
 
+plugins {
+    id("org.gradle.toolchains.foojay-resolver-convention") version("0.5.0")
+}
+
 rootProject.name = "mission-mate"
 include(":app")
-include(":core:data")
 include(":core:network")
 include(":core:datastore")
-include(":core:domain")
 include(":core:designsystem")
 include(":core:navigation")
 include(":feature:login")
 include(":feature:main")
 include(":feature:board")
-include(":core:model")
 include(":feature:onboarding")
 include(":feature:profile")
 include(":feature:setting")
+include(":core:data:mission")
+include(":core:data:common")
+include(":core:data:onboarding")
+include(":core:data:auth")
+include(":core:data:setting")
+include(":core:data:user")
+include(":core:domain:auth")
+include(":core:domain:common")
+include(":core:domain:mission")
+include(":core:domain:onboarding")
+include(":core:domain:user")
+include(":core:domain:setting")
+include(":core:ui")

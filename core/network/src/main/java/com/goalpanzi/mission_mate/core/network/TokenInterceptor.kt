@@ -2,7 +2,7 @@ package com.goalpanzi.mission_mate.core.network
 
 import com.goalpanzi.mission_mate.core.datastore.datasource.AuthDataSource
 import com.goalpanzi.mission_mate.core.network.service.TokenService
-import com.goalpanzi.core.model.request.TokenReissueRequest
+import com.goalpanzi.mission_mate.core.network.model.request.TokenReissueRequest
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first

@@ -47,16 +47,16 @@ import androidx.compose.ui.unit.dp
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorGray1_FF404249
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorGray2_FF4F505C
 import com.goalpanzi.mission_mate.core.designsystem.theme.MissionMateTypography
+import com.goalpanzi.mission_mate.core.domain.mission.model.MissionDetail
+import com.goalpanzi.mission_mate.core.domain.mission.model.MissionVerification
 import com.goalpanzi.mission_mate.feature.board.R
 import com.goalpanzi.mission_mate.feature.board.model.BoardEventItem
 import com.goalpanzi.mission_mate.feature.board.model.BoardPiece
-import com.goalpanzi.mission_mate.feature.board.model.MissionBoards
-import com.goalpanzi.mission_mate.feature.board.model.MissionDetail
+import com.goalpanzi.mission_mate.feature.board.model.MissionBoardsUiModel
 import com.goalpanzi.mission_mate.feature.board.model.MissionState
 import com.goalpanzi.mission_mate.feature.board.model.toEventType
 import com.goalpanzi.mission_mate.feature.board.util.BoardManager
 import com.goalpanzi.mission_mate.feature.board.util.BoardManager.getPositionScrollToMyIndex
-import com.goalpanzi.core.model.response.MissionVerificationResponse
 import kotlin.math.absoluteValue
 
 
@@ -64,11 +64,11 @@ import kotlin.math.absoluteValue
 @Composable
 fun Board(
     scrollState: ScrollState,
-    missionBoards: MissionBoards,
+    missionBoards: MissionBoardsUiModel,
     missionDetail: MissionDetail,
     numberOfColumns: Int,
     boardPieces: List<BoardPiece>,
-    profile: MissionVerificationResponse,
+    profile: MissionVerification,
     missionState: MissionState,
     onClickPassedBlock : (Int) -> Unit,
     modifier: Modifier = Modifier,
@@ -204,11 +204,11 @@ fun Board(
 
 @Composable
 fun ColumnScope.BoardContent(
-    missionBoards: MissionBoards,
+    missionBoards: MissionBoardsUiModel,
     missionDetail: MissionDetail,
     numberOfColumns: Int,
     boardPieces: List<BoardPiece>,
-    profile: MissionVerificationResponse,
+    profile: MissionVerification,
     missionState: MissionState,
     isVisiblePieces: Boolean,
     onClickPassedBlock : (Int) -> Unit,
@@ -251,7 +251,7 @@ fun ColumnScope.BoardContent(
                 missionBoards.boardRewardList.map {
                     BoardEventItem(
                         index = it.number,
-                        eventType = it.boardReward.toEventType()
+                        eventType = it.reward.toEventType()
                     )
                 }
             ).chunked(numberOfColumns).forEach {

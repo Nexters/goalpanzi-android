@@ -7,7 +7,7 @@ import androidx.navigation.NavOptions
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.goalpanzi.mission_mate.feature.board.model.Character
+import com.goalpanzi.mission_mate.feature.board.model.CharacterUiModel
 import com.goalpanzi.mission_mate.feature.board.model.UserStory
 import com.goalpanzi.mission_mate.feature.board.screen.BoardFinishRoute
 import com.goalpanzi.mission_mate.feature.board.screen.BoardMissionDetailRoute
@@ -113,7 +113,7 @@ fun NavController.navigateToUserStory(
     val encodedUrl = URLEncoder.encode(imageUrl, StandardCharsets.UTF_8.toString())
     this@navigateToUserStory
         .navigate(
-            route = "RouteModel.UserStory" + "/${characterType.name.uppercase()}" + "/${nickname}" + "/${verifiedAt}" + "/${encodedUrl}"
+            route = "RouteModel.UserStory" + "/${characterUiModelType.name.uppercase()}" + "/${nickname}" + "/${verifiedAt}" + "/${encodedUrl}"
         )
 }
 
@@ -124,7 +124,7 @@ fun NavGraphBuilder.userStoryNavGraph(
         route = "RouteModel.UserStory/{$userCharacterTypeArg}/{$nicknameArg}/{$dateArg}/{$imageUrlArg}",
         arguments = listOf(
             navArgument(userCharacterTypeArg) {
-                defaultValue = Character.RABBIT.name.uppercase()
+                defaultValue = CharacterUiModel.RABBIT.name.uppercase()
                 type = NavType.StringType
             },
             navArgument(nicknameArg) {
@@ -139,14 +139,14 @@ fun NavGraphBuilder.userStoryNavGraph(
         )
     ) { backStackEntry ->
         backStackEntry.arguments?.run {
-            val character = getString(userCharacterTypeArg)?.let { Character.valueOf(it) }
-                ?: Character.RABBIT
+            val characterUiModel = getString(userCharacterTypeArg)?.let { CharacterUiModel.valueOf(it) }
+                ?: CharacterUiModel.RABBIT
             val nickname = getString(nicknameArg) ?: ""
             val verifiedAt = getString(dateArg) ?: ""
             val imageUrl = getString(imageUrlArg) ?: ""
 
             UserStoryScreen(
-                character = character,
+                characterUiModel = characterUiModel,
                 nickname = nickname,
                 verifiedAt = verifiedAt,
                 imageUrl = imageUrl,

@@ -6,8 +6,7 @@ import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
-import com.goalpanzi.core.model.CharacterType
-import com.goalpanzi.core.model.UserProfile
+import com.goalpanzi.mission_mate.core.datastore.model.UserProfileDto
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
@@ -31,19 +30,22 @@ class DefaultDataSourceImpl @Inject constructor(
         emit(Unit)
     }
 
-    override fun setUserProfile(data: UserProfile): Flow<Unit> = flow {
+    override fun setUserProfile(data: UserProfileDto): Flow<Unit> = flow {
         dataStore.edit { preferences ->
             preferences[PreferencesKey.USER_NICKNAME] = data.nickname
-            preferences[PreferencesKey.USER_CHARACTER] = data.characterType.name.uppercase()
+            preferences[PreferencesKey.USER_CHARACTER] = data.characterType
         }
         emit(Unit)
     }
 
-    override fun getUserProfile(): Flow<UserProfile?> = dataStore.data.map { preferences ->
+    override fun getUserProfile(): Flow<UserProfileDto?> = dataStore.data.map { preferences ->
         val nickname = preferences[PreferencesKey.USER_NICKNAME]
         val character = preferences[PreferencesKey.USER_CHARACTER]
         if (nickname != null && character != null) {
-            UserProfile(nickname, CharacterType.valueOf(character))
+            UserProfileDto(
+                nickname,
+                character
+            )
         } else {
             null
         }

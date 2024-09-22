@@ -74,5 +74,11 @@ dependencies {
     implementation(project(":feature:main"))
     implementation(project(":feature:login"))
     implementation(project(":core:designsystem"))
-    implementation(project(":core:data"))
+
+    implementation(project(":core:data:auth"))
+    implementation(project(":core:data:common"))
+    implementation(project(":core:data:mission"))
+    implementation(project(":core:data:onboarding"))
+    implementation(project(":core:data:setting"))
+    implementation(project(":core:data:user"))
 }

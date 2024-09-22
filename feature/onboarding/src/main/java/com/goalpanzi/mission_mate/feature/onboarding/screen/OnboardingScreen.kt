@@ -39,9 +39,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.goalpanzi.core.model.CharacterType
-import com.goalpanzi.core.model.UserProfile
-import com.goalpanzi.core.model.response.ProfileResponse
 import com.goalpanzi.mission_mate.core.designsystem.component.MissionMateDialog
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorGray1_FF404249
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorGray2_FF4F505C
@@ -49,6 +46,8 @@ import com.goalpanzi.mission_mate.core.designsystem.theme.ColorWhite_FFFFFFFF
 import com.goalpanzi.mission_mate.core.designsystem.theme.MissionMateTypography
 import com.goalpanzi.mission_mate.core.designsystem.theme.component.MissionMateTopAppBar
 import com.goalpanzi.mission_mate.core.designsystem.theme.component.NavigationType
+import com.goalpanzi.mission_mate.core.domain.common.model.user.CharacterType
+import com.goalpanzi.mission_mate.core.domain.common.model.user.UserProfile
 import com.goalpanzi.mission_mate.feature.onboarding.R
 import com.goalpanzi.mission_mate.feature.onboarding.component.OnboardingNavigationButton
 import com.goalpanzi.mission_mate.feature.onboarding.component.OutlinedTextBox
@@ -178,12 +177,12 @@ fun OnboardingScreen(
                                 .fillMaxWidth(0.564f)
                                 .wrapContentHeight(),
                             drawableResId = when (onboardingUiModel.profileResponse.characterType) {
-                                "CAT" -> designSystemResource.drawable.img_cat_selected
-                                "DOG" -> designSystemResource.drawable.img_dog_selected
-                                "RABBIT" -> designSystemResource.drawable.img_rabbit_selected
-                                "BEAR" -> designSystemResource.drawable.img_bear_selected
-                                "PANDA" -> designSystemResource.drawable.img_panda_selected
-                                "BIRD" -> designSystemResource.drawable.img_bird_selected
+                                CharacterType.CAT -> designSystemResource.drawable.img_cat_selected
+                                CharacterType.DOG -> designSystemResource.drawable.img_dog_selected
+                                CharacterType.RABBIT -> designSystemResource.drawable.img_rabbit_selected
+                                CharacterType.BEAR -> designSystemResource.drawable.img_bear_selected
+                                CharacterType.PANDA -> designSystemResource.drawable.img_panda_selected
+                                CharacterType.BIRD -> designSystemResource.drawable.img_bird_selected
                                 else -> designSystemResource.drawable.img_rabbit_selected
                             },
                             contentScale = ContentScale.FillWidth
@@ -321,9 +320,9 @@ fun ProfileCreateSuccessDialog(
 fun OnboardingScreenPreview() {
     OnboardingScreen(
         onboardingUiModel = OnboardingUiModel.Success(
-            ProfileResponse(
+            UserProfile(
                 nickname = "Test",
-                characterType = "CAT"
+                characterType = CharacterType.CAT
             )
         ),
         onClickBoardSetup = {},
