@@ -1,11 +1,9 @@
 package com.goalpanzi.mission_mate.core.network
 
-import com.goalpanzi.mission_mate.core.datastore.datasource.AuthDataSource
-import com.goalpanzi.mission_mate.core.network.service.TokenService
 import com.goalpanzi.mission_mate.core.network.model.request.TokenReissueRequest
+import com.goalpanzi.mission_mate.core.network.service.TokenService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
@@ -16,14 +14,14 @@ import javax.inject.Singleton
 
 @Singleton
 class TokenInterceptor @Inject constructor(
-    private val authDataSource: AuthDataSource,
-    private val tokenService: TokenService
+    private val tokenService: TokenService,
+    private val tokenProvider: TokenProvider
 ) : Interceptor {
 
     override fun intercept(chain: Interceptor.Chain): Response {
         val newRequest = chain.request().newBuilder().apply {
             runBlocking {
-                val token = authDataSource.getAccessToken().first()
+                val token = tokenProvider.getAccessToken()
                 token?.let {
                     addHeader("Authorization", "Bearer $it")
                 }
@@ -36,23 +34,23 @@ class TokenInterceptor @Inject constructor(
             HttpURLConnection.HTTP_OK -> {
                 val newAccessToken: String = response.header("Authorization", null) ?: return response
                 CoroutineScope(Dispatchers.IO).launch {
-                    val existedAccessToken = authDataSource.getAccessToken().first()
+                    val existedAccessToken = tokenProvider.getAccessToken()
                     if (existedAccessToken != newAccessToken) {
-                        authDataSource.setAccessToken(newAccessToken)
+                        tokenProvider.setAccessToken(newAccessToken)
                     }
                 }
             }
             HttpURLConnection.HTTP_UNAUTHORIZED -> {
                 val retryRequest = chain.request().newBuilder().apply {
                     runBlocking {
-                        authDataSource.getRefreshToken().first()?.let {
+                        tokenProvider.getRefreshToken()?.let {
                             val newToken = tokenService.requestTokenReissue(TokenReissueRequest(it))
                             if (newToken.isSuccessful) {
                                 newToken.body()?.let { token ->
                                     addHeader("Authorization", "Bearer ${token.accessToken}")
                                     CoroutineScope(Dispatchers.IO).launch {
-                                        authDataSource.setAccessToken(token.accessToken)
-                                        authDataSource.setRefreshToken(token.refreshToken)
+                                        tokenProvider.setAccessToken(token.accessToken)
+                                        tokenProvider.setRefreshToken(token.refreshToken)
                                     }
                                 }
                             }

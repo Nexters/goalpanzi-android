@@ -1,8 +1,7 @@
 package com.goalpanzi.mission_mate.core.network.di
 
-import android.util.Log
-import com.goalpanzi.mission_mate.core.datastore.datasource.AuthDataSource
 import com.goalpanzi.mission_mate.core.network.BuildConfig
+import com.goalpanzi.mission_mate.core.network.TokenProvider
 import com.goalpanzi.mission_mate.core.network.service.LoginService
 import com.goalpanzi.mission_mate.core.network.service.MissionService
 import com.goalpanzi.mission_mate.core.network.service.OnboardingService
@@ -12,11 +11,9 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
-import okhttp3.Response
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Converter
 import retrofit2.Retrofit
@@ -55,12 +52,12 @@ object ServiceModule {
     fun provideTokenService(
         httpLoggingInterceptor: HttpLoggingInterceptor,
         converterFactory: Converter.Factory,
-        authDataSource: AuthDataSource
+        tokenProvider: TokenProvider
     ): TokenService {
         val tokenReissueInterceptor = Interceptor { chain ->
             val newRequest = chain.request().newBuilder().apply {
                 runBlocking {
-                    val token = authDataSource.getAccessToken().first()
+                    val token = tokenProvider.getAccessToken()
                     token?.let {
                         addHeader("Authorization", "Bearer $it")
                     }
