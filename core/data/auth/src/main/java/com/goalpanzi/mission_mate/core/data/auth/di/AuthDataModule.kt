@@ -1,7 +1,9 @@
 package com.goalpanzi.mission_mate.core.data.auth.di
 
+import com.goalpanzi.mission_mate.core.data.auth.AuthTokenProvider
 import com.goalpanzi.mission_mate.core.data.auth.repository.AuthRepositoryImpl
 import com.goalpanzi.mission_mate.core.domain.auth.repository.AuthRepository
+import com.goalpanzi.mission_mate.core.network.TokenProvider
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -14,4 +16,6 @@ internal abstract class AuthDataModule {
     @Binds
     abstract fun bindLoginRepository(impl: AuthRepositoryImpl): AuthRepository
 
+    @Binds
+    abstract fun bindTokenProvider(impl : AuthTokenProvider) : TokenProvider
 }
