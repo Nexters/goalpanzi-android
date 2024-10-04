@@ -11,13 +11,14 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -33,16 +34,18 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorWhite_FFFFFFFF
 import com.goalpanzi.mission_mate.core.designsystem.theme.Color_FFFF5632
 import com.goalpanzi.mission_mate.core.designsystem.theme.MissionMateTypography
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @Composable
 fun LoginRoute(
     onLoginSuccess: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
+    coroutineScope : CoroutineScope = rememberCoroutineScope(),
+    loginManager: LoginManager = rememberLoginManager(),
     viewModel: LoginViewModel = hiltViewModel()
 ) {
-    val context = LocalContext.current
-
     LaunchedEffect(true) {
         viewModel.eventFlow.collectLatest {
             when (it) {
@@ -54,8 +57,20 @@ fun LoginRoute(
 
     LoginScreen(
         modifier = modifier,
-        onGoogleLoginClick = { viewModel.request(context) }
+        onGoogleLoginClick = {
+            coroutineScope.launch {
+                viewModel.login(loginManager.request())
+            }
+        }
     )
+}
+
+@Composable
+private fun rememberLoginManager(): LoginManager {
+    val context = LocalContext.current
+    return remember {
+        LoginManager(context)
+    }
 }
 
 @Composable
