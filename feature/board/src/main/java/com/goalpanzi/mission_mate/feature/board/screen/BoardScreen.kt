@@ -6,7 +6,6 @@ import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -28,7 +27,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -38,7 +36,7 @@ import com.goalpanzi.mission_mate.feature.board.R
 import com.goalpanzi.mission_mate.feature.board.component.Board
 import com.goalpanzi.mission_mate.feature.board.component.BoardBottomView
 import com.goalpanzi.mission_mate.feature.board.component.BoardTopView
-import com.goalpanzi.mission_mate.feature.board.component.InvitationCodeDialog
+import com.goalpanzi.mission_mate.feature.board.component.dialog.InvitationCodeDialog
 import com.goalpanzi.mission_mate.feature.board.component.dialog.BoardEventDialog
 import com.goalpanzi.mission_mate.feature.board.component.dialog.DeleteMissionDialog
 import com.goalpanzi.mission_mate.feature.board.model.BoardPiece

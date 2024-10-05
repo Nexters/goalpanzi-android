@@ -1,4 +1,4 @@
-package com.goalpanzi.mission_mate.feature.board.component
+package com.goalpanzi.mission_mate.feature.board.component.dialog
 
 import android.content.ClipData
 import android.content.ClipboardManager

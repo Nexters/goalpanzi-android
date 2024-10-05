@@ -51,6 +51,7 @@ import com.goalpanzi.mission_mate.core.designsystem.theme.component.MissionMateT
 import com.goalpanzi.mission_mate.core.designsystem.theme.component.NavigationType
 import com.goalpanzi.mission_mate.feature.onboarding.R
 import com.goalpanzi.mission_mate.core.ui.component.InvitationCodeTextField
+import com.goalpanzi.mission_mate.feature.onboarding.component.dialog.InvitationDialog
 import com.goalpanzi.mission_mate.feature.onboarding.model.CodeResultEvent
 import com.goalpanzi.mission_mate.feature.onboarding.model.JoinResultEvent
 import com.goalpanzi.mission_mate.feature.onboarding.model.MissionUiModel
