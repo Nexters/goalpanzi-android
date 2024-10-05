@@ -47,8 +47,8 @@ import com.goalpanzi.mission_mate.core.designsystem.theme.ColorOrange_FFFF5732
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorRed_FFFF5858
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorWhite_FFFFFFFF
 import com.goalpanzi.mission_mate.core.designsystem.theme.MissionMateTypography
-import com.goalpanzi.mission_mate.core.designsystem.theme.component.MissionMateTopAppBar
-import com.goalpanzi.mission_mate.core.designsystem.theme.component.NavigationType
+import com.goalpanzi.mission_mate.core.designsystem.component.MissionMateTopAppBar
+import com.goalpanzi.mission_mate.core.designsystem.component.NavigationType
 import com.goalpanzi.mission_mate.feature.onboarding.R
 import com.goalpanzi.mission_mate.core.ui.component.InvitationCodeTextField
 import com.goalpanzi.mission_mate.feature.onboarding.component.dialog.InvitationDialog

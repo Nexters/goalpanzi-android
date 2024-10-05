@@ -14,8 +14,8 @@ import com.goalpanzi.mission_mate.core.designsystem.component.OutlinedTextChip
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorGray1_FF404249
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorWhite_FFFFFFFF
 import com.goalpanzi.mission_mate.core.designsystem.theme.MissionMateTypography
-import com.goalpanzi.mission_mate.core.designsystem.theme.component.MissionMateTopAppBar
-import com.goalpanzi.mission_mate.core.designsystem.theme.component.NavigationType
+import com.goalpanzi.mission_mate.core.designsystem.component.MissionMateTopAppBar
+import com.goalpanzi.mission_mate.core.designsystem.component.NavigationType
 import com.goalpanzi.mission_mate.feature.onboarding.R
 
 @Composable

@@ -1,6 +1,5 @@
 package com.goalpanzi.mission_mate.feature.onboarding.screen
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -44,8 +43,8 @@ import com.goalpanzi.mission_mate.core.designsystem.theme.ColorGray1_FF404249
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorGray2_FF4F505C
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorWhite_FFFFFFFF
 import com.goalpanzi.mission_mate.core.designsystem.theme.MissionMateTypography
-import com.goalpanzi.mission_mate.core.designsystem.theme.component.MissionMateTopAppBar
-import com.goalpanzi.mission_mate.core.designsystem.theme.component.NavigationType
+import com.goalpanzi.mission_mate.core.designsystem.component.MissionMateTopAppBar
+import com.goalpanzi.mission_mate.core.designsystem.component.NavigationType
 import com.goalpanzi.mission_mate.core.domain.common.model.user.CharacterType
 import com.goalpanzi.mission_mate.core.domain.common.model.user.UserProfile
 import com.goalpanzi.mission_mate.feature.onboarding.R

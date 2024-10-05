@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.res.Configuration
 import android.widget.Toast
 import androidx.annotation.DrawableRes
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -60,8 +59,8 @@ import com.goalpanzi.mission_mate.core.designsystem.theme.ColorGray1_FF404249
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorGray5_FFF5F6F9
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorWhite_FFFFFFFF
 import com.goalpanzi.mission_mate.core.designsystem.theme.MissionMateTypography
-import com.goalpanzi.mission_mate.core.designsystem.theme.component.MissionMateTopAppBar
-import com.goalpanzi.mission_mate.core.designsystem.theme.component.NavigationType
+import com.goalpanzi.mission_mate.core.designsystem.component.MissionMateTopAppBar
+import com.goalpanzi.mission_mate.core.designsystem.component.NavigationType
 import com.goalpanzi.mission_mate.core.domain.common.model.user.CharacterType
 import com.goalpanzi.mission_mate.feature.profile.model.CharacterListItem
 import com.goalpanzi.mission_mate.feature.profile.model.CharacterListItem.Companion.createDefaultList
