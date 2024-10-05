@@ -80,6 +80,7 @@ dependencies {
     implementation(project(":core:domain:common"))
     implementation(project(":core:domain:auth"))
     implementation(project(":core:domain:user"))
+    implementation(project(":core:ui"))
 
 
     implementation(libs.credentials)
