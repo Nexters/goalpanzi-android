@@ -236,10 +236,10 @@ fun BoardScreen(
             && missionUiModel is MissionUiModel.Success
             && missionVerificationUiModel is MissionVerificationUiModel.Success
         ) {
-            Image(
+            StableImage(
                 modifier = Modifier.fillMaxSize(),
-                painter = painterResource(id = com.goalpanzi.mission_mate.core.designsystem.R.drawable.background_jeju_full),
-                contentDescription = null,
+                drawableResId = com.goalpanzi.mission_mate.core.designsystem.R.drawable.background_jeju_full,
+                description = null,
                 contentScale = ContentScale.Crop
             )
             Board(

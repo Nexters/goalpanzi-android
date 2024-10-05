@@ -54,6 +54,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.goalpanzi.mission_mate.core.designsystem.component.MissionMateButtonType
 import com.goalpanzi.mission_mate.core.designsystem.component.MissionMateTextButton
 import com.goalpanzi.mission_mate.core.designsystem.component.MissionMateTextFieldGroup
+import com.goalpanzi.mission_mate.core.designsystem.component.StableImage
 import com.goalpanzi.mission_mate.core.designsystem.ext.clickableWithoutRipple
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorGray1_FF404249
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorGray5_FFF5F6F9
@@ -292,9 +293,9 @@ fun CharacterLargeImage(
     @DrawableRes imageResId: Int,
     @DrawableRes backgroundResId: Int,
 ) {
-    Image(
-        painter = painterResource(id = imageResId),
-        contentDescription = null,
+    StableImage(
+        drawableResId = imageResId,
+        description = null,
         modifier = modifier
             .fillMaxSize()
             .paint(
@@ -356,9 +357,9 @@ fun CharacterElement(
                 onClick = { onClick(character) }
             )
     ) {
-        Image(
-            painter = painterResource(id = character.selectedImageResId),
-            contentDescription = null,
+        StableImage(
+            drawableResId = character.selectedImageResId,
+            description = null,
         )
 
         Text(

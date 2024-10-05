@@ -30,13 +30,17 @@ import androidx.compose.ui.draw.paint
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.goalpanzi.mission_mate.core.designsystem.component.StableImage
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorGray1_FF404249
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorGray5_FFF5F6F9
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorOrange_FFFF5732
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorWhite_FFFFFFFF
 import com.goalpanzi.mission_mate.core.designsystem.theme.MissionMateTypography
+import com.goalpanzi.mission_mate.core.designsystem.theme.MissionmateTheme
 import com.goalpanzi.mission_mate.core.designsystem.theme.OrangeGradient_FFFF5F3C_FFFFAE50
+import com.goalpanzi.mission_mate.feature.board.model.CharacterUiModel
 import com.goalpanzi.mission_mate.feature.board.model.MissionState
 import com.goalpanzi.mission_mate.feature.board.model.UserStory
 
@@ -56,7 +60,6 @@ fun BoardTopStory(
             items(userList) { userStory ->
                 UserStoryItem(
                     userStory = userStory,
-                    missionState = missionState,
                     onClickStory = onClickStory
                 )
             }
@@ -76,9 +79,8 @@ fun BoardTopStory(
 @Composable
 fun UserStoryItem(
     userStory: UserStory,
-    missionState : MissionState,
+    onClickStory: (UserStory) -> Unit,
     modifier: Modifier = Modifier,
-    onClickStory: (UserStory) -> Unit
 ) {
     Box(
         modifier = modifier
@@ -86,9 +88,9 @@ fun UserStoryItem(
             .widthIn(min = 70.dp),
         contentAlignment = Alignment.TopCenter
     ) {
-        Image(
-            painter = painterResource(id = userStory.characterUiModelType.imageId),
-            contentDescription = null,
+        StableImage(
+            drawableResId = userStory.characterUiModelType.imageId,
+            description = null,
             modifier = Modifier
                 .padding(top = 8.dp)
                 .height(64.dp)
@@ -105,7 +107,7 @@ fun UserStoryItem(
                     } else {
                         Modifier
                             .border(3.dp, ColorWhite_FFFFFFFF, CircleShape)
-                            .alpha(if(userStory.isMe) 1f else 0.5f)
+                            .alpha(if (userStory.isMe) 1f else 0.5f)
                     }
                 )
                 .paint(
@@ -151,3 +153,81 @@ fun UserStoryItem(
     }
 }
 
+@Preview
+@Composable
+private fun VerifiedUserStoryItemPreview() {
+    MissionmateTheme {
+        UserStoryItem(
+            userStory = UserStory(
+                nickname = "닉네임",
+                characterUiModelType = CharacterUiModel.CAT,
+                imageUrl = "",
+                isVerified = true,
+                verifiedAt = ""
+            ),
+            onClickStory = {
+
+            }
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun NotVerifiedUserStoryItemPreview() {
+    MissionmateTheme {
+        UserStoryItem(
+            userStory = UserStory(
+                nickname = "닉네임",
+                characterUiModelType = CharacterUiModel.CAT,
+                imageUrl = "",
+                isVerified = false,
+                verifiedAt = ""
+            ),
+            onClickStory = {
+
+            }
+        )
+    }
+}
+
+
+@Preview
+@Composable
+private fun MyVerifiedUserStoryItemPreview() {
+    MissionmateTheme {
+        UserStoryItem(
+            userStory = UserStory(
+                nickname = "닉네임",
+                characterUiModelType = CharacterUiModel.CAT,
+                imageUrl = "",
+                isVerified = true,
+                verifiedAt = "",
+                isMe = true
+            ),
+            onClickStory = {
+
+            }
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun MyNotVerifiedUserStoryItemPreview() {
+    MissionmateTheme {
+        UserStoryItem(
+            userStory = UserStory(
+                nickname = "닉네임",
+                characterUiModelType = CharacterUiModel.CAT,
+                imageUrl = "",
+                isVerified = false,
+                verifiedAt = "",
+                isMe = true
+            ),
+            onClickStory = {
+
+            }
+        )
+    }
+}

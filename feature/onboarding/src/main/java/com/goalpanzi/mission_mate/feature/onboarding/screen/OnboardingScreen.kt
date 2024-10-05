@@ -121,12 +121,12 @@ fun OnboardingScreen(
     Box(
         modifier = modifier.background(ColorWhite_FFFFFFFF)
     ) {
-        Image(
+        StableImage(
             modifier = Modifier
                 .fillMaxWidth()
                 .wrapContentHeight(),
-            painter = painterResource(id = designSystemResource.drawable.background_jeju),
-            contentDescription = null,
+            drawableResId = designSystemResource.drawable.background_jeju,
+            description = null,
             contentScale = ContentScale.FillWidth
         )
         when (onboardingUiModel) {
@@ -292,18 +292,16 @@ fun ProfileCreateSuccessDialog(
                         contentScale = ContentScale.FillWidth,
                     )
             ) {
-                Image(
-                    painter = painterResource(
-                        id = when (character) {
-                            CharacterType.RABBIT -> designSystemResource.drawable.img_rabbit_default
-                            CharacterType.CAT -> designSystemResource.drawable.img_cat_default
-                            CharacterType.DOG -> designSystemResource.drawable.img_dog_default
-                            CharacterType.PANDA -> designSystemResource.drawable.img_panda_default
-                            CharacterType.BEAR -> designSystemResource.drawable.img_bear_default
-                            CharacterType.BIRD -> designSystemResource.drawable.img_bird_default
-                        }
-                    ),
-                    contentDescription = null,
+                StableImage(
+                    drawableResId = when (character) {
+                        CharacterType.RABBIT -> designSystemResource.drawable.img_rabbit_default
+                        CharacterType.CAT -> designSystemResource.drawable.img_cat_default
+                        CharacterType.DOG -> designSystemResource.drawable.img_dog_default
+                        CharacterType.PANDA -> designSystemResource.drawable.img_panda_default
+                        CharacterType.BEAR -> designSystemResource.drawable.img_bear_default
+                        CharacterType.BIRD -> designSystemResource.drawable.img_bird_default
+                    },
+                    description = null,
                     contentScale = ContentScale.FillWidth,
                     modifier = Modifier
                         .fillMaxSize()

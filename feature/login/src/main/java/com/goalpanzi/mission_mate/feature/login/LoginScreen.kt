@@ -30,6 +30,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.goalpanzi.mission_mate.core.designsystem.component.StableImage
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorWhite_FFFFFFFF
 import com.goalpanzi.mission_mate.core.designsystem.theme.Color_FFFF5632
 import com.goalpanzi.mission_mate.core.designsystem.theme.MissionMateTypography
@@ -73,35 +74,35 @@ fun LoginScreen(
                 .background(color = Color_FFFF5632),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Image(
+            StableImage(
                 modifier = Modifier
                     .padding(top = 110.dp)
                     .size(48.dp),
-                painter = painterResource(id = com.goalpanzi.mission_mate.core.designsystem.R.drawable.img_app_logo),
-                contentDescription = "rabbit"
+                drawableResId = com.goalpanzi.mission_mate.core.designsystem.R.drawable.img_app_logo,
+                description = "logo"
             )
 
-            Image(
+            StableImage(
                 modifier = Modifier
                     .fillMaxWidth()
                     .widthIn(max = 266.dp)
                     .padding(horizontal = 62.dp)
                     .padding(top = 48.dp),
-                painter = painterResource(id = com.goalpanzi.mission_mate.core.designsystem.R.drawable.img_app_title),
-                contentDescription = "rabbit",
+                drawableResId = com.goalpanzi.mission_mate.core.designsystem.R.drawable.img_app_title,
+                description = "title",
                 contentScale = ContentScale.FillWidth
             )
 
             Box(
                 contentAlignment = Alignment.BottomCenter
             ){
-                Image(
+                StableImage(
                     modifier = Modifier
                         .fillMaxWidth(220f/390f)
                         .padding(bottom = 10.dp)
                         .aspectRatio(1f),
-                    painter = painterResource(id = com.goalpanzi.mission_mate.core.designsystem.R.drawable.img_rabbit_default),
-                    contentDescription = "rabbit",
+                    drawableResId = com.goalpanzi.mission_mate.core.designsystem.R.drawable.img_rabbit_default,
+                    description = "rabbit",
                     contentScale = ContentScale.FillWidth
                 )
                 Box(
@@ -115,10 +116,10 @@ fun LoginScreen(
                         .padding(horizontal = 12.dp, vertical = 6.dp),
                     contentAlignment = Alignment.CenterStart
                 ) {
-                    Image(
-                        painter = painterResource(id = R.drawable.btn_google),
+                    StableImage(
+                        drawableResId = R.drawable.btn_google,
                         contentScale = ContentScale.FillBounds,
-                        contentDescription = null
+                        description = null
                     )
                     Text(
                         text = stringResource(id = R.string.google_login),
@@ -137,15 +138,15 @@ fun LoginScreen(
             )
         }
 
-        Image(
+        StableImage(
             modifier = modifier
                 .fillMaxWidth()
                 .wrapContentHeight()
                 .navigationBarsPadding()
                 .align(Alignment.BottomCenter),
-            painter = painterResource(id = com.goalpanzi.mission_mate.core.designsystem.R.drawable.img_login_bottom_animals),
+            drawableResId = com.goalpanzi.mission_mate.core.designsystem.R.drawable.img_login_bottom_animals,
             contentScale = ContentScale.FillWidth,
-            contentDescription = null
+            description = null
         )
     }
 }

@@ -46,6 +46,7 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.goalpanzi.mission_mate.core.designsystem.component.MissionMateButton
 import com.goalpanzi.mission_mate.core.designsystem.component.MissionMateButtonType
+import com.goalpanzi.mission_mate.core.designsystem.component.StableImage
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorBlack_FF000000
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorWhite_FFFFFFFF
 import com.goalpanzi.mission_mate.core.designsystem.theme.MissionMateTypography
@@ -143,7 +144,7 @@ fun VerificationPreviewScreen(
                             .height(93.dp)
                             .padding(horizontal = 24.dp, vertical = 14.dp)
                     ) {
-                        Image(
+                        StableImage(
                             modifier = Modifier
                                 .padding(top = 6.dp)
                                 .size(28.dp)
@@ -153,8 +154,8 @@ fun VerificationPreviewScreen(
                                     contentScale = ContentScale.FillWidth
                                 )
                                 .padding(5.dp),
-                            painter = painterResource(uiState.characterUiModel.imageId),
-                            contentDescription = ""
+                            drawableResId = uiState.characterUiModel.imageId,
+                            description = ""
                         )
                         Text(
                             text = uiState.nickname,

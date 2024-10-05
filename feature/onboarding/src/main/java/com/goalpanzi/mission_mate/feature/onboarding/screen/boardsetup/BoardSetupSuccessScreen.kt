@@ -38,12 +38,12 @@ fun BoardSetupSuccessScreen(
     Box(
         modifier = modifier.background(ColorWhite_FFFFFFFF)
     ) {
-        Image(
+        StableImage(
             modifier = Modifier
                 .fillMaxWidth()
                 .wrapContentHeight(),
-            painter = painterResource(id = com.goalpanzi.mission_mate.core.designsystem.R.drawable.background_jeju),
-            contentDescription = null,
+            drawableResId = com.goalpanzi.mission_mate.core.designsystem.R.drawable.background_jeju,
+            description = null,
             contentScale = ContentScale.FillWidth
         )
         Column(
