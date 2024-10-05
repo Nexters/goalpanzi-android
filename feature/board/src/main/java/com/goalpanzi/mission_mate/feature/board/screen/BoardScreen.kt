@@ -17,6 +17,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.pullrefresh.PullRefreshState
+import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -53,6 +56,7 @@ import com.goalpanzi.mission_mate.feature.onboarding.component.StableImage
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun BoardRoute(
     onNavigateOnboarding: () -> Unit,
@@ -73,8 +77,13 @@ fun BoardRoute(
     val viewedTooltip by viewModel.viewedToolTip.collectAsStateWithLifecycle()
     val isHost by viewModel.isHost.collectAsStateWithLifecycle()
     val boardPieces by viewModel.boardPieces.collectAsStateWithLifecycle()
+    val isLoading by viewModel.isLoading.collectAsStateWithLifecycle()
 
     val scrollState = rememberScrollState()
+    val pullRefreshState = rememberPullRefreshState(
+        refreshing = isLoading,
+        onRefresh = viewModel::refresh
+    )
     var isShownDeleteMissionDialog by remember { mutableStateOf(false) }
     var isShownBoardRewardDialog by remember { mutableStateOf<BoardReward?>(null) }
     var isShownInvitationCodeDialog by remember { mutableStateOf(false) }
@@ -177,6 +186,8 @@ fun BoardRoute(
         modifier = modifier,
         viewedTooltip = viewedTooltip,
         scrollState = scrollState,
+        pullRefreshState = pullRefreshState,
+        isLoading = isLoading,
         missionBoardUiModel = missionBoardUiModel,
         missionUiModel = missionUiModel,
         missionVerificationUiModel = missionVerificationUiModel,
@@ -208,9 +219,12 @@ fun BoardRoute(
 
 }
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun BoardScreen(
     scrollState: ScrollState,
+    pullRefreshState: PullRefreshState,
+    isLoading : Boolean,
     viewedTooltip: Boolean,
     missionBoardUiModel: MissionBoardUiModel,
     missionUiModel: MissionUiModel,
@@ -248,6 +262,8 @@ fun BoardScreen(
                 numberOfColumns = 3,
                 boardPieces = boardPieces,
                 scrollState = scrollState,
+                pullRefreshState = pullRefreshState,
+                isLoading = isLoading,
                 profile = missionVerificationUiModel.missionVerifications.missionVerifications.first(),
                 missionState = missionState,
                 onClickPassedBlock = onClickMyVerificationBoardBlock

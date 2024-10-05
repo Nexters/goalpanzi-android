@@ -89,6 +89,9 @@ class BoardViewModel @Inject constructor(
     val missionVerificationUiModel: StateFlow<MissionVerificationUiModel> =
         _missionVerificationUiModel.asStateFlow()
 
+    private val _isLoading = MutableStateFlow(false)
+    val isLoading : StateFlow<Boolean> = _isLoading.asStateFlow()
+
     val isHost: StateFlow<Boolean> =
         combine(
             getCachedMemberIdUseCase(),
@@ -119,6 +122,14 @@ class BoardViewModel @Inject constructor(
 
     private val _boardPieces = MutableStateFlow<List<BoardPiece>>(emptyList())
     val boardPieces: StateFlow<List<BoardPiece>> = _boardPieces.asStateFlow()
+
+    fun refresh(){
+        _isLoading.value = true
+        getMissionBoards()
+        getMission()
+        getMissionVerification()
+        _isLoading.value = false
+    }
 
     fun getMissionBoards() {
         viewModelScope.launch {

@@ -25,6 +25,10 @@ import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.overscroll
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.pullrefresh.PullRefreshIndicator
+import androidx.compose.material.pullrefresh.PullRefreshState
+import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -33,15 +37,18 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment.Companion.TopCenter
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.clipRect
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.unit.Velocity
 import androidx.compose.ui.unit.dp
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorGray1_FF404249
@@ -60,21 +67,24 @@ import com.goalpanzi.mission_mate.feature.board.util.BoardManager.getPositionScr
 import kotlin.math.absoluteValue
 
 
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterialApi::class)
 @Composable
 fun Board(
     scrollState: ScrollState,
+    pullRefreshState: PullRefreshState,
+    isLoading : Boolean,
     missionBoards: MissionBoardsUiModel,
     missionDetail: MissionDetail,
     numberOfColumns: Int,
     boardPieces: List<BoardPiece>,
     profile: MissionVerification,
     missionState: MissionState,
-    onClickPassedBlock : (Int) -> Unit,
+    onClickPassedBlock: (Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val statusBarPaddingValue = WindowInsets.statusBars.asPaddingValues().calculateTopPadding()
-    val navigationPaddingValue = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
+    val navigationPaddingValue =
+        WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
     val localDensity = LocalDensity.current
     val configuration = LocalConfiguration.current
     val statusBarHeight =
@@ -105,102 +115,107 @@ fun Board(
             )
         )
     }
-    CompositionLocalProvider(
-        LocalOverscrollConfiguration provides null,
-        content = {
-            Box(
-                modifier = modifier
-                    .fillMaxSize()
-            ) {
-                Column(
-                    modifier = modifier.modifierWithClipRect(
-                        scrollState = scrollState,
-                        isVisiblePieces = isVisiblePieces,
-                        innerModifier = Modifier
-                            .drawWithContent {
-                                clipRect(bottom = statusBarHeight.toPx() + 178.dp.toPx()) {
-                                    this@drawWithContent.drawContent()
-                                }
-                            }
-                            .blur(10.dp, 10.dp),
-                    )
-                ) {
-                    BoardContent(
-                        missionBoards,
-                        missionDetail,
-                        numberOfColumns,
-                        boardPieces,
-                        profile,
-                        missionState,
-                        isVisiblePieces = isVisiblePieces,
-                        onClickPassedBlock = onClickPassedBlock,
-                        modifier
-                    )
-                }
-                Column(
-                    modifier = modifier.modifierWithClipRect(
-                        scrollState = scrollState,
-                        isVisiblePieces = isVisiblePieces,
-                        innerModifier = Modifier
-                            .drawWithContent {
-                                clipRect(
-                                    top = statusBarHeight.toPx() + 178.dp.toPx() - 1,
-                                    bottom = if (!isVisiblePieces) {
-                                        size.height
-                                    } else {
-                                        size.height + navigationBarHeight.toPx() - bottomViewHeight.toPx() + 1.dp.toPx()
-                                    }
-                                ) {
-                                    this@drawWithContent.drawContent()
-                                }
-                            }
-                    )
-                ) {
-                    BoardContent(
-                        missionBoards,
-                        missionDetail,
-                        numberOfColumns,
-                        boardPieces,
-                        profile,
-                        missionState,
-                        isVisiblePieces = isVisiblePieces,
-                        onClickPassedBlock = onClickPassedBlock,
-                        modifier
-                    )
-                }
-                if (isVisiblePieces) {
-                    Column(
-                        modifier = modifier.modifierWithClipRect(
-                            scrollState = scrollState,
-                            isVisiblePieces = isVisiblePieces,
-                            innerModifier = Modifier
-                                .drawWithContent {
-                                    clipRect(top = (size.height + navigationBarHeight.toPx() - bottomViewHeight.toPx() + 1.dp.toPx())) {
-                                        this@drawWithContent.drawContent()
-                                    }
-                                }
-                                .blur(10.dp, 10.dp)
-                        )
-                    ) {
-                        BoardContent(
-                            missionBoards,
-                            missionDetail,
-                            numberOfColumns,
-                            boardPieces,
-                            profile,
-                            missionState,
-                            isVisiblePieces = isVisiblePieces,
-                            onClickPassedBlock = onClickPassedBlock,
-                            modifier
-                        )
+
+    Box(
+        modifier = modifier
+            .fillMaxSize()
+            .pullRefresh(
+                pullRefreshState
+            )
+    ) {
+
+        Column(
+            modifier = modifier.modifierWithClipRect(
+                scrollState = scrollState,
+                isVisiblePieces = isVisiblePieces,
+                innerModifier = Modifier
+                    .drawWithContent {
+                        clipRect(bottom = statusBarHeight.toPx() + 178.dp.toPx()) {
+                            this@drawWithContent.drawContent()
+                        }
                     }
-                }
+                    .blur(10.dp, 10.dp),
+            )
+        ) {
+            BoardContent(
+                missionBoards,
+                missionDetail,
+                numberOfColumns,
+                boardPieces,
+                profile,
+                missionState,
+                isVisiblePieces = isVisiblePieces,
+                onClickPassedBlock = onClickPassedBlock,
+                modifier
+            )
+        }
+        Column(
+            modifier = modifier.modifierWithClipRect(
+                scrollState = scrollState,
+                isVisiblePieces = isVisiblePieces,
+                innerModifier = Modifier
+                    .drawWithContent {
+                        clipRect(
+                            top = statusBarHeight.toPx() + 178.dp.toPx() - 1,
+                            bottom = if (!isVisiblePieces) {
+                                size.height
+                            } else {
+                                size.height + navigationBarHeight.toPx() - bottomViewHeight.toPx() + 1.dp.toPx()
+                            }
+                        ) {
+                            this@drawWithContent.drawContent()
+                        }
+                    }
+
+            )
+        ) {
+            BoardContent(
+                missionBoards,
+                missionDetail,
+                numberOfColumns,
+                boardPieces,
+                profile,
+                missionState,
+                isVisiblePieces = isVisiblePieces,
+                onClickPassedBlock = onClickPassedBlock,
+                modifier
+            )
+        }
+        if (isVisiblePieces) {
+            Column(
+                modifier = modifier.modifierWithClipRect(
+                    scrollState = scrollState,
+                    isVisiblePieces = isVisiblePieces,
+                    innerModifier = Modifier
+                        .drawWithContent {
+                            clipRect(top = (size.height + navigationBarHeight.toPx() - bottomViewHeight.toPx() + 1.dp.toPx())) {
+                                this@drawWithContent.drawContent()
+                            }
+                        }
+                        .blur(10.dp, 10.dp)
+                )
+            ) {
+                BoardContent(
+                    missionBoards,
+                    missionDetail,
+                    numberOfColumns,
+                    boardPieces,
+                    profile,
+                    missionState,
+                    isVisiblePieces = isVisiblePieces,
+                    onClickPassedBlock = onClickPassedBlock,
+                    modifier
+                )
             }
         }
-    )
-
-
+        PullRefreshIndicator(
+            refreshing = isLoading,
+            state = pullRefreshState,
+            modifier = Modifier.align(TopCenter).statusBarsPadding().padding(top = 178.dp)
+        )
+    }
 }
+
 
 @Composable
 fun ColumnScope.BoardContent(
@@ -211,7 +226,7 @@ fun ColumnScope.BoardContent(
     profile: MissionVerification,
     missionState: MissionState,
     isVisiblePieces: Boolean,
-    onClickPassedBlock : (Int) -> Unit,
+    onClickPassedBlock: (Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val boardCount = missionBoards.missionBoardList.size
