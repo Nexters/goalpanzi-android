@@ -77,12 +77,12 @@ fun BoardRoute(
     val viewedTooltip by viewModel.viewedToolTip.collectAsStateWithLifecycle()
     val isHost by viewModel.isHost.collectAsStateWithLifecycle()
     val boardPieces by viewModel.boardPieces.collectAsStateWithLifecycle()
-    val isLoading by viewModel.isLoading.collectAsStateWithLifecycle()
+    val isRefreshLoading by viewModel.isRefreshLoading.collectAsStateWithLifecycle()
 
     val scrollState = rememberScrollState()
     val pullRefreshState = rememberPullRefreshState(
-        refreshing = isLoading,
-        onRefresh = viewModel::refresh
+        refreshing = isRefreshLoading,
+        onRefresh = viewModel::refreshMissionData
     )
     var isShownDeleteMissionDialog by remember { mutableStateOf(false) }
     var isShownBoardRewardDialog by remember { mutableStateOf<BoardReward?>(null) }
@@ -102,9 +102,7 @@ fun BoardRoute(
     )
 
     LaunchedEffect(key1 = Unit) {
-        viewModel.getMissionBoards()
-        viewModel.getMission()
-        viewModel.getMissionVerification()
+        viewModel.fetchMissionData()
 
         launch {
             viewModel.deleteMissionResultEvent.collect {
@@ -187,7 +185,7 @@ fun BoardRoute(
         viewedTooltip = viewedTooltip,
         scrollState = scrollState,
         pullRefreshState = pullRefreshState,
-        isLoading = isLoading,
+        isRefreshLoading = isRefreshLoading,
         missionBoardUiModel = missionBoardUiModel,
         missionUiModel = missionUiModel,
         missionVerificationUiModel = missionVerificationUiModel,
@@ -224,7 +222,7 @@ fun BoardRoute(
 fun BoardScreen(
     scrollState: ScrollState,
     pullRefreshState: PullRefreshState,
-    isLoading : Boolean,
+    isRefreshLoading : Boolean,
     viewedTooltip: Boolean,
     missionBoardUiModel: MissionBoardUiModel,
     missionUiModel: MissionUiModel,
@@ -263,7 +261,7 @@ fun BoardScreen(
                 boardPieces = boardPieces,
                 scrollState = scrollState,
                 pullRefreshState = pullRefreshState,
-                isLoading = isLoading,
+                isRefreshLoading = isRefreshLoading,
                 profile = missionVerificationUiModel.missionVerifications.missionVerifications.first(),
                 missionState = missionState,
                 onClickPassedBlock = onClickMyVerificationBoardBlock
