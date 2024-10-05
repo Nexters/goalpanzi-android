@@ -41,7 +41,7 @@ import com.goalpanzi.mission_mate.core.designsystem.theme.component.NavigationTy
 import com.goalpanzi.mission_mate.feature.board.R
 import com.goalpanzi.mission_mate.feature.board.model.CharacterUiModel
 import com.goalpanzi.mission_mate.feature.board.model.toCharacterUiModel
-import com.goalpanzi.mission_mate.feature.onboarding.component.StableImage
+import com.goalpanzi.mission_mate.core.designsystem.component.StableImage
 
 @Composable
 fun BoardFinishRoute(

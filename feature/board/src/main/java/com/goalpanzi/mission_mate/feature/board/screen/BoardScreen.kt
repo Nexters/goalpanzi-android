@@ -49,7 +49,7 @@ import com.goalpanzi.mission_mate.feature.board.model.toUserStory
 import com.goalpanzi.mission_mate.feature.board.model.uimodel.MissionBoardUiModel
 import com.goalpanzi.mission_mate.feature.board.model.uimodel.MissionUiModel
 import com.goalpanzi.mission_mate.feature.board.model.uimodel.MissionVerificationUiModel
-import com.goalpanzi.mission_mate.feature.onboarding.component.StableImage
+import com.goalpanzi.mission_mate.core.designsystem.component.StableImage
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 

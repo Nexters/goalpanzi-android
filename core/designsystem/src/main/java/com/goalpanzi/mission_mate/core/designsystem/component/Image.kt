@@ -1,4 +1,4 @@
-package com.goalpanzi.mission_mate.feature.onboarding.component
+package com.goalpanzi.mission_mate.core.designsystem.component
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image

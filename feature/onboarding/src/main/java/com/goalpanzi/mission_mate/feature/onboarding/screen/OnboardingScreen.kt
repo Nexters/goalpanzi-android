@@ -50,8 +50,8 @@ import com.goalpanzi.mission_mate.core.domain.common.model.user.CharacterType
 import com.goalpanzi.mission_mate.core.domain.common.model.user.UserProfile
 import com.goalpanzi.mission_mate.feature.onboarding.R
 import com.goalpanzi.mission_mate.feature.onboarding.component.OnboardingNavigationButton
-import com.goalpanzi.mission_mate.feature.onboarding.component.OutlinedTextBox
-import com.goalpanzi.mission_mate.feature.onboarding.component.StableImage
+import com.goalpanzi.mission_mate.core.designsystem.component.OutlinedTextChip
+import com.goalpanzi.mission_mate.core.designsystem.component.StableImage
 import com.goalpanzi.mission_mate.feature.onboarding.model.OnboardingResultEvent
 import com.goalpanzi.mission_mate.feature.onboarding.model.OnboardingUiModel
 import kotlinx.coroutines.flow.collectLatest
@@ -154,7 +154,7 @@ fun OnboardingScreen(
                         style = MissionMateTypography.heading_sm_bold,
                         color = ColorGray1_FF404249
                     )
-                    OutlinedTextBox(
+                    OutlinedTextChip(
                         text = stringResource(id = R.string.onboarding_level_1),
                         modifier = Modifier.padding(bottom = 23.dp)
                     )

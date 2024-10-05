@@ -10,6 +10,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.goalpanzi.mission_mate.core.designsystem.component.OutlinedTextChip
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorGray1_FF404249
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorWhite_FFFFFFFF
 import com.goalpanzi.mission_mate.core.designsystem.theme.MissionMateTypography
@@ -52,7 +53,7 @@ fun BoardSetupNavigationBar(
                 style = MissionMateTypography.heading_sm_bold,
                 color = ColorGray1_FF404249
             )
-            OutlinedTextBox(
+            OutlinedTextChip(
                 text = "${currentStep()}/$maxStep",
                 textStyle = MissionMateTypography.body_lg_regular
             )

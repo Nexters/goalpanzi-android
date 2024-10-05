@@ -35,7 +35,7 @@ import com.goalpanzi.mission_mate.core.designsystem.theme.MissionMateTypography
 import com.goalpanzi.mission_mate.core.domain.mission.model.BoardReward
 import com.goalpanzi.mission_mate.feature.board.R
 import com.goalpanzi.mission_mate.feature.board.model.toEventType
-import com.goalpanzi.mission_mate.feature.onboarding.component.StableImage
+import com.goalpanzi.mission_mate.core.designsystem.component.StableImage
 
 @SuppressLint("UnrememberedMutableInteractionSource")
 @Composable

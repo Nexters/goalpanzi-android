@@ -24,13 +24,11 @@ import androidx.compose.ui.unit.dp
 import com.goalpanzi.mission_mate.core.designsystem.component.MissionMateButtonType
 import com.goalpanzi.mission_mate.core.designsystem.component.MissionMateTextButton
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorGray1_FF404249
-import com.goalpanzi.mission_mate.core.designsystem.theme.ColorGray2_FF4F505C
-import com.goalpanzi.mission_mate.core.designsystem.theme.ColorGray3_FF727484
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorWhite_FFFFFFFF
 import com.goalpanzi.mission_mate.core.designsystem.theme.MissionMateTypography
 import com.goalpanzi.mission_mate.feature.onboarding.R
-import com.goalpanzi.mission_mate.feature.onboarding.component.OutlinedTextBox
-import com.goalpanzi.mission_mate.feature.onboarding.component.StableImage
+import com.goalpanzi.mission_mate.core.designsystem.component.OutlinedTextChip
+import com.goalpanzi.mission_mate.core.designsystem.component.StableImage
 
 @Composable
 fun BoardSetupSuccessScreen(
@@ -65,7 +63,7 @@ fun BoardSetupSuccessScreen(
                 color = ColorGray1_FF404249,
                 textAlign = TextAlign.Center
             )
-            OutlinedTextBox(
+            OutlinedTextChip(
                 text = stringResource(id = R.string.onboarding_level_1),
                 modifier = Modifier.padding(bottom = 12.dp)
             )
