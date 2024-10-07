@@ -49,12 +49,12 @@ class LoginManager (
                         LoginData.Failed(e)
                     }
                 }else {
-                    LoginData.Failed(RuntimeException("Credential Type not equals TYPE_GOOGLE_ID_TOKEN_CREDENTIAL"))
+                    LoginData.Failed(RuntimeException("NoDataException"))
                 }
             }
 
             else -> {
-                LoginData.Failed(RuntimeException("Credential is not CustomCredential"))
+                LoginData.Failed(IllegalStateException())
             }
         }
     }
