@@ -41,6 +41,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -89,6 +90,9 @@ class BoardViewModel @Inject constructor(
     val missionVerificationUiModel: StateFlow<MissionVerificationUiModel> =
         _missionVerificationUiModel.asStateFlow()
 
+    private val _isRefreshLoading = MutableStateFlow(false)
+    val isRefreshLoading : StateFlow<Boolean> = _isRefreshLoading.asStateFlow()
+
     val isHost: StateFlow<Boolean> =
         combine(
             getCachedMemberIdUseCase(),
@@ -120,69 +124,82 @@ class BoardViewModel @Inject constructor(
     private val _boardPieces = MutableStateFlow<List<BoardPiece>>(emptyList())
     val boardPieces: StateFlow<List<BoardPiece>> = _boardPieces.asStateFlow()
 
-    fun getMissionBoards() {
+    fun fetchMissionData(){
         viewModelScope.launch {
-            getMissionBoardsUseCase(missionId)
-                .catch {
-                    _missionBoardUiModel.emit(MissionBoardUiModel.Error)
-                }.collect {
-                    when (it) {
-                        is DomainResult.Success -> {
-                            _missionBoardUiModel.emit(
-                                MissionBoardUiModel.Success(
-                                    it.data.toUiModel()
-                                )
-                            )
-                            _boardPieces.emit(
-                                it.data.toUiModel().toBoardPieces(
-                                    profileUseCase.getProfile()
-                                )
-                            )
-
-                        }
-
-                        else -> {
-                            _missionBoardUiModel.emit(MissionBoardUiModel.Error)
-                            _missionError.emit(MissionError.NOT_EXIST)
-                        }
-                    }
-                }
+            getMissionBoards()
+            getMission()
+            getMissionVerification()
         }
     }
 
-    fun getMission() {
+    fun refreshMissionData(){
         viewModelScope.launch {
-            getMissionUseCase(missionId).catch {
-                _missionUiModel.emit(MissionUiModel.Error)
+            _isRefreshLoading.emit(true)
+            joinAll(
+                launch { getMissionBoards() },
+                launch { getMission() },
+                launch { getMissionVerification() }
+            )
+            _isRefreshLoading.emit(false)
+        }
+    }
+
+    private suspend fun getMissionBoards() {
+        getMissionBoardsUseCase(missionId)
+            .catch {
+                _missionBoardUiModel.emit(MissionBoardUiModel.Error)
             }.collect {
                 when (it) {
                     is DomainResult.Success -> {
-                        _missionUiModel.emit(MissionUiModel.Success(it.data))
+                        _missionBoardUiModel.emit(
+                            MissionBoardUiModel.Success(
+                                it.data.toUiModel()
+                            )
+                        )
+                        _boardPieces.emit(
+                            it.data.toUiModel().toBoardPieces(
+                                profileUseCase.getProfile()
+                            )
+                        )
                     }
 
                     else -> {
-                        _missionUiModel.emit(MissionUiModel.Error)
+                        _missionBoardUiModel.emit(MissionBoardUiModel.Error)
                         _missionError.emit(MissionError.NOT_EXIST)
                     }
+                }
+            }
+    }
+
+    private suspend fun getMission() {
+        getMissionUseCase(missionId).catch {
+            _missionUiModel.emit(MissionUiModel.Error)
+        }.collect {
+            when (it) {
+                is DomainResult.Success -> {
+                    _missionUiModel.emit(MissionUiModel.Success(it.data))
+                }
+
+                else -> {
+                    _missionUiModel.emit(MissionUiModel.Error)
+                    _missionError.emit(MissionError.NOT_EXIST)
                 }
             }
         }
     }
 
-    fun getMissionVerification() {
-        viewModelScope.launch {
-            getMissionVerificationsUseCase(missionId).catch {
-                _missionVerificationUiModel.emit(MissionVerificationUiModel.Error)
-            }.collect {
-                when (it) {
-                    is DomainResult.Success -> {
-                        _missionVerificationUiModel.emit(MissionVerificationUiModel.Success(it.data))
-                    }
+    private suspend fun getMissionVerification() {
+        getMissionVerificationsUseCase(missionId).catch {
+            _missionVerificationUiModel.emit(MissionVerificationUiModel.Error)
+        }.collect {
+            when (it) {
+                is DomainResult.Success -> {
+                    _missionVerificationUiModel.emit(MissionVerificationUiModel.Success(it.data))
+                }
 
-                    else -> {
-                        _missionVerificationUiModel.emit(MissionVerificationUiModel.Error)
-                        _missionError.emit(MissionError.NOT_EXIST)
-                    }
+                else -> {
+                    _missionVerificationUiModel.emit(MissionVerificationUiModel.Error)
+                    _missionError.emit(MissionError.NOT_EXIST)
                 }
             }
         }
@@ -269,9 +286,7 @@ class BoardViewModel @Inject constructor(
                     }?.reward
                 )
             }
-            getMissionBoards()
-            getMission()
-            getMissionVerification()
+            fetchMissionData()
         }
     }
 

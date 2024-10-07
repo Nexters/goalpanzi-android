@@ -18,6 +18,7 @@ androidxActivity = "1.9.1"
 ## Compose
 composeBom = "2024.06.00"
 navigation-compose = "2.7.7"
+composeMaterial = "1.7.0"
 
 ## Kotlin Symbol Processing (KSP)
 ksp = "2.0.0-1.0.23"
@@ -85,6 +86,7 @@ androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-man
 androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
 androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigation-compose" }
+androidx-material = { group = "androidx.compose.material", name = "material", version.ref = "composeMaterial"}
 
 ## Test
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -155,5 +157,5 @@ lifecycle = ["androidx-lifecycle-runtime-ktx","androidx-lifecycle-runtime-compos
 test = ["junit","coroutines-test","kotlin-test"]
 android-test = ["androidx-junit","androidx-espresso-core","androidx-ui-test-junit4"]
 kotest = ["kotest-runner","kotest-assertions"]
-compose = ["androidx-ui","androidx-ui-graphics","androidx-ui-tooling-preview", "androidx-material3","androidx-navigation-compose"]
+compose = ["androidx-ui","androidx-ui-graphics","androidx-ui-tooling-preview", "androidx-material3","androidx-navigation-compose","androidx-material"]
 network = ["retrofit","retrofit-kotlinx-serialization","okhttp3","okhttp3-logging-interceptor"]
