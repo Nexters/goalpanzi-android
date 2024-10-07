@@ -1,4 +1,4 @@
-package com.goalpanzi.mission_mate.feature.board.component
+package com.goalpanzi.mission_mate.feature.board.component.dialog
 
 import android.content.ClipData
 import android.content.ClipboardManager
@@ -25,7 +25,7 @@ import com.goalpanzi.mission_mate.core.designsystem.theme.ColorGray2_FF4F505C
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorOrange_FFFF5732
 import com.goalpanzi.mission_mate.core.designsystem.theme.MissionMateTypography
 import com.goalpanzi.mission_mate.feature.board.R
-import com.goalpanzi.mission_mate.feature.onboarding.component.InvitationCodeTextField
+import com.goalpanzi.mission_mate.core.ui.component.InvitationCodeTextField
 import com.goalpanzi.mission_mate.feature.onboarding.util.styledTextWithHighlights
 
 @Composable

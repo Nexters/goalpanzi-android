@@ -75,6 +75,7 @@ dependencies {
     implementation(project(":core:domain:auth"))
     implementation(project(":core:domain:user"))
     implementation(project(":core:domain:common"))
+    implementation(project(":core:ui"))
 
     implementation(project(":feature:profile"))
 }

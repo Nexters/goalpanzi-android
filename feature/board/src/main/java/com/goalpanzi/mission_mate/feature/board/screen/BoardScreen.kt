@@ -6,7 +6,6 @@ import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -28,7 +27,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -38,7 +36,7 @@ import com.goalpanzi.mission_mate.feature.board.R
 import com.goalpanzi.mission_mate.feature.board.component.Board
 import com.goalpanzi.mission_mate.feature.board.component.BoardBottomView
 import com.goalpanzi.mission_mate.feature.board.component.BoardTopView
-import com.goalpanzi.mission_mate.feature.board.component.InvitationCodeDialog
+import com.goalpanzi.mission_mate.feature.board.component.dialog.InvitationCodeDialog
 import com.goalpanzi.mission_mate.feature.board.component.dialog.BoardEventDialog
 import com.goalpanzi.mission_mate.feature.board.component.dialog.DeleteMissionDialog
 import com.goalpanzi.mission_mate.feature.board.model.BoardPiece
@@ -49,7 +47,7 @@ import com.goalpanzi.mission_mate.feature.board.model.toUserStory
 import com.goalpanzi.mission_mate.feature.board.model.uimodel.MissionBoardUiModel
 import com.goalpanzi.mission_mate.feature.board.model.uimodel.MissionUiModel
 import com.goalpanzi.mission_mate.feature.board.model.uimodel.MissionVerificationUiModel
-import com.goalpanzi.mission_mate.feature.onboarding.component.StableImage
+import com.goalpanzi.mission_mate.core.designsystem.component.StableImage
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -236,10 +234,10 @@ fun BoardScreen(
             && missionUiModel is MissionUiModel.Success
             && missionVerificationUiModel is MissionVerificationUiModel.Success
         ) {
-            Image(
+            StableImage(
                 modifier = Modifier.fillMaxSize(),
-                painter = painterResource(id = com.goalpanzi.mission_mate.core.designsystem.R.drawable.background_jeju_full),
-                contentDescription = null,
+                drawableResId = com.goalpanzi.mission_mate.core.designsystem.R.drawable.background_jeju_full,
+                description = null,
                 contentScale = ContentScale.Crop
             )
             Board(

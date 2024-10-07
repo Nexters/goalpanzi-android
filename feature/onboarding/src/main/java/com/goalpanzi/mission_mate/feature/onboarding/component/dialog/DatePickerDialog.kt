@@ -1,4 +1,4 @@
-package com.goalpanzi.mission_mate.feature.onboarding.component
+package com.goalpanzi.mission_mate.feature.onboarding.component.dialog
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

@@ -1,4 +1,4 @@
-package com.goalpanzi.mission_mate.core.designsystem.theme.component
+package com.goalpanzi.mission_mate.core.designsystem.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box

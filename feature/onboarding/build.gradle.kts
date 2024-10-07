@@ -71,5 +71,6 @@ dependencies {
     implementation(project(":core:domain:onboarding"))
     implementation(project(":core:domain:mission"))
     implementation(project(":core:domain:user"))
+    implementation(project(":core:ui"))
 
 }

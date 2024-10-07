@@ -1,6 +1,5 @@
 package com.goalpanzi.mission_mate.feature.onboarding.screen
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -44,14 +43,14 @@ import com.goalpanzi.mission_mate.core.designsystem.theme.ColorGray1_FF404249
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorGray2_FF4F505C
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorWhite_FFFFFFFF
 import com.goalpanzi.mission_mate.core.designsystem.theme.MissionMateTypography
-import com.goalpanzi.mission_mate.core.designsystem.theme.component.MissionMateTopAppBar
-import com.goalpanzi.mission_mate.core.designsystem.theme.component.NavigationType
+import com.goalpanzi.mission_mate.core.designsystem.component.MissionMateTopAppBar
+import com.goalpanzi.mission_mate.core.designsystem.component.NavigationType
 import com.goalpanzi.mission_mate.core.domain.common.model.user.CharacterType
 import com.goalpanzi.mission_mate.core.domain.common.model.user.UserProfile
 import com.goalpanzi.mission_mate.feature.onboarding.R
 import com.goalpanzi.mission_mate.feature.onboarding.component.OnboardingNavigationButton
-import com.goalpanzi.mission_mate.feature.onboarding.component.OutlinedTextBox
-import com.goalpanzi.mission_mate.feature.onboarding.component.StableImage
+import com.goalpanzi.mission_mate.core.designsystem.component.OutlinedTextChip
+import com.goalpanzi.mission_mate.core.designsystem.component.StableImage
 import com.goalpanzi.mission_mate.feature.onboarding.model.OnboardingResultEvent
 import com.goalpanzi.mission_mate.feature.onboarding.model.OnboardingUiModel
 import kotlinx.coroutines.flow.collectLatest
@@ -121,12 +120,12 @@ fun OnboardingScreen(
     Box(
         modifier = modifier.background(ColorWhite_FFFFFFFF)
     ) {
-        Image(
+        StableImage(
             modifier = Modifier
                 .fillMaxWidth()
                 .wrapContentHeight(),
-            painter = painterResource(id = designSystemResource.drawable.background_jeju),
-            contentDescription = null,
+            drawableResId = designSystemResource.drawable.background_jeju,
+            description = null,
             contentScale = ContentScale.FillWidth
         )
         when (onboardingUiModel) {
@@ -154,7 +153,7 @@ fun OnboardingScreen(
                         style = MissionMateTypography.heading_sm_bold,
                         color = ColorGray1_FF404249
                     )
-                    OutlinedTextBox(
+                    OutlinedTextChip(
                         text = stringResource(id = R.string.onboarding_level_1),
                         modifier = Modifier.padding(bottom = 23.dp)
                     )
@@ -292,18 +291,16 @@ fun ProfileCreateSuccessDialog(
                         contentScale = ContentScale.FillWidth,
                     )
             ) {
-                Image(
-                    painter = painterResource(
-                        id = when (character) {
-                            CharacterType.RABBIT -> designSystemResource.drawable.img_rabbit_default
-                            CharacterType.CAT -> designSystemResource.drawable.img_cat_default
-                            CharacterType.DOG -> designSystemResource.drawable.img_dog_default
-                            CharacterType.PANDA -> designSystemResource.drawable.img_panda_default
-                            CharacterType.BEAR -> designSystemResource.drawable.img_bear_default
-                            CharacterType.BIRD -> designSystemResource.drawable.img_bird_default
-                        }
-                    ),
-                    contentDescription = null,
+                StableImage(
+                    drawableResId = when (character) {
+                        CharacterType.RABBIT -> designSystemResource.drawable.img_rabbit_default
+                        CharacterType.CAT -> designSystemResource.drawable.img_cat_default
+                        CharacterType.DOG -> designSystemResource.drawable.img_dog_default
+                        CharacterType.PANDA -> designSystemResource.drawable.img_panda_default
+                        CharacterType.BEAR -> designSystemResource.drawable.img_bear_default
+                        CharacterType.BIRD -> designSystemResource.drawable.img_bird_default
+                    },
+                    description = null,
                     contentScale = ContentScale.FillWidth,
                     modifier = Modifier
                         .fillMaxSize()
