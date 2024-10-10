@@ -27,10 +27,12 @@ class TokenReissueInterceptor @Inject constructor(
 
         when (response.code) {
             HttpURLConnection.HTTP_UNAUTHORIZED -> {
-                tokenExpirationHandler.handleRefreshTokenExpiration()
-                return chain.proceed(newRequest.build())
+                runBlocking {
+                    tokenExpirationHandler.handleRefreshTokenExpiration()
+                }
+                return response
             }
         }
-        return chain.proceed(newRequest.build())
+        return response
     }
 }
