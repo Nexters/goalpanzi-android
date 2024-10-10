@@ -1,6 +1,8 @@
 package com.goalpanzi.mission_mate.feature.board.component
 
 import android.annotation.SuppressLint
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.Box
@@ -8,13 +10,16 @@ import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.verticalScroll
@@ -51,7 +56,7 @@ import com.goalpanzi.mission_mate.feature.board.model.MissionState
 import com.goalpanzi.mission_mate.feature.board.model.toEventType
 import com.goalpanzi.mission_mate.feature.board.util.BoardManager
 import com.goalpanzi.mission_mate.feature.board.util.BoardManager.getPositionScrollToMyIndex
-
+import kotlin.math.min
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterialApi::class)
 @Composable
@@ -90,6 +95,9 @@ fun Board(
             }?.number ?: 0
         }
     }
+    val refreshingSpacerSize by animateDpAsState(
+        targetValue = (min(pullRefreshState.progress, 1f) * 140).dp
+    )
 
     LaunchedEffect(myIndex) {
         scrollState.animateScrollTo(
@@ -155,6 +163,7 @@ fun Board(
 
             )
         ) {
+            Spacer(modifier = Modifier.height(refreshingSpacerSize))
             BoardContent(
                 missionBoards,
                 missionDetail,
@@ -181,6 +190,7 @@ fun Board(
                         .blur(10.dp, 10.dp)
                 )
             ) {
+                Spacer(modifier = Modifier.height(refreshingSpacerSize))
                 BoardContent(
                     missionBoards,
                     missionDetail,
