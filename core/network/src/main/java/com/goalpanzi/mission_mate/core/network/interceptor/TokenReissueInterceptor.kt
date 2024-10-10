@@ -1,5 +1,6 @@
 package com.goalpanzi.mission_mate.core.network.interceptor
 
+import com.goalpanzi.mission_mate.core.network.TokenExpirationHandler
 import com.goalpanzi.mission_mate.core.network.TokenProvider
 import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
@@ -10,7 +11,8 @@ import javax.inject.Singleton
 
 @Singleton
 class TokenReissueInterceptor @Inject constructor(
-    private val tokenProvider: TokenProvider
+    private val tokenProvider: TokenProvider,
+    private val tokenExpirationHandler : TokenExpirationHandler
 ) : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val newRequest = chain.request().newBuilder().apply {
@@ -25,6 +27,7 @@ class TokenReissueInterceptor @Inject constructor(
 
         when (response.code) {
             HttpURLConnection.HTTP_UNAUTHORIZED -> {
+                tokenExpirationHandler.handleRefreshTokenExpiration()
                 return chain.proceed(newRequest.build())
             }
         }
