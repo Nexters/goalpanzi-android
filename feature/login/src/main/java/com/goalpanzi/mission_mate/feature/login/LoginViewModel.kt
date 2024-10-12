@@ -17,22 +17,20 @@ class LoginViewModel @Inject constructor(
     private val _eventFlow = MutableSharedFlow<LoginEvent>()
     val eventFlow = _eventFlow.asSharedFlow()
 
-    fun login(loginData: LoginData){
+    suspend fun login(loginData: LoginData){
         when(loginData){
             is LoginData.Success -> {
-                viewModelScope.launch {
-                    try {
-                        val result = loginUseCase.requestGoogleLogin(email = loginData.email)
-                        _eventFlow.emit(
-                            result?.let {
-                                LoginEvent.Success(it.isProfileSet)
-                            } ?: run {
-                                LoginEvent.Error
-                            }
-                        )
-                    }catch (e: Exception){
-                        e.printStackTrace()
-                    }
+                try {
+                    val result = loginUseCase.requestGoogleLogin(email = loginData.email)
+                    _eventFlow.emit(
+                        result?.let {
+                            LoginEvent.Success(it.isProfileSet)
+                        } ?: run {
+                            LoginEvent.Error
+                        }
+                    )
+                }catch (e: Exception){
+                    e.printStackTrace()
                 }
             }
             is LoginData.Failed -> {
