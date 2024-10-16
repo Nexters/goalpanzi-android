@@ -8,6 +8,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.goalpanzi.mission_mate.core.main.component.MainNavHost
 import com.goalpanzi.mission_mate.core.main.component.MainNavigator
 import com.goalpanzi.mission_mate.core.main.component.rememberMainNavigator
+import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 internal fun MainScreen(
@@ -16,8 +17,10 @@ internal fun MainScreen(
     viewModel: MainViewModel = hiltViewModel()
 ) {
     LaunchedEffect(Unit) {
-        viewModel.navigationEvent.collect {
-            navigator.navController.navigate(it)
+        viewModel.navigationEvent.collectLatest {
+            if(navigator.navController.currentDestination?.route != it){
+                navigator.navController.navigate(it)
+            }
         }
     }
 
