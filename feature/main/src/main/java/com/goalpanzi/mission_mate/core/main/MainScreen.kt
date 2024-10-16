@@ -17,9 +17,13 @@ internal fun MainScreen(
     viewModel: MainViewModel = hiltViewModel()
 ) {
     LaunchedEffect(Unit) {
-        viewModel.navigationEvent.collectLatest {
-            if(navigator.navController.currentDestination?.route != it){
-                navigator.navController.navigate(it)
+        viewModel.navigationEvent.collectLatest { route ->
+            if(navigator.navController.currentDestination?.route != route){
+                if(route == "RouteModel.Login"){
+                    navigator.navigateToLogin()
+                }else {
+                    navigator.navController.navigate(route)
+                }
             }
         }
     }
