@@ -8,8 +8,11 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.goalpanzi.mission_mate.core.main.component.MainNavHost
 import com.goalpanzi.mission_mate.core.main.component.MainNavigator
 import com.goalpanzi.mission_mate.core.main.component.rememberMainNavigator
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.debounce
 
+@OptIn(FlowPreview::class)
 @Composable
 internal fun MainScreen(
     startDestination: String,
@@ -17,7 +20,7 @@ internal fun MainScreen(
     viewModel: MainViewModel = hiltViewModel()
 ) {
     LaunchedEffect(Unit) {
-        viewModel.navigationEvent.collectLatest { route ->
+        viewModel.navigationEvent.debounce(200).collectLatest { route ->
             if(navigator.navController.currentDestination?.route != route){
                 if(route == "RouteModel.Login"){
                     navigator.navigateToLogin()
