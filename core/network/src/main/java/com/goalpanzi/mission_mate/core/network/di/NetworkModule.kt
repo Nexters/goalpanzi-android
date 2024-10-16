@@ -1,7 +1,8 @@
 package com.goalpanzi.mission_mate.core.network.di
 
 import com.goalpanzi.mission_mate.core.network.BuildConfig
-import com.goalpanzi.mission_mate.core.network.TokenInterceptor
+import com.goalpanzi.mission_mate.core.network.interceptor.TokenInterceptor
+import com.goalpanzi.mission_mate.core.network.interceptor.TokenReissueInterceptor
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -13,7 +14,24 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Converter
 import retrofit2.Retrofit
 import retrofit2.converter.kotlinx.serialization.asConverterFactory
+import javax.inject.Qualifier
 import javax.inject.Singleton
+
+@Retention(AnnotationRetention.RUNTIME)
+@Qualifier
+annotation class TokenInterceptorHttpClient
+
+@Retention(AnnotationRetention.RUNTIME)
+@Qualifier
+annotation class TokenReissueInterceptorHttpClient
+
+@Retention(AnnotationRetention.RUNTIME)
+@Qualifier
+annotation class TokenRetrofit
+
+@Retention(AnnotationRetention.RUNTIME)
+@Qualifier
+annotation class TokenReissueRetrofit
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -25,15 +43,28 @@ internal object NetworkModule {
         return HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BODY }
     }
 
+    @TokenInterceptorHttpClient
     @Provides
     @Singleton
-    fun provideOkhttpClient(
+    fun provideTokenInterceptorHttpClient(
         httpLoggingInterceptor: HttpLoggingInterceptor,
         tokenInterceptor: TokenInterceptor
     ): OkHttpClient {
-
         return OkHttpClient.Builder()
             .addInterceptor(tokenInterceptor)
+            .addInterceptor(httpLoggingInterceptor)
+            .build()
+    }
+
+    @TokenReissueInterceptorHttpClient
+    @Provides
+    @Singleton
+    fun provideTokenReissueInterceptorHttpClient(
+        httpLoggingInterceptor: HttpLoggingInterceptor,
+        tokenReissueInterceptor: TokenReissueInterceptor
+    ): OkHttpClient {
+        return OkHttpClient.Builder()
+            .addInterceptor(tokenReissueInterceptor)
             .addInterceptor(httpLoggingInterceptor)
             .build()
     }
@@ -53,10 +84,25 @@ internal object NetworkModule {
         return json.asConverterFactory("application/json".toMediaType())
     }
 
+    @TokenRetrofit
     @Provides
     @Singleton
-    fun provideRetrofit(
-        okHttpClient: OkHttpClient,
+    fun provideTokenRetrofit(
+        @TokenInterceptorHttpClient okHttpClient: OkHttpClient,
+        converterFactory: Converter.Factory
+    ) : Retrofit {
+        return Retrofit.Builder()
+            .client(okHttpClient)
+            .baseUrl(BuildConfig.BASE_URL)
+            .addConverterFactory(converterFactory)
+            .build()
+    }
+
+    @TokenReissueRetrofit
+    @Provides
+    @Singleton
+    fun provideTokenReissueRetrofit(
+        @TokenReissueInterceptorHttpClient okHttpClient: OkHttpClient,
         converterFactory: Converter.Factory
     ) : Retrofit {
         return Retrofit.Builder()

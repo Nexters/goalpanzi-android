@@ -1,5 +1,6 @@
-package com.goalpanzi.mission_mate.core.network
+package com.goalpanzi.mission_mate.core.network.interceptor
 
+import com.goalpanzi.mission_mate.core.network.TokenProvider
 import com.goalpanzi.mission_mate.core.network.model.request.TokenReissueRequest
 import com.goalpanzi.mission_mate.core.network.service.TokenService
 import kotlinx.coroutines.CoroutineScope

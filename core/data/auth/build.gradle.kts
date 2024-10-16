@@ -50,4 +50,5 @@ dependencies {
     implementation(project(":core:domain:auth"))
     implementation(project(":core:network"))
     implementation(project(":core:datastore"))
+    implementation(project(":core:navigation"))
 }
