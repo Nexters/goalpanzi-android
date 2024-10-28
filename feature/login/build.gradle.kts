@@ -77,8 +77,11 @@ dependencies {
 
     implementation(project(":core:designsystem"))
     implementation(project(":core:navigation"))
-    implementation(project(":core:domain"))
-    implementation(project(":core:model"))
+    implementation(project(":core:domain:common"))
+    implementation(project(":core:domain:auth"))
+    implementation(project(":core:domain:user"))
+    implementation(project(":core:ui"))
+
 
     implementation(libs.credentials)
     implementation(libs.credentials.auth)

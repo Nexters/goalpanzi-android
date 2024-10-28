@@ -3,18 +3,18 @@ package com.goalpanzi.mission_mate.feature.board.screen
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.goalpanzi.core.model.base.NetworkResult
-import com.goalpanzi.core.model.response.BoardReward
-import com.goalpanzi.mission_mate.core.domain.usecase.DeleteMissionUseCase
-import com.goalpanzi.mission_mate.core.domain.usecase.GetCachedMemberIdUseCase
-import com.goalpanzi.mission_mate.core.domain.usecase.GetMissionBoardsUseCase
-import com.goalpanzi.mission_mate.core.domain.usecase.GetMissionUseCase
-import com.goalpanzi.mission_mate.core.domain.usecase.GetMissionVerificationsUseCase
-import com.goalpanzi.mission_mate.core.domain.usecase.GetMyMissionVerificationUseCase
-import com.goalpanzi.mission_mate.core.domain.usecase.GetViewedTooltipUseCase
-import com.goalpanzi.mission_mate.core.domain.usecase.ProfileUseCase
-import com.goalpanzi.mission_mate.core.domain.usecase.SetViewedTooltipUseCase
-import com.goalpanzi.mission_mate.core.domain.usecase.VerifyMissionUseCase
+import com.goalpanzi.mission_mate.core.domain.common.DomainResult
+import com.goalpanzi.mission_mate.core.domain.mission.model.BoardReward
+import com.goalpanzi.mission_mate.core.domain.mission.usecase.DeleteMissionUseCase
+import com.goalpanzi.mission_mate.core.domain.mission.usecase.GetMissionBoardsUseCase
+import com.goalpanzi.mission_mate.core.domain.mission.usecase.GetMissionUseCase
+import com.goalpanzi.mission_mate.core.domain.mission.usecase.GetMissionVerificationsUseCase
+import com.goalpanzi.mission_mate.core.domain.mission.usecase.GetMyMissionVerificationUseCase
+import com.goalpanzi.mission_mate.core.domain.mission.usecase.VerifyMissionUseCase
+import com.goalpanzi.mission_mate.core.domain.setting.usecase.GetViewedTooltipUseCase
+import com.goalpanzi.mission_mate.core.domain.setting.usecase.SetViewedTooltipUseCase
+import com.goalpanzi.mission_mate.core.domain.user.usecase.GetCachedMemberIdUseCase
+import com.goalpanzi.mission_mate.core.domain.user.usecase.ProfileUseCase
 import com.goalpanzi.mission_mate.feature.board.model.BoardPiece
 import com.goalpanzi.mission_mate.feature.board.model.BoardPieceType
 import com.goalpanzi.mission_mate.feature.board.model.MissionError
@@ -22,8 +22,8 @@ import com.goalpanzi.mission_mate.feature.board.model.MissionState
 import com.goalpanzi.mission_mate.feature.board.model.MissionState.Companion.getMissionState
 import com.goalpanzi.mission_mate.feature.board.model.UserStory
 import com.goalpanzi.mission_mate.feature.board.model.toBoardPieces
-import com.goalpanzi.mission_mate.feature.board.model.toCharacter
-import com.goalpanzi.mission_mate.feature.board.model.toModel
+import com.goalpanzi.mission_mate.feature.board.model.toCharacterUiModel
+import com.goalpanzi.mission_mate.feature.board.model.toUiModel
 import com.goalpanzi.mission_mate.feature.board.model.uimodel.MissionBoardUiModel
 import com.goalpanzi.mission_mate.feature.board.model.uimodel.MissionUiModel
 import com.goalpanzi.mission_mate.feature.board.model.uimodel.MissionVerificationUiModel
@@ -41,6 +41,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -89,6 +90,9 @@ class BoardViewModel @Inject constructor(
     val missionVerificationUiModel: StateFlow<MissionVerificationUiModel> =
         _missionVerificationUiModel.asStateFlow()
 
+    private val _isRefreshLoading = MutableStateFlow(false)
+    val isRefreshLoading : StateFlow<Boolean> = _isRefreshLoading.asStateFlow()
+
     val isHost: StateFlow<Boolean> =
         combine(
             getCachedMemberIdUseCase(),
@@ -120,69 +124,82 @@ class BoardViewModel @Inject constructor(
     private val _boardPieces = MutableStateFlow<List<BoardPiece>>(emptyList())
     val boardPieces: StateFlow<List<BoardPiece>> = _boardPieces.asStateFlow()
 
-    fun getMissionBoards() {
+    fun fetchMissionData(){
         viewModelScope.launch {
-            getMissionBoardsUseCase(missionId)
-                .catch {
-                    _missionBoardUiModel.emit(MissionBoardUiModel.Error)
-                }.collect {
-                    when (it) {
-                        is NetworkResult.Success -> {
-                            _missionBoardUiModel.emit(
-                                MissionBoardUiModel.Success(
-                                    it.data.toModel()
-                                )
-                            )
-                            _boardPieces.emit(
-                                it.data.toModel().toBoardPieces(
-                                    profileUseCase.getProfile()
-                                )
-                            )
-
-                        }
-
-                        else -> {
-                            _missionBoardUiModel.emit(MissionBoardUiModel.Error)
-                            _missionError.emit(MissionError.NOT_EXIST)
-                        }
-                    }
-                }
+            getMissionBoards()
+            getMission()
+            getMissionVerification()
         }
     }
 
-    fun getMission() {
+    fun refreshMissionData(){
         viewModelScope.launch {
-            getMissionUseCase(missionId).catch {
-                _missionUiModel.emit(MissionUiModel.Error)
+            _isRefreshLoading.emit(true)
+            joinAll(
+                launch { getMissionBoards() },
+                launch { getMission() },
+                launch { getMissionVerification() }
+            )
+            _isRefreshLoading.emit(false)
+        }
+    }
+
+    private suspend fun getMissionBoards() {
+        getMissionBoardsUseCase(missionId)
+            .catch {
+                _missionBoardUiModel.emit(MissionBoardUiModel.Error)
             }.collect {
                 when (it) {
-                    is NetworkResult.Success -> {
-                        _missionUiModel.emit(MissionUiModel.Success(it.data.toModel()))
+                    is DomainResult.Success -> {
+                        _missionBoardUiModel.emit(
+                            MissionBoardUiModel.Success(
+                                it.data.toUiModel()
+                            )
+                        )
+                        _boardPieces.emit(
+                            it.data.toUiModel().toBoardPieces(
+                                profileUseCase.getProfile()
+                            )
+                        )
                     }
 
                     else -> {
-                        _missionUiModel.emit(MissionUiModel.Error)
+                        _missionBoardUiModel.emit(MissionBoardUiModel.Error)
                         _missionError.emit(MissionError.NOT_EXIST)
                     }
+                }
+            }
+    }
+
+    private suspend fun getMission() {
+        getMissionUseCase(missionId).catch {
+            _missionUiModel.emit(MissionUiModel.Error)
+        }.collect {
+            when (it) {
+                is DomainResult.Success -> {
+                    _missionUiModel.emit(MissionUiModel.Success(it.data))
+                }
+
+                else -> {
+                    _missionUiModel.emit(MissionUiModel.Error)
+                    _missionError.emit(MissionError.NOT_EXIST)
                 }
             }
         }
     }
 
-    fun getMissionVerification() {
-        viewModelScope.launch {
-            getMissionVerificationsUseCase(missionId).catch {
-                _missionVerificationUiModel.emit(MissionVerificationUiModel.Error)
-            }.collect {
-                when (it) {
-                    is NetworkResult.Success -> {
-                        _missionVerificationUiModel.emit(MissionVerificationUiModel.Success(it.data))
-                    }
+    private suspend fun getMissionVerification() {
+        getMissionVerificationsUseCase(missionId).catch {
+            _missionVerificationUiModel.emit(MissionVerificationUiModel.Error)
+        }.collect {
+            when (it) {
+                is DomainResult.Success -> {
+                    _missionVerificationUiModel.emit(MissionVerificationUiModel.Success(it.data))
+                }
 
-                    else -> {
-                        _missionVerificationUiModel.emit(MissionVerificationUiModel.Error)
-                        _missionError.emit(MissionError.NOT_EXIST)
-                    }
+                else -> {
+                    _missionVerificationUiModel.emit(MissionVerificationUiModel.Error)
+                    _missionError.emit(MissionError.NOT_EXIST)
                 }
             }
         }
@@ -246,7 +263,7 @@ class BoardViewModel @Inject constructor(
                                 BoardPiece(
                                     count = prevBoardPiece.missionBoardMembers.size - 1,
                                     nickname = target.nickname,
-                                    drawableRes = target.character.imageId,
+                                    drawableRes = target.characterType.toCharacterUiModel().imageId,
                                     index = prevBoardPiece.number,
                                     isMe = false
                                 )
@@ -266,12 +283,10 @@ class BoardViewModel @Inject constructor(
                 _boardRewardEvent.emit(
                     missionBoardList.find {
                         myBoardPiece.index + 1 == it.number
-                    }?.boardReward
+                    }?.reward
                 )
             }
-            getMissionBoards()
-            getMission()
-            getMissionVerification()
+            fetchMissionData()
         }
     }
 
@@ -286,10 +301,10 @@ class BoardViewModel @Inject constructor(
 
             }.collect {
                 when(it){
-                    is NetworkResult.Success -> {
+                    is DomainResult.Success -> {
                         _myMissionVerification.emit(
                             UserStory(
-                                characterType = it.data.characterType.toCharacter(),
+                                characterUiModelType = it.data.characterType.toCharacterUiModel(),
                                 imageUrl = it.data.imageUrl,
                                 isVerified = true,
                                 nickname = it.data.nickname,

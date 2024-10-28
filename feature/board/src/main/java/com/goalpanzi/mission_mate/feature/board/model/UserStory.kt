@@ -1,20 +1,21 @@
 package com.goalpanzi.mission_mate.feature.board.model
 
-import com.goalpanzi.core.model.response.MissionVerificationResponse
+import com.goalpanzi.mission_mate.core.domain.mission.model.MissionVerification
+
 
 data class UserStory(
     val nickname : String,
-    val characterType : Character,
+    val characterUiModelType : CharacterUiModel,
     val imageUrl : String,
     val isVerified : Boolean,
     val isMe : Boolean = false,
     val verifiedAt : String
 )
 
-fun MissionVerificationResponse.toUserStory(isMe: Boolean = false) : UserStory =
+fun MissionVerification.toUserStory(isMe: Boolean = false) : UserStory =
     UserStory(
         nickname = nickname,
-        characterType = characterType.toCharacter(),
+        characterUiModelType = characterType.toCharacterUiModel(),
         imageUrl = imageUrl,
         isVerified = imageUrl.isNotEmpty(),
         isMe = isMe,

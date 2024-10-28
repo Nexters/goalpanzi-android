@@ -6,7 +6,6 @@ import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -17,6 +16,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.pullrefresh.PullRefreshState
+import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -28,31 +30,31 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorWhite_FFFFFFFF
+import com.goalpanzi.mission_mate.core.domain.mission.model.BoardReward
 import com.goalpanzi.mission_mate.feature.board.R
 import com.goalpanzi.mission_mate.feature.board.component.Board
 import com.goalpanzi.mission_mate.feature.board.component.BoardBottomView
 import com.goalpanzi.mission_mate.feature.board.component.BoardTopView
-import com.goalpanzi.mission_mate.feature.board.component.InvitationCodeDialog
+import com.goalpanzi.mission_mate.feature.board.component.dialog.InvitationCodeDialog
 import com.goalpanzi.mission_mate.feature.board.component.dialog.BoardEventDialog
 import com.goalpanzi.mission_mate.feature.board.component.dialog.DeleteMissionDialog
 import com.goalpanzi.mission_mate.feature.board.model.BoardPiece
 import com.goalpanzi.mission_mate.feature.board.model.MissionState
 import com.goalpanzi.mission_mate.feature.board.model.UserStory
-import com.goalpanzi.mission_mate.feature.board.model.toCharacter
+import com.goalpanzi.mission_mate.feature.board.model.toCharacterUiModel
 import com.goalpanzi.mission_mate.feature.board.model.toUserStory
 import com.goalpanzi.mission_mate.feature.board.model.uimodel.MissionBoardUiModel
 import com.goalpanzi.mission_mate.feature.board.model.uimodel.MissionUiModel
 import com.goalpanzi.mission_mate.feature.board.model.uimodel.MissionVerificationUiModel
-import com.goalpanzi.mission_mate.feature.onboarding.component.StableImage
-import com.goalpanzi.core.model.response.BoardReward
+import com.goalpanzi.mission_mate.core.designsystem.component.StableImage
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun BoardRoute(
     onNavigateOnboarding: () -> Unit,
@@ -73,8 +75,13 @@ fun BoardRoute(
     val viewedTooltip by viewModel.viewedToolTip.collectAsStateWithLifecycle()
     val isHost by viewModel.isHost.collectAsStateWithLifecycle()
     val boardPieces by viewModel.boardPieces.collectAsStateWithLifecycle()
+    val isRefreshLoading by viewModel.isRefreshLoading.collectAsStateWithLifecycle()
 
     val scrollState = rememberScrollState()
+    val pullRefreshState = rememberPullRefreshState(
+        refreshing = isRefreshLoading,
+        onRefresh = viewModel::refreshMissionData
+    )
     var isShownDeleteMissionDialog by remember { mutableStateOf(false) }
     var isShownBoardRewardDialog by remember { mutableStateOf<BoardReward?>(null) }
     var isShownInvitationCodeDialog by remember { mutableStateOf(false) }
@@ -93,9 +100,7 @@ fun BoardRoute(
     )
 
     LaunchedEffect(key1 = Unit) {
-        viewModel.getMissionBoards()
-        viewModel.getMission()
-        viewModel.getMissionVerification()
+        viewModel.fetchMissionData()
 
         launch {
             viewModel.deleteMissionResultEvent.collect {
@@ -177,6 +182,8 @@ fun BoardRoute(
         modifier = modifier,
         viewedTooltip = viewedTooltip,
         scrollState = scrollState,
+        pullRefreshState = pullRefreshState,
+        isRefreshLoading = isRefreshLoading,
         missionBoardUiModel = missionBoardUiModel,
         missionUiModel = missionUiModel,
         missionVerificationUiModel = missionVerificationUiModel,
@@ -208,9 +215,12 @@ fun BoardRoute(
 
 }
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun BoardScreen(
     scrollState: ScrollState,
+    pullRefreshState: PullRefreshState,
+    isRefreshLoading : Boolean,
     viewedTooltip: Boolean,
     missionBoardUiModel: MissionBoardUiModel,
     missionUiModel: MissionUiModel,
@@ -236,10 +246,10 @@ fun BoardScreen(
             && missionUiModel is MissionUiModel.Success
             && missionVerificationUiModel is MissionVerificationUiModel.Success
         ) {
-            Image(
+            StableImage(
                 modifier = Modifier.fillMaxSize(),
-                painter = painterResource(id = com.goalpanzi.mission_mate.core.designsystem.R.drawable.background_jeju_full),
-                contentDescription = null,
+                drawableResId = com.goalpanzi.mission_mate.core.designsystem.R.drawable.background_jeju_full,
+                description = null,
                 contentScale = ContentScale.Crop
             )
             Board(
@@ -248,7 +258,9 @@ fun BoardScreen(
                 numberOfColumns = 3,
                 boardPieces = boardPieces,
                 scrollState = scrollState,
-                profile = missionVerificationUiModel.missionVerificationsResponse.missionVerifications.first(),
+                pullRefreshState = pullRefreshState,
+                isRefreshLoading = isRefreshLoading,
+                profile = missionVerificationUiModel.missionVerifications.missionVerifications.first(),
                 missionState = missionState,
                 onClickPassedBlock = onClickMyVerificationBoardBlock
             )
@@ -256,7 +268,7 @@ fun BoardScreen(
                 title = missionUiModel.missionDetail.description,
                 isAddingUserEnabled = missionState.isEnabledToInvite(),//&& isHost  ,
                 viewedTooltip = viewedTooltip,
-                userList = missionVerificationUiModel.missionVerificationsResponse.missionVerifications.mapIndexed { i, item ->
+                userList = missionVerificationUiModel.missionVerifications.missionVerifications.mapIndexed { i, item ->
                     item.toUserStory(
                         isMe = i == 0
                     )
@@ -298,7 +310,7 @@ fun BoardScreen(
                         )
                     }
                     StableImage(
-                        missionVerificationUiModel.missionVerificationsResponse.missionVerifications.first().characterType.toCharacter().imageId,
+                        missionVerificationUiModel.missionVerifications.missionVerifications.first().characterType.toCharacterUiModel().imageId,
                         modifier = Modifier
                             .padding(top = 75.dp)
                             .fillMaxWidth(240f / 390f)

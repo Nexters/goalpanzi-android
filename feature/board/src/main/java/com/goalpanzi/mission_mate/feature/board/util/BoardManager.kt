@@ -75,9 +75,9 @@ object BoardManager {
                     index = index,
                     blockType =
                     if (quotient * numberOfColumns * 2 + i - 1 == 0) BlockType.START
+                    else if (i == 1) BlockType.BOTTOM_LEFT_CORNER
                     else if (index == boardCount - 1) BlockType.CENTER
                     else if (i > remainder) BlockType.EMPTY
-                    else if (i == 1) BlockType.BOTTOM_LEFT_CORNER
                     else if (i == numberOfColumns) BlockType.TOP_RIGHT_CORNER
                     else BlockType.CENTER,
                     blockEventType =
@@ -109,8 +109,8 @@ object BoardManager {
                     index = index,
                     blockType =
                     if (i > remainder && remainder != 0) BlockType.EMPTY
-                    else if (index == boardCount - 1) BlockType.CENTER
                     else if (i == numberOfColumns + 1) BlockType.BOTTOM_RIGHT_CORNER
+                    else if (index == boardCount - 1) BlockType.CENTER
                     else if (i == numberOfColumns * 2) BlockType.TOP_LEFT_CORNER
                     else BlockType.CENTER,
                     isEvenGroup = quotient % 2 == 0,

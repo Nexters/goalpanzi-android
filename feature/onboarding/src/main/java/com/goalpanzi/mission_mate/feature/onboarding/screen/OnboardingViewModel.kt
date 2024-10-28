@@ -3,11 +3,11 @@ package com.goalpanzi.mission_mate.feature.onboarding.screen
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.goalpanzi.core.model.UserProfile
-import com.goalpanzi.core.model.base.NetworkResult
-import com.goalpanzi.mission_mate.core.domain.usecase.GetJoinedMissionsUseCase
-import com.goalpanzi.mission_mate.core.domain.usecase.GetMissionJoinedUseCase
-import com.goalpanzi.mission_mate.core.domain.usecase.ProfileUseCase
+import com.goalpanzi.mission_mate.core.domain.common.DomainResult
+import com.goalpanzi.mission_mate.core.domain.common.model.user.UserProfile
+import com.goalpanzi.mission_mate.core.domain.mission.usecase.GetMissionJoinedUseCase
+import com.goalpanzi.mission_mate.core.domain.onboarding.usecase.GetJoinedMissionsUseCase
+import com.goalpanzi.mission_mate.core.domain.user.usecase.ProfileUseCase
 import com.goalpanzi.mission_mate.feature.onboarding.isAfterProfileCreateArg
 import com.goalpanzi.mission_mate.feature.onboarding.model.OnboardingResultEvent
 import com.goalpanzi.mission_mate.feature.onboarding.model.OnboardingUiModel
@@ -63,11 +63,12 @@ class OnboardingViewModel @Inject constructor(
                     _onboardingResultEvent.emit(OnboardingResultEvent.Error)
                 }.collect { result ->
                     when (result) {
-                        is NetworkResult.Success -> {
+                        is DomainResult.Success -> {
                             result.data.missions.let { missions ->
-                                if (missions.isNotEmpty() && isJoined != false) {
+                                val missionInProgress = missions.lastOrNull { it.missionStatus in setOf("IN_PROGRESS", "CREATED") }
+                                if (missionInProgress != null) {
                                     _onboardingResultEvent.emit(
-                                        OnboardingResultEvent.SuccessWithJoinedMissions(missions.first())
+                                        OnboardingResultEvent.SuccessWithJoinedMissions(missionInProgress)
                                     )
                                 } else {
                                     _onboardingUiModel.emit(

@@ -68,8 +68,10 @@ dependencies {
 
     implementation(project(":core:designsystem"))
     implementation(project(":core:navigation"))
-    implementation(project(":core:domain"))
-    implementation(project(":core:model"))
+    implementation(project(":core:domain:common"))
+    implementation(project(":core:domain:auth"))
+    implementation(project(":core:ui"))
+
     implementation(project(":feature:login"))
     implementation(project(":feature:onboarding"))
     implementation(project(":feature:profile"))

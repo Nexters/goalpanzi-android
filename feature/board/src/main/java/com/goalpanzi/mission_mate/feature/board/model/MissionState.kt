@@ -1,10 +1,10 @@
 package com.goalpanzi.mission_mate.feature.board.model
 
+import com.goalpanzi.mission_mate.core.domain.mission.model.MissionVerification
 import com.goalpanzi.mission_mate.feature.board.model.uimodel.MissionBoardUiModel
 import com.goalpanzi.mission_mate.feature.board.model.uimodel.MissionUiModel
 import com.goalpanzi.mission_mate.feature.board.model.uimodel.MissionVerificationUiModel
 import com.goalpanzi.mission_mate.feature.onboarding.model.VerificationTimeType
-import com.goalpanzi.core.model.response.MissionVerificationResponse
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -79,7 +79,7 @@ enum class MissionState {
                 todayLocalDateTime = todayLocalDateTime,
                 startDate = missionUiModel.missionDetail.missionStartLocalDate,
                 endDateTime = missionUiModel.missionDetail.missionEndLocalDateTime,
-                memberList = missionVerificationUiModel.missionVerificationsResponse.missionVerifications,
+                memberList = missionVerificationUiModel.missionVerifications.missionVerifications,
                 verificationTimeType = VerificationTimeType.valueOf(missionUiModel.missionDetail.timeOfDay),
                 daysOfWeek = missionUiModel.missionDetail.missionDays
             )
@@ -89,7 +89,7 @@ enum class MissionState {
             todayLocalDateTime : LocalDateTime,
             startDate : LocalDate,
             endDateTime: LocalDateTime,
-            memberList: List<MissionVerificationResponse>,
+            memberList: List<MissionVerification>,
             verificationTimeType: VerificationTimeType,
             daysOfWeek : List<DayOfWeek>
         ) : MissionState {
@@ -136,7 +136,7 @@ enum class MissionState {
             todayLocalDateTime: LocalDateTime,
             daysOfWeek: List<DayOfWeek>,
             verificationTimeType: VerificationTimeType,
-            memberList : List<MissionVerificationResponse>
+            memberList : List<MissionVerification>
         ): MissionState {
             val endTime = verificationTimeType.getVerificationEndTime(todayLocalDateTime)
             if (isTodayMissionDay(todayLocalDate, daysOfWeek)) {
@@ -171,7 +171,7 @@ enum class MissionState {
         }
 
         internal fun isVerifiedInMissionTime(
-            memberList : List<MissionVerificationResponse>
+            memberList : List<MissionVerification>
         ) : Boolean {
             if(memberList.isEmpty()) return false
             return memberList.first().imageUrl.isNotEmpty()

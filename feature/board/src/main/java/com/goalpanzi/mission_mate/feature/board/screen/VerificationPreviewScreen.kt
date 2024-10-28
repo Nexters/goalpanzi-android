@@ -46,16 +46,15 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.goalpanzi.mission_mate.core.designsystem.component.MissionMateButton
 import com.goalpanzi.mission_mate.core.designsystem.component.MissionMateButtonType
+import com.goalpanzi.mission_mate.core.designsystem.component.StableImage
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorBlack_FF000000
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorWhite_FFFFFFFF
 import com.goalpanzi.mission_mate.core.designsystem.theme.MissionMateTypography
 import com.goalpanzi.mission_mate.feature.board.R
-import com.goalpanzi.mission_mate.feature.board.model.Character
+import com.goalpanzi.mission_mate.feature.board.model.CharacterUiModel
 import com.goalpanzi.mission_mate.feature.board.util.ImageCompressor
 import kotlinx.coroutines.flow.collectLatest
 import java.io.File
-import java.net.URLDecoder
-import java.nio.charset.StandardCharsets
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -145,18 +144,18 @@ fun VerificationPreviewScreen(
                             .height(93.dp)
                             .padding(horizontal = 24.dp, vertical = 14.dp)
                     ) {
-                        Image(
+                        StableImage(
                             modifier = Modifier
                                 .padding(top = 6.dp)
                                 .size(28.dp)
                                 .border(1.dp, ColorWhite_FFFFFFFF, CircleShape)
                                 .paint(
-                                    painter = painterResource(uiState.character.backgroundId),
+                                    painter = painterResource(uiState.characterUiModel.backgroundId),
                                     contentScale = ContentScale.FillWidth
                                 )
                                 .padding(5.dp),
-                            painter = painterResource(uiState.character.imageId),
-                            contentDescription = ""
+                            drawableResId = uiState.characterUiModel.imageId,
+                            description = ""
                         )
                         Text(
                             text = uiState.nickname,
@@ -247,7 +246,7 @@ fun VerificationPreviewScreenPreview() {
     VerificationPreviewScreen(
         onClickClose = {},
         uiState = VerificationPreviewUiState.Success(
-            character = Character.RABBIT,
+            characterUiModel = CharacterUiModel.RABBIT,
             nickname = "닉네임",
             imageUrl = ""
         ),

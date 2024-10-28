@@ -16,8 +16,8 @@ android {
         applicationId = "com.goalpanzi.mission_mate"
         minSdk = 26
         targetSdk = 34
-        versionCode = 4
-        versionName = "1.0.1"
+        versionCode = 5
+        versionName = "1.0.2"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -74,5 +74,11 @@ dependencies {
     implementation(project(":feature:main"))
     implementation(project(":feature:login"))
     implementation(project(":core:designsystem"))
-    implementation(project(":core:data"))
+
+    implementation(project(":core:data:auth"))
+    implementation(project(":core:data:common"))
+    implementation(project(":core:data:mission"))
+    implementation(project(":core:data:onboarding"))
+    implementation(project(":core:data:setting"))
+    implementation(project(":core:data:user"))
 }

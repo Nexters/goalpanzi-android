@@ -7,10 +7,9 @@ import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import com.goalpanzi.mission_mate.core.designsystem.theme.MissionmateTheme
-import com.goalpanzi.mission_mate.core.domain.usecase.LoginUseCase
+import com.goalpanzi.mission_mate.core.domain.auth.usecase.LoginUseCase
 import com.goalpanzi.mission_mate.core.main.component.MainNavigator
 import com.goalpanzi.mission_mate.core.main.component.rememberMainNavigator
-import com.goalpanzi.mission_mate.core.navigation.RouteModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 

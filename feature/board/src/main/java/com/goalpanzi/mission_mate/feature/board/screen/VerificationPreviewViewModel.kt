@@ -3,13 +3,13 @@ package com.goalpanzi.mission_mate.feature.board.screen
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.goalpanzi.mission_mate.core.domain.usecase.ProfileUseCase
-import com.goalpanzi.mission_mate.core.domain.usecase.VerifyMissionUseCase
+import com.goalpanzi.mission_mate.core.domain.common.DomainResult
+import com.goalpanzi.mission_mate.core.domain.common.model.user.UserProfile
+import com.goalpanzi.mission_mate.core.domain.mission.usecase.VerifyMissionUseCase
+import com.goalpanzi.mission_mate.core.domain.user.usecase.ProfileUseCase
 import com.goalpanzi.mission_mate.feature.board.imageUrlArg
 import com.goalpanzi.mission_mate.feature.board.missionIdArg
-import com.goalpanzi.mission_mate.feature.board.model.Character
-import com.goalpanzi.core.model.UserProfile
-import com.goalpanzi.core.model.base.NetworkResult
+import com.goalpanzi.mission_mate.feature.board.model.CharacterUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -44,7 +44,7 @@ class VerificationPreviewViewModel @Inject constructor(
     }.map {
         VerificationPreviewUiState.Success(
             nickname = it.nickname,
-            character = Character.valueOf(it.characterType.name),
+            characterUiModel = CharacterUiModel.valueOf(it.characterType.name),
             imageUrl = savedStateHandle.get<String>(imageUrlArg) ?: ""
         )
     }.stateIn(
@@ -59,7 +59,7 @@ class VerificationPreviewViewModel @Inject constructor(
             _eventFlow.emit(UploadEvent.Loading)
             verifyMissionUseCase(missionId, image).collectLatest {
                 when (it) {
-                    is NetworkResult.Success -> {
+                    is DomainResult.Success -> {
                         _eventFlow.emit(UploadEvent.Success)
                     }
 
@@ -77,7 +77,7 @@ sealed interface VerificationPreviewUiState {
     data object Loading : VerificationPreviewUiState
     data class Success(
         val nickname: String,
-        val character: Character,
+        val characterUiModel: CharacterUiModel,
         val imageUrl: String
     ) : VerificationPreviewUiState
 }

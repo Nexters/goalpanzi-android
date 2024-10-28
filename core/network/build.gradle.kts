@@ -55,8 +55,6 @@ dependencies {
     ksp(libs.hilt.compiler)
     implementation(libs.hilt.android)
 
-    implementation(project(":core:model"))
-    implementation(project(":core:datastore"))
 }
 
 fun getMissionMateBaseUrl(): String {

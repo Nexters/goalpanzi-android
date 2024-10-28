@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.res.Configuration
 import android.widget.Toast
 import androidx.annotation.DrawableRes
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -51,17 +50,18 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.goalpanzi.core.model.CharacterType
 import com.goalpanzi.mission_mate.core.designsystem.component.MissionMateButtonType
 import com.goalpanzi.mission_mate.core.designsystem.component.MissionMateTextButton
 import com.goalpanzi.mission_mate.core.designsystem.component.MissionMateTextFieldGroup
+import com.goalpanzi.mission_mate.core.designsystem.component.StableImage
 import com.goalpanzi.mission_mate.core.designsystem.ext.clickableWithoutRipple
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorGray1_FF404249
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorGray5_FFF5F6F9
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorWhite_FFFFFFFF
 import com.goalpanzi.mission_mate.core.designsystem.theme.MissionMateTypography
-import com.goalpanzi.mission_mate.core.designsystem.theme.component.MissionMateTopAppBar
-import com.goalpanzi.mission_mate.core.designsystem.theme.component.NavigationType
+import com.goalpanzi.mission_mate.core.designsystem.component.MissionMateTopAppBar
+import com.goalpanzi.mission_mate.core.designsystem.component.NavigationType
+import com.goalpanzi.mission_mate.core.domain.common.model.user.CharacterType
 import com.goalpanzi.mission_mate.feature.profile.model.CharacterListItem
 import com.goalpanzi.mission_mate.feature.profile.model.CharacterListItem.Companion.createDefaultList
 import com.goalpanzi.mission_mate.feature.profile.model.ProfileUiState
@@ -292,9 +292,9 @@ fun CharacterLargeImage(
     @DrawableRes imageResId: Int,
     @DrawableRes backgroundResId: Int,
 ) {
-    Image(
-        painter = painterResource(id = imageResId),
-        contentDescription = null,
+    StableImage(
+        drawableResId = imageResId,
+        description = null,
         modifier = modifier
             .fillMaxSize()
             .paint(
@@ -356,9 +356,9 @@ fun CharacterElement(
                 onClick = { onClick(character) }
             )
     ) {
-        Image(
-            painter = painterResource(id = character.selectedImageResId),
-            contentDescription = null,
+        StableImage(
+            drawableResId = character.selectedImageResId,
+            description = null,
         )
 
         Text(

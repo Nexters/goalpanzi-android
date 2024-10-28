@@ -1,12 +1,12 @@
 package com.goalpanzi.mission_mate.core.datastore.datasource
 
-import com.goalpanzi.core.model.UserProfile
+import com.goalpanzi.mission_mate.core.datastore.model.UserProfileDto
 import kotlinx.coroutines.flow.Flow
 
 interface DefaultDataSource {
     fun clearUserData() : Flow<Unit>
-    fun setUserProfile(data: UserProfile) : Flow<Unit>
-    fun getUserProfile() : Flow<UserProfile?>
+    fun setUserProfile(data: UserProfileDto) : Flow<Unit>
+    fun getUserProfile() : Flow<UserProfileDto?>
     fun getViewedTooltip() : Flow<Boolean>
     fun setViewedTooltip() : Flow<Unit>
     fun setMemberId(data: Long) : Flow<Unit>

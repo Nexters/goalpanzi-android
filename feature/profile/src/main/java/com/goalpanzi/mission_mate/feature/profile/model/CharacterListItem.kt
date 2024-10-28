@@ -2,7 +2,7 @@ package com.goalpanzi.mission_mate.feature.profile.model
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
-import com.goalpanzi.core.model.CharacterType
+import com.goalpanzi.mission_mate.core.domain.common.model.user.CharacterType
 import com.luckyoct.feature.profile.R
 
 data class CharacterListItem(

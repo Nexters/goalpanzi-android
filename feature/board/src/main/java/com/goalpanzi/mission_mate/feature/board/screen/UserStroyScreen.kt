@@ -1,6 +1,5 @@
 package com.goalpanzi.mission_mate.feature.board.screen
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
@@ -33,10 +32,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.goalpanzi.mission_mate.core.designsystem.component.StableImage
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorBlack_FF000000
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorWhite_FFFFFFFF
 import com.goalpanzi.mission_mate.core.designsystem.theme.MissionMateTypography
-import com.goalpanzi.mission_mate.feature.board.model.Character
+import com.goalpanzi.mission_mate.core.designsystem.theme.MissionmateTheme
+import com.goalpanzi.mission_mate.feature.board.model.CharacterUiModel
 import java.net.URLDecoder
 import java.nio.charset.StandardCharsets
 import java.time.LocalDateTime
@@ -44,7 +45,7 @@ import java.time.format.DateTimeFormatter
 
 @Composable
 fun UserStoryScreen(
-    character: Character = Character.RABBIT,
+    characterUiModel: CharacterUiModel = CharacterUiModel.RABBIT,
     nickname: String = "",
     verifiedAt: String = "",
     imageUrl: String = "",
@@ -88,18 +89,18 @@ fun UserStoryScreen(
                     .height(93.dp)
                     .padding(horizontal = 24.dp, vertical = 14.dp)
             ) {
-                Image(
+                StableImage(
                     modifier = Modifier
                         .padding(top = 6.dp)
                         .size(28.dp)
                         .border(1.dp, ColorWhite_FFFFFFFF, CircleShape)
                         .paint(
-                            painter = painterResource(character.backgroundId),
+                            painter = painterResource(characterUiModel.backgroundId),
                             contentScale = ContentScale.FillWidth
                         )
                         .padding(5.dp),
-                    painter = painterResource(character.imageId),
-                    contentDescription = ""
+                    drawableResId = characterUiModel.imageId,
+                    description = ""
                 )
                 Text(
                     text = nickname,
@@ -139,9 +140,11 @@ fun UserStoryScreen(
 @Preview
 @Composable
 fun UserStoryScreenPreview() {
-    UserStoryScreen(
-        nickname = "토끼는깡총깡",
-        verifiedAt = "2024.08.08",
-        onClickClose = {}
-    )
+    MissionmateTheme {
+        UserStoryScreen(
+            nickname = "토끼는깡총깡",
+            verifiedAt = "2024-08-08T10:15:30",
+            onClickClose = {}
+        )
+    }
 }

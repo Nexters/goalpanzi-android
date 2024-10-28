@@ -6,16 +6,15 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.goalpanzi.mission_mate.core.domain.usecase.CreateMissionUseCase
-import com.goalpanzi.mission_mate.core.domain.usecase.SetMissionJoinedUseCase
+import com.goalpanzi.mission_mate.core.domain.common.DomainResult
+import com.goalpanzi.mission_mate.core.domain.mission.usecase.SetMissionJoinedUseCase
+import com.goalpanzi.mission_mate.core.domain.onboarding.usecase.CreateMissionUseCase
 import com.goalpanzi.mission_mate.feature.onboarding.model.BoardSetupResult
 import com.goalpanzi.mission_mate.feature.onboarding.model.VerificationTimeType
 import com.goalpanzi.mission_mate.feature.onboarding.util.DateUtils.filterDatesByDayOfWeek
 import com.goalpanzi.mission_mate.feature.onboarding.util.DateUtils.formatLocalDateToString
 import com.goalpanzi.mission_mate.feature.onboarding.util.DateUtils.isDifferenceTargetDaysOrMore
 import com.goalpanzi.mission_mate.feature.onboarding.util.DateUtils.longToLocalDate
-import com.goalpanzi.core.model.base.NetworkResult
-import com.goalpanzi.core.model.request.CreateMissionRequest
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -180,7 +179,7 @@ class BoardSetupViewModel @Inject constructor(
         }
 
         createMissionUseCase(
-            CreateMissionRequest(
+            com.goalpanzi.mission_mate.core.domain.onboarding.model.CreateMissionBody(
                 description = missionTitle,
                 missionStartDate = formatLocalDateToString(startDate),
                 missionEndDate = formatLocalDateToString(endDate),
@@ -190,7 +189,7 @@ class BoardSetupViewModel @Inject constructor(
             )
         ).collect { result ->
             when(result){
-                is NetworkResult.Success -> {
+                is DomainResult.Success -> {
                     setMissionJoinedUseCase(true).collect()
                     _setupEvent.emit(BoardSetupResult.Success(result.data))
                 }
