@@ -28,6 +28,6 @@ interface OnboardingService {
 
     @GET("/api/mission-members/me")
     suspend fun getJoinedMissions(
-        @Query("filter") filter : String = "PENDING,ONGOING"
+        @Query("filter") filter : String = ""
     ) : Response<MissionsResponse>
 }
