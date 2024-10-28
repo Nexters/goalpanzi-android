@@ -65,7 +65,7 @@ class OnboardingViewModel @Inject constructor(
                     when (result) {
                         is DomainResult.Success -> {
                             result.data.missions.let { missions ->
-                                val missionInProgress = missions.lastOrNull { it.missionStatus == "IN_PROGRESS" }
+                                val missionInProgress = missions.lastOrNull { it.missionStatus in setOf("IN_PROGRESS", "CREATED") }
                                 if (missionInProgress != null) {
                                     _onboardingResultEvent.emit(
                                         OnboardingResultEvent.SuccessWithJoinedMissions(missionInProgress)
