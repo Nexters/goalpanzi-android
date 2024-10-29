@@ -141,12 +141,6 @@ fun BoardRoute(
         }
     }
 
-    LaunchedEffect(key1 = isUploadSuccess) {
-        if (isUploadSuccess) {
-            viewModel.onVerifySuccess()
-        }
-    }
-
     if (isShownDeleteMissionDialog) {
         DeleteMissionDialog(
             onDismissRequest = {
