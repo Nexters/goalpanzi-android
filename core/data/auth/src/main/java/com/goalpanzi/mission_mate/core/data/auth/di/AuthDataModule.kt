@@ -1,8 +1,10 @@
 package com.goalpanzi.mission_mate.core.data.auth.di
 
+import com.goalpanzi.mission_mate.core.data.auth.AuthTokenExpirationHandler
 import com.goalpanzi.mission_mate.core.data.auth.AuthTokenProvider
 import com.goalpanzi.mission_mate.core.data.auth.repository.AuthRepositoryImpl
 import com.goalpanzi.mission_mate.core.domain.auth.repository.AuthRepository
+import com.goalpanzi.mission_mate.core.network.TokenExpirationHandler
 import com.goalpanzi.mission_mate.core.network.TokenProvider
 import dagger.Binds
 import dagger.Module
@@ -18,4 +20,7 @@ internal abstract class AuthDataModule {
 
     @Binds
     abstract fun bindTokenProvider(impl : AuthTokenProvider) : TokenProvider
+
+    @Binds
+    abstract fun bindTokenExpirationHandler(impl : AuthTokenExpirationHandler) : TokenExpirationHandler
 }

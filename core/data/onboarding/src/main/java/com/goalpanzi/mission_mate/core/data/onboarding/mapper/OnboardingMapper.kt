@@ -22,7 +22,8 @@ fun CreateMissionBody.toRequest() : CreateMissionRequest {
 fun MissionResponse.toModel() : Mission {
     return Mission(
         missionId = missionId,
-        description = description
+        description = description,
+        missionStatus = missionStatus
     )
 }
 
