@@ -1,6 +1,7 @@
 package com.goalpanzi.mission_mate.feature.board.model
 
 data class BoardPiece(
+    val memberId : Long,
     val index : Int,
     val count : Int,
     val nickname : String,
