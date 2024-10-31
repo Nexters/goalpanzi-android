@@ -308,7 +308,9 @@ class BoardViewModel @Inject constructor(
                                 imageUrl = it.data.imageUrl,
                                 isVerified = true,
                                 nickname = it.data.nickname,
-                                verifiedAt = it.data.verifiedAt
+                                verifiedAt = it.data.verifiedAt,
+                                viewedAt = it.data.viewedAt,
+                                missionVerificationId = it.data.missionVerificationId
                             )
                         )
                     }

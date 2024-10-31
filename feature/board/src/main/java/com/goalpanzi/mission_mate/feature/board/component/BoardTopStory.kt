@@ -98,7 +98,10 @@ fun UserStoryItem(
                 .then(
                     if (userStory.isVerified) {
                         Modifier
-                            .border(3.dp, OrangeGradient_FFFF5F3C_FFFFAE50, CircleShape)
+                            .then(
+                                if(userStory.isViewed) Modifier.border(3.dp, ColorWhite_FFFFFFFF, CircleShape)
+                                else Modifier.border(3.dp, OrangeGradient_FFFF5F3C_FFFFAE50, CircleShape)
+                            )
                             .clickable(
                                 interactionSource = MutableInteractionSource(),
                                 indication = null,
@@ -106,8 +109,8 @@ fun UserStoryItem(
                             )
                     } else {
                         Modifier
-                            .border(3.dp, ColorWhite_FFFFFFFF, CircleShape)
-                            .alpha(if (userStory.isMe) 1f else 0.5f)
+                            .border(3.dp, ColorWhite_FFFFFFFF.copy(alpha = userStory.userStoryAlpha), CircleShape)
+                            .alpha(userStory.userStoryAlpha)
                     }
                 )
                 .paint(
@@ -163,7 +166,31 @@ private fun VerifiedUserStoryItemPreview() {
                 characterUiModelType = CharacterUiModel.CAT,
                 imageUrl = "",
                 isVerified = true,
-                verifiedAt = ""
+                verifiedAt = "",
+                viewedAt = "",
+                missionVerificationId = 0
+            ),
+            onClickStory = {
+
+            }
+        )
+    }
+}
+
+
+@Preview
+@Composable
+private fun VerifiedViewedUserStoryItemPreview() {
+    MissionmateTheme {
+        UserStoryItem(
+            userStory = UserStory(
+                nickname = "닉네임",
+                characterUiModelType = CharacterUiModel.CAT,
+                imageUrl = "",
+                isVerified = true,
+                verifiedAt = "",
+                viewedAt = "2024-10-31T09:48:18.399Z",
+                missionVerificationId = 0
             ),
             onClickStory = {
 
@@ -182,7 +209,9 @@ private fun NotVerifiedUserStoryItemPreview() {
                 characterUiModelType = CharacterUiModel.CAT,
                 imageUrl = "",
                 isVerified = false,
-                verifiedAt = ""
+                verifiedAt = "",
+                viewedAt = "",
+                missionVerificationId = 0
             ),
             onClickStory = {
 
@@ -203,7 +232,31 @@ private fun MyVerifiedUserStoryItemPreview() {
                 imageUrl = "",
                 isVerified = true,
                 verifiedAt = "",
-                isMe = true
+                isMe = true,
+                viewedAt = "",
+                missionVerificationId = 0
+            ),
+            onClickStory = {
+
+            }
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun MyVerifiedViewedUserStoryItemPreview() {
+    MissionmateTheme {
+        UserStoryItem(
+            userStory = UserStory(
+                nickname = "닉네임",
+                characterUiModelType = CharacterUiModel.CAT,
+                imageUrl = "",
+                isVerified = true,
+                verifiedAt = "",
+                isMe = true,
+                viewedAt = "2024-10-31T09:48:18.399Z",
+                missionVerificationId = 0
             ),
             onClickStory = {
 
@@ -223,7 +276,9 @@ private fun MyNotVerifiedUserStoryItemPreview() {
                 imageUrl = "",
                 isVerified = false,
                 verifiedAt = "",
-                isMe = true
+                isMe = true,
+                viewedAt = "",
+                missionVerificationId = 0
             ),
             onClickStory = {
 
