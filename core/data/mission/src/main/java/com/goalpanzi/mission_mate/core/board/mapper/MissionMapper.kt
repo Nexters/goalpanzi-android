@@ -69,7 +69,9 @@ fun MissionVerificationResponse.toModel() : MissionVerification {
         nickname = nickname,
         characterType = characterType.toModel(),
         imageUrl = imageUrl,
-        verifiedAt = verifiedAt
+        verifiedAt = verifiedAt,
+        viewedAt = viewedAt,
+        missionVerificationId = missionVerificationId
     )
 }
 

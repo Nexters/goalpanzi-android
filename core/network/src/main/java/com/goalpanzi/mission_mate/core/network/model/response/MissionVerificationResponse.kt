@@ -7,5 +7,7 @@ data class MissionVerificationResponse(
     val nickname : String,
     val characterType : CharacterTypeResponse =CharacterTypeResponse.RABBIT,
     val imageUrl : String = "",
-    val verifiedAt : String = ""
+    val verifiedAt : String = "",
+    val missionVerificationId : Long = 0,
+    val viewedAt : String = ""
 )
