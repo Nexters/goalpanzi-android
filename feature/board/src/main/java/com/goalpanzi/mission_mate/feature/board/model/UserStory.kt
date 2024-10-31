@@ -35,7 +35,7 @@ data class UserStory(
     }
 
     val userStoryAlpha = when (userStoryType) {
-        UserStoryType.TRANSPARENT -> 0.3f
+        UserStoryType.TRANSPARENT -> 0.4f
         else -> 1f
     }
 

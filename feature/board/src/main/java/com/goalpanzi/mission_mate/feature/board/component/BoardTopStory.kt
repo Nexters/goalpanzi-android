@@ -109,8 +109,9 @@ fun UserStoryItem(
                             )
                     } else {
                         Modifier
-                            .border(3.dp, ColorWhite_FFFFFFFF.copy(alpha = userStory.userStoryAlpha), CircleShape)
                             .alpha(userStory.userStoryAlpha)
+                            .border(3.dp, ColorWhite_FFFFFFFF, CircleShape)
+
                     }
                 )
                 .paint(
