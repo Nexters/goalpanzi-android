@@ -101,8 +101,8 @@ fun NavGraphBuilder.boardFinishNavGraph(
         arguments = listOf(navArgument(missionIdArg) { type = NavType.LongType })
     ) {
         BoardFinishRoute(
-            onClickSetting = onClickSetting,
-            onClickOk = onClickOk
+            onSettingClick = onClickSetting,
+            onOkClick = onClickOk
         )
     }
 }
