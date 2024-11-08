@@ -208,7 +208,7 @@ fun BoardFinishScreen(
                         .fillMaxWidth()
                         .wrapContentHeight(),
                     buttonType = MissionMateButtonType.ACTIVE,
-                    textId = com.goalpanzi.mission_mate.feature.onboarding.R.string.start,
+                    textId = com.goalpanzi.mission_mate.feature.onboarding.R.string.confirm,
                     onClick = onClickOk
                 )
             }
