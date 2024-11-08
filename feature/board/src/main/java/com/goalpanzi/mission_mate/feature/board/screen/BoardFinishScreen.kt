@@ -1,5 +1,6 @@
 package com.goalpanzi.mission_mate.feature.board.screen
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -18,11 +19,15 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
@@ -33,15 +38,16 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.goalpanzi.mission_mate.core.designsystem.component.LottieImage
 import com.goalpanzi.mission_mate.core.designsystem.component.MissionMateButtonType
 import com.goalpanzi.mission_mate.core.designsystem.component.MissionMateTextButton
+import com.goalpanzi.mission_mate.core.designsystem.component.MissionMateTopAppBar
+import com.goalpanzi.mission_mate.core.designsystem.component.NavigationType
+import com.goalpanzi.mission_mate.core.designsystem.component.StableImage
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorGray1_FF404249
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorWhite_FFFFFFFF
 import com.goalpanzi.mission_mate.core.designsystem.theme.MissionMateTypography
-import com.goalpanzi.mission_mate.core.designsystem.component.MissionMateTopAppBar
-import com.goalpanzi.mission_mate.core.designsystem.component.NavigationType
 import com.goalpanzi.mission_mate.feature.board.R
 import com.goalpanzi.mission_mate.feature.board.model.CharacterUiModel
 import com.goalpanzi.mission_mate.feature.board.model.toCharacterUiModel
-import com.goalpanzi.mission_mate.core.designsystem.component.StableImage
+import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun BoardFinishRoute(
@@ -50,8 +56,10 @@ fun BoardFinishRoute(
     modifier: Modifier = Modifier,
     viewModel : BoardFinishViewModel = hiltViewModel()
 ) {
+    val context = LocalContext.current
     val rank by viewModel.rank.collectAsStateWithLifecycle()
     val userProfile by viewModel.profile.collectAsStateWithLifecycle()
+    var showProgress by rememberSaveable { mutableStateOf(false) }
 
     LaunchedEffect(key1 = Unit) {
         viewModel.getRankByMissionId()
@@ -62,13 +70,35 @@ fun BoardFinishRoute(
         viewModel.setMissionFinished()
     }
 
+    LaunchedEffect(Unit){
+        viewModel.completeMissionResultEvent.collectLatest {
+            when(it){
+                CompleteMissionEvent.Success -> {
+                    showProgress = false
+                    onClickOk()
+                }
+                CompleteMissionEvent.Error -> {
+                    showProgress = false
+                    Toast.makeText(
+                        context,
+                        context.getString(R.string.board_complete_error),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+                CompleteMissionEvent.Loading -> {
+                    showProgress = true
+                }
+            }
+        }
+    }
 
-    if(rank != null && userProfile != null){
+
+    if(rank != null && userProfile != null && !showProgress){
         BoardFinishScreen(
             modifier = modifier,
             rank = rank!!,
             characterUiModel = userProfile!!.characterType.toCharacterUiModel(),
-            onClickOk = onClickOk,
+            onClickOk = viewModel::completeMission,
             onClickSetting = onClickSetting
         )
     }else {

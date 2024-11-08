@@ -12,6 +12,7 @@ import com.goalpanzi.mission_mate.core.domain.mission.model.MissionRank
 import com.goalpanzi.mission_mate.core.domain.mission.model.MissionVerification
 import com.goalpanzi.mission_mate.core.domain.mission.model.MissionVerifications
 import com.goalpanzi.mission_mate.core.domain.mission.repository.MissionRepository
+import com.goalpanzi.mission_mate.core.network.model.request.CompleteMissionRequest
 import com.goalpanzi.mission_mate.core.network.service.MissionService
 import kotlinx.coroutines.flow.Flow
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -76,6 +77,12 @@ class MissionRepositoryImpl @Inject constructor(
         missionService.getMyMissionVerification(missionId, number)
     }.convert {
         it.toModel()
+    }
+
+    override suspend fun completeMission(missionId: Long): DomainResult<Unit>  = handleResult {
+        missionService.completeMission(
+            CompleteMissionRequest(missionId)
+        )
     }
 
     override fun clearMissionData(): Flow<Unit> = missionDataSource.clearMissionData()
