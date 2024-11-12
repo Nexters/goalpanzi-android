@@ -125,15 +125,9 @@ fun BlockImage(
         Spacer(modifier = modifier)
     }else {
         StableImage(
-            modifier = modifier.then(
-                if (isStartedMission && isPassed) {
-                    Modifier.clickable {
-                        onClickPassedBlock(index)
-                    }
-                } else {
-                    Modifier
-                }
-            ),
+            modifier = modifier.clickable(isStartedMission && isPassed && index != 0){
+                onClickPassedBlock(index)
+            } ,
             drawableResId = drawableRes,
             contentScale = ContentScale.FillWidth
         )
