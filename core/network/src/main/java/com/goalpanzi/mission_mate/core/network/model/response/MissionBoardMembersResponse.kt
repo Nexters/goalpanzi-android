@@ -4,7 +4,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class MissionBoardMembersResponse(
-    //val memberId : Long,
+    val memberId : Long,
     val nickname : String,
     val characterType : CharacterTypeResponse = CharacterTypeResponse.RABBIT
 )

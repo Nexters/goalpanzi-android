@@ -2,8 +2,8 @@ package com.goalpanzi.mission_mate.feature.board.component
 
 import android.annotation.SuppressLint
 import androidx.compose.animation.core.animateDpAsState
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.LocalOverscrollConfiguration
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -19,7 +19,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.verticalScroll
@@ -29,6 +28,7 @@ import androidx.compose.material.pullrefresh.PullRefreshState
 import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -102,7 +102,7 @@ fun Board(
     LaunchedEffect(myIndex) {
         scrollState.animateScrollTo(
             getPositionScrollToMyIndex(
-                myIndex = myIndex,
+                myIndex = if(myIndex in 3 .. 5) myIndex - 3 else myIndex,
                 numberOfColumns = numberOfColumns,
                 blockSize = (configuration.screenWidthDp - 48) / numberOfColumns,
                 localDensity = localDensity
@@ -176,33 +176,39 @@ fun Board(
                 modifier
             )
         }
+
         if (isVisiblePieces) {
-            Column(
-                modifier = modifier.modifierWithClipRect(
-                    scrollState = scrollState,
-                    isVisiblePieces = isVisiblePieces,
-                    innerModifier = Modifier
-                        .drawWithContent {
-                            clipRect(top = (size.height + navigationBarHeight.toPx() - bottomViewHeight.toPx() + 1.dp.toPx())) {
-                                this@drawWithContent.drawContent()
-                            }
-                        }
-                        .blur(10.dp, 10.dp)
-                )
-            ) {
-                Spacer(modifier = Modifier.height(refreshingSpacerSize))
-                BoardContent(
-                    missionBoards,
-                    missionDetail,
-                    numberOfColumns,
-                    boardPieces,
-                    profile,
-                    missionState,
-                    isVisiblePieces = isVisiblePieces,
-                    onClickPassedBlock = onClickPassedBlock,
-                    modifier
-                )
-            }
+            CompositionLocalProvider(
+                LocalOverscrollConfiguration provides null,
+                content = {
+                    Column(
+                        modifier = modifier.modifierWithClipRect(
+                            scrollState = scrollState,
+                            isVisiblePieces = isVisiblePieces,
+                            innerModifier = Modifier
+                                .drawWithContent {
+                                    clipRect(top = (size.height + navigationBarHeight.toPx() - bottomViewHeight.toPx() + 1.dp.toPx())) {
+                                        this@drawWithContent.drawContent()
+                                    }
+                                }
+                                .blur(10.dp, 10.dp)
+                        )
+                    ) {
+                        Spacer(modifier = Modifier.height(refreshingSpacerSize))
+                        BoardContent(
+                            missionBoards,
+                            missionDetail,
+                            numberOfColumns,
+                            boardPieces,
+                            profile,
+                            missionState,
+                            isVisiblePieces = isVisiblePieces,
+                            onClickPassedBlock = onClickPassedBlock,
+                            modifier
+                        )
+                    }
+                }
+            )
         }
         PullRefreshIndicator(
             refreshing = isRefreshLoading,
@@ -285,7 +291,7 @@ fun ColumnScope.BoardContent(
         }
         if (isVisiblePieces) {
             boardPieces.forEach { piece ->
-                key(piece.nickname) {
+                key(piece.memberId,piece.needToDraw) {
                     Piece(
                         boardPiece = piece,
                         sizePerBlock = width / numberOfColumns,

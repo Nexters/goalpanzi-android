@@ -43,6 +43,7 @@ fun MissionBoardResponse.toModel() : MissionBoard {
 
 fun MissionBoardMembersResponse.toModel() : MissionBoardMembers {
     return MissionBoardMembers(
+        memberId = memberId,
         nickname = nickname,
         characterType = characterType.toModel()
     )
@@ -69,7 +70,9 @@ fun MissionVerificationResponse.toModel() : MissionVerification {
         nickname = nickname,
         characterType = characterType.toModel(),
         imageUrl = imageUrl,
-        verifiedAt = verifiedAt
+        verifiedAt = verifiedAt,
+        viewedAt = viewedAt,
+        missionVerificationId = missionVerificationId
     )
 }
 

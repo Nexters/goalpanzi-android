@@ -6,5 +6,7 @@ data class MissionVerification(
     val nickname : String,
     val characterType : CharacterType = CharacterType.RABBIT,
     val imageUrl : String = "",
-    val verifiedAt : String = ""
+    val verifiedAt : String = "",
+    val missionVerificationId : Long = 0,
+    val viewedAt : String = ""
 )

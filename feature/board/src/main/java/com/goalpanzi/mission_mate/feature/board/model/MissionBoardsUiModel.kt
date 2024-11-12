@@ -29,17 +29,19 @@ fun MissionBoards.toUiModel() : MissionBoardsUiModel {
 fun MissionBoardsUiModel.toBoardPieces(
     profile: UserProfile?
 ) : List<BoardPiece> {
-    return missionBoardList.filter { block ->
-        block.missionBoardMembers.isNotEmpty()
-    }.map { block ->
-        BoardPiece(
-            index = block.number,
-            count = block.missionBoardMembers.size,
-            nickname = if(block.isMyPosition && profile != null) profile.nickname
-                       else block.missionBoardMembers.first().nickname,
-            isMe = block.isMyPosition,
-            drawableRes = if(block.isMyPosition && profile != null) profile.characterType.toCharacterUiModel().imageId
-                          else block.missionBoardMembers.first().characterType.toCharacterUiModel().imageId
-        )
-    }
+    return missionBoardList.map { block ->
+        block.missionBoardMembers.mapIndexed { index,  member ->
+            BoardPiece(
+                memberId = member.memberId,
+                index = block.number,
+                count = block.missionBoardMembers.size,
+                nickname = member.nickname,
+                isMe = block.isMyPosition,
+                drawableRes = member.characterType.toCharacterUiModel().imageId,
+                boardPieceType = if(block.missionBoardMembers.firstOrNull()?.memberId == member.memberId) BoardPieceType.INITIAL
+                                else BoardPieceType.HIDDEN,
+                order = index
+            )
+        }.reversed()
+    }.flatten()
 }

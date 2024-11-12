@@ -1,6 +1,7 @@
 package com.goalpanzi.mission_mate.core.network.service
 
 import com.goalpanzi.mission_mate.core.network.model.request.CompleteMissionRequest
+import com.goalpanzi.mission_mate.core.network.model.request.MissionVerificationsViewRequest
 import com.goalpanzi.mission_mate.core.network.model.response.MissionBoardsResponse
 import com.goalpanzi.mission_mate.core.network.model.response.MissionDetailResponse
 import com.goalpanzi.mission_mate.core.network.model.response.MissionRankResponse
@@ -33,6 +34,11 @@ interface MissionService {
     suspend fun getMissionVerifications(
         @Path("missionId") missionId: Long
     ) : Response<MissionVerificationsResponse>
+
+    @POST("/api/missions/verifications/view")
+    suspend fun viewVerification(
+        @Body body : MissionVerificationsViewRequest
+    ) : Response<MissionVerificationResponse>
 
     @DELETE("/api/missions/{missionId}")
     suspend fun deleteMission(

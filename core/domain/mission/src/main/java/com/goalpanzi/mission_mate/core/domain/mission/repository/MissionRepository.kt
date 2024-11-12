@@ -26,6 +26,8 @@ interface MissionRepository  {
 
     suspend fun completeMission(missionId : Long) : DomainResult<Unit>
 
+    suspend fun viewVerification(missionVerificationId : Long) : DomainResult<MissionVerification>
+
     fun clearMissionData() : Flow<Unit>
     fun setIsMissionJoined(data: Boolean) : Flow<Unit>
     fun getIsMissionJoined() : Flow<Boolean?>
