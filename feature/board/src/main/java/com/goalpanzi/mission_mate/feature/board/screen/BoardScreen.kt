@@ -201,7 +201,12 @@ fun BoardRoute(
         onClickTooltip = {
             viewModel.setViewedTooltip()
         },
-        onClickStory = onClickStory,
+        onClickStory = { story ->
+            onClickStory(story)
+            if(story.isVerified && !story.isViewed) {
+                viewModel.viewVerification(story.missionVerificationId)
+            }
+        },
         onClickMyVerificationBoardBlock = {
             viewModel.getMyMissionVerification(it)
         }

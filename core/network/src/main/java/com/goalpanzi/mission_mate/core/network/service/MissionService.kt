@@ -1,5 +1,6 @@
 package com.goalpanzi.mission_mate.core.network.service
 
+import com.goalpanzi.mission_mate.core.network.model.request.MissionVerificationsViewRequest
 import com.goalpanzi.mission_mate.core.network.model.response.MissionBoardsResponse
 import com.goalpanzi.mission_mate.core.network.model.response.MissionDetailResponse
 import com.goalpanzi.mission_mate.core.network.model.response.MissionRankResponse
@@ -7,6 +8,7 @@ import com.goalpanzi.mission_mate.core.network.model.response.MissionVerificatio
 import com.goalpanzi.mission_mate.core.network.model.response.MissionVerificationsResponse
 import okhttp3.MultipartBody
 import retrofit2.Response
+import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Multipart
@@ -31,6 +33,11 @@ interface MissionService {
     suspend fun getMissionVerifications(
         @Path("missionId") missionId: Long
     ) : Response<MissionVerificationsResponse>
+
+    @POST("/api/missions/verifications/view")
+    suspend fun viewVerification(
+        @Body body : MissionVerificationsViewRequest
+    ) : Response<MissionVerificationResponse>
 
     @DELETE("/api/missions/{missionId}")
     suspend fun deleteMission(

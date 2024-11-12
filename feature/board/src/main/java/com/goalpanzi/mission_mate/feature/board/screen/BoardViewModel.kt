@@ -11,6 +11,7 @@ import com.goalpanzi.mission_mate.core.domain.mission.usecase.GetMissionUseCase
 import com.goalpanzi.mission_mate.core.domain.mission.usecase.GetMissionVerificationsUseCase
 import com.goalpanzi.mission_mate.core.domain.mission.usecase.GetMyMissionVerificationUseCase
 import com.goalpanzi.mission_mate.core.domain.mission.usecase.VerifyMissionUseCase
+import com.goalpanzi.mission_mate.core.domain.mission.usecase.ViewVerificationUseCase
 import com.goalpanzi.mission_mate.core.domain.setting.usecase.GetViewedTooltipUseCase
 import com.goalpanzi.mission_mate.core.domain.setting.usecase.SetViewedTooltipUseCase
 import com.goalpanzi.mission_mate.core.domain.user.usecase.GetCachedMemberIdUseCase
@@ -38,6 +39,7 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.stateIn
@@ -57,7 +59,8 @@ class BoardViewModel @Inject constructor(
     private val profileUseCase: ProfileUseCase,
     private val setViewedTooltipUseCase: SetViewedTooltipUseCase,
     private val verifyMissionUseCase: VerifyMissionUseCase,
-    private val getMyMissionVerificationUseCase: GetMyMissionVerificationUseCase,
+    private val getMyMissionVerificationUseCase : GetMyMissionVerificationUseCase,
+    private val viewVerificationUseCase: ViewVerificationUseCase
 ) : ViewModel() {
 
     val missionId: Long = savedStateHandle.get<Long>("missionId")!!
@@ -255,7 +258,9 @@ class BoardViewModel @Inject constructor(
                                 imageUrl = it.data.imageUrl,
                                 isVerified = true,
                                 nickname = it.data.nickname,
-                                verifiedAt = it.data.verifiedAt
+                                verifiedAt = it.data.verifiedAt,
+                                viewedAt = it.data.viewedAt,
+                                missionVerificationId = it.data.missionVerificationId
                             )
                         )
                     }
@@ -265,6 +270,15 @@ class BoardViewModel @Inject constructor(
                     }
                 }
             }
+        }
+    }
+    
+    fun viewVerification(missionVerificationId : Long){
+        viewModelScope.launch {
+            viewVerificationUseCase(missionVerificationId)
+               .collectLatest {
+                   getMissionVerification()
+                }
         }
     }
 }
