@@ -52,7 +52,6 @@ import java.time.DayOfWeek
 import java.time.LocalDate
 
 @SuppressLint("UnrememberedMutableInteractionSource")
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun BoardSetupRoute(
     onSuccess : () -> Unit,

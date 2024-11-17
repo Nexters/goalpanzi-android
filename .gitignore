@@ -114,6 +114,7 @@ obj/
 .idea/assetWizardSettings.xml
 .idea/.gitignore
 .idea/gradle.xml
+.idea/codeStyles/
 
 deploymentTargetDropDown.xml
 

@@ -2,24 +2,18 @@ import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
-    alias(libs.plugins.android.application)
-    alias(libs.plugins.jetbrains.kotlin.android)
-    alias(libs.plugins.hilt.android)
-    alias(libs.plugins.kotlin.ksp)
+    id("missionmate.android.application")
 }
 
 android {
     namespace = "com.goalpanzi.mission_mate"
-    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.goalpanzi.mission_mate"
-        minSdk = 26
         targetSdk = 34
         versionCode = 5
         versionName = "1.0.2"
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary = true
         }
@@ -44,23 +38,6 @@ android {
                 "proguard-rules.pro"
             )
             isDebuggable = false
-        }
-    }
-    buildFeatures {
-        buildConfig = true
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
-    kotlin {
-        compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_17)
-        }
-    }
-    packaging {
-        resources {
-            excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
 }

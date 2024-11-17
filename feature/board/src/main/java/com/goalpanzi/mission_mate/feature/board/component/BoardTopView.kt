@@ -78,7 +78,6 @@ fun BoardTopView(
         BoardTopStory(
             modifier = Modifier.padding(top = 56.dp),
             userList = userList,
-            missionState = missionState,
             onClickStory = onClickStory
         )
         if(!viewedTooltip){

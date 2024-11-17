@@ -13,7 +13,6 @@ import com.goalpanzi.mission_mate.feature.onboarding.isAfterProfileCreateArg
 import com.goalpanzi.mission_mate.feature.onboarding.model.OnboardingResultEvent
 import com.goalpanzi.mission_mate.feature.onboarding.model.OnboardingUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow

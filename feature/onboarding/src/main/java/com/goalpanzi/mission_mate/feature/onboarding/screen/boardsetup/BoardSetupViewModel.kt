@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.goalpanzi.mission_mate.core.domain.common.DomainResult
 import com.goalpanzi.mission_mate.core.domain.mission.usecase.SetMissionJoinedUseCase
+import com.goalpanzi.mission_mate.core.domain.onboarding.model.CreateMissionBody
 import com.goalpanzi.mission_mate.core.domain.onboarding.usecase.CreateMissionUseCase
 import com.goalpanzi.mission_mate.feature.onboarding.model.BoardSetupResult
 import com.goalpanzi.mission_mate.feature.onboarding.model.VerificationTimeType
@@ -179,7 +180,7 @@ class BoardSetupViewModel @Inject constructor(
         }
 
         createMissionUseCase(
-            com.goalpanzi.mission_mate.core.domain.onboarding.model.CreateMissionBody(
+            CreateMissionBody(
                 description = missionTitle,
                 missionStartDate = formatLocalDateToString(startDate),
                 missionEndDate = formatLocalDateToString(endDate),

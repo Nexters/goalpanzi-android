@@ -1,12 +1,10 @@
 package com.goalpanzi.mission_mate.feature.login
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.goalpanzi.mission_mate.core.domain.auth.usecase.LoginUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel

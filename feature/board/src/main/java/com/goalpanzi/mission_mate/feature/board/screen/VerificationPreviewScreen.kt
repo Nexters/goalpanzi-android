@@ -1,6 +1,5 @@
 package com.goalpanzi.mission_mate.feature.board.screen
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
