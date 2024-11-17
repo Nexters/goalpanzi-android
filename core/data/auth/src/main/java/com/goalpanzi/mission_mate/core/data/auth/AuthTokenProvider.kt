@@ -2,6 +2,7 @@ package com.goalpanzi.mission_mate.core.data.auth
 
 import com.goalpanzi.mission_mate.core.datastore.datasource.AuthDataSource
 import com.goalpanzi.mission_mate.core.network.TokenProvider
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.firstOrNull
 import javax.inject.Inject
 
@@ -17,12 +18,10 @@ class AuthTokenProvider @Inject constructor(
     }
 
     override suspend fun setAccessToken(accessToken: String) {
-        authDataSource.setAccessToken(accessToken)
+        authDataSource.setAccessToken(accessToken).collect()
     }
 
     override suspend fun setRefreshToken(refreshToken: String) {
-        authDataSource.setRefreshToken(refreshToken)
+        authDataSource.setRefreshToken(refreshToken).collect()
     }
-
-
 }
