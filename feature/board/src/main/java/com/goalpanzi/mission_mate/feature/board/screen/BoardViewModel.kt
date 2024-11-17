@@ -42,6 +42,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
@@ -50,8 +51,8 @@ import javax.inject.Inject
 @HiltViewModel
 class BoardViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    getCachedMemberIdUseCase: GetCachedMemberIdUseCase,
     getViewedTooltipUseCase: GetViewedTooltipUseCase,
+    private val getCachedMemberIdUseCase: GetCachedMemberIdUseCase,
     private val getMissionUseCase: GetMissionUseCase,
     private val getMissionBoardsUseCase: GetMissionBoardsUseCase,
     private val getMissionVerificationsUseCase: GetMissionVerificationsUseCase,
@@ -154,10 +155,12 @@ class BoardViewModel @Inject constructor(
             }.collect {
                 when (it) {
                     is DomainResult.Success -> {
-                        _missionBoardUiModel.emit(MissionBoardUiModel.Success(it.data.toUiModel()))
+                        val myMemberId = getCachedMemberIdUseCase().first()
+
+                        _missionBoardUiModel.emit(MissionBoardUiModel.Success(it.data.toUiModel(myMemberId)))
 
                         val boardPieceList =
-                            it.data.toUiModel().toBoardPieces(profileUseCase.getProfile())
+                            it.data.toUiModel(myMemberId).toBoardPieces(profileUseCase.getProfile())
 
                         if (boardPieces.value.isEmpty()) {
                             _boardPieces.emit(boardPieceList)
