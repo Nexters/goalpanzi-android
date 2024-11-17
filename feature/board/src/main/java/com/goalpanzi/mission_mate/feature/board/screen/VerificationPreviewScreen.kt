@@ -1,11 +1,14 @@
 package com.goalpanzi.mission_mate.feature.board.screen
 
+import android.content.Context
+import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -25,6 +28,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -52,6 +56,8 @@ import com.goalpanzi.mission_mate.core.designsystem.component.StableImage
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorBlack_FF000000
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorWhite_FFFFFFFF
 import com.goalpanzi.mission_mate.core.designsystem.theme.MissionMateTypography
+import com.goalpanzi.mission_mate.core.designsystem.util.MultipleEventsCutter
+import com.goalpanzi.mission_mate.core.designsystem.util.get
 import com.goalpanzi.mission_mate.feature.board.R
 import com.goalpanzi.mission_mate.feature.board.model.CharacterUiModel
 import com.goalpanzi.mission_mate.feature.board.util.ImageCompressor
@@ -76,10 +82,12 @@ fun VerificationPreviewRoute(
                 UploadEvent.Loading -> {
                     showProgress = true
                 }
+
                 UploadEvent.Success -> {
                     showProgress = false
                     onUploadSuccess()
                 }
+
                 UploadEvent.Error -> {
                     showProgress = false
                 }
@@ -94,7 +102,7 @@ fun VerificationPreviewRoute(
     )
 
     if (showProgress) {
-       ProgressBar()
+        ProgressBar()
     }
 }
 
@@ -190,28 +198,45 @@ fun VerificationPreviewScreen(
                             )
                         }
                     }
-                    
-                    MissionMateButton(
-                        modifier = Modifier
-                            .align(Alignment.BottomCenter)
-                            .padding(horizontal = 24.dp, vertical = 36.dp)
-                            .fillMaxWidth()
-                            .navigationBarsPadding(),
-                        buttonType = MissionMateButtonType.ACTIVE,
-                        onClick = {
-                            val file = ImageCompressor.getCompressedImage(context, uiState.imageUrl.toUri())
-                            onClickUpload(file)
+                    UploadButton(
+                        context = context,
+                        filePath = uiState.imageUrl.toUri(),
+                        onClickUpload = {
+
                         }
-                    ) {
-                        Text(
-                            text = stringResource(id = R.string.upload),
-                            style = MissionMateTypography.body_xl_bold,
-                            color = ColorWhite_FFFFFFFF
-                        )
-                    }
+                    )
                 }
             }
         }
+    }
+}
+
+@Composable
+fun BoxScope.UploadButton(
+    context: Context,
+    filePath: Uri,
+    onClickUpload: (File) -> Unit
+) {
+    val multipleEventsCutter = remember { MultipleEventsCutter.get() }
+    MissionMateButton(
+        modifier = Modifier
+            .align(Alignment.BottomCenter)
+            .padding(horizontal = 24.dp, vertical = 36.dp)
+            .fillMaxWidth()
+            .navigationBarsPadding(),
+        buttonType = MissionMateButtonType.ACTIVE,
+        onClick = {
+            multipleEventsCutter.processEvent {
+                val file = ImageCompressor.getCompressedImage(context, filePath)
+                onClickUpload(file)
+            }
+        }
+    ) {
+        Text(
+            text = stringResource(id = R.string.upload),
+            style = MissionMateTypography.body_xl_bold,
+            color = ColorWhite_FFFFFFFF
+        )
     }
 }
 
