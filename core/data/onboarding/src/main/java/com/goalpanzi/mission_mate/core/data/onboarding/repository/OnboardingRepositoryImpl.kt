@@ -34,7 +34,7 @@ class OnboardingRepositoryImpl @Inject constructor(
             onboardingService.joinMission(JoinMissionRequest(invitationCode))
         }
 
-    override suspend fun getJoinedMissions(): DomainResult<Missions> = handleResult {
-        onboardingService.getJoinedMissions()
+    override suspend fun getJoinedMissions(filter : String): DomainResult<Missions> = handleResult {
+        onboardingService.getJoinedMissions(filter)
     }.convert { it.toModel() }
 }

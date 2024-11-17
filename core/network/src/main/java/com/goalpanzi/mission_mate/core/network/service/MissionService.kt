@@ -1,5 +1,6 @@
 package com.goalpanzi.mission_mate.core.network.service
 
+import com.goalpanzi.mission_mate.core.network.model.request.CompleteMissionRequest
 import com.goalpanzi.mission_mate.core.network.model.request.MissionVerificationsViewRequest
 import com.goalpanzi.mission_mate.core.network.model.response.MissionBoardsResponse
 import com.goalpanzi.mission_mate.core.network.model.response.MissionDetailResponse
@@ -61,4 +62,9 @@ interface MissionService {
         @Path("missionId") missionId: Long,
         @Path("number") number: Int
     ) : Response<MissionVerificationResponse>
+
+    @POST("/api/mission-members/complete")
+    suspend fun completeMission(
+        @Body request: CompleteMissionRequest
+    ): Response<Unit>
 }
