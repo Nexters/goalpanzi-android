@@ -1,7 +1,6 @@
 package com.goalpanzi.mission_mate.feature.board.component
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -41,13 +40,11 @@ import com.goalpanzi.mission_mate.core.designsystem.theme.MissionMateTypography
 import com.goalpanzi.mission_mate.core.designsystem.theme.MissionmateTheme
 import com.goalpanzi.mission_mate.core.designsystem.theme.OrangeGradient_FFFF5F3C_FFFFAE50
 import com.goalpanzi.mission_mate.feature.board.model.CharacterUiModel
-import com.goalpanzi.mission_mate.feature.board.model.MissionState
 import com.goalpanzi.mission_mate.feature.board.model.UserStory
 
 @Composable
 fun BoardTopStory(
     userList: List<UserStory>,
-    missionState : MissionState,
     modifier: Modifier = Modifier,
     onClickStory: (UserStory) -> Unit,
 ) {

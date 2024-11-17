@@ -58,7 +58,7 @@ import com.goalpanzi.mission_mate.feature.board.util.BoardManager
 import com.goalpanzi.mission_mate.feature.board.util.BoardManager.getPositionScrollToMyIndex
 import kotlin.math.min
 
-@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterialApi::class, ExperimentalFoundationApi::class)
 @Composable
 fun Board(
     scrollState: ScrollState,
@@ -304,7 +304,6 @@ fun ColumnScope.BoardContent(
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @SuppressLint("ModifierFactoryUnreferencedReceiver")
 fun Modifier.modifierWithClipRect(
     scrollState: ScrollState,
