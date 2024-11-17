@@ -4,6 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.goalpanzi.mission_mate.core.domain.common.DomainResult
+import com.goalpanzi.mission_mate.core.domain.common.model.mission.MissionStatus
 import com.goalpanzi.mission_mate.core.domain.common.model.user.UserProfile
 import com.goalpanzi.mission_mate.core.domain.mission.usecase.GetMissionJoinedUseCase
 import com.goalpanzi.mission_mate.core.domain.onboarding.usecase.GetJoinedMissionsUseCase
@@ -12,7 +13,6 @@ import com.goalpanzi.mission_mate.feature.onboarding.isAfterProfileCreateArg
 import com.goalpanzi.mission_mate.feature.onboarding.model.OnboardingResultEvent
 import com.goalpanzi.mission_mate.feature.onboarding.model.OnboardingUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -24,7 +24,6 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-@OptIn(ExperimentalCoroutinesApi::class)
 @HiltViewModel
 class OnboardingViewModel @Inject constructor(
     private val getJoinedMissionsUseCase: GetJoinedMissionsUseCase,
@@ -55,36 +54,35 @@ class OnboardingViewModel @Inject constructor(
     fun getJoinedMissions() {
         viewModelScope.launch {
             _onboardingUiModel.emit(OnboardingUiModel.Loading)
-
-            val isJoined = getMissionJoinedUseCase().first()
-
-            getJoinedMissionsUseCase()
-                .catch {
-                    _onboardingResultEvent.emit(OnboardingResultEvent.Error)
-                }.collect { result ->
-                    when (result) {
-                        is DomainResult.Success -> {
-                            result.data.missions.let { missions ->
-                                val missionInProgress = missions.lastOrNull { it.missionStatus in setOf("IN_PROGRESS", "CREATED") }
-                                if (missionInProgress != null) {
-                                    _onboardingResultEvent.emit(
-                                        OnboardingResultEvent.SuccessWithJoinedMissions(missionInProgress)
+            getJoinedMissionsUseCase(
+                filter = MissionStatus.statusString
+            ).catch {
+                _onboardingResultEvent.emit(OnboardingResultEvent.Error)
+            }.collect { result ->
+                when (result) {
+                    is DomainResult.Success -> {
+                        result.data.missions.let { missions ->
+                            val missionInProgress = missions.lastOrNull()
+                            if (missionInProgress != null) {
+                                _onboardingResultEvent.emit(
+                                    OnboardingResultEvent.SuccessWithJoinedMissions(
+                                        missionInProgress
                                     )
-                                } else {
-                                    _onboardingUiModel.emit(
-                                        OnboardingUiModel.Success(result.data.profile)
-                                    )
+                                )
+                            } else {
+                                _onboardingUiModel.emit(
+                                    OnboardingUiModel.Success(result.data.profile)
+                                )
 
-                                }
                             }
                         }
+                    }
 
-                        else -> {
-                            _onboardingResultEvent.emit(OnboardingResultEvent.Error)
-                        }
+                    else -> {
+                        _onboardingResultEvent.emit(OnboardingResultEvent.Error)
                     }
                 }
-
+            }
         }
     }
 }

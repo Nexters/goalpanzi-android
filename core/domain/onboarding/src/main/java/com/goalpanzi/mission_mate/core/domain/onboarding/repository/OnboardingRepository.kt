@@ -18,5 +18,5 @@ interface OnboardingRepository  {
         invitationCode: String
     ) : DomainResult<Unit>
 
-    suspend fun getJoinedMissions() : DomainResult<Missions>
+    suspend fun getJoinedMissions(filter : String) : DomainResult<Missions>
 }

@@ -10,7 +10,7 @@ import javax.inject.Inject
 class VerifyMissionUseCase @Inject constructor(
     private val missionRepository: MissionRepository
 ) {
-    suspend operator fun invoke(missionId: Long, image: File) : Flow<DomainResult<Unit>> = flow {
+    operator fun invoke(missionId: Long, image: File) : Flow<DomainResult<Unit>> = flow {
         emit(missionRepository.verifyMission(missionId, image))
     }
 }

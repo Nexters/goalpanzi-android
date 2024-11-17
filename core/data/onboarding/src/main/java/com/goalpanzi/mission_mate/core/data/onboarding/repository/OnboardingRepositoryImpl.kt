@@ -1,6 +1,6 @@
 package com.goalpanzi.mission_mate.core.data.onboarding.repository
 
-import com.goalpanzi.mission_mate.core.board.mapper.toModel
+import com.goalpanzi.mission_mate.core.mission.mapper.toModel
 import com.goalpanzi.mission_mate.core.data.common.handleResult
 import com.goalpanzi.mission_mate.core.data.onboarding.mapper.toModel
 import com.goalpanzi.mission_mate.core.data.onboarding.mapper.toRequest
@@ -34,7 +34,7 @@ class OnboardingRepositoryImpl @Inject constructor(
             onboardingService.joinMission(JoinMissionRequest(invitationCode))
         }
 
-    override suspend fun getJoinedMissions(): DomainResult<Missions> = handleResult {
-        onboardingService.getJoinedMissions()
+    override suspend fun getJoinedMissions(filter : String): DomainResult<Missions> = handleResult {
+        onboardingService.getJoinedMissions(filter)
     }.convert { it.toModel() }
 }

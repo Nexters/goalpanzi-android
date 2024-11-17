@@ -22,7 +22,7 @@ class LoginUseCase @Inject constructor(
                     authRepository.setRefreshToken(it.refreshToken).first()
                     userRepository.setMemberId(it.memberId).first()
                     (it.nickname to it.characterType).let { (nickname, character) ->
-                        if (nickname != null && character != null) {
+                        if (nickname != null) {
                             userRepository.setUserProfile(
                                 UserProfile(nickname, character)
                             ).first()

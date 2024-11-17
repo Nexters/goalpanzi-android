@@ -36,7 +36,7 @@ class BoardDetailViewModel @Inject constructor(
 
     private val memberId : StateFlow<Long?> = getCachedMemberIdUseCase().stateIn(
         viewModelScope,
-        started = SharingStarted.WhileSubscribed(500),
+        started = SharingStarted.WhileSubscribed(5000),
         initialValue = null
     )
 
