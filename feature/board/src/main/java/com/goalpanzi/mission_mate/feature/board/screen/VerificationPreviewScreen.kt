@@ -28,7 +28,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -82,12 +81,10 @@ fun VerificationPreviewRoute(
                 UploadEvent.Loading -> {
                     showProgress = true
                 }
-
                 UploadEvent.Success -> {
                     showProgress = false
                     onUploadSuccess()
                 }
-
                 UploadEvent.Error -> {
                     showProgress = false
                 }
@@ -102,7 +99,7 @@ fun VerificationPreviewRoute(
     )
 
     if (showProgress) {
-        ProgressBar()
+       ProgressBar()
     }
 }
 
@@ -201,9 +198,7 @@ fun VerificationPreviewScreen(
                     UploadButton(
                         context = context,
                         filePath = uiState.imageUrl.toUri(),
-                        onClickUpload = {
-
-                        }
+                        onClickUpload = onClickUpload
                     )
                 }
             }
@@ -245,7 +240,7 @@ fun VerificationPreviewLoading() {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(ColorWhite_FFFFFFFF)
+            .background(Color.Transparent)
             .statusBarsPadding()
             .navigationBarsPadding()
             .focusable()
