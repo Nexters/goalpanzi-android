@@ -51,6 +51,8 @@ import com.goalpanzi.mission_mate.feature.board.model.uimodel.MissionBoardUiMode
 import com.goalpanzi.mission_mate.feature.board.model.uimodel.MissionUiModel
 import com.goalpanzi.mission_mate.feature.board.model.uimodel.MissionVerificationUiModel
 import com.goalpanzi.mission_mate.core.designsystem.component.StableImage
+import com.goalpanzi.mission_mate.feature.board.component.dialog.InvalidMissionErrorDialog
+import com.goalpanzi.mission_mate.feature.board.model.MissionError
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -83,6 +85,7 @@ fun BoardRoute(
         onRefresh = viewModel::refreshMissionData
     )
     var isShownDeleteMissionDialog by remember { mutableStateOf(false) }
+    var isShownNotLoadedErrorDialog by remember { mutableStateOf(false) }
     var isShownBoardRewardDialog by remember { mutableStateOf<BoardReward?>(null) }
     var isShownInvitationCodeDialog by remember { mutableStateOf(false) }
 
@@ -123,11 +126,19 @@ fun BoardRoute(
             }
         }
         launch {
-            viewModel.missionError.collect {
-                if(it != null){
-                    Toast.makeText(context,context.getString(R.string.board_mission_not_exist), Toast.LENGTH_SHORT).show()
-                    onNavigateOnboarding()
-                    return@collect
+            viewModel.missionError.collect { error ->
+                when(error){
+                    MissionError.INVALID_MISSION -> {
+                        isShownNotLoadedErrorDialog = true
+                        viewModel.resetMissionError()
+                    }
+                    MissionError.NOT_EXIST -> {
+                        Toast.makeText(context,context.getString(R.string.board_mission_not_exist), Toast.LENGTH_SHORT).show()
+                        viewModel.resetMissionError()
+                        onNavigateOnboarding()
+                        return@collect
+                    }
+                    else -> { }
                 }
             }
         }
@@ -139,6 +150,18 @@ fun BoardRoute(
         }else if(missionState == MissionState.POST_END){
             onNavigateFinish(viewModel.missionId)
         }
+    }
+
+    if (isShownNotLoadedErrorDialog) {
+        InvalidMissionErrorDialog(
+            onDismissRequest = {
+                isShownNotLoadedErrorDialog = false
+            },
+            onClickOk = {
+                isShownNotLoadedErrorDialog = false
+                viewModel.fetchMissionData()
+            }
+        )
     }
 
     if (isShownDeleteMissionDialog) {

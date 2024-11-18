@@ -70,7 +70,7 @@ class BoardViewModel @Inject constructor(
 
     val viewedToolTip: StateFlow<Boolean> = getViewedTooltipUseCase().stateIn(
         viewModelScope,
-        started = SharingStarted.WhileSubscribed(500),
+        started = SharingStarted.WhileSubscribed(5_000),
         initialValue = true
     )
 
@@ -108,7 +108,7 @@ class BoardViewModel @Inject constructor(
             memberId == mission.missionDetail.hostMemberId
         }.stateIn(
             viewModelScope,
-            started = SharingStarted.WhileSubscribed(500),
+            started = SharingStarted.WhileSubscribed(5_000),
             initialValue = false
         )
 
@@ -121,7 +121,7 @@ class BoardViewModel @Inject constructor(
             getMissionState(missionBoard, mission, missionVerification)
         }.stateIn(
             scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(500),
+            started = SharingStarted.WhileSubscribed(5_000),
             initialValue = MissionState.LOADING
         )
     private val _boardRewardEvent = MutableSharedFlow<BoardReward?>()
@@ -194,7 +194,7 @@ class BoardViewModel @Inject constructor(
 
                     else -> {
                         _missionBoardUiModel.emit(MissionBoardUiModel.Error)
-                        if(!isSameAsLastMission()) _missionError.emit(MissionError.NOT_EXIST)
+                        handleMissionError(isSameAsLastMission())
                     }
                 }
             }
@@ -211,7 +211,7 @@ class BoardViewModel @Inject constructor(
 
                 else -> {
                     _missionUiModel.emit(MissionUiModel.Error)
-                    if(!isSameAsLastMission()) _missionError.emit(MissionError.NOT_EXIST)
+                    handleMissionError(isSameAsLastMission())
                 }
             }
         }
@@ -228,7 +228,7 @@ class BoardViewModel @Inject constructor(
 
                 else -> {
                     _missionVerificationUiModel.emit(MissionVerificationUiModel.Error)
-                    if(!isSameAsLastMission()) _missionError.emit(MissionError.NOT_EXIST)
+                    handleMissionError(isSameAsLastMission())
                 }
             }
         }
@@ -291,6 +291,15 @@ class BoardViewModel @Inject constructor(
                     getMissionVerification()
                 }
         }
+    }
+
+    fun resetMissionError() {
+        _missionError.value = null
+    }
+
+    private suspend fun handleMissionError(isSameAsLastMission : Boolean){
+        if(isSameAsLastMission) _missionError.emit(MissionError.INVALID_MISSION)
+        else _missionError.emit(MissionError.NOT_EXIST)
     }
 
     private suspend fun isSameAsLastMission(): Boolean {
