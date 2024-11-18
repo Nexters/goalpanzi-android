@@ -28,6 +28,7 @@ dependencies {
     implementation(project(":core:domain:mission"))
     implementation(project(":core:domain:common"))
     implementation(project(":core:domain:auth"))
+    implementation(project(":core:domain:onboarding"))
     implementation(project(":core:ui"))
 
 }
