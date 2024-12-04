@@ -4,14 +4,15 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.goalpanzi.mission_mate.core.domain.common.DomainResult
+import com.goalpanzi.mission_mate.core.domain.common.model.mission.MissionStatus.Companion.statusString
 import com.goalpanzi.mission_mate.core.domain.mission.model.BoardReward
 import com.goalpanzi.mission_mate.core.domain.mission.usecase.DeleteMissionUseCase
 import com.goalpanzi.mission_mate.core.domain.mission.usecase.GetMissionBoardsUseCase
 import com.goalpanzi.mission_mate.core.domain.mission.usecase.GetMissionUseCase
 import com.goalpanzi.mission_mate.core.domain.mission.usecase.GetMissionVerificationsUseCase
 import com.goalpanzi.mission_mate.core.domain.mission.usecase.GetMyMissionVerificationUseCase
-import com.goalpanzi.mission_mate.core.domain.mission.usecase.VerifyMissionUseCase
 import com.goalpanzi.mission_mate.core.domain.mission.usecase.ViewVerificationUseCase
+import com.goalpanzi.mission_mate.core.domain.onboarding.usecase.GetJoinedMissionsUseCase
 import com.goalpanzi.mission_mate.core.domain.setting.usecase.GetViewedTooltipUseCase
 import com.goalpanzi.mission_mate.core.domain.setting.usecase.SetViewedTooltipUseCase
 import com.goalpanzi.mission_mate.core.domain.user.usecase.GetCachedMemberIdUseCase
@@ -43,6 +44,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
@@ -59,8 +61,8 @@ class BoardViewModel @Inject constructor(
     private val deleteMissionUseCase: DeleteMissionUseCase,
     private val profileUseCase: ProfileUseCase,
     private val setViewedTooltipUseCase: SetViewedTooltipUseCase,
-    private val verifyMissionUseCase: VerifyMissionUseCase,
-    private val getMyMissionVerificationUseCase : GetMyMissionVerificationUseCase,
+    private val getJoinedMissionsUseCase: GetJoinedMissionsUseCase,
+    private val getMyMissionVerificationUseCase: GetMyMissionVerificationUseCase,
     private val viewVerificationUseCase: ViewVerificationUseCase
 ) : ViewModel() {
 
@@ -68,7 +70,7 @@ class BoardViewModel @Inject constructor(
 
     val viewedToolTip: StateFlow<Boolean> = getViewedTooltipUseCase().stateIn(
         viewModelScope,
-        started = SharingStarted.WhileSubscribed(500),
+        started = SharingStarted.WhileSubscribed(5_000),
         initialValue = true
     )
 
@@ -106,7 +108,7 @@ class BoardViewModel @Inject constructor(
             memberId == mission.missionDetail.hostMemberId
         }.stateIn(
             viewModelScope,
-            started = SharingStarted.WhileSubscribed(500),
+            started = SharingStarted.WhileSubscribed(5_000),
             initialValue = false
         )
 
@@ -119,7 +121,7 @@ class BoardViewModel @Inject constructor(
             getMissionState(missionBoard, mission, missionVerification)
         }.stateIn(
             scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(500),
+            started = SharingStarted.WhileSubscribed(5_000),
             initialValue = MissionState.LOADING
         )
     private val _boardRewardEvent = MutableSharedFlow<BoardReward?>()
@@ -157,7 +159,13 @@ class BoardViewModel @Inject constructor(
                     is DomainResult.Success -> {
                         val myMemberId = getCachedMemberIdUseCase().first()
 
-                        _missionBoardUiModel.emit(MissionBoardUiModel.Success(it.data.toUiModel(myMemberId)))
+                        _missionBoardUiModel.emit(
+                            MissionBoardUiModel.Success(
+                                it.data.toUiModel(
+                                    myMemberId
+                                )
+                            )
+                        )
 
                         val boardPieceList =
                             it.data.toUiModel(myMemberId).toBoardPieces(profileUseCase.getProfile())
@@ -166,7 +174,7 @@ class BoardViewModel @Inject constructor(
                             _boardPieces.emit(boardPieceList)
                         } else {
                             val isMoved =
-                                boardPieces.value.find { it.isMe }?.index?.plus(1) ==  boardPieceList.find { it.isMe }?.index
+                                boardPieces.value.find { it.isMe }?.index?.plus(1) == boardPieceList.find { it.isMe }?.index
 
                             val newList = PieceManager.getBoardPieces(
                                 boardPieces.value,
@@ -175,7 +183,7 @@ class BoardViewModel @Inject constructor(
                             _boardPieces.emit(
                                 newList
                             )
-                            if(isMoved){
+                            if (isMoved) {
                                 delay(550)
                                 _boardRewardEvent.emit(
                                     it.data.missionBoards.find { it.isMyPosition }?.reward
@@ -186,7 +194,7 @@ class BoardViewModel @Inject constructor(
 
                     else -> {
                         _missionBoardUiModel.emit(MissionBoardUiModel.Error)
-                        _missionError.emit(MissionError.NOT_EXIST)
+                        handleMissionError(isSameAsLastMission())
                     }
                 }
             }
@@ -203,7 +211,7 @@ class BoardViewModel @Inject constructor(
 
                 else -> {
                     _missionUiModel.emit(MissionUiModel.Error)
-                    _missionError.emit(MissionError.NOT_EXIST)
+                    handleMissionError(isSameAsLastMission())
                 }
             }
         }
@@ -220,7 +228,7 @@ class BoardViewModel @Inject constructor(
 
                 else -> {
                     _missionVerificationUiModel.emit(MissionVerificationUiModel.Error)
-                    _missionError.emit(MissionError.NOT_EXIST)
+                    handleMissionError(isSameAsLastMission())
                 }
             }
         }
@@ -275,13 +283,32 @@ class BoardViewModel @Inject constructor(
             }
         }
     }
-    
-    fun viewVerification(missionVerificationId : Long){
+
+    fun viewVerification(missionVerificationId: Long) {
         viewModelScope.launch {
             viewVerificationUseCase(missionVerificationId)
-               .collectLatest {
-                   getMissionVerification()
+                .collectLatest {
+                    getMissionVerification()
                 }
+        }
+    }
+
+    fun resetMissionError() {
+        _missionError.value = null
+    }
+
+    private suspend fun handleMissionError(isSameAsLastMission : Boolean){
+        if(isSameAsLastMission) _missionError.emit(MissionError.INVALID_MISSION)
+        else _missionError.emit(MissionError.NOT_EXIST)
+    }
+
+    private suspend fun isSameAsLastMission(): Boolean {
+        return when (val result = getJoinedMissionsUseCase(filter = statusString).firstOrNull()) {
+            is DomainResult.Success -> {
+                result.data.missions.lastOrNull()?.missionId == missionId
+            }
+
+            else -> false
         }
     }
 }
