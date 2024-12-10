@@ -40,13 +40,15 @@ import com.goalpanzi.mission_mate.core.designsystem.theme.MissionMateTypography
 import com.goalpanzi.mission_mate.core.designsystem.theme.MissionmateTheme
 import com.goalpanzi.mission_mate.core.designsystem.theme.OrangeGradient_FFFF5F3C_FFFFAE50
 import com.goalpanzi.mission_mate.feature.board.model.CharacterUiModel
+import com.goalpanzi.mission_mate.feature.board.model.MissionState
 import com.goalpanzi.mission_mate.feature.board.model.UserStory
 
 @Composable
 fun BoardTopStory(
     userList: List<UserStory>,
-    modifier: Modifier = Modifier,
+    missionState : MissionState,
     onClickStory: (UserStory) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     LazyRow(
         modifier = modifier,
@@ -57,6 +59,7 @@ fun BoardTopStory(
             items(userList) { userStory ->
                 UserStoryItem(
                     userStory = userStory,
+                    isProgressMission = missionState.isVisiblePiece(),
                     onClickStory = onClickStory
                 )
             }
@@ -77,13 +80,14 @@ fun BoardTopStory(
 fun UserStoryItem(
     userStory: UserStory,
     onClickStory: (UserStory) -> Unit,
+    isProgressMission: Boolean,
     modifier: Modifier = Modifier,
 ) {
     Box(
         modifier = modifier
             .height(98.dp)
             .widthIn(min = 70.dp)
-            .alpha(userStory.userStoryAlpha),
+            .alpha(if(!isProgressMission && userStory.isMe) 1f else userStory.userStoryAlpha),
         contentAlignment = Alignment.TopCenter
     ) {
         StableImage(
@@ -168,6 +172,7 @@ private fun VerifiedUserStoryItemPreview() {
                 viewedAt = "",
                 missionVerificationId = 0
             ),
+            isProgressMission = true,
             onClickStory = {
 
             }
@@ -190,6 +195,7 @@ private fun VerifiedViewedUserStoryItemPreview() {
                 viewedAt = "2024-10-31T09:48:18.399Z",
                 missionVerificationId = 0
             ),
+            isProgressMission = true,
             onClickStory = {
 
             }
@@ -211,6 +217,7 @@ private fun NotVerifiedUserStoryItemPreview() {
                 viewedAt = "",
                 missionVerificationId = 0
             ),
+            isProgressMission = true,
             onClickStory = {
 
             }
@@ -234,6 +241,7 @@ private fun MyVerifiedUserStoryItemPreview() {
                 viewedAt = "",
                 missionVerificationId = 0
             ),
+            isProgressMission = true,
             onClickStory = {
 
             }
@@ -256,6 +264,7 @@ private fun MyVerifiedViewedUserStoryItemPreview() {
                 viewedAt = "2024-10-31T09:48:18.399Z",
                 missionVerificationId = 0
             ),
+            isProgressMission = true,
             onClickStory = {
 
             }
@@ -278,6 +287,7 @@ private fun MyNotVerifiedUserStoryItemPreview() {
                 viewedAt = "",
                 missionVerificationId = 0
             ),
+            isProgressMission = true,
             onClickStory = {
 
             }
