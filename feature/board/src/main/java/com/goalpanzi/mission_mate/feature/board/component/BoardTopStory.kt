@@ -82,7 +82,8 @@ fun UserStoryItem(
     Box(
         modifier = modifier
             .height(98.dp)
-            .widthIn(min = 70.dp),
+            .widthIn(min = 70.dp)
+            .alpha(userStory.userStoryAlpha),
         contentAlignment = Alignment.TopCenter
     ) {
         StableImage(
@@ -106,7 +107,6 @@ fun UserStoryItem(
                             )
                     } else {
                         Modifier
-                            .alpha(userStory.userStoryAlpha)
                             .border(3.dp, ColorWhite_FFFFFFFF, CircleShape)
 
                     }
