@@ -34,15 +34,16 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.goalpanzi.mission_mate.core.designsystem.component.MissionMateDialog
+import com.goalpanzi.mission_mate.core.designsystem.component.MissionMateTopAppBar
+import com.goalpanzi.mission_mate.core.designsystem.component.NavigationType
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorGray1_FF404249
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorGray3_FF727484
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorGray4_FFE5E5E5
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorWhite_FFFFFFFF
 import com.goalpanzi.mission_mate.core.designsystem.theme.MissionMateTypography
-import com.goalpanzi.mission_mate.core.designsystem.component.MissionMateTopAppBar
-import com.goalpanzi.mission_mate.core.designsystem.component.NavigationType
 import com.goalpanzi.mission_mate.feature.setting.Event
 import com.goalpanzi.mission_mate.feature.setting.Util
+import com.goalpanzi.mission_mate.feature.setting.Util.presentNotificationSetting
 import com.luckyoct.feature.setting.R
 import kotlinx.coroutines.flow.collectLatest
 
@@ -56,6 +57,7 @@ fun SettingRoute(
     onLogout: () -> Unit,
     viewModel: SettingViewModel = hiltViewModel()
 ) {
+    val context = LocalContext.current
     val showLogoutDialog = remember { mutableStateOf(false) }
     val showDeleteAccountDialog = remember { mutableStateOf(false) }
 
@@ -88,6 +90,7 @@ fun SettingRoute(
         modifier = modifier,
         onBackClick = { onBackClick() },
         onClickProfileSetting = { onClickProfileSetting() },
+        onClickNotification = { presentNotificationSetting(context) },
         onClickServicePolicy = { onClickServicePolicy() },
         onClickPrivacyPolicy = { onClickPrivacyPolicy() },
         onClickLogout = { showLogoutDialog.value = true },
@@ -100,6 +103,7 @@ fun SettingScreen(
     modifier: Modifier = Modifier,
     onBackClick: () -> Unit,
     onClickProfileSetting: () -> Unit,
+    onClickNotification: () -> Unit,
     onClickServicePolicy: () -> Unit,
     onClickPrivacyPolicy: () -> Unit,
     onClickLogout: () -> Unit,
@@ -139,6 +143,10 @@ fun SettingScreen(
             SettingContent(
                 titleRes = R.string.setting_profile,
                 onClick = { onClickProfileSetting() }
+            )
+            SettingContent(
+                titleRes = R.string.setting_notification,
+                onClick = { onClickNotification() }
             )
             Divider()
             SettingHeader(titleRes = R.string.version_info)
@@ -294,6 +302,7 @@ fun SettingScreenPreview() {
     SettingScreen(
         onBackClick = {},
         onClickProfileSetting = {},
+        onClickNotification = {},
         onClickServicePolicy = {},
         onClickPrivacyPolicy = {},
         onClickLogout = {},
