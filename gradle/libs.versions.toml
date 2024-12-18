@@ -51,7 +51,7 @@ material = "1.12.0"
 
 ## Google Service
 google-service = "4.4.2"
-firebase = "33.1.2"
+firebase-bom = "33.6.0"
 
 ## Lottie
 lottie-compose = "6.5.0"
@@ -128,7 +128,9 @@ google-id = { group = "com.google.android.libraries.identity.googleid", name = "
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 
 ## Firebase
-firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebase" }
+firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebase-bom" }
+firebase-messaging = { group = "com.google.firebase", name = "firebase-messaging" }
+firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics" }
 
 ## Lottie
 lottie-compose = { group = "com.airbnb.android", name = "lottie-compose", version.ref = "lottie-compose"}

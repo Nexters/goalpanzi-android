@@ -34,4 +34,9 @@ class MissionMateNotificationManager @Inject constructor(
 
         notificationManager.notify(MISSION_MATE_NOTIFICATION_DEFAULT_ID, notificationBuilder.build())
     }
+
+    companion object {
+        const val DEFAULT_TITLE = "Mission Mate"
+        const val DEFAULT_DESCRIPTION = "Mission Mate"
+    }
 }
