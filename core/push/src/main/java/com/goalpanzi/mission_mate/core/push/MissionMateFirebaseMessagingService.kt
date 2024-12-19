@@ -2,6 +2,7 @@ package com.goalpanzi.mission_mate.core.push
 
 import android.app.PendingIntent
 import android.content.Intent
+import android.util.Log
 import com.goalpanzi.mission_mate.core.notification.MissionMateNotificationManager
 import com.goalpanzi.mission_mate.core.notification.model.NotificationData
 import com.goalpanzi.mission_mate.feature.main.MainActivity
@@ -20,9 +21,10 @@ class MissionMateFirebaseMessagingService : FirebaseMessagingService() {
 
     override fun onMessageReceived(message: RemoteMessage) {
         super.onMessageReceived(message)
-        message.data.let { data ->
-            val title = data[TITLE_KEY] ?: MissionMateNotificationManager.DEFAULT_TITLE
-            val description = data[DESCRIPTION_KEY] ?: MissionMateNotificationManager.DEFAULT_DESCRIPTION
+
+        message.notification?.let { notificationMessage ->
+            val title = notificationMessage.title ?: MissionMateNotificationManager.DEFAULT_TITLE
+            val description = notificationMessage.body ?: MissionMateNotificationManager.DEFAULT_DESCRIPTION
 
             sendNotification(title, description)
         }
