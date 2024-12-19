@@ -10,12 +10,16 @@ import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.layout.wrapContentWidth
@@ -53,6 +57,7 @@ import coil.request.ImageRequest
 import com.goalpanzi.mission_mate.core.designsystem.component.MissionMateButton
 import com.goalpanzi.mission_mate.core.designsystem.component.MissionMateButtonType
 import com.goalpanzi.mission_mate.core.designsystem.component.StableImage
+import com.goalpanzi.mission_mate.core.designsystem.ext.clickableWithoutRipple
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorBlack_FF000000
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorWhite_FFFFFFFF
 import com.goalpanzi.mission_mate.core.designsystem.theme.MissionMateTypography
@@ -113,31 +118,67 @@ fun VerificationPreviewScreen(
     val context = LocalContext.current
     val dateTime = LocalDateTime.now()
     val formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd")
+    val statusBarPaddingValue = WindowInsets.statusBars.asPaddingValues().calculateTopPadding()
+    var isVisibleSpacer by remember { mutableStateOf(true) }
 
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(ColorWhite_FFFFFFFF)
             .navigationBarsPadding()
     ) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .statusBarsPadding()
-        ) {
-            when (uiState) {
-                VerificationPreviewUiState.Loading -> VerificationPreviewLoading()
-                is VerificationPreviewUiState.Success -> {
+        when (uiState) {
+            VerificationPreviewUiState.Loading -> VerificationPreviewLoading()
+            is VerificationPreviewUiState.Success -> {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(ColorBlack_FF000000)
+                        .statusBarsPadding()
+                ) {
+
                     AsyncImage(
                         model = ImageRequest.Builder(context)
                             .data(uiState.imageUrl)
                             .build(),
                         contentDescription = null,
-                        modifier = Modifier.fillMaxSize(),
-                        contentScale = ContentScale.FillBounds,
+                        modifier = Modifier.fillMaxSize().clickableWithoutRipple {
+                            isVisibleSpacer = !isVisibleSpacer
+                        },
+                        contentScale = ContentScale.Fit,
                         filterQuality = FilterQuality.None
                     )
 
+
+
+                    MissionMateButton(
+                        modifier = Modifier
+                            .align(Alignment.BottomCenter)
+                            .padding(horizontal = 24.dp, vertical = 36.dp)
+                            .fillMaxWidth()
+                            .navigationBarsPadding(),
+                        buttonType = MissionMateButtonType.ACTIVE,
+                        onClick = {
+                            val file = ImageCompressor.getCompressedImage(
+                                context,
+                                uiState.imageUrl.toUri()
+                            )
+                            onClickUpload(file)
+                        }
+                    ) {
+                        Text(
+                            text = stringResource(id = R.string.upload),
+                            style = MissionMateTypography.body_xl_bold,
+                            color = ColorWhite_FFFFFFFF
+                        )
+                    }
+                }
+                if (isVisibleSpacer) {
+                    Spacer(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(statusBarPaddingValue + 80.dp)
+                            .background(ColorBlack_FF000000.copy(alpha = 0.7f))
+                    )
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -149,6 +190,7 @@ fun VerificationPreviewScreen(
                                     )
                                 )
                             )
+                            .statusBarsPadding()
                             .height(93.dp)
                             .padding(horizontal = 24.dp, vertical = 14.dp)
                     ) {
@@ -186,7 +228,10 @@ fun VerificationPreviewScreen(
                         )
 
                         IconButton(
-                            onClick = onClickClose,
+                            onClick = {
+                                onClickClose()
+                                //setStatusBar(context, true)
+                            },
                             modifier = Modifier.wrapContentSize()
                         ) {
                             Icon(
@@ -196,6 +241,7 @@ fun VerificationPreviewScreen(
                             )
                         }
                     }
+
                     UploadButton(
                         context = context,
                         filePath = uiState.imageUrl.toUri(),
@@ -257,6 +303,7 @@ fun VerificationPreviewLoading() {
 fun ProgressBar() {
     Box(
         modifier = Modifier
+            .fillMaxSize()
             .statusBarsPadding()
             .navigationBarsPadding()
     ) {
