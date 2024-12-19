@@ -1,5 +1,8 @@
 package com.goalpanzi.mission_mate.feature.onboarding.screen
 
+import android.Manifest
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -39,23 +42,28 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.goalpanzi.mission_mate.core.designsystem.component.MissionMateDialog
+import com.goalpanzi.mission_mate.core.designsystem.component.MissionMateTopAppBar
+import com.goalpanzi.mission_mate.core.designsystem.component.NavigationType
+import com.goalpanzi.mission_mate.core.designsystem.component.OutlinedTextChip
+import com.goalpanzi.mission_mate.core.designsystem.component.StableImage
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorGray1_FF404249
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorGray2_FF4F505C
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorWhite_FFFFFFFF
 import com.goalpanzi.mission_mate.core.designsystem.theme.MissionMateTypography
-import com.goalpanzi.mission_mate.core.designsystem.component.MissionMateTopAppBar
-import com.goalpanzi.mission_mate.core.designsystem.component.NavigationType
 import com.goalpanzi.mission_mate.core.domain.common.model.user.CharacterType
 import com.goalpanzi.mission_mate.core.domain.common.model.user.UserProfile
 import com.goalpanzi.mission_mate.feature.onboarding.R
 import com.goalpanzi.mission_mate.feature.onboarding.component.OnboardingNavigationButton
-import com.goalpanzi.mission_mate.core.designsystem.component.OutlinedTextChip
-import com.goalpanzi.mission_mate.core.designsystem.component.StableImage
 import com.goalpanzi.mission_mate.feature.onboarding.model.OnboardingResultEvent
 import com.goalpanzi.mission_mate.feature.onboarding.model.OnboardingUiModel
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.isGranted
+import com.google.accompanist.permissions.rememberPermissionState
 import kotlinx.coroutines.flow.collectLatest
 import com.goalpanzi.mission_mate.core.designsystem.R as designSystemResource
 
+@RequiresApi(Build.VERSION_CODES.TIRAMISU)
+@OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun OnboardingRoute(
     modifier: Modifier = Modifier,
@@ -67,6 +75,8 @@ fun OnboardingRoute(
 ) {
     val onboardingUiModel by viewModel.onboardingUiModel.collectAsStateWithLifecycle()
     var profileCreateSuccessData by remember { mutableStateOf<UserProfile?>(null) }
+    val notificationPermissionState =
+        rememberPermissionState(Manifest.permission.POST_NOTIFICATIONS)
 
     LaunchedEffect(key1 = Unit) {
         viewModel.getJoinedMissions()
@@ -87,6 +97,12 @@ fun OnboardingRoute(
     LaunchedEffect(key1 = Unit) {
         viewModel.profileCreateSuccessEvent.collectLatest {
             it?.let { profileCreateSuccessData = it }
+        }
+    }
+
+    LaunchedEffect(notificationPermissionState.status.isGranted) {
+        if (!notificationPermissionState.status.isGranted) {
+            notificationPermissionState.launchPermissionRequest()
         }
     }
 

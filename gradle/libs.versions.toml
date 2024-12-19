@@ -1,5 +1,6 @@
 [versions]
 ## Android gradle plugin
+accompanistPermissions = "0.37.0"
 agp = "8.4.2"
 
 ## Kotlin
@@ -131,6 +132,9 @@ material = { group = "com.google.android.material", name = "material", version.r
 firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebase-bom" }
 firebase-messaging = { group = "com.google.firebase", name = "firebase-messaging" }
 firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics" }
+
+## Google Accompanist
+google-accompanist-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "accompanistPermissions" }
 
 ## Lottie
 lottie-compose = { group = "com.airbnb.android", name = "lottie-compose", version.ref = "lottie-compose"}
