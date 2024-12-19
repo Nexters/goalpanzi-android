@@ -1,8 +1,14 @@
 package com.goalpanzi.mission_mate.feature.board.screen
 
+import android.content.Context
+import android.net.Uri
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
@@ -55,6 +61,8 @@ import com.goalpanzi.mission_mate.core.designsystem.ext.clickableWithoutRipple
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorBlack_FF000000
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorWhite_FFFFFFFF
 import com.goalpanzi.mission_mate.core.designsystem.theme.MissionMateTypography
+import com.goalpanzi.mission_mate.core.designsystem.util.MultipleEventsCutter
+import com.goalpanzi.mission_mate.core.designsystem.util.get
 import com.goalpanzi.mission_mate.feature.board.R
 import com.goalpanzi.mission_mate.feature.board.model.CharacterUiModel
 import com.goalpanzi.mission_mate.feature.board.util.ImageCompressor
@@ -234,10 +242,43 @@ fun VerificationPreviewScreen(
                         }
                     }
 
+                    UploadButton(
+                        context = context,
+                        filePath = uiState.imageUrl.toUri(),
+                        onClickUpload = onClickUpload
+                    )
                 }
             }
         }
+    }
+}
 
+@Composable
+fun BoxScope.UploadButton(
+    context: Context,
+    filePath: Uri,
+    onClickUpload: (File) -> Unit
+) {
+    val multipleEventsCutter = remember { MultipleEventsCutter.get() }
+    MissionMateButton(
+        modifier = Modifier
+            .align(Alignment.BottomCenter)
+            .padding(horizontal = 24.dp, vertical = 36.dp)
+            .fillMaxWidth()
+            .navigationBarsPadding(),
+        buttonType = MissionMateButtonType.ACTIVE,
+        onClick = {
+            multipleEventsCutter.processEvent {
+                val file = ImageCompressor.getCompressedImage(context, filePath)
+                onClickUpload(file)
+            }
+        }
+    ) {
+        Text(
+            text = stringResource(id = R.string.upload),
+            style = MissionMateTypography.body_xl_bold,
+            color = ColorWhite_FFFFFFFF
+        )
     }
 }
 
@@ -245,9 +286,12 @@ fun VerificationPreviewScreen(
 fun VerificationPreviewLoading() {
     Box(
         modifier = Modifier
-            .background(ColorWhite_FFFFFFFF)
+            .fillMaxSize()
+            .background(Color.Transparent)
             .statusBarsPadding()
             .navigationBarsPadding()
+            .focusable()
+            .clickable {}
     ) {
         CircularProgressIndicator(
             modifier = Modifier.align(Alignment.Center)
@@ -279,6 +323,16 @@ fun VerificationPreviewScreenPreview() {
             nickname = "닉네임",
             imageUrl = ""
         ),
+        onClickUpload = {}
+    )
+}
+
+@Preview
+@Composable
+fun VerificationPreviewScreenLoadingPreview() {
+    VerificationPreviewScreen(
+        onClickClose = {},
+        uiState = VerificationPreviewUiState.Loading,
         onClickUpload = {}
     )
 }

@@ -17,11 +17,18 @@ data class MissionBoardsUiModel(
 
 }
 
-fun MissionBoards.toUiModel() : MissionBoardsUiModel {
+fun MissionBoards.toUiModel(myMemberId : Long?) : MissionBoardsUiModel {
     return MissionBoardsUiModel(
         progressCount = progressCount,
         rank = rank,
-        missionBoardList = missionBoards,
+        missionBoardList = missionBoards.map { board ->
+            if(board.isMyPosition) board.copy(
+                missionBoardMembers = board.missionBoardMembers.sortedByDescending {
+                    it.memberId == myMemberId
+                }
+            )
+            else board
+        },
         passedCountByMe = missionBoards.find { it.isMyPosition }?.number ?: 0
     )
 }

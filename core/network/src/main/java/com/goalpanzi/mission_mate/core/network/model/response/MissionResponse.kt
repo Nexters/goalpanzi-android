@@ -6,5 +6,5 @@ import kotlinx.serialization.Serializable
 data class MissionResponse(
     val missionId : Long,
     val description : String,
-    val missionStatus : String
+    val missionStatus : MissionStatusResponse
 )

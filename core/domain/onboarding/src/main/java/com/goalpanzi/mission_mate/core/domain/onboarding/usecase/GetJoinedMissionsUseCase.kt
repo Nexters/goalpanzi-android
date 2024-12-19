@@ -10,7 +10,7 @@ import javax.inject.Inject
 class GetJoinedMissionsUseCase @Inject constructor(
     private val onboardingRepository: OnboardingRepository
 ) {
-    operator fun invoke(): Flow<DomainResult<Missions>> = flow {
-        emit(onboardingRepository.getJoinedMissions())
+    operator fun invoke(filter : String): Flow<DomainResult<Missions>> = flow {
+        emit(onboardingRepository.getJoinedMissions(filter))
     }
 }

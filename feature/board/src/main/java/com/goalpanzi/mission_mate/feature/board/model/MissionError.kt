@@ -1,5 +1,5 @@
 package com.goalpanzi.mission_mate.feature.board.model
 
 enum class MissionError {
-    NOT_EXIST,
+    NOT_EXIST, INVALID_MISSION
 }

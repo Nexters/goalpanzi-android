@@ -53,10 +53,13 @@
     <string name="board_mission_detail_description_color_target">인증횟수(보드판 수)는 총 %d개</string>
     <string name="board_mission_detail_delete">삭제하기</string>
 
-    <string name="board_mission_not_exist">미션을 불러올 수 없습니다.</string>
+    <string name="board_mission_not_exist">미션을 불러올 수 없어요.</string>
+    <string name="board_complete_error">에러가 발생하였습니다.</string>
 
     <string name="ok">확인</string>
     <string name="cancel">취소</string>
     <string name="close">닫기</string>
     <string name="upload">업로드</string>
+
+    <string name="retry">재시도</string>
 </resources>

@@ -1,0 +1,3 @@
+import com.goalpanzi.mission_mate.convention.configureComposeAndroid
+
+configureComposeAndroid()
