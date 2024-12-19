@@ -58,11 +58,11 @@ import com.goalpanzi.mission_mate.feature.onboarding.model.OnboardingResultEvent
 import com.goalpanzi.mission_mate.feature.onboarding.model.OnboardingUiModel
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
+import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.google.accompanist.permissions.rememberPermissionState
 import kotlinx.coroutines.flow.collectLatest
 import com.goalpanzi.mission_mate.core.designsystem.R as designSystemResource
 
-@RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun OnboardingRoute(
@@ -76,7 +76,11 @@ fun OnboardingRoute(
     val onboardingUiModel by viewModel.onboardingUiModel.collectAsStateWithLifecycle()
     var profileCreateSuccessData by remember { mutableStateOf<UserProfile?>(null) }
     val notificationPermissionState =
-        rememberPermissionState(Manifest.permission.POST_NOTIFICATIONS)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            rememberMultiplePermissionsState(listOf(Manifest.permission.POST_NOTIFICATIONS))
+        } else {
+            rememberMultiplePermissionsState(emptyList())
+        }
 
     LaunchedEffect(key1 = Unit) {
         viewModel.getJoinedMissions()
@@ -100,9 +104,9 @@ fun OnboardingRoute(
         }
     }
 
-    LaunchedEffect(notificationPermissionState.status.isGranted) {
-        if (!notificationPermissionState.status.isGranted) {
-            notificationPermissionState.launchPermissionRequest()
+    LaunchedEffect(notificationPermissionState.allPermissionsGranted) {
+        if (!notificationPermissionState.allPermissionsGranted) {
+            notificationPermissionState.launchMultiplePermissionRequest()
         }
     }
 
