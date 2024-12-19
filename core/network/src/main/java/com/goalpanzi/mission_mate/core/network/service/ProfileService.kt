@@ -12,7 +12,7 @@ interface ProfileService {
         @Body request: SaveProfileRequest
     ): Response<Unit>
 
-    @PATCH("/api/member/device-token")
+    @PATCH("/api/device/device-token")
     suspend fun updateDeviceToken(
         @Body request: UpdateDeviceTokenRequest
     ): Response<Unit>

@@ -1,5 +1,6 @@
 package com.goalpanzi.mission_mate.core.data.user.repository
 
+import com.goalpanzi.mission_mate.core.data.common.DeviceInfoProvider
 import com.goalpanzi.mission_mate.core.data.common.handleResult
 import com.goalpanzi.mission_mate.core.data.common.mapper.toResponse
 import com.goalpanzi.mission_mate.core.data.user.FcmTokenManager
@@ -20,7 +21,8 @@ import javax.inject.Inject
 class UserRepositoryImpl @Inject constructor(
     private val profileService: ProfileService,
     private val defaultDataSource: DefaultDataSource,
-    private val fcmTokenManager: FcmTokenManager
+    private val fcmTokenManager: FcmTokenManager,
+    private val deviceInfoProvider: DeviceInfoProvider
 ) : UserRepository {
     override suspend fun saveProfile(
         nickname: String,
@@ -35,7 +37,11 @@ class UserRepositoryImpl @Inject constructor(
     }
 
     override suspend fun updateFcmToken(fcmToken: String): DomainResult<Unit> = handleResult {
-        val request = UpdateDeviceTokenRequest(fcmToken)
+        val request = UpdateDeviceTokenRequest(
+            deviceToken = fcmToken,
+            deviceIdentifier = deviceInfoProvider.getDeviceSSAID(),
+            osType = "AOS"
+        )
         profileService.updateDeviceToken(request)
     }
 
