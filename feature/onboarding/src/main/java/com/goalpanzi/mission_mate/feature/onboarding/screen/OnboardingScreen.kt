@@ -2,7 +2,6 @@ package com.goalpanzi.mission_mate.feature.onboarding.screen
 
 import android.Manifest
 import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -57,9 +56,7 @@ import com.goalpanzi.mission_mate.feature.onboarding.component.OnboardingNavigat
 import com.goalpanzi.mission_mate.feature.onboarding.model.OnboardingResultEvent
 import com.goalpanzi.mission_mate.feature.onboarding.model.OnboardingUiModel
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
-import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
-import com.google.accompanist.permissions.rememberPermissionState
 import kotlinx.coroutines.flow.collectLatest
 import com.goalpanzi.mission_mate.core.designsystem.R as designSystemResource
 
@@ -83,7 +80,7 @@ fun OnboardingRoute(
         }
 
     LaunchedEffect(key1 = Unit) {
-        viewModel.getJoinedMissions()
+        viewModel.updateTokenAndGetJoinedMissions()
 
         viewModel.onboardingResultEvent.collect { result ->
             when (result) {
