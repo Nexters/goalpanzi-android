@@ -1,13 +1,20 @@
 package com.goalpanzi.mission_mate.core.main.component
 
+import android.app.Activity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.currentBackStackEntryAsState
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorWhite_FFFFFFFF
+import com.goalpanzi.mission_mate.core.designsystem.util.isLightStatusBars
+import com.goalpanzi.mission_mate.core.designsystem.util.setStatusBar
 import com.goalpanzi.mission_mate.feature.board.boardDetailNavGraph
 import com.goalpanzi.mission_mate.feature.board.boardFinishNavGraph
 import com.goalpanzi.mission_mate.feature.board.boardNavGraph
@@ -30,6 +37,18 @@ internal fun MainNavHost(
     startDestination: String,
     padding: PaddingValues
 ) {
+    val context = LocalContext.current
+    val currentBackStackEntry by navigator.navController.currentBackStackEntryAsState()
+    val currentRoute = currentBackStackEntry?.destination?.route
+
+    LaunchedEffect(currentRoute) {
+        if (navigator.isDarkStatusBarScreen(currentRoute)) {
+            setStatusBar(context, false)
+        } else if(!isLightStatusBars(context as Activity)){
+            setStatusBar(context, true)
+        }
+    }
+
     Box(
         modifier = modifier
             .fillMaxSize()
