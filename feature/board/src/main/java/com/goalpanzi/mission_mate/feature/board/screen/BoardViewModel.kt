@@ -132,9 +132,11 @@ class BoardViewModel @Inject constructor(
 
     fun fetchMissionData() {
         viewModelScope.launch {
-            getMissionBoards()
-            getMission()
-            getMissionVerification()
+            joinAll(
+                launch { getMission() },
+                launch { getMissionVerification() },
+                launch { getMissionBoards() }
+            )
         }
     }
 
@@ -142,9 +144,9 @@ class BoardViewModel @Inject constructor(
         viewModelScope.launch {
             _isRefreshLoading.emit(true)
             joinAll(
-                launch { getMissionBoards() },
                 launch { getMission() },
-                launch { getMissionVerification() }
+                launch { getMissionVerification() },
+                launch { getMissionBoards() }
             )
             _isRefreshLoading.emit(false)
         }
