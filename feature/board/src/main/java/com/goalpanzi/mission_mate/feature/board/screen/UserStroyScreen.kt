@@ -1,15 +1,20 @@
 package com.goalpanzi.mission_mate.feature.board.screen
 
+import android.app.Activity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.layout.wrapContentWidth
@@ -18,10 +23,12 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.paint
-import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.FilterQuality
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
@@ -33,6 +40,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.goalpanzi.mission_mate.core.designsystem.component.StableImage
+import com.goalpanzi.mission_mate.core.designsystem.ext.clickableWithoutRipple
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorBlack_FF000000
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorWhite_FFFFFFFF
 import com.goalpanzi.mission_mate.core.designsystem.theme.MissionMateTypography
@@ -53,16 +61,18 @@ fun UserStoryScreen(
 ) {
     val dateTime = LocalDateTime.parse(verifiedAt)
     val formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd")
+    val statusBarPaddingValue = WindowInsets.statusBars.asPaddingValues().calculateTopPadding()
+    var isVisibleSpacer by remember { mutableStateOf(true) }
 
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(ColorWhite_FFFFFFFF)
             .navigationBarsPadding()
     ) {
         Box(
             modifier = Modifier
                 .fillMaxSize()
+                .background(ColorBlack_FF000000)
                 .statusBarsPadding()
         ) {
             AsyncImage(
@@ -70,22 +80,27 @@ fun UserStoryScreen(
                     .data(URLDecoder.decode(imageUrl, StandardCharsets.UTF_8.toString()))
                     .build(),
                 contentDescription = null,
-                modifier = Modifier.fillMaxSize(),
-                contentScale = ContentScale.FillBounds,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .clickableWithoutRipple {
+                        isVisibleSpacer = !isVisibleSpacer
+                    },
+                contentScale = ContentScale.Fit,
                 filterQuality = FilterQuality.None
             )
+        }
 
+        if (isVisibleSpacer) {
+            Spacer(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(statusBarPaddingValue + 80.dp)
+                    .background(ColorBlack_FF000000.copy(alpha = 0.7f))
+            )
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(
-                        brush = Brush.verticalGradient(
-                            colors = listOf(
-                                ColorBlack_FF000000.copy(alpha = 0.4f),
-                                Color.Transparent
-                            )
-                        )
-                    )
+                    .statusBarsPadding()
                     .height(93.dp)
                     .padding(horizontal = 24.dp, vertical = 14.dp)
             ) {
@@ -123,7 +138,10 @@ fun UserStoryScreen(
                 )
 
                 IconButton(
-                    onClick = onClickClose,
+                    onClick = {
+                        onClickClose()
+                        //setStatusBar(context, true)
+                    },
                     modifier = Modifier.wrapContentSize()
                 ) {
                     Icon(
