@@ -88,7 +88,6 @@ fun VerificationPreviewRoute(
                     showProgress = true
                 }
                 UploadEvent.Success -> {
-                    showProgress = false
                     onUploadSuccess()
                 }
                 UploadEvent.Error -> {
@@ -99,18 +98,16 @@ fun VerificationPreviewRoute(
     }
 
     VerificationPreviewScreen(
+        isUploading = showProgress,
         onClickClose = onClickClose,
         uiState = uiState,
         onClickUpload = viewModel::uploadImage
     )
-
-    if (showProgress) {
-       ProgressBar()
-    }
 }
 
 @Composable
 fun VerificationPreviewScreen(
+    isUploading: Boolean,
     onClickClose: () -> Unit,
     uiState: VerificationPreviewUiState,
     onClickUpload: (File) -> Unit
@@ -147,30 +144,6 @@ fun VerificationPreviewScreen(
                         contentScale = ContentScale.Fit,
                         filterQuality = FilterQuality.None
                     )
-
-
-
-                    MissionMateButton(
-                        modifier = Modifier
-                            .align(Alignment.BottomCenter)
-                            .padding(horizontal = 24.dp, vertical = 36.dp)
-                            .fillMaxWidth()
-                            .navigationBarsPadding(),
-                        buttonType = MissionMateButtonType.ACTIVE,
-                        onClick = {
-                            val file = ImageCompressor.getCompressedImage(
-                                context,
-                                uiState.imageUrl.toUri()
-                            )
-                            onClickUpload(file)
-                        }
-                    ) {
-                        Text(
-                            text = stringResource(id = R.string.upload),
-                            style = MissionMateTypography.body_xl_bold,
-                            color = ColorWhite_FFFFFFFF
-                        )
-                    }
                 }
                 if (isVisibleSpacer) {
                     Spacer(
@@ -245,6 +218,7 @@ fun VerificationPreviewScreen(
                     UploadButton(
                         context = context,
                         filePath = uiState.imageUrl.toUri(),
+                        isUploading = isUploading,
                         onClickUpload = onClickUpload
                     )
                 }
@@ -257,6 +231,7 @@ fun VerificationPreviewScreen(
 fun BoxScope.UploadButton(
     context: Context,
     filePath: Uri,
+    isUploading: Boolean,
     onClickUpload: (File) -> Unit
 ) {
     val multipleEventsCutter = remember { MultipleEventsCutter.get() }
@@ -266,7 +241,7 @@ fun BoxScope.UploadButton(
             .padding(horizontal = 24.dp, vertical = 36.dp)
             .fillMaxWidth()
             .navigationBarsPadding(),
-        buttonType = MissionMateButtonType.ACTIVE,
+        buttonType = if(isUploading) MissionMateButtonType.DISABLED else MissionMateButtonType.ACTIVE,
         onClick = {
             multipleEventsCutter.processEvent {
                 val file = ImageCompressor.getCompressedImage(context, filePath)
@@ -274,11 +249,19 @@ fun BoxScope.UploadButton(
             }
         }
     ) {
-        Text(
-            text = stringResource(id = R.string.upload),
-            style = MissionMateTypography.body_xl_bold,
-            color = ColorWhite_FFFFFFFF
-        )
+        if(isUploading){
+            CircularProgressIndicator(
+                modifier = Modifier.size(24.dp),
+                color = ColorWhite_FFFFFFFF,
+                strokeWidth = 3.dp
+            )
+        }else {
+            Text(
+                text = stringResource(id = R.string.upload),
+                style = MissionMateTypography.body_lg_bold,
+                color = ColorWhite_FFFFFFFF
+            )
+        }
     }
 }
 
@@ -317,6 +300,7 @@ fun ProgressBar() {
 @Composable
 fun VerificationPreviewScreenPreview() {
     VerificationPreviewScreen(
+        isUploading = false,
         onClickClose = {},
         uiState = VerificationPreviewUiState.Success(
             characterUiModel = CharacterUiModel.RABBIT,
@@ -331,6 +315,7 @@ fun VerificationPreviewScreenPreview() {
 @Composable
 fun VerificationPreviewScreenLoadingPreview() {
     VerificationPreviewScreen(
+        isUploading = false,
         onClickClose = {},
         uiState = VerificationPreviewUiState.Loading,
         onClickUpload = {}
