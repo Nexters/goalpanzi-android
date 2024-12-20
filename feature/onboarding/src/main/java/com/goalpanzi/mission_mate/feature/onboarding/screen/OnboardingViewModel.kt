@@ -8,11 +8,14 @@ import com.goalpanzi.mission_mate.core.domain.common.model.mission.MissionStatus
 import com.goalpanzi.mission_mate.core.domain.common.model.user.UserProfile
 import com.goalpanzi.mission_mate.core.domain.mission.usecase.GetMissionJoinedUseCase
 import com.goalpanzi.mission_mate.core.domain.onboarding.usecase.GetJoinedMissionsUseCase
+import com.goalpanzi.mission_mate.core.domain.user.usecase.GetFcmTokenUseCase
 import com.goalpanzi.mission_mate.core.domain.user.usecase.ProfileUseCase
+import com.goalpanzi.mission_mate.core.domain.user.usecase.UpdateFcmTokenUseCase
 import com.goalpanzi.mission_mate.feature.onboarding.isAfterProfileCreateArg
 import com.goalpanzi.mission_mate.feature.onboarding.model.OnboardingResultEvent
 import com.goalpanzi.mission_mate.feature.onboarding.model.OnboardingUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -20,15 +23,18 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.timeout
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlin.time.Duration.Companion.seconds
 
 @HiltViewModel
 class OnboardingViewModel @Inject constructor(
     private val getJoinedMissionsUseCase: GetJoinedMissionsUseCase,
     private val getMissionJoinedUseCase: GetMissionJoinedUseCase,
     private val profileUseCase: ProfileUseCase,
+    private val updateFcmTokenUseCase: UpdateFcmTokenUseCase,
+    private val getFcmTokenUseCase: GetFcmTokenUseCase,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
@@ -51,7 +57,21 @@ class OnboardingViewModel @Inject constructor(
         }
     }
 
-    fun getJoinedMissions() {
+    @OptIn(FlowPreview::class)
+    fun updateTokenAndGetJoinedMissions() {
+        viewModelScope.launch {
+            getFcmTokenUseCase()
+                .timeout(3.seconds)
+                .catch {
+                    getJoinedMissions()
+                }.collect { token ->
+                    updateFcmTokenUseCase(token)
+                    getJoinedMissions()
+                }
+        }
+    }
+
+    private fun getJoinedMissions() {
         viewModelScope.launch {
             _onboardingUiModel.emit(OnboardingUiModel.Loading)
             getJoinedMissionsUseCase(

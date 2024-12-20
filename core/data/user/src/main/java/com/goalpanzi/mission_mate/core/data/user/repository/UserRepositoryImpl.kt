@@ -1,7 +1,9 @@
 package com.goalpanzi.mission_mate.core.data.user.repository
 
+import com.goalpanzi.mission_mate.core.data.common.DeviceInfoProvider
 import com.goalpanzi.mission_mate.core.data.common.handleResult
 import com.goalpanzi.mission_mate.core.data.common.mapper.toResponse
+import com.goalpanzi.mission_mate.core.data.user.FcmTokenManager
 import com.goalpanzi.mission_mate.core.data.user.mapper.toDto
 import com.goalpanzi.mission_mate.core.data.user.mapper.toModel
 import com.goalpanzi.mission_mate.core.datastore.datasource.DefaultDataSource
@@ -10,6 +12,7 @@ import com.goalpanzi.mission_mate.core.domain.common.model.user.CharacterType
 import com.goalpanzi.mission_mate.core.domain.common.model.user.UserProfile
 import com.goalpanzi.mission_mate.core.domain.user.repository.UserRepository
 import com.goalpanzi.mission_mate.core.network.model.request.SaveProfileRequest
+import com.goalpanzi.mission_mate.core.network.model.request.UpdateDeviceTokenRequest
 import com.goalpanzi.mission_mate.core.network.service.ProfileService
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -17,7 +20,9 @@ import javax.inject.Inject
 
 class UserRepositoryImpl @Inject constructor(
     private val profileService: ProfileService,
-    private val defaultDataSource: DefaultDataSource
+    private val defaultDataSource: DefaultDataSource,
+    private val fcmTokenManager: FcmTokenManager,
+    private val deviceInfoProvider: DeviceInfoProvider
 ) : UserRepository {
     override suspend fun saveProfile(
         nickname: String,
@@ -30,6 +35,17 @@ class UserRepositoryImpl @Inject constructor(
         )
         profileService.saveProfile(request)
     }
+
+    override suspend fun updateFcmToken(fcmToken: String): DomainResult<Unit> = handleResult {
+        val request = UpdateDeviceTokenRequest(
+            deviceToken = fcmToken,
+            deviceIdentifier = deviceInfoProvider.getDeviceSSAID(),
+            osType = "AOS"
+        )
+        profileService.updateDeviceToken(request)
+    }
+
+    override fun getFcmToken(): Flow<String> = fcmTokenManager.getFcmToken()
 
     override fun clearUserData(): Flow<Unit> = defaultDataSource.clearUserData()
 
