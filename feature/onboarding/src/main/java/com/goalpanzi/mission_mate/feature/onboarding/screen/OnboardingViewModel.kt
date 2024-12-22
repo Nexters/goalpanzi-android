@@ -23,10 +23,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.timeout
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import kotlin.time.Duration.Companion.seconds
 
 @HiltViewModel
 class OnboardingViewModel @Inject constructor(
@@ -57,11 +55,9 @@ class OnboardingViewModel @Inject constructor(
         }
     }
 
-    @OptIn(FlowPreview::class)
     fun updateTokenAndGetJoinedMissions() {
         viewModelScope.launch {
             getFcmTokenUseCase()
-                .timeout(3.seconds)
                 .catch {
                     getJoinedMissions()
                 }.collect { token ->

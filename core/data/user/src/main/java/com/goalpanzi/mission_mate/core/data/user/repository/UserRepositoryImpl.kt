@@ -57,4 +57,8 @@ class UserRepositoryImpl @Inject constructor(
 
     override fun getMemberId(): Flow<Long?> = defaultDataSource.getMemberId()
 
+    override fun setCachedFcmToken(data: String): Flow<Unit> = defaultDataSource.setFcmToken(data)
+
+    override fun getCachedFcmToken(): Flow<String?> = defaultDataSource.getFcmToken()
+
 }

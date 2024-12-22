@@ -14,4 +14,6 @@ interface UserRepository {
     fun getUserProfile() : Flow<UserProfile?>
     fun setMemberId(data: Long) : Flow<Unit>
     fun getMemberId() : Flow<Long?>
+    fun setCachedFcmToken(data: String) : Flow<Unit>
+    fun getCachedFcmToken() : Flow<String?>
 }
