@@ -78,7 +78,8 @@ fun BoardTopView(
         BoardTopStory(
             modifier = Modifier.padding(top = 56.dp),
             userList = userList,
-            onClickStory = onClickStory
+            missionState = missionState,
+            onClickStory = onClickStory,
         )
         if(!viewedTooltip){
             if (isAddingUserEnabled) {
