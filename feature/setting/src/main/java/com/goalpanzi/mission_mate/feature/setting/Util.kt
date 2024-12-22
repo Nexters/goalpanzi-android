@@ -1,8 +1,11 @@
 package com.goalpanzi.mission_mate.feature.setting
 
+import android.content.ActivityNotFoundException
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
+import android.provider.Settings
 
 object Util {
     fun getAppVersionName(context: Context): String {
@@ -17,6 +20,19 @@ object Util {
             packageInfo.versionName
         } catch (e: Exception) {
             ""
+        }
+    }
+
+    fun presentNotificationSetting(context: Context) {
+        val intent = Intent().also { intent ->
+            intent.action = Settings.ACTION_APP_NOTIFICATION_SETTINGS
+            intent.putExtra(Settings.EXTRA_APP_PACKAGE, context.packageName)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        }
+        try {
+            context.startActivity(intent)
+        }catch (e: ActivityNotFoundException) {
+            e.printStackTrace()
         }
     }
 }

@@ -3,6 +3,7 @@
     <string name="setting_title">설정</string>
     <string name="my_info">내정보</string>
     <string name="setting_profile">프로필 수정하기</string>
+    <string name="setting_notification">알림</string>
     <string name="version_info">버전정보</string>
     <string name="current_version">현재버전</string>
     <string name="help_desk">고객지원</string>

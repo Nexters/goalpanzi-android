@@ -4,5 +4,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class GoogleLoginRequest(
-    val email: String
+    val email: String,
+    val deviceIdentifier: String,
 )
