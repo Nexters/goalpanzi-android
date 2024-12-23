@@ -37,6 +37,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorGray1_FF404249
@@ -216,7 +217,7 @@ fun PieceNameChip(
             .background(
                 if (isMe) ColorOrange_FFFF5732 else ColorWhite_FFFFFFFF
             )
-            .padding(horizontal = 8.5.dp, 0.85.dp),
+            .padding(horizontal = 0.5.dp, 0.85.dp),
         text = name,
         style = textStyle,
         color = if (isMe) ColorWhite_FFFFFFFF else ColorGray1_FF404249,
@@ -251,4 +252,17 @@ fun PieceCountChip(
         }
     }
 
+}
+
+@Preview
+@Composable
+private fun PieceNameChipPreview() {
+    Box(
+        modifier = Modifier.size(114.dp)
+    ){
+        PieceNameChip(
+            name = "오락가락도락",
+            isMe = true
+        )
+    }
 }

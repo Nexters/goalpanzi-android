@@ -21,6 +21,7 @@ class DefaultDataSourceImpl @Inject constructor(
         val USER_CHARACTER = stringPreferencesKey("USER_CHARACTER")
         val VIEWED_TOOLTIP = booleanPreferencesKey("VIEWED_TOOLTIP")
         val MEMBER_ID = longPreferencesKey("MEMBER_ID")
+        val FCM_TOKEN = stringPreferencesKey("FCM_TOKEN")
     }
 
     override fun clearUserData(): Flow<Unit> = flow {
@@ -72,5 +73,16 @@ class DefaultDataSourceImpl @Inject constructor(
 
     override fun getMemberId(): Flow<Long?> = dataStore.data.map { preferences ->
         preferences[PreferencesKey.MEMBER_ID]
+    }
+
+    override fun setFcmToken(data: String): Flow<Unit> = flow {
+        dataStore.edit { preferences ->
+            preferences[PreferencesKey.FCM_TOKEN] = data
+        }
+        emit(Unit)
+    }
+
+    override fun getFcmToken(): Flow<String?> = dataStore.data.map { preferences ->
+        preferences[PreferencesKey.FCM_TOKEN]
     }
 }

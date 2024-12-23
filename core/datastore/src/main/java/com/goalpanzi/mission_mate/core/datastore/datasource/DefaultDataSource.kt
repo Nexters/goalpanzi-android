@@ -11,4 +11,6 @@ interface DefaultDataSource {
     fun setViewedTooltip() : Flow<Unit>
     fun setMemberId(data: Long) : Flow<Unit>
     fun getMemberId() : Flow<Long?>
+    fun setFcmToken(data: String) : Flow<Unit>
+    fun getFcmToken() : Flow<String?>
 }

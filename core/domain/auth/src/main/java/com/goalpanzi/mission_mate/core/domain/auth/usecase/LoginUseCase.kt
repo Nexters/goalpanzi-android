@@ -6,6 +6,7 @@ import com.goalpanzi.mission_mate.core.domain.common.DomainResult
 import com.goalpanzi.mission_mate.core.domain.common.model.user.UserProfile
 import com.goalpanzi.mission_mate.core.domain.user.repository.UserRepository
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
@@ -15,6 +16,7 @@ class LoginUseCase @Inject constructor(
     private val userRepository: UserRepository
 ) {
     suspend fun requestGoogleLogin(email: String): GoogleLogin? {
+        userRepository.clearUserData().collect()
         return when (val response = authRepository.requestGoogleLogin(email)) {
             is DomainResult.Success -> {
                 response.data.also {

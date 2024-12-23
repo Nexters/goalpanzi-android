@@ -8,7 +8,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    @AuthNavigation navigationEventHandler : NavigationEventHandler
+    @AuthNavigation navigationEventHandler : NavigationEventHandler,
 ) : ViewModel() {
     val navigationEvent = navigationEventHandler.routeToNavigate
 }

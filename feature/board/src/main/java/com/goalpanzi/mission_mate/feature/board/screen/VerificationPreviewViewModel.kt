@@ -1,5 +1,6 @@
 package com.goalpanzi.mission_mate.feature.board.screen
 
+import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -87,3 +88,4 @@ sealed interface UploadEvent {
     data object Success : UploadEvent
     data object Error : UploadEvent
 }
+

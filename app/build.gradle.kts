@@ -3,6 +3,7 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     id("missionmate.android.application")
+    alias(libs.plugins.google.service)
 }
 
 android {
@@ -11,8 +12,8 @@ android {
     defaultConfig {
         applicationId = "com.goalpanzi.mission_mate"
         targetSdk = 34
-        versionCode = 6
-        versionName = "1.0.3"
+        versionCode = 7
+        versionName = "1.1.0"
 
         vectorDrawables {
             useSupportLibrary = true
@@ -47,6 +48,8 @@ dependencies {
     ksp(libs.hilt.compiler)
     implementation(libs.hilt.android)
     implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.messaging)
+    implementation(libs.firebase.analytics)
 
     implementation(project(":feature:main"))
     implementation(project(":feature:login"))
@@ -58,4 +61,6 @@ dependencies {
     implementation(project(":core:data:onboarding"))
     implementation(project(":core:data:setting"))
     implementation(project(":core:data:user"))
+    implementation(project(":core:push"))
+    implementation(project(":core:notification"))
 }

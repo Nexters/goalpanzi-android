@@ -91,6 +91,11 @@ class MainNavigator(
     fun navigationToVerificationPreview(missionId: Long, imageUrl : Uri) {
         navController.navigateToVerificationPreview(missionId, imageUrl)
     }
+
+    fun isDarkStatusBarScreen(currentRoute: String?): Boolean {
+        return currentRoute?.contains("RouteModel.VerificationPreview") == true
+                || currentRoute?.contains("RouteModel.UserStory") == true
+    }
 }
 
 @Composable

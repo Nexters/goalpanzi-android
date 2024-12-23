@@ -27,11 +27,7 @@ data class UserStory(
             UserStoryType.COLORED
         }
     } else {
-        if (isMe) {
-            UserStoryType.NORMAL
-        } else {
-            UserStoryType.TRANSPARENT
-        }
+        UserStoryType.TRANSPARENT
     }
 
     val userStoryAlpha = when (userStoryType) {
