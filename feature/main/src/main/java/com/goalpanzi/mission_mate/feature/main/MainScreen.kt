@@ -5,6 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.goalpanzi.mission_mate.core.navigation.RouteModel
 import com.goalpanzi.mission_mate.feature.main.component.MainNavHost
 import com.goalpanzi.mission_mate.feature.main.component.MainNavigator
 import com.goalpanzi.mission_mate.feature.main.component.rememberMainNavigator
@@ -15,7 +16,7 @@ import kotlinx.coroutines.flow.debounce
 @OptIn(FlowPreview::class)
 @Composable
 internal fun MainScreen(
-    startDestination: String,
+    startDestination: RouteModel,
     navigator: MainNavigator = rememberMainNavigator(),
     viewModel: MainViewModel = hiltViewModel()
 ) {
@@ -40,7 +41,7 @@ internal fun MainScreen(
 @Composable
 private fun MainScreenContent(
     navigator: MainNavigator,
-    startDestination: String,
+    startDestination: RouteModel,
     modifier: Modifier = Modifier
 ) {
     Scaffold(

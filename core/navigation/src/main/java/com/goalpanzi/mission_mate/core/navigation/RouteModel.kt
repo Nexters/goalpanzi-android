@@ -7,7 +7,7 @@ sealed interface RouteModel {
     data object Login : RouteModel
 
     @Serializable
-    data object Onboarding : RouteModel
+    data class Onboarding(val isAfterProfileCreate: Boolean = false) : RouteModel
 
     @Serializable
     sealed interface Profile: RouteModel {
