@@ -18,7 +18,7 @@ androidxActivity = "1.9.1"
 
 ## Compose
 composeBom = "2024.06.00"
-navigation-compose = "2.7.7"
+navigation-compose = "2.8.5"
 composeMaterial = "1.7.0"
 
 ## Kotlin Symbol Processing (KSP)
