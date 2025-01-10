@@ -23,6 +23,31 @@ sealed interface RouteModel {
     data class Board(val missionId : Long) : RouteModel
 }
 
+sealed interface BoardRouteModel {
+    @Serializable
+    data class Board(val missionId : Long) : BoardRouteModel
+
+    @Serializable
+    data class BoardDetail(val missionId : Long) : BoardRouteModel
+
+    @Serializable
+    data class BoardFinish(val missionId : Long) : BoardRouteModel
+
+    @Serializable
+    data class UserStory(
+        val userCharacter : String,
+        val nickname : String,
+        val verifiedAt : String,
+        val imageUrl : String
+    ) : BoardRouteModel
+
+    @Serializable
+    data class VerificationPreview(
+        val missionId : Long,
+        val imageUrl : String
+    ) : BoardRouteModel
+}
+
 sealed interface OnboardingRouteModel {
     @Serializable
     data object BoardSetup : OnboardingRouteModel

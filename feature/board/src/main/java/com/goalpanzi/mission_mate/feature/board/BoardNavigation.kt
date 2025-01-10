@@ -4,9 +4,9 @@ import android.net.Uri
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
-import androidx.navigation.NavType
 import androidx.navigation.compose.composable
-import androidx.navigation.navArgument
+import androidx.navigation.toRoute
+import com.goalpanzi.mission_mate.core.navigation.BoardRouteModel
 import com.goalpanzi.mission_mate.feature.board.model.CharacterUiModel
 import com.goalpanzi.mission_mate.feature.board.model.UserStory
 import com.goalpanzi.mission_mate.feature.board.screen.BoardFinishRoute
@@ -17,13 +17,6 @@ import com.goalpanzi.mission_mate.feature.board.screen.VerificationPreviewRoute
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
 
-internal const val missionIdArg = "missionId"
-internal const val userCharacterTypeArg = "userCharacterType"
-internal const val nicknameArg = "nickname"
-internal const val dateArg = "date"
-internal const val imageUrlArg = "imageUrl"
-internal const val isUploadSuccessArg = "isUploadSuccess"
-
 fun NavController.navigateToBoard(
     missionId: Long,
     navOptions: NavOptions? = androidx.navigation.navOptions {
@@ -32,7 +25,7 @@ fun NavController.navigateToBoard(
         }
     }
 ) {
-    this.navigate("RouteModel.Board" + "/${missionId}", navOptions = navOptions)
+    this.navigate(BoardRouteModel.Board(missionId), navOptions = navOptions)
 }
 
 fun NavGraphBuilder.boardNavGraph(
@@ -43,24 +36,14 @@ fun NavGraphBuilder.boardNavGraph(
     onClickSetting: () -> Unit,
     onNavigateToPreview: (Long, Uri) -> Unit
 ) {
-    composable(
-        "RouteModel.Board/{$missionIdArg}",
-        arguments = listOf(navArgument(missionIdArg) { type = NavType.LongType })
-    ) { navBackStackEntry ->
-        val missionId = navBackStackEntry.arguments?.getLong(missionIdArg)
-        val isUploadSuccess = navBackStackEntry.savedStateHandle.get<Boolean>(isUploadSuccessArg)
+    composable<BoardRouteModel.Board> { navBackStackEntry ->
         BoardRoute(
             onNavigateOnboarding = onNavigateOnboarding,
-            onNavigateDetail = {
-                missionId?.let {
-                    onNavigateDetail(missionId)
-                }
-            },
+            onNavigateDetail = onNavigateDetail,
             onNavigateFinish = onNavigateFinish,
             onClickSetting = onClickSetting,
             onClickStory = onNavigateStory,
             onPreviewImage = onNavigateToPreview,
-            isUploadSuccess = isUploadSuccess ?: false
         )
     }
 }
@@ -68,17 +51,14 @@ fun NavGraphBuilder.boardNavGraph(
 fun NavController.navigateToBoardDetail(
     missionId: Long
 ) {
-    this.navigate("RouteModel.BoardDetail" + "/${missionId}")
+    this.navigate(BoardRouteModel.BoardDetail(missionId))
 }
 
 fun NavGraphBuilder.boardDetailNavGraph(
     onNavigateOnboarding: () -> Unit,
     onBackClick: () -> Unit
 ) {
-    composable(
-        "RouteModel.BoardDetail/{$missionIdArg}",
-        arguments = listOf(navArgument(missionIdArg) { type = NavType.LongType })
-    ) {
+    composable<BoardRouteModel.BoardDetail> {
         BoardMissionDetailRoute(
             onNavigateOnboarding = onNavigateOnboarding,
             onBackClick = onBackClick
@@ -89,17 +69,14 @@ fun NavGraphBuilder.boardDetailNavGraph(
 fun NavController.navigateToBoardFinish(
     missionId: Long
 ) {
-    this.navigate("RouteModel.BoardFinish" + "/${missionId}")
+    this.navigate(BoardRouteModel.BoardFinish(missionId))
 }
 
 fun NavGraphBuilder.boardFinishNavGraph(
     onClickSetting: () -> Unit,
     onClickOk: () -> Unit,
 ) {
-    composable(
-        "RouteModel.BoardFinish/{$missionIdArg}",
-        arguments = listOf(navArgument(missionIdArg) { type = NavType.LongType })
-    ) {
+    composable<BoardRouteModel.BoardFinish> {
         BoardFinishRoute(
             onSettingClick = onClickSetting,
             onOkClick = onClickOk
@@ -113,38 +90,21 @@ fun NavController.navigateToUserStory(
     val encodedUrl = URLEncoder.encode(imageUrl, StandardCharsets.UTF_8.toString())
     this@navigateToUserStory
         .navigate(
-            route = "RouteModel.UserStory" + "/${characterUiModelType.name.uppercase()}" + "/${nickname}" + "/${verifiedAt}" + "/${encodedUrl}"
+            BoardRouteModel.UserStory(
+                userCharacter = characterUiModelType.name.uppercase(),
+                nickname = nickname,
+                verifiedAt = verifiedAt,
+                imageUrl = encodedUrl
+            )
         )
 }
 
 fun NavGraphBuilder.userStoryNavGraph(
     onClickClose: () -> Unit
 ) {
-    composable(
-        route = "RouteModel.UserStory/{$userCharacterTypeArg}/{$nicknameArg}/{$dateArg}/{$imageUrlArg}",
-        arguments = listOf(
-            navArgument(userCharacterTypeArg) {
-                defaultValue = CharacterUiModel.RABBIT.name.uppercase()
-                type = NavType.StringType
-            },
-            navArgument(nicknameArg) {
-                type = NavType.StringType
-            },
-            navArgument(dateArg) {
-                type = NavType.StringType
-            },
-            navArgument(imageUrlArg) {
-                type = NavType.StringType
-            }
-        )
-    ) { backStackEntry ->
-        backStackEntry.arguments?.run {
-            val characterUiModel = getString(userCharacterTypeArg)?.let { CharacterUiModel.valueOf(it) }
-                ?: CharacterUiModel.RABBIT
-            val nickname = getString(nicknameArg) ?: ""
-            val verifiedAt = getString(dateArg) ?: ""
-            val imageUrl = getString(imageUrlArg) ?: ""
-
+    composable<BoardRouteModel.UserStory> { backStackEntry ->
+        backStackEntry.toRoute<BoardRouteModel.UserStory>().run {
+            val characterUiModel = userCharacter.let { CharacterUiModel.valueOf(it) }
             UserStoryScreen(
                 characterUiModel = characterUiModel,
                 nickname = nickname,
@@ -161,27 +121,17 @@ fun NavController.navigateToVerificationPreview(
     imageUrl: Uri
 ) {
     val encodedUrl = URLEncoder.encode(imageUrl.toString(), StandardCharsets.UTF_8.toString())
-    this.navigate("RouteModel.VerificationPreview" + "/${missionId}" +"/${encodedUrl}")
+    this.navigate(BoardRouteModel.VerificationPreview(missionId,encodedUrl))
 }
 
 fun NavGraphBuilder.verificationPreviewNavGraph(
     onClickClose: () -> Unit,
-    onUploadSuccess: (key: String) -> Unit
+    onUploadSuccess: () -> Unit
 ) {
-    composable(
-        route = "RouteModel.VerificationPreview/{$missionIdArg}/{$imageUrlArg}",
-        arguments = listOf(
-            navArgument(missionIdArg) {
-              type = NavType.LongType
-            },
-            navArgument(imageUrlArg) {
-                type = NavType.StringType
-            }
-        )
-    ) {
+    composable<BoardRouteModel.VerificationPreview> {
         VerificationPreviewRoute(
             onClickClose = onClickClose,
-            onUploadSuccess = { onUploadSuccess(isUploadSuccessArg) }
+            onUploadSuccess = { onUploadSuccess() }
         )
     }
 }

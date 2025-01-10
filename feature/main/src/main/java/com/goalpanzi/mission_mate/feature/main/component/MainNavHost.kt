@@ -155,9 +155,6 @@ internal fun MainNavHost(
                 },
                 onUploadSuccess = {
                     navigator.popBackStack()
-                    navigator.navController.currentBackStackEntry
-                        ?.savedStateHandle
-                        ?.set(it, true)
                 }
             )
         }

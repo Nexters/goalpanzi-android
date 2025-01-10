@@ -1,15 +1,14 @@
 package com.goalpanzi.mission_mate.feature.board.screen
 
-import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.toRoute
 import com.goalpanzi.mission_mate.core.domain.common.DomainResult
 import com.goalpanzi.mission_mate.core.domain.common.model.user.UserProfile
 import com.goalpanzi.mission_mate.core.domain.mission.usecase.VerifyMissionUseCase
 import com.goalpanzi.mission_mate.core.domain.user.usecase.ProfileUseCase
-import com.goalpanzi.mission_mate.feature.board.imageUrlArg
-import com.goalpanzi.mission_mate.feature.board.missionIdArg
+import com.goalpanzi.mission_mate.core.navigation.BoardRouteModel
 import com.goalpanzi.mission_mate.feature.board.model.CharacterUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -23,6 +22,8 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import java.io.File
+import java.net.URLDecoder
+import java.nio.charset.StandardCharsets
 import javax.inject.Inject
 
 @HiltViewModel
@@ -32,7 +33,8 @@ class VerificationPreviewViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    private val missionId = savedStateHandle.get<Long>(missionIdArg)
+    private val missionId = savedStateHandle.toRoute<BoardRouteModel.VerificationPreview>().missionId
+    private val imageUrl = savedStateHandle.toRoute<BoardRouteModel.VerificationPreview>().imageUrl
 
     private val _eventFlow = MutableSharedFlow<UploadEvent>()
     val eventFlow = _eventFlow.asSharedFlow()
@@ -46,7 +48,7 @@ class VerificationPreviewViewModel @Inject constructor(
         VerificationPreviewUiState.Success(
             nickname = it.nickname,
             characterUiModel = CharacterUiModel.valueOf(it.characterType.name),
-            imageUrl = savedStateHandle.get<String>(imageUrlArg) ?: ""
+            imageUrl = decodedImageUrl()
         )
     }.stateIn(
         scope = viewModelScope,
@@ -55,7 +57,6 @@ class VerificationPreviewViewModel @Inject constructor(
     )
 
     fun uploadImage(image: File) {
-        if (missionId == null) return
         viewModelScope.launch {
             _eventFlow.emit(UploadEvent.Loading)
             verifyMissionUseCase(missionId, image).collectLatest {
@@ -72,6 +73,12 @@ class VerificationPreviewViewModel @Inject constructor(
         }
     }
 
+    private fun decodedImageUrl() : String {
+        return URLDecoder.decode(
+            imageUrl,
+            StandardCharsets.UTF_8.toString()
+        )
+    }
 }
 
 sealed interface VerificationPreviewUiState {

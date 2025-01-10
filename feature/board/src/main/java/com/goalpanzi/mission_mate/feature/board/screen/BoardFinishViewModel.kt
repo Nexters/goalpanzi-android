@@ -3,6 +3,7 @@ package com.goalpanzi.mission_mate.feature.board.screen
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.toRoute
 import com.goalpanzi.mission_mate.core.domain.common.DomainResult
 import com.goalpanzi.mission_mate.core.domain.common.convert
 import com.goalpanzi.mission_mate.core.domain.common.model.user.UserProfile
@@ -10,6 +11,7 @@ import com.goalpanzi.mission_mate.core.domain.mission.usecase.CompleteMissionUse
 import com.goalpanzi.mission_mate.core.domain.mission.usecase.GetMissionRankUseCase
 import com.goalpanzi.mission_mate.core.domain.mission.usecase.SetMissionJoinedUseCase
 import com.goalpanzi.mission_mate.core.domain.user.usecase.ProfileUseCase
+import com.goalpanzi.mission_mate.core.navigation.BoardRouteModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -32,7 +34,7 @@ class BoardFinishViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    private val missionId: Long = savedStateHandle.get<Long>("missionId")!!
+    private val missionId: Long = savedStateHandle.toRoute<BoardRouteModel.BoardFinish>().missionId
 
     private val _rank : MutableStateFlow<Int?> = MutableStateFlow(null)
     val rank : StateFlow<Int?> = _rank.asStateFlow()
