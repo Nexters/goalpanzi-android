@@ -18,9 +18,6 @@ sealed interface RouteModel {
     }
     @Serializable
     data object Setting : RouteModel
-
-    @Serializable
-    data class Board(val missionId : Long) : RouteModel
 }
 
 sealed interface BoardRouteModel {
