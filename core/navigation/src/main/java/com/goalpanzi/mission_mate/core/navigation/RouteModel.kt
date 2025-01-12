@@ -16,46 +16,43 @@ sealed interface RouteModel {
     }
 
     @Serializable
-    sealed interface Mission: RouteModel {
-        @Serializable
-        data class Board(val missionId : Long) : Mission
-
-        @Serializable
-        data class Detail(val missionId : Long) : Mission
-
-        @Serializable
-        data class Finish(val missionId : Long) : Mission
-
-        @Serializable
-        data class UserStory(
-            val userCharacter : String,
-            val nickname : String,
-            val verifiedAt : String,
-            val imageUrl : String
-        ) : Mission
-
-        @Serializable
-        data class VerificationPreview(
-            val missionId : Long,
-            val imageUrl : String
-        ) : Mission
-    }
-
-    @Serializable
     sealed interface MainTabRoute : RouteModel {
         @Serializable
-        sealed interface OnboardingRouteModel : MainTabRoute {
+        sealed interface MissionRouteModel : MainTabRoute {
             @Serializable
-            data class Onboarding(val isAfterProfileCreate: Boolean = false) : OnboardingRouteModel
+            data class Onboarding(val isAfterProfileCreate: Boolean = false) : MissionRouteModel
 
             @Serializable
-            data object BoardSetup : OnboardingRouteModel
+            data object BoardSetup : MissionRouteModel
 
             @Serializable
-            data object BoardSetupSuccess : OnboardingRouteModel
+            data object BoardSetupSuccess : MissionRouteModel
 
             @Serializable
-            data object InvitationCode : OnboardingRouteModel
+            data object InvitationCode : MissionRouteModel
+
+            @Serializable
+            data class Board(val missionId : Long) : MissionRouteModel
+
+            @Serializable
+            data class Detail(val missionId : Long) : MissionRouteModel
+
+            @Serializable
+            data class Finish(val missionId : Long) : MissionRouteModel
+
+            @Serializable
+            data class UserStory(
+                val userCharacter : String,
+                val nickname : String,
+                val verifiedAt : String,
+                val imageUrl : String
+            ) : MissionRouteModel
+
+            @Serializable
+            data class VerificationPreview(
+                val missionId : Long,
+                val imageUrl : String
+            ) : MissionRouteModel
         }
 
         @Serializable
