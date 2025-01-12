@@ -4,7 +4,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
-import com.goalpanzi.mission_mate.core.navigation.RouteModel.OnboardingRouteModel
+import com.goalpanzi.mission_mate.core.navigation.RouteModel.MainTabRoute.OnboardingRouteModel
 import com.goalpanzi.mission_mate.feature.onboarding.screen.OnboardingRoute
 import com.goalpanzi.mission_mate.feature.onboarding.screen.boardsetup.BoardSetupRoute
 import com.goalpanzi.mission_mate.feature.onboarding.screen.boardsetup.BoardSetupSuccessScreen

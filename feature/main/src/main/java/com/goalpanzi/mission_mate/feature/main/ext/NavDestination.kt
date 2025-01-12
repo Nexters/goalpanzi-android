@@ -9,8 +9,8 @@ fun NavDestination?.compareTo(routeModel: RouteModel) : Boolean {
 }
 
 private val darkStatusBarScreenRouteNames = setOf(
-    RouteModel.BoardRouteModel.UserStory::class.qualifiedName,
-    RouteModel.BoardRouteModel.VerificationPreview::class.qualifiedName
+    RouteModel.Mission.UserStory::class.qualifiedName,
+    RouteModel.Mission.VerificationPreview::class.qualifiedName
 )
 
 fun NavDestination?.isDarkStatusBarScreen() : Boolean {

@@ -18,7 +18,7 @@ import com.goalpanzi.mission_mate.core.domain.setting.usecase.GetViewedTooltipUs
 import com.goalpanzi.mission_mate.core.domain.setting.usecase.SetViewedTooltipUseCase
 import com.goalpanzi.mission_mate.core.domain.user.usecase.GetCachedMemberIdUseCase
 import com.goalpanzi.mission_mate.core.domain.user.usecase.ProfileUseCase
-import com.goalpanzi.mission_mate.core.navigation.RouteModel.BoardRouteModel
+import com.goalpanzi.mission_mate.core.navigation.RouteModel.Mission
 import com.goalpanzi.mission_mate.feature.board.model.BoardPiece
 import com.goalpanzi.mission_mate.feature.board.model.MissionError
 import com.goalpanzi.mission_mate.feature.board.model.MissionState
@@ -68,7 +68,7 @@ class BoardViewModel @Inject constructor(
     private val viewVerificationUseCase: ViewVerificationUseCase
 ) : ViewModel() {
 
-    val missionId: Long = savedStateHandle.toRoute<BoardRouteModel.Board>().missionId
+    val missionId: Long = savedStateHandle.toRoute<Mission.Board>().missionId
 
     val viewedToolTip: StateFlow<Boolean> = getViewedTooltipUseCase().stateIn(
         viewModelScope,

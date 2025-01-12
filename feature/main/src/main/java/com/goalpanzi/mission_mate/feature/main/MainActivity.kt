@@ -39,7 +39,7 @@ class MainActivity : ComponentActivity() {
                         if (user == null) {
                             RouteModel.Profile.Create
                         } else {
-                            RouteModel.OnboardingRouteModel.Onboarding()
+                            RouteModel.MainTabRoute.OnboardingRouteModel.Onboarding()
                         }
                     }
                 )

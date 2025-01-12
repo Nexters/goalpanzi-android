@@ -8,7 +8,7 @@ import com.goalpanzi.mission_mate.core.domain.common.DomainResult
 import com.goalpanzi.mission_mate.core.domain.common.model.user.UserProfile
 import com.goalpanzi.mission_mate.core.domain.mission.usecase.VerifyMissionUseCase
 import com.goalpanzi.mission_mate.core.domain.user.usecase.ProfileUseCase
-import com.goalpanzi.mission_mate.core.navigation.RouteModel.BoardRouteModel
+import com.goalpanzi.mission_mate.core.navigation.RouteModel.Mission
 import com.goalpanzi.mission_mate.feature.board.model.CharacterUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -33,8 +33,8 @@ class VerificationPreviewViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    private val missionId = savedStateHandle.toRoute<BoardRouteModel.VerificationPreview>().missionId
-    private val imageUrl = savedStateHandle.toRoute<BoardRouteModel.VerificationPreview>().imageUrl
+    private val missionId = savedStateHandle.toRoute<Mission.VerificationPreview>().missionId
+    private val imageUrl = savedStateHandle.toRoute<Mission.VerificationPreview>().imageUrl
 
     private val _eventFlow = MutableSharedFlow<UploadEvent>()
     val eventFlow = _eventFlow.asSharedFlow()

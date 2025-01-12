@@ -8,7 +8,7 @@ import com.goalpanzi.mission_mate.core.domain.common.DomainResult
 import com.goalpanzi.mission_mate.core.domain.mission.usecase.DeleteMissionUseCase
 import com.goalpanzi.mission_mate.core.domain.mission.usecase.GetMissionUseCase
 import com.goalpanzi.mission_mate.core.domain.user.usecase.GetCachedMemberIdUseCase
-import com.goalpanzi.mission_mate.core.navigation.RouteModel.BoardRouteModel
+import com.goalpanzi.mission_mate.core.navigation.RouteModel.Mission
 import com.goalpanzi.mission_mate.feature.board.model.MissionError
 import com.goalpanzi.mission_mate.feature.board.model.uimodel.MissionUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -34,7 +34,7 @@ class BoardDetailViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    private val missionId: Long = savedStateHandle.toRoute<BoardRouteModel.BoardDetail>().missionId
+    private val missionId: Long = savedStateHandle.toRoute<Mission.Detail>().missionId
 
     private val memberId : StateFlow<Long?> = getCachedMemberIdUseCase().stateIn(
         viewModelScope,

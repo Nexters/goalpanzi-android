@@ -6,7 +6,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
-import com.goalpanzi.mission_mate.core.navigation.RouteModel.BoardRouteModel
+import com.goalpanzi.mission_mate.core.navigation.RouteModel.Mission
 import com.goalpanzi.mission_mate.feature.board.model.CharacterUiModel
 import com.goalpanzi.mission_mate.feature.board.model.UserStory
 import com.goalpanzi.mission_mate.feature.board.screen.BoardFinishRoute
@@ -25,7 +25,7 @@ fun NavController.navigateToBoard(
         }
     }
 ) {
-    this.navigate(BoardRouteModel.Board(missionId), navOptions = navOptions)
+    this.navigate(Mission.Board(missionId), navOptions = navOptions)
 }
 
 fun NavGraphBuilder.boardNavGraph(
@@ -36,7 +36,7 @@ fun NavGraphBuilder.boardNavGraph(
     onClickSetting: () -> Unit,
     onNavigateToPreview: (Long, Uri) -> Unit
 ) {
-    composable<BoardRouteModel.Board> { navBackStackEntry ->
+    composable<Mission.Board> { navBackStackEntry ->
         BoardRoute(
             onNavigateOnboarding = onNavigateOnboarding,
             onNavigateDetail = onNavigateDetail,
@@ -51,14 +51,14 @@ fun NavGraphBuilder.boardNavGraph(
 fun NavController.navigateToBoardDetail(
     missionId: Long
 ) {
-    this.navigate(BoardRouteModel.BoardDetail(missionId))
+    this.navigate(Mission.Detail(missionId))
 }
 
 fun NavGraphBuilder.boardDetailNavGraph(
     onNavigateOnboarding: () -> Unit,
     onBackClick: () -> Unit
 ) {
-    composable<BoardRouteModel.BoardDetail> {
+    composable<Mission.Detail> {
         BoardMissionDetailRoute(
             onNavigateOnboarding = onNavigateOnboarding,
             onBackClick = onBackClick
@@ -69,14 +69,14 @@ fun NavGraphBuilder.boardDetailNavGraph(
 fun NavController.navigateToBoardFinish(
     missionId: Long
 ) {
-    this.navigate(BoardRouteModel.BoardFinish(missionId))
+    this.navigate(Mission.Finish(missionId))
 }
 
 fun NavGraphBuilder.boardFinishNavGraph(
     onClickSetting: () -> Unit,
     onClickOk: () -> Unit,
 ) {
-    composable<BoardRouteModel.BoardFinish> {
+    composable<Mission.Finish> {
         BoardFinishRoute(
             onSettingClick = onClickSetting,
             onOkClick = onClickOk
@@ -90,7 +90,7 @@ fun NavController.navigateToUserStory(
     val encodedUrl = URLEncoder.encode(imageUrl, StandardCharsets.UTF_8.toString())
     this@navigateToUserStory
         .navigate(
-            BoardRouteModel.UserStory(
+            Mission.UserStory(
                 userCharacter = characterUiModelType.name.uppercase(),
                 nickname = nickname,
                 verifiedAt = verifiedAt,
@@ -102,8 +102,8 @@ fun NavController.navigateToUserStory(
 fun NavGraphBuilder.userStoryNavGraph(
     onClickClose: () -> Unit
 ) {
-    composable<BoardRouteModel.UserStory> { backStackEntry ->
-        backStackEntry.toRoute<BoardRouteModel.UserStory>().run {
+    composable<Mission.UserStory> { backStackEntry ->
+        backStackEntry.toRoute<Mission.UserStory>().run {
             val characterUiModel = userCharacter.let { CharacterUiModel.valueOf(it) }
             UserStoryScreen(
                 characterUiModel = characterUiModel,
@@ -121,14 +121,14 @@ fun NavController.navigateToVerificationPreview(
     imageUrl: Uri
 ) {
     val encodedUrl = URLEncoder.encode(imageUrl.toString(), StandardCharsets.UTF_8.toString())
-    this.navigate(BoardRouteModel.VerificationPreview(missionId,encodedUrl))
+    this.navigate(Mission.VerificationPreview(missionId,encodedUrl))
 }
 
 fun NavGraphBuilder.verificationPreviewNavGraph(
     onClickClose: () -> Unit,
     onUploadSuccess: () -> Unit
 ) {
-    composable<BoardRouteModel.VerificationPreview> {
+    composable<Mission.VerificationPreview> {
         VerificationPreviewRoute(
             onClickClose = onClickClose,
             onUploadSuccess = { onUploadSuccess() }

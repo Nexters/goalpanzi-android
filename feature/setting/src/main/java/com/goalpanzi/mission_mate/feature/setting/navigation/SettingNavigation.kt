@@ -5,7 +5,7 @@ import androidx.compose.animation.core.tween
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import com.goalpanzi.mission_mate.core.navigation.RouteModel.SettingRouteModel
+import com.goalpanzi.mission_mate.core.navigation.RouteModel.MainTabRoute.SettingRouteModel
 import com.goalpanzi.mission_mate.feature.setting.screen.SettingRoute
 import com.goalpanzi.mission_mate.feature.setting.screen.WebViewScreen
 

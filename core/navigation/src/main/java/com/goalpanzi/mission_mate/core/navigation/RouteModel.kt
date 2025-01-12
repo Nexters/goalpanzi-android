@@ -16,30 +16,15 @@ sealed interface RouteModel {
     }
 
     @Serializable
-    sealed interface OnboardingRouteModel {
+    sealed interface Mission: RouteModel {
         @Serializable
-        data class Onboarding(val isAfterProfileCreate: Boolean = false) : RouteModel
+        data class Board(val missionId : Long) : Mission
 
         @Serializable
-        data object BoardSetup : OnboardingRouteModel
+        data class Detail(val missionId : Long) : Mission
 
         @Serializable
-        data object BoardSetupSuccess : OnboardingRouteModel
-
-        @Serializable
-        data object InvitationCode : OnboardingRouteModel
-    }
-
-    @Serializable
-    sealed interface BoardRouteModel {
-        @Serializable
-        data class Board(val missionId : Long) : BoardRouteModel
-
-        @Serializable
-        data class BoardDetail(val missionId : Long) : BoardRouteModel
-
-        @Serializable
-        data class BoardFinish(val missionId : Long) : BoardRouteModel
+        data class Finish(val missionId : Long) : Mission
 
         @Serializable
         data class UserStory(
@@ -47,26 +32,46 @@ sealed interface RouteModel {
             val nickname : String,
             val verifiedAt : String,
             val imageUrl : String
-        ) : BoardRouteModel
+        ) : Mission
 
         @Serializable
         data class VerificationPreview(
             val missionId : Long,
             val imageUrl : String
-        ) : BoardRouteModel
+        ) : Mission
     }
 
     @Serializable
-    sealed interface SettingRouteModel {
+    sealed interface MainTabRoute : RouteModel {
+        @Serializable
+        sealed interface OnboardingRouteModel : MainTabRoute {
+            @Serializable
+            data class Onboarding(val isAfterProfileCreate: Boolean = false) : OnboardingRouteModel
+
+            @Serializable
+            data object BoardSetup : OnboardingRouteModel
+
+            @Serializable
+            data object BoardSetupSuccess : OnboardingRouteModel
+
+            @Serializable
+            data object InvitationCode : OnboardingRouteModel
+        }
 
         @Serializable
-        data object Setting : SettingRouteModel
+        sealed interface HistoryRouteModel : MainTabRoute
 
         @Serializable
-        data object ServicePolicy : SettingRouteModel
+        sealed interface SettingRouteModel : MainTabRoute {
+            @Serializable
+            data object Setting : SettingRouteModel
 
-        @Serializable
-        data object PrivacyPolicy : SettingRouteModel
+            @Serializable
+            data object ServicePolicy : SettingRouteModel
+
+            @Serializable
+            data object PrivacyPolicy : SettingRouteModel
+        }
     }
 }
 
