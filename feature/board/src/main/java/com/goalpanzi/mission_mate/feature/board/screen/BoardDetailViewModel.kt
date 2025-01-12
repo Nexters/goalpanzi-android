@@ -8,7 +8,7 @@ import com.goalpanzi.mission_mate.core.domain.common.DomainResult
 import com.goalpanzi.mission_mate.core.domain.mission.usecase.DeleteMissionUseCase
 import com.goalpanzi.mission_mate.core.domain.mission.usecase.GetMissionUseCase
 import com.goalpanzi.mission_mate.core.domain.user.usecase.GetCachedMemberIdUseCase
-import com.goalpanzi.mission_mate.core.navigation.BoardRouteModel
+import com.goalpanzi.mission_mate.core.navigation.RouteModel.BoardRouteModel
 import com.goalpanzi.mission_mate.feature.board.model.MissionError
 import com.goalpanzi.mission_mate.feature.board.model.uimodel.MissionUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel

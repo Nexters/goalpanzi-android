@@ -4,6 +4,7 @@ import com.goalpanzi.mission_mate.core.datastore.datasource.AuthDataSource
 import com.goalpanzi.mission_mate.core.datastore.datasource.DefaultDataSource
 import com.goalpanzi.mission_mate.core.datastore.datasource.MissionDataSource
 import com.goalpanzi.mission_mate.core.navigation.NavigationEventHandler
+import com.goalpanzi.mission_mate.core.navigation.RouteModel
 import com.goalpanzi.mission_mate.core.navigation.di.AuthNavigation
 import com.goalpanzi.mission_mate.core.network.TokenExpirationHandler
 import kotlinx.coroutines.flow.collect
@@ -18,7 +19,7 @@ class AuthTokenExpirationHandler @Inject constructor(
 
     override suspend fun handleRefreshTokenExpiration() {
         clearCachedData()
-        authNavigationEventHandler.triggerRouteToNavigate("RouteModel.Login")
+        authNavigationEventHandler.triggerRouteToNavigate(RouteModel.Login)
     }
 
     private suspend fun clearCachedData(){

@@ -5,13 +5,12 @@ import androidx.compose.animation.core.tween
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import com.goalpanzi.mission_mate.core.navigation.RouteModel
-import com.goalpanzi.mission_mate.core.navigation.SettingRouteModel
+import com.goalpanzi.mission_mate.core.navigation.RouteModel.SettingRouteModel
 import com.goalpanzi.mission_mate.feature.setting.screen.SettingRoute
 import com.goalpanzi.mission_mate.feature.setting.screen.WebViewScreen
 
 fun NavController.navigateToSetting() {
-    this.navigate(RouteModel.Setting)
+    this.navigate(SettingRouteModel.Setting)
 }
 
 fun NavController.navigateToServicePolicy() {
@@ -29,7 +28,7 @@ fun NavGraphBuilder.settingNavGraph(
     onClickPrivacyPolicy: () -> Unit,
     onClickLogout: () -> Unit
 ) {
-    composable<RouteModel.Setting>(
+    composable<SettingRouteModel.Setting>(
         enterTransition = {
             slideIntoContainer(
                 towards = AnimatedContentTransitionScope.SlideDirection.Start,

@@ -18,7 +18,7 @@ import com.goalpanzi.mission_mate.core.domain.setting.usecase.GetViewedTooltipUs
 import com.goalpanzi.mission_mate.core.domain.setting.usecase.SetViewedTooltipUseCase
 import com.goalpanzi.mission_mate.core.domain.user.usecase.GetCachedMemberIdUseCase
 import com.goalpanzi.mission_mate.core.domain.user.usecase.ProfileUseCase
-import com.goalpanzi.mission_mate.core.navigation.BoardRouteModel
+import com.goalpanzi.mission_mate.core.navigation.RouteModel.BoardRouteModel
 import com.goalpanzi.mission_mate.feature.board.model.BoardPiece
 import com.goalpanzi.mission_mate.feature.board.model.MissionError
 import com.goalpanzi.mission_mate.feature.board.model.MissionState

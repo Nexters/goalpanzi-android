@@ -11,7 +11,7 @@ import com.goalpanzi.mission_mate.core.domain.mission.usecase.CompleteMissionUse
 import com.goalpanzi.mission_mate.core.domain.mission.usecase.GetMissionRankUseCase
 import com.goalpanzi.mission_mate.core.domain.mission.usecase.SetMissionJoinedUseCase
 import com.goalpanzi.mission_mate.core.domain.user.usecase.ProfileUseCase
-import com.goalpanzi.mission_mate.core.navigation.BoardRouteModel
+import com.goalpanzi.mission_mate.core.navigation.RouteModel.BoardRouteModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow

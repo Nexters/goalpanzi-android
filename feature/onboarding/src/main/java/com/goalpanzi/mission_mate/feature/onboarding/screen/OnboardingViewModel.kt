@@ -12,7 +12,7 @@ import com.goalpanzi.mission_mate.core.domain.onboarding.usecase.GetJoinedMissio
 import com.goalpanzi.mission_mate.core.domain.user.usecase.GetFcmTokenUseCase
 import com.goalpanzi.mission_mate.core.domain.user.usecase.ProfileUseCase
 import com.goalpanzi.mission_mate.core.domain.user.usecase.UpdateFcmTokenUseCase
-import com.goalpanzi.mission_mate.core.navigation.RouteModel
+import com.goalpanzi.mission_mate.core.navigation.RouteModel.OnboardingRouteModel
 import com.goalpanzi.mission_mate.feature.onboarding.model.OnboardingResultEvent
 import com.goalpanzi.mission_mate.feature.onboarding.model.OnboardingUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -47,7 +47,7 @@ class OnboardingViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            savedStateHandle.toRoute<RouteModel.Onboarding>().isAfterProfileCreate.let {
+            savedStateHandle.toRoute<OnboardingRouteModel.Onboarding>().isAfterProfileCreate.let {
                 if (it) {
                     profileCreateSuccessEvent.emit(profileUseCase.getProfile())
                 }

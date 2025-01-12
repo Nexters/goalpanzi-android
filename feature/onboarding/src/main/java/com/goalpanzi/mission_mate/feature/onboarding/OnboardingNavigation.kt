@@ -4,8 +4,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
-import com.goalpanzi.mission_mate.core.navigation.OnboardingRouteModel
-import com.goalpanzi.mission_mate.core.navigation.RouteModel
+import com.goalpanzi.mission_mate.core.navigation.RouteModel.OnboardingRouteModel
 import com.goalpanzi.mission_mate.feature.onboarding.screen.OnboardingRoute
 import com.goalpanzi.mission_mate.feature.onboarding.screen.boardsetup.BoardSetupRoute
 import com.goalpanzi.mission_mate.feature.onboarding.screen.boardsetup.BoardSetupSuccessScreen
@@ -19,7 +18,7 @@ fun NavController.navigateToOnboarding(
         }
     }
 ) {
-    this.navigate(RouteModel.Onboarding(isAfterProfileCreate), navOptions = navOptions)
+    this.navigate(OnboardingRouteModel.Onboarding(isAfterProfileCreate), navOptions = navOptions)
 }
 
 fun NavGraphBuilder.onboardingNavGraph(
@@ -28,7 +27,7 @@ fun NavGraphBuilder.onboardingNavGraph(
     onClickSetting: () -> Unit,
     onNavigateMissionBoard: (Long) -> Unit
 ) {
-    composable<RouteModel.Onboarding> {
+    composable<OnboardingRouteModel.Onboarding> {
         OnboardingRoute(
             onClickBoardSetup = onClickBoardSetup,
             onClickInvitationCode = onClickInvitationCode,

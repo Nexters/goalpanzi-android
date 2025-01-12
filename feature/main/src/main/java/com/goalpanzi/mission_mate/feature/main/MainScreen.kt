@@ -9,6 +9,7 @@ import com.goalpanzi.mission_mate.core.navigation.RouteModel
 import com.goalpanzi.mission_mate.feature.main.component.MainNavHost
 import com.goalpanzi.mission_mate.feature.main.component.MainNavigator
 import com.goalpanzi.mission_mate.feature.main.component.rememberMainNavigator
+import com.goalpanzi.mission_mate.feature.main.ext.compareTo
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
@@ -22,10 +23,10 @@ internal fun MainScreen(
 ) {
     LaunchedEffect(Unit) {
         viewModel.navigationEvent.debounce(200).collectLatest { route ->
-            if(navigator.navController.currentDestination?.route != route){
-                if(route == "RouteModel.Login"){
+            if(navigator.navController.currentDestination?.compareTo(route) == false) {
+                if (route == RouteModel.Login) {
                     navigator.navigateToLogin()
-                }else {
+                } else {
                     navigator.navController.navigate(route)
                 }
             }

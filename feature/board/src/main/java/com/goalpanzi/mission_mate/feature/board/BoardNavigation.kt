@@ -6,7 +6,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
-import com.goalpanzi.mission_mate.core.navigation.BoardRouteModel
+import com.goalpanzi.mission_mate.core.navigation.RouteModel.BoardRouteModel
 import com.goalpanzi.mission_mate.feature.board.model.CharacterUiModel
 import com.goalpanzi.mission_mate.feature.board.model.UserStory
 import com.goalpanzi.mission_mate.feature.board.screen.BoardFinishRoute
