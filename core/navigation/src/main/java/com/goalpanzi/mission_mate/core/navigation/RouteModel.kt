@@ -1,11 +1,16 @@
 package com.goalpanzi.mission_mate.core.navigation
 
+import com.goalpanzi.mission_mate.core.navigation.model.MainTabDataModel
 import kotlinx.serialization.Serializable
-
 
 sealed interface RouteModel {
     @Serializable
     data object Login : RouteModel
+
+    @Serializable
+    data class MainTab(
+        val mainTabDataModel : MainTabDataModel = MainTabDataModel.Mission()
+    ) : RouteModel
 
     @Serializable
     sealed interface Profile: RouteModel {
@@ -56,7 +61,10 @@ sealed interface RouteModel {
         }
 
         @Serializable
-        sealed interface HistoryRouteModel : MainTabRoute
+        sealed interface HistoryRouteModel : MainTabRoute {
+            @Serializable
+            data object History : HistoryRouteModel
+        }
 
         @Serializable
         sealed interface SettingRouteModel : MainTabRoute {
