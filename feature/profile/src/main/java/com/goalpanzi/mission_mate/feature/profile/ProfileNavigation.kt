@@ -1,11 +1,9 @@
 package com.goalpanzi.mission_mate.feature.profile
 
-import androidx.compose.animation.AnimatedContentTransitionScope
-import androidx.compose.animation.core.tween
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import com.goalpanzi.mission_mate.core.navigation.RouteModel
+import com.goalpanzi.mission_mate.core.navigation.model.RouteModel
 import com.goalpanzi.mission_mate.core.ui.util.slideInFromLeft
 import com.goalpanzi.mission_mate.core.ui.util.slideOutToEnd
 

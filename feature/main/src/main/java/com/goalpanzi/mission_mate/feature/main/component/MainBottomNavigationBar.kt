@@ -28,8 +28,8 @@ import com.goalpanzi.mission_mate.core.designsystem.theme.ColorGray1_FF404249
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorGray4_FFE5E5E5
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorOrange_FFFF5732
 import com.goalpanzi.mission_mate.core.designsystem.theme.MissionMateTypography
-import com.goalpanzi.mission_mate.core.navigation.RouteModel
-import com.goalpanzi.mission_mate.core.navigation.RouteModel.MainTabRoute
+import com.goalpanzi.mission_mate.core.navigation.model.RouteModel
+import com.goalpanzi.mission_mate.core.navigation.model.RouteModel.MainTabRoute
 import com.goalpanzi.mission_mate.feature.main.R
 
 internal const val MAIN_BOTTOM_NAVIGATION_BAR_HEIGHT = 48

@@ -1,6 +1,5 @@
-package com.goalpanzi.mission_mate.core.navigation
+package com.goalpanzi.mission_mate.core.navigation.model
 
-import com.goalpanzi.mission_mate.core.navigation.model.MainTabDataModel
 import kotlinx.serialization.Serializable
 
 sealed interface RouteModel {

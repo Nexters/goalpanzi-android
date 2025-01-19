@@ -8,7 +8,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import com.goalpanzi.mission_mate.core.designsystem.theme.MissionmateTheme
 import com.goalpanzi.mission_mate.core.domain.auth.usecase.LoginUseCase
-import com.goalpanzi.mission_mate.core.navigation.RouteModel
+import com.goalpanzi.mission_mate.core.navigation.model.RouteModel
 import com.goalpanzi.mission_mate.feature.main.component.MainNavigator
 import com.goalpanzi.mission_mate.feature.main.component.rememberMainNavigator
 import dagger.hilt.android.AndroidEntryPoint

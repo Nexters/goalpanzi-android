@@ -3,7 +3,7 @@ package com.goalpanzi.mission_mate.feature.main.component
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
-import com.goalpanzi.mission_mate.core.navigation.RouteModel.MainTabRoute.MissionRouteModel
+import com.goalpanzi.mission_mate.core.navigation.model.RouteModel.MainTabRoute.MissionRouteModel
 import com.goalpanzi.mission_mate.feature.board.boardNavGraph
 import com.goalpanzi.mission_mate.feature.onboarding.onboardingNavGraph
 import com.goalpanzi.mission_mate.feature.setting.navigation.settingNavGraph

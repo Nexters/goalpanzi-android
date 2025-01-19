@@ -5,7 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.goalpanzi.mission_mate.core.navigation.RouteModel
+import com.goalpanzi.mission_mate.core.navigation.model.RouteModel
 import com.goalpanzi.mission_mate.feature.main.component.MainNavHost
 import com.goalpanzi.mission_mate.feature.main.component.MainNavigator
 import com.goalpanzi.mission_mate.feature.main.component.rememberMainNavigator

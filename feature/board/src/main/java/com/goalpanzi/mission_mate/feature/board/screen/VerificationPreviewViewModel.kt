@@ -8,7 +8,7 @@ import com.goalpanzi.mission_mate.core.domain.common.DomainResult
 import com.goalpanzi.mission_mate.core.domain.common.model.user.UserProfile
 import com.goalpanzi.mission_mate.core.domain.mission.usecase.VerifyMissionUseCase
 import com.goalpanzi.mission_mate.core.domain.user.usecase.ProfileUseCase
-import com.goalpanzi.mission_mate.core.navigation.RouteModel.MainTabRoute.MissionRouteModel
+import com.goalpanzi.mission_mate.core.navigation.model.RouteModel.MainTabRoute.MissionRouteModel
 import com.goalpanzi.mission_mate.feature.board.model.CharacterUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow

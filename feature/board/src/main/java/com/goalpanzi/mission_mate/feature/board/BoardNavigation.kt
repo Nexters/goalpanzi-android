@@ -1,14 +1,12 @@
 package com.goalpanzi.mission_mate.feature.board
 
 import android.net.Uri
-import androidx.compose.animation.AnimatedContentTransitionScope
-import androidx.compose.animation.core.tween
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
-import com.goalpanzi.mission_mate.core.navigation.RouteModel.MainTabRoute.MissionRouteModel
+import com.goalpanzi.mission_mate.core.navigation.model.RouteModel.MainTabRoute.MissionRouteModel
 import com.goalpanzi.mission_mate.core.ui.util.slideInFromLeft
 import com.goalpanzi.mission_mate.core.ui.util.slideInToUp
 import com.goalpanzi.mission_mate.core.ui.util.slideOutToDown

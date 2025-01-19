@@ -7,7 +7,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.goalpanzi.mission_mate.core.navigation.model.MainTabDataModel
-import com.goalpanzi.mission_mate.core.navigation.RouteModel
+import com.goalpanzi.mission_mate.core.navigation.model.RouteModel
 import com.goalpanzi.mission_mate.feature.board.model.UserStory
 import com.goalpanzi.mission_mate.feature.board.navigateToBoardDetail
 import com.goalpanzi.mission_mate.feature.board.navigateToBoardFinish

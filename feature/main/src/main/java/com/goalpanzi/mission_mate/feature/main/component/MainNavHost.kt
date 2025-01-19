@@ -18,7 +18,7 @@ import com.goalpanzi.mission_mate.core.designsystem.theme.ColorWhite_FFFFFFFF
 import com.goalpanzi.mission_mate.core.designsystem.util.isLightStatusBars
 import com.goalpanzi.mission_mate.core.designsystem.util.setStatusBar
 import com.goalpanzi.mission_mate.core.navigation.model.MainTabDataModel
-import com.goalpanzi.mission_mate.core.navigation.RouteModel
+import com.goalpanzi.mission_mate.core.navigation.model.RouteModel
 import com.goalpanzi.mission_mate.feature.board.boardDetailNavGraph
 import com.goalpanzi.mission_mate.feature.board.boardFinishNavGraph
 import com.goalpanzi.mission_mate.feature.board.userStoryNavGraph
