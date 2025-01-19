@@ -1,5 +1,6 @@
 package com.goalpanzi.mission_mate.feature.main.component
 
+import android.util.Log
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.height
@@ -27,6 +28,7 @@ fun MainTabContent(
         WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
 
     LaunchedEffect(mainTabDataModel) {
+        Log.d("123123","${mainTabDataModel}")
         when (mainTabDataModel) {
             is MainTabDataModel.Mission -> {
                 mainTabNavigator.navigationToOnboarding(
@@ -40,6 +42,10 @@ fun MainTabContent(
 
             MainTabDataModel.Setting -> {
                 mainTabNavigator.navigationToSetting()
+            }
+
+            MainTabDataModel.None -> {
+
             }
         }
     }

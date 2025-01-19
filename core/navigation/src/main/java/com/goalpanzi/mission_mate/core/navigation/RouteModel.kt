@@ -9,7 +9,7 @@ sealed interface RouteModel {
 
     @Serializable
     data class MainTab(
-        val mainTabDataModel : MainTabDataModel = MainTabDataModel.Mission()
+        val mainTabDataModel : MainTabDataModel = MainTabDataModel.None
     ) : RouteModel
 
     @Serializable

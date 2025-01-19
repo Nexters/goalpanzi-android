@@ -15,4 +15,6 @@ sealed class MainTabDataModel : Parcelable {
     data object History : MainTabDataModel()
     @Serializable
     data object Setting : MainTabDataModel()
+    @Serializable
+    data object None : MainTabDataModel()
 }
