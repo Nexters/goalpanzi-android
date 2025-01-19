@@ -1,12 +1,18 @@
 package com.goalpanzi.mission_mate.feature.board
 
 import android.net.Uri
+import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.core.tween
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import com.goalpanzi.mission_mate.core.navigation.RouteModel.MainTabRoute.MissionRouteModel
+import com.goalpanzi.mission_mate.core.ui.util.slideInFromLeft
+import com.goalpanzi.mission_mate.core.ui.util.slideInToUp
+import com.goalpanzi.mission_mate.core.ui.util.slideOutToDown
+import com.goalpanzi.mission_mate.core.ui.util.slideOutToEnd
 import com.goalpanzi.mission_mate.feature.board.model.CharacterUiModel
 import com.goalpanzi.mission_mate.feature.board.model.UserStory
 import com.goalpanzi.mission_mate.feature.board.screen.BoardFinishRoute
@@ -58,7 +64,14 @@ fun NavGraphBuilder.boardDetailNavGraph(
     onNavigateOnboarding: () -> Unit,
     onBackClick: () -> Unit
 ) {
-    composable<MissionRouteModel.Detail> {
+    composable<MissionRouteModel.Detail>(
+        enterTransition = {
+            slideInFromLeft()
+        },
+        popExitTransition = {
+            slideOutToEnd()
+        }
+    ) {
         BoardMissionDetailRoute(
             onNavigateOnboarding = onNavigateOnboarding,
             onBackClick = onBackClick
@@ -102,7 +115,14 @@ fun NavController.navigateToUserStory(
 fun NavGraphBuilder.userStoryNavGraph(
     onClickClose: () -> Unit
 ) {
-    composable<MissionRouteModel.UserStory> { backStackEntry ->
+    composable<MissionRouteModel.UserStory>(
+        enterTransition = {
+            slideInToUp()
+        },
+        exitTransition = {
+            slideOutToDown()
+        }
+    ) { backStackEntry ->
         backStackEntry.toRoute<MissionRouteModel.UserStory>().run {
             val characterUiModel = userCharacter.let { CharacterUiModel.valueOf(it) }
             UserStoryScreen(
@@ -128,7 +148,14 @@ fun NavGraphBuilder.verificationPreviewNavGraph(
     onClickClose: () -> Unit,
     onUploadSuccess: () -> Unit
 ) {
-    composable<MissionRouteModel.VerificationPreview> {
+    composable<MissionRouteModel.VerificationPreview>(
+        enterTransition = {
+            slideInToUp()
+        },
+        exitTransition = {
+            slideOutToDown()
+        }
+    ) {
         VerificationPreviewRoute(
             onClickClose = onClickClose,
             onUploadSuccess = { onUploadSuccess() }

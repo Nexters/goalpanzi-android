@@ -6,6 +6,8 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.goalpanzi.mission_mate.core.navigation.RouteModel
+import com.goalpanzi.mission_mate.core.ui.util.slideInFromLeft
+import com.goalpanzi.mission_mate.core.ui.util.slideOutToEnd
 
 enum class ProfileSettingType {
     CREATE, SETTING
@@ -25,10 +27,10 @@ fun NavGraphBuilder.profileNavGraph(
 ) {
     composable<RouteModel.Profile.Create>(
         enterTransition = {
-            slideIntoContainer(
-                towards = AnimatedContentTransitionScope.SlideDirection.Left,
-                animationSpec = tween(300)
-            )
+            slideInFromLeft()
+        },
+        popExitTransition = {
+            slideOutToEnd()
         }
     ) {
         ProfileRoute(
@@ -36,7 +38,14 @@ fun NavGraphBuilder.profileNavGraph(
             onSaveSuccess = onSaveSuccess
         )
     }
-    composable<RouteModel.Profile.Setting> {
+    composable<RouteModel.Profile.Setting> (
+        enterTransition = {
+            slideInFromLeft()
+        },
+        popExitTransition = {
+            slideOutToEnd()
+        }
+    ){
         ProfileRoute(
             profileSettingType = ProfileSettingType.SETTING,
             onSaveSuccess = onBackClick,

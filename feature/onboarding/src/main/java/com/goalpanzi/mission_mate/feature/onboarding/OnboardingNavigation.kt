@@ -5,6 +5,8 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import com.goalpanzi.mission_mate.core.navigation.RouteModel.MainTabRoute.MissionRouteModel
+import com.goalpanzi.mission_mate.core.ui.util.slideInFromLeft
+import com.goalpanzi.mission_mate.core.ui.util.slideOutToEnd
 import com.goalpanzi.mission_mate.feature.onboarding.screen.OnboardingRoute
 import com.goalpanzi.mission_mate.feature.onboarding.screen.boardsetup.BoardSetupRoute
 import com.goalpanzi.mission_mate.feature.onboarding.screen.boardsetup.BoardSetupSuccessScreen
@@ -59,7 +61,14 @@ fun NavGraphBuilder.boardSetupNavGraph(
     onSuccess: () -> Unit,
     onBackClick: () -> Unit
 ) {
-    composable<MissionRouteModel.BoardSetup> {
+    composable<MissionRouteModel.BoardSetup>(
+        enterTransition = {
+            slideInFromLeft()
+        },
+        popExitTransition = {
+            slideOutToEnd()
+        }
+    ) {
         BoardSetupRoute(
             onSuccess = onSuccess,
             onBackClick = onBackClick
@@ -81,7 +90,14 @@ fun NavGraphBuilder.invitationCodeNavGraph(
     onBackClick: () -> Unit,
     onNavigateMissionBoard: (Long) -> Unit,
 ) {
-    composable<MissionRouteModel.InvitationCode> {
+    composable<MissionRouteModel.InvitationCode>(
+        enterTransition = {
+            slideInFromLeft()
+        },
+        popExitTransition = {
+            slideOutToEnd()
+        }
+    ) {
         InvitationCodeRoute(
             onBackClick = onBackClick,
             onNavigateMissionBoard = onNavigateMissionBoard
