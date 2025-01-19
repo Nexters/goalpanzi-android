@@ -62,7 +62,6 @@ fun BoardRoute(
     onNavigateOnboarding: () -> Unit,
     onNavigateDetail: (Long) -> Unit,
     onNavigateFinish : (Long) -> Unit,
-    onClickSetting: () -> Unit,
     onClickStory: (UserStory) -> Unit,
     onPreviewImage: (Long, Uri) -> Unit,
     modifier: Modifier = Modifier,
@@ -206,7 +205,6 @@ fun BoardRoute(
         missionState = missionState,
         boardPieces = boardPieces,
         isHost = isHost,
-        onClickSetting = onClickSetting,
         onClickFlag = {
             viewModel.setViewedTooltip()
             onNavigateDetail(viewModel.missionId)
@@ -249,7 +247,6 @@ fun BoardScreen(
     missionState: MissionState,
     boardPieces: List<BoardPiece>,
     isHost: Boolean,
-    onClickSetting: () -> Unit,
     onClickVerification: () -> Unit,
     onClickFlag: () -> Unit,
     onClickAddUser: () -> Unit,
@@ -297,7 +294,6 @@ fun BoardScreen(
                 missionState = missionState,
                 onClickFlag = onClickFlag,
                 onClickAddUser = onClickAddUser,
-                onClickSetting = onClickSetting,
                 onClickTooltip = onClickTooltip,
                 onClickStory = onClickStory
             )

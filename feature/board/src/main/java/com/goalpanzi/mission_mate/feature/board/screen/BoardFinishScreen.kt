@@ -54,7 +54,6 @@ import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun BoardFinishRoute(
-    onSettingClick: () -> Unit,
     onOkClick : () -> Unit,
     modifier: Modifier = Modifier,
     viewModel : BoardFinishViewModel = hiltViewModel()
@@ -104,7 +103,6 @@ fun BoardFinishRoute(
         isLoading = isLoading,
         characterUiModel = userProfile?.characterType?.toCharacterUiModel(),
         onOkClick = viewModel::completeMission,
-        onSettingClick = onSettingClick
     )
 }
 
@@ -113,7 +111,6 @@ fun BoardFinishScreen(
     characterUiModel : CharacterUiModel?,
     rank : Int?,
     isLoading : Boolean,
-    onSettingClick: () -> Unit,
     onOkClick : () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -136,18 +133,6 @@ fun BoardFinishScreen(
             MissionMateTopAppBar(
                 modifier = modifier,
                 navigationType = NavigationType.NONE,
-                rightActionButtons = {
-                    IconButton(
-                        onClick = onSettingClick,
-                        modifier = Modifier.wrapContentSize()
-                    ) {
-                        Icon(
-                            imageVector = ImageVector.vectorResource(id = com.goalpanzi.mission_mate.core.designsystem.R.drawable.ic_setting),
-                            contentDescription = "",
-                            tint = ColorGray1_FF404249
-                        )
-                    }
-                },
                 containerColor = Color.Transparent
             )
             BoardFinishCharacter(
@@ -252,7 +237,6 @@ private fun PreviewBoardFinishScreen() {
         characterUiModel = null,
         rank = 10,
         isLoading = false,
-        onSettingClick = {},
         onOkClick = {}
     )
 

@@ -40,7 +40,6 @@ fun BoardTopView(
     missionState : MissionState,
     onClickFlag: () -> Unit,
     onClickAddUser: () -> Unit,
-    onClickSetting: () -> Unit,
     onClickTooltip : () -> Unit,
     onClickStory: (UserStory) -> Unit,
     modifier: Modifier = Modifier
@@ -70,7 +69,6 @@ fun BoardTopView(
                 BoardTopViewRightActionButtons(
                     isAddingUserEnabled = isAddingUserEnabled,
                     onClickAddUser = onClickAddUser,
-                    onClickSetting = onClickSetting
                 )
             },
             containerColor = Color.Transparent
@@ -122,7 +120,6 @@ fun BoardTopView(
 fun BoardTopViewRightActionButtons(
     isAddingUserEnabled: Boolean,
     onClickAddUser: () -> Unit,
-    onClickSetting: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -140,16 +137,6 @@ fun BoardTopViewRightActionButtons(
                     tint = ColorGray1_FF404249
                 )
             }
-        }
-        IconButton(
-            onClick = onClickSetting,
-            modifier = Modifier.wrapContentSize()
-        ) {
-            Icon(
-                imageVector = ImageVector.vectorResource(id = com.goalpanzi.mission_mate.core.designsystem.R.drawable.ic_setting),
-                contentDescription = "",
-                tint = ColorGray1_FF404249
-            )
         }
     }
 }

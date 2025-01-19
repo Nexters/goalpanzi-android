@@ -66,7 +66,6 @@ fun OnboardingRoute(
     modifier: Modifier = Modifier,
     onClickBoardSetup: () -> Unit,
     onClickInvitationCode: () -> Unit,
-    onClickSetting: () -> Unit,
     onNavigateMissionBoard: (Long) -> Unit,
     viewModel: OnboardingViewModel = hiltViewModel()
 ) {
@@ -112,7 +111,6 @@ fun OnboardingRoute(
         modifier = modifier.fillMaxSize(),
         onClickBoardSetup = onClickBoardSetup,
         onClickInvitationCode = onClickInvitationCode,
-        onClickSetting = onClickSetting
     )
 
     profileCreateSuccessData?.let {
@@ -131,7 +129,6 @@ fun OnboardingScreen(
     onboardingUiModel: OnboardingUiModel,
     onClickBoardSetup: () -> Unit,
     onClickInvitationCode: () -> Unit,
-    onClickSetting: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Box(
@@ -157,11 +154,6 @@ fun OnboardingScreen(
                         modifier = modifier,
                         navigationType = NavigationType.NONE,
                         containerColor = Color.Transparent,
-                        rightActionButtons = {
-                            TopBarSetting(
-                                onClick = { onClickSetting() }
-                            )
-                        }
                     )
                     Text(
                         modifier = Modifier.padding(bottom = 52.dp),
@@ -239,22 +231,6 @@ fun OnboardingScreen(
             }
         }
 
-    }
-}
-
-@Composable
-fun TopBarSetting(
-    onClick: () -> Unit
-) {
-    IconButton(
-        onClick = onClick,
-        modifier = Modifier.wrapContentSize()
-    ) {
-        Icon(
-            imageVector = ImageVector.vectorResource(id = designSystemResource.drawable.ic_setting),
-            contentDescription = "",
-            tint = ColorGray1_FF404249
-        )
     }
 }
 
@@ -341,7 +317,6 @@ fun OnboardingScreenPreview() {
         ),
         onClickBoardSetup = {},
         onClickInvitationCode = {},
-        onClickSetting = {}
     )
 }
 

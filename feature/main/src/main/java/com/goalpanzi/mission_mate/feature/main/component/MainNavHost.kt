@@ -110,9 +110,6 @@ internal fun MainNavHost(
                 }
             )
             boardFinishNavGraph(
-                onClickSetting = {
-                    navigator.navigationToMainTab(MainTabDataModel.Setting)
-                },
                 onClickOk = {
                     navigator.navigationToMainTab()
                 }

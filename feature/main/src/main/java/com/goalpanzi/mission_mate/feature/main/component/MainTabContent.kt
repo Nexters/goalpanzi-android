@@ -28,7 +28,6 @@ fun MainTabContent(
         WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
 
     LaunchedEffect(mainTabDataModel) {
-        Log.d("123123","${mainTabDataModel}")
         when (mainTabDataModel) {
             is MainTabDataModel.Mission -> {
                 mainTabNavigator.navigationToOnboarding(

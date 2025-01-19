@@ -26,14 +26,12 @@ fun NavController.navigateToOnboarding(
 fun NavGraphBuilder.onboardingNavGraph(
     onClickBoardSetup: () -> Unit,
     onClickInvitationCode: () -> Unit,
-    onClickSetting: () -> Unit,
     onNavigateMissionBoard: (Long) -> Unit
 ) {
     composable<MissionRouteModel.Onboarding> {
         OnboardingRoute(
             onClickBoardSetup = onClickBoardSetup,
             onClickInvitationCode = onClickInvitationCode,
-            onClickSetting = onClickSetting,
             onNavigateMissionBoard = onNavigateMissionBoard
         )
     }

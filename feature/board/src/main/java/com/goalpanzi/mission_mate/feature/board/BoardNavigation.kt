@@ -39,7 +39,6 @@ fun NavGraphBuilder.boardNavGraph(
     onNavigateDetail : (Long) -> Unit,
     onNavigateFinish : (Long) -> Unit,
     onNavigateStory: (UserStory) -> Unit,
-    onClickSetting: () -> Unit,
     onNavigateToPreview: (Long, Uri) -> Unit
 ) {
     composable<MissionRouteModel.Board> { navBackStackEntry ->
@@ -47,7 +46,6 @@ fun NavGraphBuilder.boardNavGraph(
             onNavigateOnboarding = onNavigateOnboarding,
             onNavigateDetail = onNavigateDetail,
             onNavigateFinish = onNavigateFinish,
-            onClickSetting = onClickSetting,
             onClickStory = onNavigateStory,
             onPreviewImage = onNavigateToPreview,
         )
@@ -86,12 +84,10 @@ fun NavController.navigateToBoardFinish(
 }
 
 fun NavGraphBuilder.boardFinishNavGraph(
-    onClickSetting: () -> Unit,
     onClickOk: () -> Unit,
 ) {
     composable<MissionRouteModel.Finish> {
         BoardFinishRoute(
-            onSettingClick = onClickSetting,
             onOkClick = onClickOk
         )
     }

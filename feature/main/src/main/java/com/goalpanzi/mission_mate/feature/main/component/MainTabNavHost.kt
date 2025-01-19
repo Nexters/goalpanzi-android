@@ -26,7 +26,6 @@ fun MainTabNavHost(
             onNavigateMissionBoard = { missionId ->
                 mainTabNavigator.navigationToBoard(missionId)
             },
-            onClickSetting = { mainTabNavigator.navigationToSetting() }
         )
         settingNavGraph(
             onBackClick = { mainNavigator.popBackStack() },
@@ -44,9 +43,6 @@ fun MainTabNavHost(
             },
             onNavigateFinish = { missionId ->
                 mainNavigator.navigateToBoardFinish(missionId)
-            },
-            onClickSetting = {
-                mainTabNavigator.navigationToSetting()
             },
             onNavigateStory = { userStory ->
                 mainNavigator.navigationToUserStory(userStory)
