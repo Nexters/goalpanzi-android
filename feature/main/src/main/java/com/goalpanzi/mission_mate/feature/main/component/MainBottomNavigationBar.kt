@@ -101,7 +101,7 @@ fun MainBottomNavigationBar(
                     label = {
                         Text(
                             text = stringResource(mainTab.labelRes),
-                            style = MissionMateTypography.body_sm_regular.copy(fontSize = 10.sp),
+                            style = MissionMateTypography.tab_regular,
                             color = if(selected) ColorOrange_FFFF5732 else ColorGray1_FF404249
                         )
                     },
