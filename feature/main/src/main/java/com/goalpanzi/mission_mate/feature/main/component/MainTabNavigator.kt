@@ -5,6 +5,7 @@ import androidx.compose.runtime.remember
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.goalpanzi.mission_mate.feature.board.navigateToBoard
+import com.goalpanzi.mission_mate.feature.history.navigateToHistory
 import com.goalpanzi.mission_mate.feature.onboarding.navigateToOnboarding
 import com.goalpanzi.mission_mate.feature.setting.navigation.navigateToSetting
 
@@ -13,6 +14,10 @@ class MainTabNavigator(
 ) {
     fun navigationToOnboarding(isAfterProfileCreate: Boolean = false) {
         navController.navigateToOnboarding(isAfterProfileCreate)
+    }
+
+    fun navigationToHistory() {
+        navController.navigateToHistory()
     }
 
     fun navigationToSetting() {

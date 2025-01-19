@@ -5,6 +5,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import com.goalpanzi.mission_mate.core.navigation.model.RouteModel.MainTabRoute.MissionRouteModel
 import com.goalpanzi.mission_mate.feature.board.boardNavGraph
+import com.goalpanzi.mission_mate.feature.history.historyNavGraph
 import com.goalpanzi.mission_mate.feature.onboarding.onboardingNavGraph
 import com.goalpanzi.mission_mate.feature.setting.navigation.settingNavGraph
 
@@ -50,6 +51,7 @@ fun MainTabNavHost(
             onNavigateToPreview = { missionId, imageUrl ->
                 mainNavigator.navigationToVerificationPreview(missionId, imageUrl)
             }
-        )   
+        )
+        historyNavGraph()
     } 
 }

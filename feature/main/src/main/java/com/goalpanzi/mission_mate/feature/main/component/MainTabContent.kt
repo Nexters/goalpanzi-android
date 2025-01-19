@@ -36,7 +36,7 @@ fun MainTabContent(
             }
 
             MainTabDataModel.History -> {
-
+                mainTabNavigator.navigationToHistory()
             }
 
             MainTabDataModel.Setting -> {
@@ -44,7 +44,7 @@ fun MainTabContent(
             }
 
             MainTabDataModel.None -> {
-
+                return@LaunchedEffect
             }
         }
     }
@@ -62,7 +62,7 @@ fun MainTabContent(
                         }
 
                         MainTab.HISTORY -> {
-
+                            mainTabNavigator.navigationToHistory()
                         }
 
                         MainTab.SETTING -> {

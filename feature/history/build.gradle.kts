@@ -5,20 +5,17 @@ plugins {
 }
 
 android {
-    setNamespace("feature.main")
+    setNamespace("feature.history")
 }
 
 dependencies {
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.bundles.lifecycle)
-
+    implementation(libs.bundles.coroutines)
     testImplementation(libs.bundles.test)
     androidTestImplementation(libs.bundles.android.test)
 
-    implementation(project(":feature:login"))
-    implementation(project(":feature:onboarding"))
-    implementation(project(":feature:profile"))
-    implementation(project(":feature:board"))
-    implementation(project(":feature:setting"))
-    implementation(project(":feature:history"))
+    implementation(libs.coil.compose)
+
 }
