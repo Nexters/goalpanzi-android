@@ -30,7 +30,6 @@ import com.goalpanzi.mission_mate.core.designsystem.theme.ColorOrange_FFFF5732
 import com.goalpanzi.mission_mate.core.designsystem.theme.MissionMateTypography
 import com.goalpanzi.mission_mate.core.navigation.RouteModel
 import com.goalpanzi.mission_mate.core.navigation.RouteModel.MainTabRoute
-import com.goalpanzi.mission_mate.core.navigation.fullPathName
 import com.goalpanzi.mission_mate.feature.main.R
 
 internal const val MAIN_BOTTOM_NAVIGATION_BAR_HEIGHT = 48
@@ -62,7 +61,12 @@ enum class MainTab(
     }
 
     private fun containsWithRoute(route: String) : Boolean {
-        return route.contains(routeModel.fullPathName() ?: return false)
+        val path = when(this){
+            MISSION -> MainTabRoute.MissionRouteModel::class.qualifiedName
+            HISTORY -> MainTabRoute.HistoryRouteModel::class.qualifiedName
+            SETTING -> MainTabRoute.SettingRouteModel::class.qualifiedName
+        } ?: return false
+        return route.contains(path)
     }
 }
 
