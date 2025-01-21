@@ -112,3 +112,98 @@ fun InvitationCodeTextField(
         }
     )
 }
+
+@Composable
+fun InvitationCodeText(
+    text: String,
+    modifier: Modifier = Modifier,
+    hint: String? = null,
+    isError: Boolean = false,
+    textStyle: TextStyle = MissionMateTypography.heading_md_bold,
+    hintStyle: TextStyle = MissionMateTypography.heading_md_bold,
+    textColor: Color = ColorGray1_FF404249,
+    hintColor: Color = ColorDisabled_FFB3B3B3,
+    containerColor: Color = ColorWhite_FFFFFFFF,
+    unfocusedHintColor: Color = ColorGray5_FFF5F6F9,
+    borderStroke: BorderStroke = BorderStroke(1.dp, ColorGray5_FFF5F6F9),
+    focusedBorderStroke: BorderStroke = BorderStroke(1.dp, ColorGray4_FFE5E5E5),
+    errorBorderStroke: BorderStroke = BorderStroke(2.dp, ColorRed_FFFF5858),
+    shape: Shape = RoundedCornerShape(12.dp),
+    textAlign: Alignment = Alignment.Center,
+    contentPadding: PaddingValues = PaddingValues()
+) {
+    InvitationCodeBox(
+        modifier = modifier,
+        text = text,
+        isFocused = false,
+        hint = hint,
+        isError = isError,
+        hintStyle = hintStyle,
+        hintColor = hintColor,
+        containerColor = containerColor,
+        unfocusedHintColor = unfocusedHintColor,
+        borderStroke = borderStroke,
+        focusedBorderStroke = focusedBorderStroke,
+        errorBorderStroke = errorBorderStroke,
+        shape = shape,
+        textAlign = textAlign,
+        contentPadding = contentPadding,
+        innerTextField = {
+            Text(
+                text = text,
+                style = textStyle,
+                color = textColor
+            )
+        }
+    )
+}
+
+@Composable
+fun InvitationCodeBox(
+    text: CharSequence,
+    isFocused: Boolean,
+    modifier: Modifier = Modifier,
+    hint: String? = null,
+    isError: Boolean = false,
+    hintStyle: TextStyle = MissionMateTypography.heading_md_bold,
+    hintColor: Color = ColorDisabled_FFB3B3B3,
+    containerColor: Color = ColorWhite_FFFFFFFF,
+    unfocusedHintColor: Color = ColorGray5_FFF5F6F9,
+    borderStroke: BorderStroke = BorderStroke(1.dp, ColorGray5_FFF5F6F9),
+    focusedBorderStroke: BorderStroke = BorderStroke(1.dp, ColorGray4_FFE5E5E5),
+    errorBorderStroke: BorderStroke = BorderStroke(2.dp, ColorRed_FFFF5858),
+    shape: Shape = RoundedCornerShape(12.dp),
+    textAlign: Alignment = Alignment.Center,
+    contentPadding: PaddingValues = PaddingValues(),
+    innerTextField: @Composable () -> Unit = {}
+) {
+    Box(
+        modifier = modifier
+            .clip(shape)
+            .border(
+                border = if (isError) errorBorderStroke
+                else if (isFocused || text.isNotEmpty()) focusedBorderStroke
+                else borderStroke,
+                shape = shape
+            )
+            .background(
+                if (text.isNotEmpty()) containerColor
+                else if (!isFocused) unfocusedHintColor
+                else containerColor
+            )
+            .padding(contentPadding),
+        contentAlignment = textAlign
+    ) {
+        if (text.isBlank() && !isFocused) {
+            Text(
+                modifier = Modifier.fillMaxWidth(),
+                text = hint ?: "0",
+                style = hintStyle,
+                color = hintColor,
+                textAlign = TextAlign.Center
+            )
+        }
+        innerTextField()
+    }
+}
+
