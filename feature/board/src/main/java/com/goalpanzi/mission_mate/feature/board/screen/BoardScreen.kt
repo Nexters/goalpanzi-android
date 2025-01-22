@@ -60,12 +60,11 @@ import kotlinx.coroutines.launch
 @Composable
 fun BoardRoute(
     onNavigateOnboarding: () -> Unit,
-    onNavigateDetail: () -> Unit,
+    onNavigateDetail: (Long) -> Unit,
     onNavigateFinish : (Long) -> Unit,
     onClickSetting: () -> Unit,
     onClickStory: (UserStory) -> Unit,
     onPreviewImage: (Long, Uri) -> Unit,
-    isUploadSuccess: Boolean,
     modifier: Modifier = Modifier,
     viewModel: BoardViewModel = hiltViewModel()
 ) {
@@ -210,7 +209,7 @@ fun BoardRoute(
         onClickSetting = onClickSetting,
         onClickFlag = {
             viewModel.setViewedTooltip()
-            onNavigateDetail()
+            onNavigateDetail(viewModel.missionId)
         },
         onClickAddUser = {
             viewModel.setViewedTooltip()

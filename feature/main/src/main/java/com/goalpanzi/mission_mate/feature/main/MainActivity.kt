@@ -8,6 +8,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import com.goalpanzi.mission_mate.core.designsystem.theme.MissionmateTheme
 import com.goalpanzi.mission_mate.core.domain.auth.usecase.LoginUseCase
+import com.goalpanzi.mission_mate.core.navigation.RouteModel
 import com.goalpanzi.mission_mate.feature.main.component.MainNavigator
 import com.goalpanzi.mission_mate.feature.main.component.rememberMainNavigator
 import dagger.hilt.android.AndroidEntryPoint
@@ -33,12 +34,12 @@ class MainActivity : ComponentActivity() {
                 MainScreen(
                     navigator = navigator,
                     startDestination = if (isNewUser) {
-                        "RouteModel.Login"
+                        RouteModel.Login
                     } else {
                         if (user == null) {
-                            "RouteModel.Profile.Create"
+                            RouteModel.Profile.Create
                         } else {
-                            "RouteModel.Onboarding?isAfterProfileCreate={isAfterProfileCreate}"
+                            RouteModel.MainTabRoute.MissionRouteModel.Onboarding()
                         }
                     }
                 )

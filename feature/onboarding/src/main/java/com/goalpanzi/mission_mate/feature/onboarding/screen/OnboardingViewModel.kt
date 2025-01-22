@@ -3,6 +3,7 @@ package com.goalpanzi.mission_mate.feature.onboarding.screen
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.toRoute
 import com.goalpanzi.mission_mate.core.domain.common.DomainResult
 import com.goalpanzi.mission_mate.core.domain.common.model.mission.MissionStatus
 import com.goalpanzi.mission_mate.core.domain.common.model.user.UserProfile
@@ -11,11 +12,10 @@ import com.goalpanzi.mission_mate.core.domain.onboarding.usecase.GetJoinedMissio
 import com.goalpanzi.mission_mate.core.domain.user.usecase.GetFcmTokenUseCase
 import com.goalpanzi.mission_mate.core.domain.user.usecase.ProfileUseCase
 import com.goalpanzi.mission_mate.core.domain.user.usecase.UpdateFcmTokenUseCase
-import com.goalpanzi.mission_mate.feature.onboarding.isAfterProfileCreateArg
+import com.goalpanzi.mission_mate.core.navigation.RouteModel.MainTabRoute.MissionRouteModel
 import com.goalpanzi.mission_mate.feature.onboarding.model.OnboardingResultEvent
 import com.goalpanzi.mission_mate.feature.onboarding.model.OnboardingUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -47,7 +47,7 @@ class OnboardingViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            savedStateHandle.get<Boolean>(isAfterProfileCreateArg)?.let {
+            savedStateHandle.toRoute<MissionRouteModel.Onboarding>().isAfterProfileCreate.let {
                 if (it) {
                     profileCreateSuccessEvent.emit(profileUseCase.getProfile())
                 }

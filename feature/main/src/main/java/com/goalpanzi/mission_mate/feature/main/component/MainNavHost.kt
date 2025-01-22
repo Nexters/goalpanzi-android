@@ -15,12 +15,14 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorWhite_FFFFFFFF
 import com.goalpanzi.mission_mate.core.designsystem.util.isLightStatusBars
 import com.goalpanzi.mission_mate.core.designsystem.util.setStatusBar
+import com.goalpanzi.mission_mate.core.navigation.RouteModel
 import com.goalpanzi.mission_mate.feature.board.boardDetailNavGraph
 import com.goalpanzi.mission_mate.feature.board.boardFinishNavGraph
 import com.goalpanzi.mission_mate.feature.board.boardNavGraph
 import com.goalpanzi.mission_mate.feature.board.userStoryNavGraph
 import com.goalpanzi.mission_mate.feature.board.verificationPreviewNavGraph
 import com.goalpanzi.mission_mate.feature.login.loginNavGraph
+import com.goalpanzi.mission_mate.feature.main.ext.isDarkStatusBarScreen
 import com.goalpanzi.mission_mate.feature.onboarding.boardSetupNavGraph
 import com.goalpanzi.mission_mate.feature.onboarding.boardSetupSuccessNavGraph
 import com.goalpanzi.mission_mate.feature.onboarding.invitationCodeNavGraph
@@ -34,15 +36,15 @@ import com.goalpanzi.mission_mate.feature.setting.navigation.settingNavGraph
 internal fun MainNavHost(
     modifier: Modifier = Modifier,
     navigator: MainNavigator,
-    startDestination: String,
+    startDestination: RouteModel,
     padding: PaddingValues
 ) {
     val context = LocalContext.current
     val currentBackStackEntry by navigator.navController.currentBackStackEntryAsState()
-    val currentRoute = currentBackStackEntry?.destination?.route
+    val currentRoute = currentBackStackEntry?.destination
 
     LaunchedEffect(currentRoute) {
-        if (navigator.isDarkStatusBarScreen(currentRoute)) {
+        if (currentRoute.isDarkStatusBarScreen()) {
             setStatusBar(context, false)
         } else if(!isLightStatusBars(context as Activity)){
             setStatusBar(context, true)
@@ -154,11 +156,9 @@ internal fun MainNavHost(
                 },
                 onUploadSuccess = {
                     navigator.popBackStack()
-                    navigator.navController.currentBackStackEntry
-                        ?.savedStateHandle
-                        ?.set(it, true)
                 }
             )
         }
     }
 }
+

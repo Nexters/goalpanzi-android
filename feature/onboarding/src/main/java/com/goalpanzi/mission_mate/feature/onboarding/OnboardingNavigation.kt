@@ -3,15 +3,12 @@ package com.goalpanzi.mission_mate.feature.onboarding
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
-import androidx.navigation.NavType
 import androidx.navigation.compose.composable
-import androidx.navigation.navArgument
+import com.goalpanzi.mission_mate.core.navigation.RouteModel.MainTabRoute.MissionRouteModel
 import com.goalpanzi.mission_mate.feature.onboarding.screen.OnboardingRoute
 import com.goalpanzi.mission_mate.feature.onboarding.screen.boardsetup.BoardSetupRoute
 import com.goalpanzi.mission_mate.feature.onboarding.screen.boardsetup.BoardSetupSuccessScreen
 import com.goalpanzi.mission_mate.feature.onboarding.screen.invitation.InvitationCodeRoute
-
-internal const val isAfterProfileCreateArg = "isAfterProfileCreate"
 
 fun NavController.navigateToOnboarding(
     isAfterProfileCreate: Boolean = false,
@@ -21,7 +18,7 @@ fun NavController.navigateToOnboarding(
         }
     }
 ) {
-    this.navigate("RouteModel.Onboarding" + "?isAfterProfileCreate=${isAfterProfileCreate}", navOptions = navOptions)
+    this.navigate(MissionRouteModel.Onboarding(isAfterProfileCreate), navOptions = navOptions)
 }
 
 fun NavGraphBuilder.onboardingNavGraph(
@@ -30,14 +27,7 @@ fun NavGraphBuilder.onboardingNavGraph(
     onClickSetting: () -> Unit,
     onNavigateMissionBoard: (Long) -> Unit
 ) {
-    composable(
-        "RouteModel.Onboarding?${isAfterProfileCreateArg}={$isAfterProfileCreateArg}",
-        arguments = listOf(
-            navArgument(isAfterProfileCreateArg) {
-                type = NavType.BoolType
-            }
-        )
-    ) {
+    composable<MissionRouteModel.Onboarding> {
         OnboardingRoute(
             onClickBoardSetup = onClickBoardSetup,
             onClickInvitationCode = onClickInvitationCode,
@@ -48,7 +38,7 @@ fun NavGraphBuilder.onboardingNavGraph(
 }
 
 fun NavController.navigateToBoardSetup() {
-    this.navigate("OnboardingRouteModel.BoardSetup")
+    this.navigate(MissionRouteModel.BoardSetup)
 }
 
 fun NavController.navigateToBoardSetupSuccess(
@@ -58,18 +48,18 @@ fun NavController.navigateToBoardSetupSuccess(
         }
     }
 ) {
-    this.navigate("OnboardingRouteModel.BoardSetupSuccess", navOptions = navOptions)
+    this.navigate(MissionRouteModel.BoardSetupSuccess, navOptions = navOptions)
 }
 
 fun NavController.navigateToInvitationCode() {
-    this.navigate("OnboardingRouteModel.InvitationCode")
+    this.navigate(MissionRouteModel.InvitationCode)
 }
 
 fun NavGraphBuilder.boardSetupNavGraph(
     onSuccess: () -> Unit,
     onBackClick: () -> Unit
 ) {
-    composable("OnboardingRouteModel.BoardSetup") {
+    composable<MissionRouteModel.BoardSetup> {
         BoardSetupRoute(
             onSuccess = onSuccess,
             onBackClick = onBackClick
@@ -80,7 +70,7 @@ fun NavGraphBuilder.boardSetupNavGraph(
 fun NavGraphBuilder.boardSetupSuccessNavGraph(
     onClickStart: () -> Unit
 ) {
-    composable("OnboardingRouteModel.BoardSetupSuccess") {
+    composable<MissionRouteModel.BoardSetupSuccess> {
         BoardSetupSuccessScreen(
             onClickStart = onClickStart
         )
@@ -91,7 +81,7 @@ fun NavGraphBuilder.invitationCodeNavGraph(
     onBackClick: () -> Unit,
     onNavigateMissionBoard: (Long) -> Unit,
 ) {
-    composable("OnboardingRouteModel.InvitationCode") {
+    composable<MissionRouteModel.InvitationCode> {
         InvitationCodeRoute(
             onBackClick = onBackClick,
             onNavigateMissionBoard = onNavigateMissionBoard

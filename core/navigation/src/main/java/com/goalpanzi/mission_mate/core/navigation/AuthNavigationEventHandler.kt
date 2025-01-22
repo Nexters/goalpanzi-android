@@ -7,10 +7,10 @@ import javax.inject.Inject
 
 class AuthNavigationEventHandler @Inject constructor() : NavigationEventHandler {
 
-    private val _routeToNavigate = MutableSharedFlow<String>()
-    override val routeToNavigate: SharedFlow<String> = _routeToNavigate.asSharedFlow()
+    private val _routeToNavigate = MutableSharedFlow<RouteModel>()
+    override val routeToNavigate: SharedFlow<RouteModel> = _routeToNavigate.asSharedFlow()
 
-    override suspend fun triggerRouteToNavigate(route: String) {
+    override suspend fun triggerRouteToNavigate(route: RouteModel) {
         _routeToNavigate.emit(route)
     }
 }
