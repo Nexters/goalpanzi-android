@@ -7,7 +7,7 @@ import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.core.tween
 import androidx.navigation.NavBackStackEntry
 
-fun AnimatedContentTransitionScope<NavBackStackEntry>.slideInFromLeft(
+fun AnimatedContentTransitionScope<NavBackStackEntry>.slideInFromEnd(
     durationMills: Int = 300
 ): EnterTransition {
     return slideIntoContainer(
@@ -25,7 +25,7 @@ fun AnimatedContentTransitionScope<NavBackStackEntry>.slideOutToEnd(
     )
 }
 
-fun AnimatedContentTransitionScope<NavBackStackEntry>.slideInToUp(
+fun AnimatedContentTransitionScope<NavBackStackEntry>.slideInFromBottom(
     durationMills: Int = 300
 ): EnterTransition {
     return slideIntoContainer(
@@ -34,7 +34,7 @@ fun AnimatedContentTransitionScope<NavBackStackEntry>.slideInToUp(
     )
 }
 
-fun AnimatedContentTransitionScope<NavBackStackEntry>.slideOutToDown(
+fun AnimatedContentTransitionScope<NavBackStackEntry>.slideOutToBottom(
     durationMills: Int = 300
 ): ExitTransition {
     return slideOutOfContainer(

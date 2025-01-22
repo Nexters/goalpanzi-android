@@ -7,9 +7,9 @@ import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import com.goalpanzi.mission_mate.core.navigation.model.RouteModel.MainTabRoute.MissionRouteModel
-import com.goalpanzi.mission_mate.core.ui.util.slideInFromLeft
-import com.goalpanzi.mission_mate.core.ui.util.slideInToUp
-import com.goalpanzi.mission_mate.core.ui.util.slideOutToDown
+import com.goalpanzi.mission_mate.core.ui.util.slideInFromEnd
+import com.goalpanzi.mission_mate.core.ui.util.slideInFromBottom
+import com.goalpanzi.mission_mate.core.ui.util.slideOutToBottom
 import com.goalpanzi.mission_mate.core.ui.util.slideOutToEnd
 import com.goalpanzi.mission_mate.feature.board.model.CharacterUiModel
 import com.goalpanzi.mission_mate.feature.board.model.UserStory
@@ -62,7 +62,7 @@ fun NavGraphBuilder.boardDetailNavGraph(
 ) {
     composable<MissionRouteModel.Detail>(
         enterTransition = {
-            slideInFromLeft()
+            slideInFromEnd()
         },
         popExitTransition = {
             slideOutToEnd()
@@ -111,10 +111,10 @@ fun NavGraphBuilder.userStoryNavGraph(
 ) {
     composable<MissionRouteModel.UserStory>(
         enterTransition = {
-            slideInToUp()
+            slideInFromBottom()
         },
         exitTransition = {
-            slideOutToDown()
+            slideOutToBottom()
         }
     ) { backStackEntry ->
         backStackEntry.toRoute<MissionRouteModel.UserStory>().run {
@@ -144,10 +144,10 @@ fun NavGraphBuilder.verificationPreviewNavGraph(
 ) {
     composable<MissionRouteModel.VerificationPreview>(
         enterTransition = {
-            slideInToUp()
+            slideInFromBottom()
         },
         exitTransition = {
-            slideOutToDown()
+            slideOutToBottom()
         }
     ) {
         VerificationPreviewRoute(
