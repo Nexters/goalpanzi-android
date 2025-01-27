@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavDestination
 import com.goalpanzi.mission_mate.core.designsystem.ext.clickableWithoutRipple
+import com.goalpanzi.mission_mate.core.designsystem.ext.dpToSp
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorGray1_FF404249
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorGray4_FFE5E5E5
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorOrange_FFFF5732
@@ -101,7 +102,9 @@ fun MainBottomNavigationBar(
                     label = {
                         Text(
                             text = stringResource(mainTab.labelRes),
-                            style = MissionMateTypography.tab_regular,
+                            style = MissionMateTypography.tab_regular.copy(
+                                fontSize = dpToSp(11.dp)
+                            ),
                             color = if(selected) ColorOrange_FFFF5732 else ColorGray1_FF404249
                         )
                     },
