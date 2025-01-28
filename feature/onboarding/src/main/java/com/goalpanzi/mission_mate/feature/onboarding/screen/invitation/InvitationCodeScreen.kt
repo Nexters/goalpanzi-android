@@ -85,6 +85,10 @@ fun InvitationCodeRoute(
                         delay(80)
                         localFocusManager.moveFocus(FocusDirection.Next)
                     }
+                    CodeActionEvent.FOURTH_DONE -> {
+                        delay(80)
+                        localFocusManager.clearFocus()
+                    }
 
                     CodeActionEvent.SECOND_CLEAR,
                     CodeActionEvent.THIRD_CLEAR,
@@ -168,6 +172,15 @@ fun InvitationCodeRoute(
         onCodeSecondChange = viewModel::updateCodeSecond,
         onCodeThirdChange = viewModel::updateCodeThird,
         onCodeFourthChange = viewModel::updateCodeFourth,
+        onSecondDeleteWhenBlank = {
+            localFocusManager.moveFocus(FocusDirection.Previous)
+        },
+        onThirdDeleteWhenBlank = {
+            localFocusManager.moveFocus(FocusDirection.Previous)
+        },
+        onFourthDeleteWhenBlank = {
+            localFocusManager.moveFocus(FocusDirection.Previous)
+        },
         onClickButton = {
             keyboardController?.hide()
             localFocusManager.clearFocus()
@@ -193,6 +206,9 @@ fun InvitationCodeScreen(
     onCodeSecondChange: (String) -> Unit,
     onCodeThirdChange: (String) -> Unit,
     onCodeFourthChange: (String) -> Unit,
+    onSecondDeleteWhenBlank: () -> Unit,
+    onThirdDeleteWhenBlank: () -> Unit,
+    onFourthDeleteWhenBlank: () -> Unit,
     onClickButton: () -> Unit,
     onBackClick: () -> Unit,
     isNotCodeValid: Boolean,
@@ -263,7 +279,8 @@ fun InvitationCodeScreen(
                     capitalization = KeyboardCapitalization.Characters
                 ),
                 isError = isNotCodeValid,
-                onValueChange = onCodeSecondChange
+                onValueChange = onCodeSecondChange,
+                onDeleteWhenBlank = onSecondDeleteWhenBlank
             )
             InvitationCodeTextField(
                 modifier = Modifier
@@ -275,7 +292,8 @@ fun InvitationCodeScreen(
                     capitalization = KeyboardCapitalization.Characters
                 ),
                 isError = isNotCodeValid,
-                onValueChange = onCodeThirdChange
+                onValueChange = onCodeThirdChange,
+                onDeleteWhenBlank = onThirdDeleteWhenBlank
             )
             InvitationCodeTextField(
                 modifier = Modifier
@@ -286,7 +304,8 @@ fun InvitationCodeScreen(
                     capitalization = KeyboardCapitalization.Characters
                 ),
                 isError = isNotCodeValid,
-                onValueChange = onCodeFourthChange
+                onValueChange = onCodeFourthChange,
+                onDeleteWhenBlank = onFourthDeleteWhenBlank
             )
         }
         if (isNotCodeValid) {

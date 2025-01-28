@@ -93,16 +93,28 @@ class InvitationCodeViewModel @Inject constructor(
     fun updateCodeFirst(code: String) {
         if(code == " ") return
         if (isNotCodeValid.value) resetCodeValidState()
-        if (code.length <= 1) codeFirst = code
+        if (code.length == 0) codeFirst = code
+        if (code.length >= 1) codeFirst = code[0].toString()
+        if (code.length >= 2) codeSecond = code[1].toString()
+        if (code.length >= 3) codeThird = code[2].toString()
+        if (code.length >= 4) codeFourth = code[3].toString()
         viewModelScope.launch {
-            _codeInputActionEvent.emit(if(code.isNotEmpty()) CodeActionEvent.FIRST_DONE  else CodeActionEvent.FIRST_CLEAR)
+            val action = if(code.length >= 4) CodeActionEvent.FOURTH_DONE
+            else if(code.length >= 3) CodeActionEvent.THIRD_DONE
+            else if(code.length >= 2) CodeActionEvent.SECOND_DONE
+            else if(code.length >= 1) CodeActionEvent.FIRST_DONE
+            else CodeActionEvent.FIRST_CLEAR
+            _codeInputActionEvent.emit(action)
         }
     }
 
     fun updateCodeSecond(code: String) {
         if(code == " ") return
         if (isNotCodeValid.value) resetCodeValidState()
-        if (code.length <= 1) codeSecond = code
+        if (code.length == 0) codeSecond = code
+        if (code.length >= 1) codeSecond = code[0].toString()
+        if (code.length >= 2) codeThird = code[1].toString()
+        if (code.length >= 3) codeFourth = code[2].toString()
         viewModelScope.launch {
             _codeInputActionEvent.emit(if(code.isNotEmpty()) CodeActionEvent.SECOND_DONE  else CodeActionEvent.SECOND_CLEAR)
         }
@@ -111,7 +123,9 @@ class InvitationCodeViewModel @Inject constructor(
     fun updateCodeThird(code: String) {
         if(code == " ") return
         if (isNotCodeValid.value) resetCodeValidState()
-        if (code.length <= 1) codeThird = code
+        if (code.length == 0) codeThird = code
+        if (code.length >= 1) codeThird = code[0].toString()
+        if (code.length >= 2) codeFourth = code[1].toString()
         viewModelScope.launch {
             _codeInputActionEvent.emit(if(code.isNotEmpty()) CodeActionEvent.THIRD_DONE  else CodeActionEvent.THIRD_CLEAR)
         }

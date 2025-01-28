@@ -23,7 +23,10 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.input.key.onKeyEvent
+import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -59,15 +62,32 @@ fun InvitationCodeTextField(
     contentPadding: PaddingValues = PaddingValues(),
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
-    readOnly : Boolean = false
+    readOnly: Boolean = false,
+    onDeleteWhenBlank: () -> Unit = {},
 ) {
+    val textFieldValue by remember(text) {
+        mutableStateOf(
+            TextFieldValue(
+                text = text,
+                selection = TextRange(
+                    index = if(text.isNotBlank()) 1 else 0
+                )
+            )
+        )
+    }
     var isFocused by remember { mutableStateOf(false) }
     BasicTextField(
         modifier = modifier
             .onFocusChanged {
                 isFocused = it.isFocused
+            }
+            .onKeyEvent {
+                if (textFieldValue.text.isBlank()) {
+                    onDeleteWhenBlank()
+                }
+                false
             },
-        value = text,
+        value = textFieldValue,
         singleLine = isSingleLine,
         textStyle = textStyle.copy(
             color = textColor,
@@ -77,38 +97,29 @@ fun InvitationCodeTextField(
         visualTransformation = visualTransformation,
         keyboardOptions = keyboardOptions,
         keyboardActions = keyboardActions,
-        onValueChange = onValueChange,
+        onValueChange = {
+            if(text.length != 1 || it.text.isEmpty())
+                onValueChange(it.text)
+        },
         readOnly = readOnly,
         decorationBox = { innerTextField ->
-            Box(
-                modifier = Modifier
-                    .clip(shape)
-                    .border(
-                        border = if (isError) errorBorderStroke
-                        else if (isFocused || text.isNotEmpty()) focusedBorderStroke
-                        else borderStroke,
-                        shape = shape
-                    )
-                    .background(
-                        if(text.isNotEmpty()) containerColor
-                        else if (!isFocused ) unfocusedHintColor
-                        else containerColor
-                    )
-                    .padding(contentPadding),
-                contentAlignment = textAlign
-            ) {
-                if (text.isBlank() && !isFocused) {
-                    Text(
-                        modifier = Modifier.fillMaxWidth(),
-                        text = hint ?: "0",
-                        style = hintStyle,
-                        color = hintColor,
-                        textAlign = TextAlign.Center
-                    )
-                }
-                innerTextField()
-            }
-
+            InvitationCodeBox(
+                text = text,
+                isFocused = isFocused,
+                hint = hint,
+                isError = isError,
+                hintStyle = hintStyle,
+                hintColor = hintColor,
+                containerColor = containerColor,
+                unfocusedHintColor = unfocusedHintColor,
+                borderStroke = borderStroke,
+                focusedBorderStroke = focusedBorderStroke,
+                errorBorderStroke = errorBorderStroke,
+                shape = shape,
+                textAlign = textAlign,
+                contentPadding = contentPadding,
+                innerTextField = innerTextField,
+            )
         }
     )
 }
@@ -129,6 +140,7 @@ fun InvitationCodeText(
     focusedBorderStroke: BorderStroke = BorderStroke(1.dp, ColorGray4_FFE5E5E5),
     errorBorderStroke: BorderStroke = BorderStroke(2.dp, ColorRed_FFFF5858),
     shape: Shape = RoundedCornerShape(12.dp),
+
     textAlign: Alignment = Alignment.Center,
     contentPadding: PaddingValues = PaddingValues()
 ) {
@@ -206,4 +218,3 @@ fun InvitationCodeBox(
         innerTextField()
     }
 }
-
