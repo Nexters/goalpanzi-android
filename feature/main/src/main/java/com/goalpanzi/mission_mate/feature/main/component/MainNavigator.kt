@@ -6,8 +6,9 @@ import androidx.compose.runtime.remember
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.goalpanzi.mission_mate.core.navigation.model.MainTabDataModel
+import com.goalpanzi.mission_mate.core.navigation.model.RouteModel
 import com.goalpanzi.mission_mate.feature.board.model.UserStory
-import com.goalpanzi.mission_mate.feature.board.navigateToBoard
 import com.goalpanzi.mission_mate.feature.board.navigateToBoardDetail
 import com.goalpanzi.mission_mate.feature.board.navigateToBoardFinish
 import com.goalpanzi.mission_mate.feature.board.navigateToUserStory
@@ -16,12 +17,10 @@ import com.goalpanzi.mission_mate.feature.login.navigateToLogin
 import com.goalpanzi.mission_mate.feature.onboarding.navigateToBoardSetup
 import com.goalpanzi.mission_mate.feature.onboarding.navigateToBoardSetupSuccess
 import com.goalpanzi.mission_mate.feature.onboarding.navigateToInvitationCode
-import com.goalpanzi.mission_mate.feature.onboarding.navigateToOnboarding
 import com.goalpanzi.mission_mate.feature.profile.navigateToProfileCreate
 import com.goalpanzi.mission_mate.feature.profile.navigateToProfileSetting
 import com.goalpanzi.mission_mate.feature.setting.navigation.navigateToPrivacyPolicy
 import com.goalpanzi.mission_mate.feature.setting.navigation.navigateToServicePolicy
-import com.goalpanzi.mission_mate.feature.setting.navigation.navigateToSetting
 
 class MainNavigator(
     val navController: NavHostController
@@ -45,9 +44,18 @@ class MainNavigator(
         navController.navigateToProfileSetting()
     }
 
-    fun navigationToOnboarding(isAfterProfileCreate: Boolean = false) {
-        navController.navigateToOnboarding(isAfterProfileCreate)
+    fun navigationToMainTab(
+        mainTabDataModel: MainTabDataModel = MainTabDataModel.Mission()
+    ) {
+        navController.navigate(
+            route = RouteModel.MainTab(mainTabDataModel)
+        ){
+            popUpTo(navController.graph.id) {
+                inclusive = true
+            }
+        }
     }
+
 
     fun navigationToBoardSetup() {
         navController.navigateToBoardSetup()
@@ -61,20 +69,12 @@ class MainNavigator(
         navController.navigateToInvitationCode()
     }
 
-    fun navigationToSetting() {
-        navController.navigateToSetting()
-    }
-
     fun navigationToServicePolicy() {
         navController.navigateToServicePolicy()
     }
 
     fun navigationToPrivacyPolicy() {
         navController.navigateToPrivacyPolicy()
-    }
-
-    fun navigationToBoard(missionId : Long) {
-        navController.navigateToBoard(missionId)
     }
 
     fun navigationToBoardDetail(missionId : Long) {

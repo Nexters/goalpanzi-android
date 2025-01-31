@@ -40,7 +40,7 @@ fun BoardBottomView(
             .navigationBarsPadding()
             .clip(RoundedCornerShape(topEnd = 20.dp, topStart = 20.dp))
             .background(ColorWhite_FFFFFFFF.copy(alpha = 0.7f))
-            .padding(top = 16.dp, bottom = 36.dp, start = 24.dp, end = 24.dp),
+            .padding(top = 16.dp, bottom = 16.dp, start = 24.dp, end = 24.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(4.dp)
     ) {

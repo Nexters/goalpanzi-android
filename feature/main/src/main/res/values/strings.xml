@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="main_tab_onboarding">진행미션</string>
+    <string name="main_tab_history">내기록</string>
+    <string name="main_tab_setting">설정</string>
+</resources>

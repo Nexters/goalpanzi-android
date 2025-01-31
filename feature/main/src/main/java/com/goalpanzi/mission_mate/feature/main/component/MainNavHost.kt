@@ -11,26 +11,28 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.toRoute
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorWhite_FFFFFFFF
 import com.goalpanzi.mission_mate.core.designsystem.util.isLightStatusBars
 import com.goalpanzi.mission_mate.core.designsystem.util.setStatusBar
-import com.goalpanzi.mission_mate.core.navigation.RouteModel
+import com.goalpanzi.mission_mate.core.navigation.model.MainTabDataModel
+import com.goalpanzi.mission_mate.core.navigation.model.RouteModel
 import com.goalpanzi.mission_mate.feature.board.boardDetailNavGraph
 import com.goalpanzi.mission_mate.feature.board.boardFinishNavGraph
-import com.goalpanzi.mission_mate.feature.board.boardNavGraph
 import com.goalpanzi.mission_mate.feature.board.userStoryNavGraph
 import com.goalpanzi.mission_mate.feature.board.verificationPreviewNavGraph
 import com.goalpanzi.mission_mate.feature.login.loginNavGraph
 import com.goalpanzi.mission_mate.feature.main.ext.isDarkStatusBarScreen
+import com.goalpanzi.mission_mate.core.navigation.model.MainTabDataModelType
 import com.goalpanzi.mission_mate.feature.onboarding.boardSetupNavGraph
 import com.goalpanzi.mission_mate.feature.onboarding.boardSetupSuccessNavGraph
 import com.goalpanzi.mission_mate.feature.onboarding.invitationCodeNavGraph
-import com.goalpanzi.mission_mate.feature.onboarding.onboardingNavGraph
 import com.goalpanzi.mission_mate.feature.profile.profileNavGraph
 import com.goalpanzi.mission_mate.feature.setting.navigation.privacyPolicyNavGraph
 import com.goalpanzi.mission_mate.feature.setting.navigation.servicePolicyNavGraph
-import com.goalpanzi.mission_mate.feature.setting.navigation.settingNavGraph
+import kotlin.reflect.typeOf
 
 @Composable
 internal fun MainNavHost(
@@ -46,7 +48,7 @@ internal fun MainNavHost(
     LaunchedEffect(currentRoute) {
         if (currentRoute.isDarkStatusBarScreen()) {
             setStatusBar(context, false)
-        } else if(!isLightStatusBars(context as Activity)){
+        } else if (!isLightStatusBars(context as Activity)) {
             setStatusBar(context, true)
         }
     }
@@ -61,15 +63,10 @@ internal fun MainNavHost(
             startDestination = startDestination
         ) {
             loginNavGraph(
-                onLoginSuccess = { if (it) navigator.navigationToOnboarding() else navigator.navigateToProfileCreate() }
-            )
-            onboardingNavGraph(
-                onClickBoardSetup = { navigator.navigationToBoardSetup() },
-                onClickInvitationCode = { navigator.navigationToInvitationCode() },
-                onNavigateMissionBoard = { missionId ->
-                    navigator.navigationToBoard(missionId)
-                },
-                onClickSetting = { navigator.navigationToSetting() }
+                onLoginSuccess = {
+                    if (it) navigator.navigationToMainTab(MainTabDataModel.Mission())
+                    else navigator.navigateToProfileCreate()
+                }
             )
             boardSetupNavGraph(
                 onSuccess = {
@@ -81,7 +78,7 @@ internal fun MainNavHost(
             )
             boardSetupSuccessNavGraph(
                 onClickStart = {
-                    navigator.navigationToOnboarding()
+                    navigator.navigationToMainTab()
                 }
             )
             invitationCodeNavGraph(
@@ -89,19 +86,14 @@ internal fun MainNavHost(
                     navigator.popBackStack()
                 },
                 onNavigateMissionBoard = { missionId ->
-                    navigator.navigationToBoard(missionId)
+                    navigator.navigationToMainTab()
                 }
             )
             profileNavGraph(
-                onSaveSuccess = { navigator.navigationToOnboarding(isAfterProfileCreate = true) },
+                onSaveSuccess = {
+                    navigator.navigationToMainTab(MainTabDataModel.Mission(true))
+                },
                 onBackClick = { navigator.popBackStack() }
-            )
-            settingNavGraph(
-                onBackClick = { navigator.popBackStack() },
-                onClickProfileSetting = { navigator.navigateToProfileSetting() },
-                onClickServicePolicy = { navigator.navigationToServicePolicy() },
-                onClickPrivacyPolicy = { navigator.navigationToPrivacyPolicy() },
-                onClickLogout = { navigator.navigateToLogin() }
             )
             servicePolicyNavGraph(
                 onBackClick = { navigator.popBackStack() }
@@ -109,40 +101,17 @@ internal fun MainNavHost(
             privacyPolicyNavGraph(
                 onBackClick = { navigator.popBackStack() }
             )
-            boardNavGraph(
-                onNavigateOnboarding = {
-                    navigator.navigationToOnboarding()
-                },
-                onNavigateDetail = { missionId ->
-                    navigator.navigationToBoardDetail(missionId)
-                },
-                onNavigateFinish = { missionId ->
-                    navigator.navigateToBoardFinish(missionId)
-                },
-                onClickSetting = {
-                    navigator.navigationToSetting()
-                },
-                onNavigateStory = { userStory ->
-                    navigator.navigationToUserStory(userStory)
-                },
-                onNavigateToPreview = { missionId, imageUrl ->
-                    navigator.navigationToVerificationPreview(missionId, imageUrl)
-                }
-            )
             boardDetailNavGraph(
                 onNavigateOnboarding = {
-                    navigator.navigationToOnboarding()
+                    navigator.navigationToMainTab()
                 },
                 onBackClick = {
                     navigator.popBackStack()
                 }
             )
             boardFinishNavGraph(
-                onClickSetting = {
-                    navigator.navigationToSetting()
-                },
                 onClickOk = {
-                    navigator.navigationToOnboarding()
+                    navigator.navigationToMainTab()
                 }
             )
             userStoryNavGraph(
@@ -158,6 +127,15 @@ internal fun MainNavHost(
                     navigator.popBackStack()
                 }
             )
+
+            composable<RouteModel.MainTab>(
+                typeMap = mapOf(typeOf<MainTabDataModel>() to MainTabDataModelType)
+            ) { backStackEntry ->
+                MainTabContent(
+                    navigator = navigator,
+                    mainTabDataModel = backStackEntry.toRoute<RouteModel.MainTab>().mainTabDataModel
+                )
+            }
         }
     }
 }

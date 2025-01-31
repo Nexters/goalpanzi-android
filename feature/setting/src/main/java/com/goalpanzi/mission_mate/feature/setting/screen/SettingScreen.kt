@@ -118,17 +118,11 @@ fun SettingScreen(
             .statusBarsPadding()
             .navigationBarsPadding()
     ) {
-        MissionMateTopAppBar(
-            navigationType = NavigationType.BACK,
-            onNavigationClick = { onBackClick() },
-            containerColor = ColorWhite_FFFFFFFF
-        )
         Text(
             text = stringResource(id = R.string.setting_title),
             modifier = Modifier
                 .wrapContentWidth()
-                .wrapContentHeight()
-                .padding(start = 24.dp, bottom = 16.dp),
+                .padding(start = 24.dp,top = 20.dp, bottom = 10.dp),
             style = MissionMateTypography.heading_sm_bold,
             color = ColorGray1_FF404249
         )

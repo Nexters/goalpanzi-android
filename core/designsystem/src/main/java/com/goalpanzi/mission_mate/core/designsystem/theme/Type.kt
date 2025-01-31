@@ -147,4 +147,12 @@ object MissionMateTypography {
     val body_sm_regular = body_sm.copy(
         fontWeight = FontWeight.Normal
     )
+
+    private val tab = DefaultTextStyle.copy(
+        fontSize = 11.sp
+    )
+
+    val tab_regular = tab.copy(
+        fontWeight = FontWeight.Normal
+    )
 }

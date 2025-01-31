@@ -8,7 +8,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import com.goalpanzi.mission_mate.core.designsystem.theme.MissionmateTheme
 import com.goalpanzi.mission_mate.core.domain.auth.usecase.LoginUseCase
-import com.goalpanzi.mission_mate.core.navigation.RouteModel
+import com.goalpanzi.mission_mate.core.navigation.model.RouteModel
 import com.goalpanzi.mission_mate.feature.main.component.MainNavigator
 import com.goalpanzi.mission_mate.feature.main.component.rememberMainNavigator
 import dagger.hilt.android.AndroidEntryPoint
@@ -23,7 +23,8 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge(
-            statusBarStyle = SystemBarStyle.light(Color.TRANSPARENT, Color.TRANSPARENT)
+            statusBarStyle = SystemBarStyle.light(Color.TRANSPARENT, Color.TRANSPARENT),
+            navigationBarStyle = SystemBarStyle.light(Color.WHITE, Color.WHITE)
         )
         val isNewUser = loginUseCase.isNewUser()
         val user = loginUseCase.getCachedUserData()
@@ -39,7 +40,7 @@ class MainActivity : ComponentActivity() {
                         if (user == null) {
                             RouteModel.Profile.Create
                         } else {
-                            RouteModel.MainTabRoute.MissionRouteModel.Onboarding()
+                            RouteModel.MainTab()
                         }
                     }
                 )

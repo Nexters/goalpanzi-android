@@ -4,7 +4,9 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
-import com.goalpanzi.mission_mate.core.navigation.RouteModel.MainTabRoute.MissionRouteModel
+import com.goalpanzi.mission_mate.core.navigation.model.RouteModel.MainTabRoute.MissionRouteModel
+import com.goalpanzi.mission_mate.core.ui.util.slideInFromEnd
+import com.goalpanzi.mission_mate.core.ui.util.slideOutToEnd
 import com.goalpanzi.mission_mate.feature.onboarding.screen.OnboardingRoute
 import com.goalpanzi.mission_mate.feature.onboarding.screen.boardsetup.BoardSetupRoute
 import com.goalpanzi.mission_mate.feature.onboarding.screen.boardsetup.BoardSetupSuccessScreen
@@ -24,14 +26,12 @@ fun NavController.navigateToOnboarding(
 fun NavGraphBuilder.onboardingNavGraph(
     onClickBoardSetup: () -> Unit,
     onClickInvitationCode: () -> Unit,
-    onClickSetting: () -> Unit,
     onNavigateMissionBoard: (Long) -> Unit
 ) {
     composable<MissionRouteModel.Onboarding> {
         OnboardingRoute(
             onClickBoardSetup = onClickBoardSetup,
             onClickInvitationCode = onClickInvitationCode,
-            onClickSetting = onClickSetting,
             onNavigateMissionBoard = onNavigateMissionBoard
         )
     }
@@ -59,7 +59,14 @@ fun NavGraphBuilder.boardSetupNavGraph(
     onSuccess: () -> Unit,
     onBackClick: () -> Unit
 ) {
-    composable<MissionRouteModel.BoardSetup> {
+    composable<MissionRouteModel.BoardSetup>(
+        enterTransition = {
+            slideInFromEnd()
+        },
+        popExitTransition = {
+            slideOutToEnd()
+        }
+    ) {
         BoardSetupRoute(
             onSuccess = onSuccess,
             onBackClick = onBackClick
@@ -81,7 +88,14 @@ fun NavGraphBuilder.invitationCodeNavGraph(
     onBackClick: () -> Unit,
     onNavigateMissionBoard: (Long) -> Unit,
 ) {
-    composable<MissionRouteModel.InvitationCode> {
+    composable<MissionRouteModel.InvitationCode>(
+        enterTransition = {
+            slideInFromEnd()
+        },
+        popExitTransition = {
+            slideOutToEnd()
+        }
+    ) {
         InvitationCodeRoute(
             onBackClick = onBackClick,
             onNavigateMissionBoard = onNavigateMissionBoard
