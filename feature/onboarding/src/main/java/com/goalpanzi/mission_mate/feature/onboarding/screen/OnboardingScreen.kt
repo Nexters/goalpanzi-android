@@ -163,7 +163,7 @@ fun OnboardingScreen(
                         color = ColorGray1_FF404249
                     )
                     OutlinedTextChip(
-                        text = stringResource(id = R.string.onboarding_level_1),
+                        text = stringResource(id = R.string.onboarding_land_1),
                         modifier = Modifier.padding(bottom = 23.dp)
                     )
                     Box(
