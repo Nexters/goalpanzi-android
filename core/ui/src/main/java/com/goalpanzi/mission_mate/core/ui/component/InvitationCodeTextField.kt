@@ -1,5 +1,6 @@
 package com.goalpanzi.mission_mate.core.ui.component
 
+import android.view.KeyEvent
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -81,8 +82,9 @@ fun InvitationCodeTextField(
             .onFocusChanged {
                 isFocused = it.isFocused
             }
-            .onKeyEvent {
-                if (textFieldValue.text.isBlank()) {
+            .onKeyEvent { event ->
+                val isDeleteButton = event.nativeKeyEvent.keyCode == KeyEvent.KEYCODE_DEL
+                if (isDeleteButton && textFieldValue.text.isBlank()) {
                     onDeleteWhenBlank()
                 }
                 false
@@ -98,8 +100,7 @@ fun InvitationCodeTextField(
         keyboardOptions = keyboardOptions,
         keyboardActions = keyboardActions,
         onValueChange = {
-            if(text.length != 1 || it.text.isEmpty())
-                onValueChange(it.text)
+            if (it.text.isBlank() || it.selection != TextRange.Zero) onValueChange(it.text)
         },
         readOnly = readOnly,
         decorationBox = { innerTextField ->
@@ -140,7 +141,6 @@ fun InvitationCodeText(
     focusedBorderStroke: BorderStroke = BorderStroke(1.dp, ColorGray4_FFE5E5E5),
     errorBorderStroke: BorderStroke = BorderStroke(2.dp, ColorRed_FFFF5858),
     shape: Shape = RoundedCornerShape(12.dp),
-
     textAlign: Alignment = Alignment.Center,
     contentPadding: PaddingValues = PaddingValues()
 ) {

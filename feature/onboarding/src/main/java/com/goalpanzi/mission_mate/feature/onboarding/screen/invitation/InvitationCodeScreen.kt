@@ -40,6 +40,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.goalpanzi.mission_mate.core.designsystem.component.MissionMateButtonType
 import com.goalpanzi.mission_mate.core.designsystem.component.MissionMateTextButton
+import com.goalpanzi.mission_mate.core.designsystem.component.MissionMateTopAppBar
+import com.goalpanzi.mission_mate.core.designsystem.component.NavigationType
 import com.goalpanzi.mission_mate.core.designsystem.ext.clickableWithoutRipple
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorGray1_FF404249
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorGray2_FF4F505C
@@ -47,15 +49,12 @@ import com.goalpanzi.mission_mate.core.designsystem.theme.ColorOrange_FFFF5732
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorRed_FFFF5858
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorWhite_FFFFFFFF
 import com.goalpanzi.mission_mate.core.designsystem.theme.MissionMateTypography
-import com.goalpanzi.mission_mate.core.designsystem.component.MissionMateTopAppBar
-import com.goalpanzi.mission_mate.core.designsystem.component.NavigationType
-import com.goalpanzi.mission_mate.feature.onboarding.R
 import com.goalpanzi.mission_mate.core.ui.component.InvitationCodeTextField
+import com.goalpanzi.mission_mate.feature.onboarding.R
 import com.goalpanzi.mission_mate.feature.onboarding.component.dialog.InvitationDialog
 import com.goalpanzi.mission_mate.feature.onboarding.model.CodeResultEvent
 import com.goalpanzi.mission_mate.feature.onboarding.model.JoinResultEvent
 import com.goalpanzi.mission_mate.feature.onboarding.model.MissionUiModel
-import com.goalpanzi.mission_mate.feature.onboarding.screen.invitation.InvitationCodeViewModel.Companion.CodeActionEvent
 import com.goalpanzi.mission_mate.feature.onboarding.util.styledTextWithHighlights
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -70,35 +69,28 @@ fun InvitationCodeRoute(
     val localFocusManager = LocalFocusManager.current
     val context = LocalContext.current
 
+    val invitationCode = viewModel.invitationCode
+
     val isNotCodeValid by viewModel.isNotCodeValid.collectAsStateWithLifecycle()
-    val enabledButton by viewModel.enabledButton.collectAsStateWithLifecycle()
 
     var hasInvitationDialogData by remember { mutableStateOf<MissionUiModel?>(null) }
 
-    LaunchedEffect(key1 = Unit) {
+    LaunchedEffect(Unit) {
         launch {
             viewModel.codeInputActionEvent.collect {
                 when (it) {
-                    CodeActionEvent.FIRST_DONE,
-                    CodeActionEvent.SECOND_DONE,
-                    CodeActionEvent.THIRD_DONE -> {
+                    CodeActionEvent.NEXT-> {
                         delay(80)
                         localFocusManager.moveFocus(FocusDirection.Next)
                     }
-                    CodeActionEvent.FOURTH_DONE -> {
+                    CodeActionEvent.DONE -> {
                         delay(80)
                         localFocusManager.clearFocus()
                     }
 
-                    CodeActionEvent.SECOND_CLEAR,
-                    CodeActionEvent.THIRD_CLEAR,
-                    CodeActionEvent.FOURTH_CLEAR -> {
+                    CodeActionEvent.PREVIOUS -> {
                         delay(80)
                         localFocusManager.moveFocus(FocusDirection.Previous)
-                    }
-
-                    else -> {
-
                     }
                 }
             }
@@ -140,11 +132,7 @@ fun InvitationCodeRoute(
                     "EXCEED_MAX_PERSONNEL" -> context.getString(R.string.onboarding_invitation_error_exceed_capacity)
                     else ->  context.getString(R.string.onboarding_invitation_error)
                 }
-                Toast.makeText(
-                    context,
-                    message,
-                    Toast.LENGTH_SHORT
-                ).show()
+                Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -164,21 +152,32 @@ fun InvitationCodeRoute(
         )
     }
     InvitationCodeScreen(
-        codeFirst = viewModel.codeFirst,
-        codeSecond = viewModel.codeSecond,
-        codeThird = viewModel.codeThird,
-        codeFourth = viewModel.codeFourth,
-        onCodeFirstChange = viewModel::updateCodeFirst,
-        onCodeSecondChange = viewModel::updateCodeSecond,
-        onCodeThirdChange = viewModel::updateCodeThird,
-        onCodeFourthChange = viewModel::updateCodeFourth,
+        codeFirst = invitationCode.valueAt(0),
+        codeSecond = invitationCode.valueAt(1),
+        codeThird = invitationCode.valueAt(2),
+        codeFourth = invitationCode.valueAt(3),
+        onCodeFirstChange = {
+            viewModel.inputCode(0,it)
+        },
+        onCodeSecondChange = {
+            viewModel.inputCode(1,it)
+        },
+        onCodeThirdChange = {
+            viewModel.inputCode(2,it)
+        },
+        onCodeFourthChange = {
+            viewModel.inputCode(3,it)
+        },
         onSecondDeleteWhenBlank = {
+            viewModel.deleteCode(0)
             localFocusManager.moveFocus(FocusDirection.Previous)
         },
         onThirdDeleteWhenBlank = {
+            viewModel.deleteCode(1)
             localFocusManager.moveFocus(FocusDirection.Previous)
         },
         onFourthDeleteWhenBlank = {
+            viewModel.deleteCode(2)
             localFocusManager.moveFocus(FocusDirection.Previous)
         },
         onClickButton = {
@@ -188,7 +187,7 @@ fun InvitationCodeRoute(
         },
         onBackClick = onBackClick,
         isNotCodeValid = isNotCodeValid,
-        enabledButton = enabledButton,
+        enabledButton = invitationCode.isValid() && !isNotCodeValid,
         modifier = Modifier.clickableWithoutRipple {
             keyboardController?.hide()
             localFocusManager.clearFocus()
