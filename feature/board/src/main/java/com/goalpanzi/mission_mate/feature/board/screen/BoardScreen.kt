@@ -335,7 +335,7 @@ fun BoardScreen(
                     )
                 }
 
-            } else {
+            } else if(!scrollState.isScrollInProgress || !scrollState.canScrollForward) {
                 BoardBottomView(
                     modifier = Modifier.align(Alignment.BottomCenter),
                     missionState = missionState,
