@@ -6,8 +6,12 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -21,25 +25,35 @@ import com.goalpanzi.mission_mate.core.designsystem.theme.ColorGray3_FF727484
 import com.goalpanzi.mission_mate.core.designsystem.theme.MissionMateTypography
 import com.goalpanzi.mission_mate.core.designsystem.theme.MissionmateTheme
 import com.goalpanzi.mission_mate.feature.history.R
+import com.goalpanzi.mission_mate.feature.history.component.HistoryList
+import com.goalpanzi.mission_mate.feature.history.model.MissionHistory
 
 @Composable
 fun HistoryRoute(
     modifier: Modifier = Modifier
 ) {
+    val lazyListState = rememberLazyListState()
     HistoryScreen(
-        modifier = modifier
+        modifier = modifier,
+        lazyListState = lazyListState
     )
 }
 
 @Composable
 fun HistoryScreen(
+    lazyListState : LazyListState,
     modifier: Modifier = Modifier
 ) {
     Column(
-        modifier = modifier.fillMaxSize()
+        modifier = modifier.fillMaxSize().statusBarsPadding().navigationBarsPadding()
     ) {
         HistoryTitle()
         HistoryListInfo(modifier = Modifier.padding(bottom = 12.dp))
+        HistoryList(
+            histories = emptyList(),
+            lazyListState = lazyListState,
+            onHistoryClick = { }
+        )
     }
 }
 
@@ -119,7 +133,9 @@ fun HistoryListSort(
 @Composable
 private fun HistoryScreenPreview() {
     MissionmateTheme {
-        HistoryScreen()
+        HistoryScreen(
+            lazyListState = rememberLazyListState()
+        )
     }
 }
 
