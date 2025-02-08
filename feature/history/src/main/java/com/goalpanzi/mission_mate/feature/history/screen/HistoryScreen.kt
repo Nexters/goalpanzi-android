@@ -1,8 +1,11 @@
 package com.goalpanzi.mission_mate.feature.history.screen
 
-import androidx.compose.foundation.layout.Box
+import androidx.annotation.StringRes
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material3.Text
@@ -10,9 +13,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorGray1_FF404249
+import com.goalpanzi.mission_mate.core.designsystem.theme.ColorGray3_FF727484
 import com.goalpanzi.mission_mate.core.designsystem.theme.MissionMateTypography
 import com.goalpanzi.mission_mate.core.designsystem.theme.MissionmateTheme
 import com.goalpanzi.mission_mate.feature.history.R
@@ -34,6 +39,7 @@ fun HistoryScreen(
         modifier = modifier.fillMaxSize()
     ) {
         HistoryTitle()
+        HistoryListInfo(modifier = Modifier.padding(bottom = 12.dp))
     }
 }
 
@@ -51,6 +57,64 @@ fun HistoryTitle(
     )
 }
 
+@Composable
+fun HistoryListInfo(
+    modifier: Modifier = Modifier
+) {
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(horizontal = 24.dp),
+        horizontalArrangement = Arrangement.spacedBy(4.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        HistoryListTitle(titleRes = R.string.history_list_title_complete)
+
+        HistoryListCount(count = 10)
+
+        HistoryListSort(modifier = Modifier.weight(1f))
+    }
+}
+
+@Composable
+fun HistoryListTitle(
+    @StringRes titleRes: Int,
+    modifier: Modifier = Modifier
+) {
+    Text(
+        modifier = modifier,
+        text = stringResource(titleRes),
+        style = MissionMateTypography.title_lg_bold,
+        color = ColorGray1_FF404249
+    )
+}
+
+@Composable
+fun HistoryListCount(
+    count: Int,
+    modifier: Modifier = Modifier
+) {
+    Text(
+        modifier = modifier,
+        text = stringResource(R.string.history_list_count,count),
+        style = MissionMateTypography.body_lg_regular,
+        color = ColorGray3_FF727484
+    )
+}
+
+@Composable
+fun HistoryListSort(
+    modifier: Modifier = Modifier
+) {
+    Text(
+        modifier = modifier,
+        text = stringResource(R.string.history_list_sort_latest_finished),
+        style = MissionMateTypography.body_lg_regular,
+        color = ColorGray3_FF727484,
+        textAlign = TextAlign.End
+    )
+}
+
 @Preview
 @Composable
 private fun HistoryScreenPreview() {
@@ -58,3 +122,4 @@ private fun HistoryScreenPreview() {
         HistoryScreen()
     }
 }
+
