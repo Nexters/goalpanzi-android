@@ -24,8 +24,8 @@ import com.goalpanzi.mission_mate.core.designsystem.theme.ColorGray1_FF404249
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorGray2_FF4F505C
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorOrange_FFFF5732
 import com.goalpanzi.mission_mate.core.designsystem.theme.MissionMateTypography
+import com.goalpanzi.mission_mate.core.ui.component.InvitationCodeText
 import com.goalpanzi.mission_mate.feature.board.R
-import com.goalpanzi.mission_mate.core.ui.component.InvitationCodeTextField
 import com.goalpanzi.mission_mate.feature.onboarding.util.styledTextWithHighlights
 
 @Composable
@@ -84,29 +84,21 @@ fun InvitationCodeDialog(
                 modifier = Modifier.padding(bottom = 32.dp).wrapContentHeight(),
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                InvitationCodeTextField(
+                InvitationCodeText(
                     modifier = Modifier.weight(1f).aspectRatio(1f),
-                    text = "${code[0]}",
-                    onValueChange = {},
-                    readOnly = true
+                    text = "${code[0]}"
                 )
-                InvitationCodeTextField(
+                InvitationCodeText(
                     modifier = Modifier.weight(1f).aspectRatio(1f),
-                    text = "${code[1]}",
-                    onValueChange = {},
-                    readOnly = true
+                    text = "${code[1]}"
                 )
-                InvitationCodeTextField(
+                InvitationCodeText(
                     modifier = Modifier.weight(1f).aspectRatio(1f),
                     text = "${code[2]}",
-                    onValueChange = {},
-                    readOnly = true
                 )
-                InvitationCodeTextField(
+                InvitationCodeText(
                     modifier = Modifier.weight(1f).aspectRatio(1f),
-                    text = "${code[3]}",
-                    onValueChange = {},
-                    readOnly = true
+                    text = "${code[3]}"
                 )
             }
         }
