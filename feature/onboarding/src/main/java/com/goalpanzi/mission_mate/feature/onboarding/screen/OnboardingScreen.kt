@@ -150,21 +150,16 @@ fun OnboardingScreen(
                         .navigationBarsPadding(),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    MissionMateTopAppBar(
-                        modifier = modifier,
-                        navigationType = NavigationType.NONE,
-                        containerColor = Color.Transparent,
-                    )
                     Text(
-                        modifier = Modifier.padding(bottom = 52.dp),
+                        modifier = Modifier.padding(top = 48.dp, bottom = 40.dp),
                         text = stringResource(id = R.string.onboarding_ready_title),
                         textAlign = TextAlign.Center,
                         style = MissionMateTypography.heading_sm_bold,
                         color = ColorGray1_FF404249
                     )
                     OutlinedTextChip(
-                        text = stringResource(id = R.string.onboarding_level_1),
-                        modifier = Modifier.padding(bottom = 23.dp)
+                        text = stringResource(id = R.string.onboarding_land_1),
+                        modifier = Modifier.padding(bottom = 24.dp)
                     )
                     Box(
                         modifier = Modifier

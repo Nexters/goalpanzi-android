@@ -62,7 +62,7 @@ fun BoardSetupSuccessScreen(
                 textAlign = TextAlign.Center
             )
             OutlinedTextChip(
-                text = stringResource(id = R.string.onboarding_level_1),
+                text = stringResource(id = R.string.onboarding_land_1),
                 modifier = Modifier.padding(bottom = 12.dp)
             )
             Box(
