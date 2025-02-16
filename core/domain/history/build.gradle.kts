@@ -24,4 +24,5 @@ dependencies {
     ksp(libs.hilt.compiler)
 
     implementation(project(":core:domain:common"))
+    implementation(project(":core:domain:mission"))
 }
