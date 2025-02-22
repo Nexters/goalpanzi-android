@@ -26,14 +26,15 @@ import com.goalpanzi.mission_mate.core.designsystem.theme.MissionMateTypography
 import com.goalpanzi.mission_mate.core.designsystem.theme.MissionmateTheme
 import com.goalpanzi.mission_mate.feature.history.R
 import com.goalpanzi.mission_mate.feature.history.component.HistoryList
-import com.goalpanzi.mission_mate.feature.history.model.MissionHistory
+import com.goalpanzi.mission_mate.feature.history.model.Histories
 
 @Composable
 fun HistoryRoute(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val lazyListState = rememberLazyListState()
     HistoryScreen(
+        histories = Histories(),
         modifier = modifier,
         lazyListState = lazyListState
     )
@@ -41,16 +42,23 @@ fun HistoryRoute(
 
 @Composable
 fun HistoryScreen(
-    lazyListState : LazyListState,
+    histories: Histories,
+    lazyListState: LazyListState,
     modifier: Modifier = Modifier
 ) {
     Column(
-        modifier = modifier.fillMaxSize().statusBarsPadding().navigationBarsPadding()
+        modifier = modifier
+            .fillMaxSize()
+            .statusBarsPadding()
+            .navigationBarsPadding()
     ) {
         HistoryTitle()
-        HistoryListInfo(modifier = Modifier.padding(bottom = 12.dp))
+        HistoryListInfo(
+            modifier = Modifier.padding(bottom = 12.dp),
+            count = histories.resultList.size
+        )
         HistoryList(
-            histories = emptyList(),
+            histories = histories.resultList,
             lazyListState = lazyListState,
             onHistoryClick = { }
         )
@@ -73,6 +81,7 @@ fun HistoryTitle(
 
 @Composable
 fun HistoryListInfo(
+    count: Int,
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -84,7 +93,7 @@ fun HistoryListInfo(
     ) {
         HistoryListTitle(titleRes = R.string.history_list_title_complete)
 
-        HistoryListCount(count = 10)
+        HistoryListCount(count = count)
 
         HistoryListSort(modifier = Modifier.weight(1f))
     }
@@ -110,7 +119,7 @@ fun HistoryListCount(
 ) {
     Text(
         modifier = modifier,
-        text = stringResource(R.string.history_list_count,count),
+        text = stringResource(R.string.history_list_count, count),
         style = MissionMateTypography.body_lg_regular,
         color = ColorGray3_FF727484
     )
@@ -134,6 +143,7 @@ fun HistoryListSort(
 private fun HistoryScreenPreview() {
     MissionmateTheme {
         HistoryScreen(
+            histories = Histories(),
             lazyListState = rememberLazyListState()
         )
     }

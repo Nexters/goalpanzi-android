@@ -49,16 +49,16 @@ import com.goalpanzi.mission_mate.core.designsystem.theme.MissionMateTypography
 import com.goalpanzi.mission_mate.core.designsystem.theme.MissionmateTheme
 import com.goalpanzi.mission_mate.core.domain.common.model.user.CharacterType
 import com.goalpanzi.mission_mate.feature.history.R
-import com.goalpanzi.mission_mate.feature.history.model.MissionHistory
+import com.goalpanzi.mission_mate.feature.history.model.History
 import kotlinx.coroutines.delay
 
 private const val HISTORY_LIST_ITEM_IMAGE_INTERVAL = 3000L
 
 @Composable
 fun HistoryList(
-    histories: List<MissionHistory>,
+    histories: List<History>,
     lazyListState: LazyListState,
-    onHistoryClick: (MissionHistory) -> Unit,
+    onHistoryClick: (History) -> Unit,
     modifier: Modifier = Modifier
 ) {
     LazyColumn(
@@ -75,12 +75,8 @@ fun HistoryList(
             HistoryListItem(
                 missionId = history.missionId,
                 imageUrls = history.imageUrls,
-                characters = listOf(
-                    CharacterType.CAT,
-                    CharacterType.CAT,
-                    CharacterType.CAT
-                ),
-                extraNumbers = 3,
+                characters = history.missionMembers.distinctCharacters,
+                extraNumbers = history.missionMembers.extraNumbers,
                 title = history.description,
                 startDate = history.missionFormattedStartDate,
                 endDate = history.missionFormattedEndDate,
