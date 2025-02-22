@@ -164,7 +164,7 @@ fun HistoryListItemImage(
         AsyncImage(
             modifier = modifier
                 .fillMaxWidth()
-                .aspectRatio((3.0f / 4.0f)),
+                .aspectRatio(1f),
             model = imageUrls[index % imageUrls.size ],
             contentDescription = "history_image",
             contentScale = ContentScale.Crop
