@@ -28,9 +28,13 @@ data class History(
     }
 
     private fun formatDate(date: String): String {
-        val formatter = DateTimeFormatter.ofPattern(FORMATTER_PATTERN_ISO8601_SSSZ)
-        val localDate = LocalDate.parse(date, formatter)
-        return DateTimeFormatter.ofPattern(FORMATTER_PATTERN, Locale.getDefault()).format(localDate)
+        return try {
+            val formatter = DateTimeFormatter.ofPattern(FORMATTER_PATTERN_ISO8601_SSSZ)
+            val localDate = LocalDate.parse(date, formatter)
+            DateTimeFormatter.ofPattern(FORMATTER_PATTERN, Locale.getDefault()).format(localDate)
+        }catch (e: Exception){
+            date
+        }
     }
 
     companion object {
