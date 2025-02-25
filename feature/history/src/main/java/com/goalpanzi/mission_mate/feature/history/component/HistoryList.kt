@@ -1,5 +1,8 @@
 package com.goalpanzi.mission_mate.feature.history.component
 
+import androidx.compose.animation.core.EaseInOut
+import androidx.compose.animation.core.spring
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -49,14 +52,16 @@ import com.goalpanzi.mission_mate.core.designsystem.theme.MissionMateTypography
 import com.goalpanzi.mission_mate.core.designsystem.theme.MissionmateTheme
 import com.goalpanzi.mission_mate.core.domain.common.model.user.CharacterType
 import com.goalpanzi.mission_mate.feature.history.R
+import com.goalpanzi.mission_mate.feature.history.model.Histories
 import com.goalpanzi.mission_mate.feature.history.model.History
 import kotlinx.coroutines.delay
 
 private const val HISTORY_LIST_ITEM_IMAGE_INTERVAL = 3000L
+private const val HISTORY_LIST_ITEM_ANIMATION_DELAY = 300
 
 @Composable
 fun HistoryList(
-    histories: List<History>,
+    histories: Histories,
     lazyListState: LazyListState,
     onHistoryClick: (History) -> Unit,
     modifier: Modifier = Modifier
@@ -69,7 +74,7 @@ fun HistoryList(
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         items(
-            items = histories,
+            items = histories.resultList,
             key = { it.missionId }
         ) { history ->
             HistoryListItem(
@@ -113,16 +118,24 @@ fun HistoryListItem(
     }
     val lifecycleOwner = LocalLifecycleOwner.current
     val enabledAnimation by remember {
-        derivedStateOf { lazyListState.layoutInfo.visibleItemsInfo.any {
-            it.key == missionId
-        } }
+        derivedStateOf {
+            lazyListState.layoutInfo.visibleItemsInfo.any {
+                it.key == missionId
+            }
+        }
     }
 
     LaunchedEffect(enabledAnimation) {
         lifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED){
             while (enabledAnimation) {
                 delay(HISTORY_LIST_ITEM_IMAGE_INTERVAL)
-                pagerState.animateScrollToPage(pagerState.currentPage + 1)
+                pagerState.animateScrollToPage(
+                    page = pagerState.currentPage + 1,
+                    animationSpec = tween(
+                        durationMillis = HISTORY_LIST_ITEM_ANIMATION_DELAY,
+                        easing = EaseInOut
+                    )
+                )
             }
         }
     }

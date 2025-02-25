@@ -2,6 +2,7 @@ package com.goalpanzi.mission_mate.feature.history.screen
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,18 +13,24 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorGray1_FF404249
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorGray3_FF727484
 import com.goalpanzi.mission_mate.core.designsystem.theme.MissionMateTypography
 import com.goalpanzi.mission_mate.core.designsystem.theme.MissionmateTheme
+import com.goalpanzi.mission_mate.feature.history.HistoryUiState
+import com.goalpanzi.mission_mate.feature.history.HistoryViewModel
 import com.goalpanzi.mission_mate.feature.history.R
 import com.goalpanzi.mission_mate.feature.history.component.HistoryList
 import com.goalpanzi.mission_mate.feature.history.model.Histories
@@ -31,10 +38,13 @@ import com.goalpanzi.mission_mate.feature.history.model.Histories
 @Composable
 fun HistoryRoute(
     modifier: Modifier = Modifier,
+    viewModel: HistoryViewModel = hiltViewModel()
 ) {
+    val historyUiState by viewModel.uiState.collectAsStateWithLifecycle()
     val lazyListState = rememberLazyListState()
+
     HistoryScreen(
-        histories = Histories(),
+        historyUiState = historyUiState,
         modifier = modifier,
         lazyListState = lazyListState
     )
@@ -42,7 +52,7 @@ fun HistoryRoute(
 
 @Composable
 fun HistoryScreen(
-    histories: Histories,
+    historyUiState: HistoryUiState,
     lazyListState: LazyListState,
     modifier: Modifier = Modifier
 ) {
@@ -53,15 +63,30 @@ fun HistoryScreen(
             .navigationBarsPadding()
     ) {
         HistoryTitle()
-        HistoryListInfo(
-            modifier = Modifier.padding(bottom = 12.dp),
-            count = histories.resultList.size
-        )
-        HistoryList(
-            histories = histories.resultList,
-            lazyListState = lazyListState,
-            onHistoryClick = { }
-        )
+
+        when (historyUiState){
+            is HistoryUiState.Success -> {
+                HistoryListInfo(
+                    modifier = Modifier.padding(bottom = 12.dp),
+                    histories = historyUiState.histories
+                )
+
+                HistoryList(
+                    histories = historyUiState.histories,
+                    lazyListState = lazyListState,
+                    onHistoryClick = { }
+                )
+            }
+
+            is HistoryUiState.Loading -> {
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator()
+                }
+            }
+        }
     }
 }
 
@@ -81,7 +106,7 @@ fun HistoryTitle(
 
 @Composable
 fun HistoryListInfo(
-    count: Int,
+    histories: Histories,
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -93,7 +118,7 @@ fun HistoryListInfo(
     ) {
         HistoryListTitle(titleRes = R.string.history_list_title_complete)
 
-        HistoryListCount(count = count)
+        HistoryListCount(count = histories.resultList.size)
 
         HistoryListSort(modifier = Modifier.weight(1f))
     }
@@ -143,7 +168,7 @@ fun HistoryListSort(
 private fun HistoryScreenPreview() {
     MissionmateTheme {
         HistoryScreen(
-            histories = Histories(),
+            historyUiState = HistoryUiState.Loading,
             lazyListState = rememberLazyListState()
         )
     }
