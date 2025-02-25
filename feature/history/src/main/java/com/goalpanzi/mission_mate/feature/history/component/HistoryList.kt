@@ -2,7 +2,6 @@ package com.goalpanzi.mission_mate.feature.history.component
 
 import androidx.compose.animation.core.EaseInOut
 import androidx.compose.animation.core.animateDpAsState
-import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -180,10 +179,15 @@ fun HistoryListItem(
                 onClick()
             }
     ) {
-        HistoryListItemImage(
-            state = pagerState,
-            imageUrls = imageUrls
-        )
+        if(imageUrls.isNotEmpty()){
+            HistoryListItemImage(
+                state = pagerState,
+                imageUrls = imageUrls
+            )
+        } else {
+            HistoryListItemImageEmpty()
+        }
+
         HistoryListItemInfo(
             characters = characters,
             extraNumbers = extraNumbers,
@@ -216,7 +220,16 @@ fun HistoryListItemImage(
             contentScale = ContentScale.Crop
         )
     }
+}
 
+@Composable
+fun HistoryListItemImageEmpty(
+    modifier: Modifier = Modifier
+) {
+    StableImage(
+        modifier = modifier,
+        drawableResId = R.drawable.img_history_empty
+    )
 }
 
 @Composable
