@@ -322,14 +322,16 @@ fun HistoryListItemInfoDetailMembers(
         HistoryListItemInfoDetailMembersCharacterList(
             characters = characters
         )
-        Text(
-            text = stringResource(
-                id = R.string.history_list_item_member_count,
-                extraNumbers
-            ),
-            style = MissionMateTypography.body_xl_bold,
-            color = ColorGray1_FF404249
-        )
+        if(extraNumbers > 0) {
+            Text(
+                text = stringResource(
+                    id = R.string.history_list_item_member_count,
+                    extraNumbers
+                ),
+                style = MissionMateTypography.body_xl_bold,
+                color = ColorGray1_FF404249
+            )
+        }
     }
 }
 
