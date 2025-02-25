@@ -20,7 +20,9 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -51,9 +53,18 @@ fun HistoryRoute(
         refreshing = historyUiState is HistoryUiState.Refreshing,
         onRefresh = viewModel::refresh
     )
+    val shouldLoadingMore by remember {
+        derivedStateOf { checkCanLoadMore(lazyListState, historyUiState) }
+    }
 
     LaunchedEffect(Unit) {
         viewModel.initHistories()
+    }
+
+    LaunchedEffect(shouldLoadingMore) {
+        if (shouldLoadingMore) {
+            viewModel.fetchHistories()
+        }
     }
 
     HistoryScreen(
@@ -183,6 +194,15 @@ fun HistoryListSort(
         color = ColorGray3_FF727484,
         textAlign = TextAlign.End
     )
+}
+
+private fun checkCanLoadMore(listState: LazyListState, historyUiState: HistoryUiState): Boolean {
+    return if(historyUiState is HistoryUiState.Success){
+        historyUiState.histories.hasNext && (listState.layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: 0) >=
+                (listState.layoutInfo.totalItemsCount - 1)
+    }else {
+        false
+    }
 }
 
 @OptIn(ExperimentalMaterialApi::class)
