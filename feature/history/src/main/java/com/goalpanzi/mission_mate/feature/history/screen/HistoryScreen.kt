@@ -40,10 +40,12 @@ import com.goalpanzi.mission_mate.feature.history.HistoryViewModel
 import com.goalpanzi.mission_mate.feature.history.R
 import com.goalpanzi.mission_mate.feature.history.component.HistoryList
 import com.goalpanzi.mission_mate.feature.history.model.Histories
+import com.goalpanzi.mission_mate.feature.history.model.History
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun HistoryRoute(
+    onHistoryClick: (History) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HistoryViewModel = hiltViewModel()
 ) {
@@ -72,7 +74,8 @@ fun HistoryRoute(
         modifier = modifier,
         lazyListState = lazyListState,
         pullRefreshState = pullRefreshState,
-        isRefreshLoading = historyUiState is HistoryUiState.Refreshing
+        isRefreshLoading = historyUiState is HistoryUiState.Refreshing,
+        onHistoryClick = onHistoryClick
     )
 }
 
@@ -83,6 +86,7 @@ fun HistoryScreen(
     lazyListState: LazyListState,
     pullRefreshState: PullRefreshState,
     isRefreshLoading : Boolean,
+    onHistoryClick: (History) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -105,7 +109,7 @@ fun HistoryScreen(
                     lazyListState = lazyListState,
                     pullRefreshState = pullRefreshState,
                     isRefreshLoading = isRefreshLoading,
-                    onHistoryClick = { }
+                    onHistoryClick = onHistoryClick
                 )
             }
 
@@ -217,7 +221,8 @@ private fun HistoryScreenPreview() {
                 refreshing = false,
                 onRefresh = {}
             ),
-            isRefreshLoading = false
+            isRefreshLoading = false,
+            onHistoryClick = {}
         )
     }
 }
