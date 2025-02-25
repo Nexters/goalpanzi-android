@@ -1,6 +1,7 @@
 package com.goalpanzi.mission_mate.feature.history.component
 
 import androidx.compose.animation.core.EaseInOut
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
@@ -11,10 +12,12 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
@@ -24,6 +27,10 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.pullrefresh.PullRefreshIndicator
+import androidx.compose.material.pullrefresh.PullRefreshState
+import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -31,6 +38,7 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.TopCenter
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
@@ -55,51 +63,74 @@ import com.goalpanzi.mission_mate.feature.history.R
 import com.goalpanzi.mission_mate.feature.history.model.Histories
 import com.goalpanzi.mission_mate.feature.history.model.History
 import kotlinx.coroutines.delay
+import kotlin.math.min
 
 private const val HISTORY_LIST_ITEM_IMAGE_INTERVAL = 3000L
 private const val HISTORY_LIST_ITEM_ANIMATION_DELAY = 300
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun HistoryList(
     histories: Histories,
     lazyListState: LazyListState,
+    pullRefreshState: PullRefreshState,
+    isRefreshLoading: Boolean,
     onHistoryClick: (History) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    LazyColumn(
-        modifier = modifier.background(
-            color = ColorGray5_FFF5F6F9
-        ),
-        state = lazyListState,
-        verticalArrangement = Arrangement.spacedBy(12.dp)
+    val refreshingSpacerSize by animateDpAsState(
+        targetValue = (min(pullRefreshState.progress, 1f) * 140).dp
+    )
+    Box(
+        modifier = modifier
+            .fillMaxSize()
+            .pullRefresh(pullRefreshState)
     ) {
-        items(
-            items = histories.resultList,
-            key = { it.missionId }
-        ) { history ->
-            HistoryListItem(
-                missionId = history.missionId,
-                imageUrls = history.imageUrls,
-                characters = history.missionMembers.distinctCharacters,
-                extraNumbers = history.missionMembers.extraNumbers,
-                title = history.description,
-                startDate = history.missionFormattedStartDate,
-                endDate = history.missionFormattedEndDate,
-                boardProgressed = history.myVerificationCount,
-                boardTotal = history.totalVerificationCount,
-                rank = history.rank,
-                lazyListState = lazyListState,
-                onClick = {
-                    onHistoryClick(history)
-                }
-            )
+        LazyColumn(
+            modifier = Modifier
+                .padding(top = refreshingSpacerSize)
+                .background(
+                    color = ColorGray5_FFF5F6F9
+                ),
+            state = lazyListState,
+            verticalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            items(
+                items = histories.resultList,
+                key = { it.missionId }
+            ) { history ->
+                HistoryListItem(
+                    missionId = history.missionId,
+                    imageUrls = history.imageUrls,
+                    characters = history.missionMembers.distinctCharacters,
+                    extraNumbers = history.missionMembers.extraNumbers,
+                    title = history.description,
+                    startDate = history.missionFormattedStartDate,
+                    endDate = history.missionFormattedEndDate,
+                    boardProgressed = history.myVerificationCount,
+                    boardTotal = history.totalVerificationCount,
+                    rank = history.rank,
+                    lazyListState = lazyListState,
+                    onClick = {
+                        onHistoryClick(history)
+                    }
+                )
+            }
         }
+        PullRefreshIndicator(
+            refreshing = isRefreshLoading,
+            state = pullRefreshState,
+            modifier = Modifier
+                .align(TopCenter)
+                .statusBarsPadding()
+        )
     }
+
 }
 
 @Composable
 fun HistoryListItem(
-    missionId : Long,
+    missionId: Long,
     imageUrls: List<String>,
     characters: List<CharacterType>,
     extraNumbers: Int,
@@ -126,7 +157,7 @@ fun HistoryListItem(
     }
 
     LaunchedEffect(enabledAnimation) {
-        lifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED){
+        lifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED) {
             while (enabledAnimation) {
                 delay(HISTORY_LIST_ITEM_IMAGE_INTERVAL)
                 pagerState.animateScrollToPage(
@@ -141,11 +172,13 @@ fun HistoryListItem(
     }
 
     Column(
-        modifier = modifier.background(
-            color = ColorWhite_FFFFFFFF
-        ).clickable {
-            onClick()
-        }
+        modifier = modifier
+            .background(
+                color = ColorWhite_FFFFFFFF
+            )
+            .clickable {
+                onClick()
+            }
     ) {
         HistoryListItemImage(
             state = pagerState,
@@ -178,7 +211,7 @@ fun HistoryListItemImage(
             modifier = modifier
                 .fillMaxWidth()
                 .aspectRatio(1f),
-            model = imageUrls[index % imageUrls.size ],
+            model = imageUrls[index % imageUrls.size],
             contentDescription = "history_image",
             contentScale = ContentScale.Crop
         )
@@ -213,7 +246,7 @@ fun HistoryListItemInfo(
                 startDate = startDate,
                 endDate = endDate
             )
-            if(rank == 1){
+            if (rank == 1) {
                 StableImage(
                     modifier = Modifier
                         .width(85.dp)

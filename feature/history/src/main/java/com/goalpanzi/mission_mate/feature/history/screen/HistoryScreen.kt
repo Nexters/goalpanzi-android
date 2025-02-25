@@ -13,9 +13,13 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.pullrefresh.PullRefreshState
+import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -35,25 +39,39 @@ import com.goalpanzi.mission_mate.feature.history.R
 import com.goalpanzi.mission_mate.feature.history.component.HistoryList
 import com.goalpanzi.mission_mate.feature.history.model.Histories
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun HistoryRoute(
     modifier: Modifier = Modifier,
     viewModel: HistoryViewModel = hiltViewModel()
 ) {
-    val historyUiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val historyUiState by viewModel.historyState.collectAsStateWithLifecycle()
     val lazyListState = rememberLazyListState()
+    val pullRefreshState = rememberPullRefreshState(
+        refreshing = historyUiState is HistoryUiState.Refreshing,
+        onRefresh = viewModel::refresh
+    )
+
+    LaunchedEffect(Unit) {
+        viewModel.initHistories()
+    }
 
     HistoryScreen(
         historyUiState = historyUiState,
         modifier = modifier,
-        lazyListState = lazyListState
+        lazyListState = lazyListState,
+        pullRefreshState = pullRefreshState,
+        isRefreshLoading = historyUiState is HistoryUiState.Refreshing
     )
 }
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun HistoryScreen(
     historyUiState: HistoryUiState,
     lazyListState: LazyListState,
+    pullRefreshState: PullRefreshState,
+    isRefreshLoading : Boolean,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -74,6 +92,8 @@ fun HistoryScreen(
                 HistoryList(
                     histories = historyUiState.histories,
                     lazyListState = lazyListState,
+                    pullRefreshState = pullRefreshState,
+                    isRefreshLoading = isRefreshLoading,
                     onHistoryClick = { }
                 )
             }
@@ -86,6 +106,8 @@ fun HistoryScreen(
                     CircularProgressIndicator()
                 }
             }
+
+            else -> Unit
         }
     }
 }
@@ -163,13 +185,19 @@ fun HistoryListSort(
     )
 }
 
+@OptIn(ExperimentalMaterialApi::class)
 @Preview
 @Composable
 private fun HistoryScreenPreview() {
     MissionmateTheme {
         HistoryScreen(
             historyUiState = HistoryUiState.Loading,
-            lazyListState = rememberLazyListState()
+            lazyListState = rememberLazyListState(),
+            pullRefreshState = rememberPullRefreshState(
+                refreshing = false,
+                onRefresh = {}
+            ),
+            isRefreshLoading = false
         )
     }
 }
