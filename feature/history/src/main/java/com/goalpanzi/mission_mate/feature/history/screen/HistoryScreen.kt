@@ -183,7 +183,7 @@ fun HistoryListTitle(
     Text(
         modifier = modifier,
         text = stringResource(titleRes),
-        style = MissionMateTypography.title_lg_bold,
+        style = MissionMateTypography.body_xl_bold,
         color = ColorGray1_FF404249
     )
 }
@@ -196,7 +196,7 @@ fun HistoryListCount(
     Text(
         modifier = modifier,
         text = stringResource(R.string.history_list_count, count),
-        style = MissionMateTypography.body_lg_regular,
+        style = MissionMateTypography.body_md_regular,
         color = ColorGray3_FF727484
     )
 }
@@ -208,7 +208,7 @@ fun HistoryListSort(
     Text(
         modifier = modifier,
         text = stringResource(R.string.history_list_sort_latest_finished),
-        style = MissionMateTypography.body_lg_regular,
+        style = MissionMateTypography.body_md_regular,
         color = ColorGray3_FF727484,
         textAlign = TextAlign.End
     )
