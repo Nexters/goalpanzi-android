@@ -35,7 +35,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.goalpanzi.mission_mate.core.designsystem.component.StableImage
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorGray1_FF404249
-import com.goalpanzi.mission_mate.core.designsystem.theme.ColorGray2_FF4F505C
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorGray3_FF727484
 import com.goalpanzi.mission_mate.core.designsystem.theme.MissionMateTypography
 import com.goalpanzi.mission_mate.core.designsystem.theme.MissionmateTheme
@@ -235,7 +234,7 @@ fun HistoryListEmpty(
 }
 
 private fun checkCanLoadMore(listState: LazyListState, historyUiState: HistoryUiState): Boolean {
-    return if(historyUiState is HistoryUiState.Success){
+    return if(historyUiState is HistoryUiState.Success && !historyUiState.isPaging){
         historyUiState.histories.hasNext && (listState.layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: 0) >=
                 (listState.layoutInfo.totalItemsCount - 1)
     }else {
