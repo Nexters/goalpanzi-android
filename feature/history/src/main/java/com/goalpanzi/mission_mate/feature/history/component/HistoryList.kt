@@ -23,6 +23,7 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.PagerDefaults
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
@@ -209,7 +210,8 @@ fun HistoryListItemImage(
 ) {
     HorizontalPager(
         state = state,
-        userScrollEnabled = false
+        userScrollEnabled = false,
+        beyondViewportPageCount = 2
     ) { index ->
         AsyncImage(
             modifier = modifier
