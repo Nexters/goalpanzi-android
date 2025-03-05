@@ -9,7 +9,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -31,7 +33,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.goalpanzi.mission_mate.core.designsystem.component.StableImage
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorGray1_FF404249
+import com.goalpanzi.mission_mate.core.designsystem.theme.ColorGray2_FF4F505C
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorGray3_FF727484
 import com.goalpanzi.mission_mate.core.designsystem.theme.MissionMateTypography
 import com.goalpanzi.mission_mate.core.designsystem.theme.MissionmateTheme
@@ -104,13 +108,24 @@ fun HistoryScreen(
                     histories = historyUiState.histories
                 )
 
-                HistoryList(
-                    histories = historyUiState.histories,
-                    lazyListState = lazyListState,
-                    pullRefreshState = pullRefreshState,
-                    isRefreshLoading = isRefreshLoading,
-                    onHistoryClick = onHistoryClick
-                )
+                if(historyUiState.histories.resultList.isNotEmpty()){
+                    HistoryList(
+                        histories = historyUiState.histories,
+                        lazyListState = lazyListState,
+                        pullRefreshState = pullRefreshState,
+                        isRefreshLoading = isRefreshLoading,
+                        onHistoryClick = onHistoryClick
+                    )
+                } else {
+                    Box(
+                        modifier = modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ){
+                        HistoryListEmpty()
+                    }
+
+                }
+
             }
 
             is HistoryUiState.Loading -> {
@@ -198,6 +213,25 @@ fun HistoryListSort(
         color = ColorGray3_FF727484,
         textAlign = TextAlign.End
     )
+}
+
+@Composable
+fun HistoryListEmpty(
+    modifier: Modifier = Modifier
+) {
+    Box(
+        modifier = modifier,
+        contentAlignment = Alignment.TopCenter
+    ){
+        StableImage(
+            drawableResId = R.drawable.img_history_list_empty,
+            modifier = Modifier.width(276.dp)
+        )
+        StableImage(
+            modifier = Modifier.padding(top = 85.dp).size(240.dp),
+            drawableResId = com.goalpanzi.mission_mate.core.designsystem.R.drawable.img_rabbit_selected
+        )
+    }
 }
 
 private fun checkCanLoadMore(listState: LazyListState, historyUiState: HistoryUiState): Boolean {
