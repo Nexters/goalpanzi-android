@@ -247,8 +247,8 @@ fun HistoryListItemInfo(
     modifier: Modifier = Modifier
 ) {
     Column(
-        modifier = modifier.padding(20.dp),
-        verticalArrangement = Arrangement.spacedBy(24.dp)
+        modifier = modifier.padding(horizontal = 20.dp, vertical = 16.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         Row(
             horizontalArrangement = Arrangement.spacedBy(12.dp),
@@ -258,14 +258,15 @@ fun HistoryListItemInfo(
                 characters = characters,
                 extraNumbers = extraNumbers,
                 title = title,
-                startDate = startDate,
-                endDate = endDate
+                boardProgressed = boardProgressed,
+                boardTotal = boardTotal,
+                rank = rank
             )
             if (rank == 1) {
                 StableImage(
                     modifier = Modifier
-                        .width(85.dp)
-                        .height(80.dp)
+                        .width(63.dp)
+                        .height(59.dp)
                         .align(
                             Alignment.Bottom
                         ),
@@ -273,10 +274,9 @@ fun HistoryListItemInfo(
                 )
             }
         }
-        HistoryListItemInfoResult(
-            boardProgressed = boardProgressed,
-            boardTotal = boardTotal,
-            rank = rank
+        HistoryListItemInfoDetailPeriod(
+            startDate = startDate,
+            endDate = endDate
         )
     }
 
@@ -287,25 +287,27 @@ fun HistoryListItemInfoDetail(
     characters: List<CharacterType>,
     extraNumbers: Int,
     title: String,
-    startDate: String,
-    endDate: String,
+    boardProgressed: Int,
+    boardTotal: Int,
+    rank: Int,
     modifier: Modifier = Modifier
 ) {
     Column(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(8.dp)
+        verticalArrangement = Arrangement.spacedBy(2.dp)
     ) {
         HistoryListItemInfoDetailMembers(
-            modifier = Modifier.padding(bottom = 4.dp),
+            modifier = Modifier.padding(bottom = 2.dp),
             characters = characters,
             extraNumbers = extraNumbers
         )
         HistoryListItemInfoDetailTitle(
             title = title
         )
-        HistoryListItemInfoDetailPeriod(
-            startDate = startDate,
-            endDate = endDate
+        HistoryListItemInfoResult(
+            boardProgressed = boardProgressed,
+            boardTotal = boardTotal,
+            rank = rank
         )
     }
 }
@@ -398,7 +400,7 @@ fun HistoryListItemInfoDetailTitle(
     Text(
         modifier = modifier,
         text = title,
-        style = MissionMateTypography.title_xl_bold,
+        style = MissionMateTypography.title_lg_bold,
         color = ColorGray1_FF404249
     )
 }
@@ -456,7 +458,7 @@ fun HistoryListItemInfoResultBoard(
             progressed,
             total
         ),
-        style = MissionMateTypography.body_xl_bold,
+        style = MissionMateTypography.body_lg_bold,
         color = ColorOrange_FFFF5732
     )
 }
@@ -472,7 +474,7 @@ fun HistoryListItemInfoResultRank(
             id = R.string.history_list_item_rank,
             rank
         ),
-        style = MissionMateTypography.body_xl_regular,
+        style = MissionMateTypography.body_lg_regular,
         color = ColorGray1_FF404249
     )
 }
