@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -23,7 +24,6 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.HorizontalPager
-import androidx.compose.foundation.pager.PagerDefaults
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
@@ -262,17 +262,10 @@ fun HistoryListItemInfo(
                 boardTotal = boardTotal,
                 rank = rank
             )
-            if (rank == 1) {
-                StableImage(
-                    modifier = Modifier
-                        .width(63.dp)
-                        .height(59.dp)
-                        .align(
-                            Alignment.Bottom
-                        ),
-                    drawableResId = com.goalpanzi.mission_mate.core.designsystem.R.drawable.img_normal_trophy_gold
-                )
-            }
+            HistoryListItemInfoTrophy(
+                rank = rank,
+                boardProgressed = boardProgressed
+            )
         }
         HistoryListItemInfoDetailPeriod(
             startDate = startDate,
@@ -476,6 +469,31 @@ fun HistoryListItemInfoResultRank(
         ),
         style = MissionMateTypography.body_lg_regular,
         color = ColorGray1_FF404249
+    )
+}
+
+@Composable
+fun RowScope.HistoryListItemInfoTrophy(
+    rank: Int,
+    boardProgressed: Int,
+    modifier: Modifier = Modifier
+) {
+    val trophyDrawableResId = if(boardProgressed == 0) {
+        com.goalpanzi.mission_mate.core.designsystem.R.drawable.img_normal_trophy_question_mark
+    }else {
+        when(rank) {
+            1 -> com.goalpanzi.mission_mate.core.designsystem.R.drawable.img_normal_trophy_gold
+            2 -> com.goalpanzi.mission_mate.core.designsystem.R.drawable.img_normal_trophy_silver
+            3 -> com.goalpanzi.mission_mate.core.designsystem.R.drawable.img_normal_trophy_bronze
+            else -> return
+        }
+    }
+    StableImage(
+        modifier = modifier
+            .width(63.dp)
+            .height(59.dp)
+            .align(Alignment.Bottom),
+        drawableResId = trophyDrawableResId
     )
 }
 
