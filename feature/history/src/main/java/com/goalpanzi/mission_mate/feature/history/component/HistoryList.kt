@@ -103,7 +103,7 @@ fun HistoryList(
                     missionId = history.missionId,
                     imageUrls = history.imageUrls,
                     characters = history.missionMembers.distinctCharacters,
-                    extraNumbers = history.missionMembers.extraNumbers,
+                    membersCount = history.missionMembers.size,
                     title = history.description,
                     startDate = history.missionFormattedStartDate,
                     endDate = history.missionFormattedEndDate,
@@ -133,7 +133,7 @@ fun HistoryListItem(
     missionId: Long,
     imageUrls: List<String>,
     characters: List<CharacterType>,
-    extraNumbers: Int,
+    membersCount: Int,
     title: String,
     startDate: String,
     endDate: String,
@@ -191,7 +191,7 @@ fun HistoryListItem(
 
         HistoryListItemInfo(
             characters = characters,
-            extraNumbers = extraNumbers,
+            membersCount = membersCount,
             title = title,
             startDate = startDate,
             endDate = endDate,
@@ -237,7 +237,7 @@ fun HistoryListItemImageEmpty(
 @Composable
 fun HistoryListItemInfo(
     characters: List<CharacterType>,
-    extraNumbers: Int,
+    membersCount: Int,
     title: String,
     startDate: String,
     endDate: String,
@@ -256,7 +256,7 @@ fun HistoryListItemInfo(
             HistoryListItemInfoDetail(
                 modifier = Modifier.weight(1f),
                 characters = characters,
-                extraNumbers = extraNumbers,
+                membersCount = membersCount,
                 title = title,
                 boardProgressed = boardProgressed,
                 boardTotal = boardTotal,
@@ -278,7 +278,7 @@ fun HistoryListItemInfo(
 @Composable
 fun HistoryListItemInfoDetail(
     characters: List<CharacterType>,
-    extraNumbers: Int,
+    membersCount: Int,
     title: String,
     boardProgressed: Int,
     boardTotal: Int,
@@ -292,7 +292,7 @@ fun HistoryListItemInfoDetail(
         HistoryListItemInfoDetailMembers(
             modifier = Modifier.padding(bottom = 2.dp),
             characters = characters,
-            extraNumbers = extraNumbers
+            membersCount = membersCount
         )
         HistoryListItemInfoDetailTitle(
             title = title
@@ -308,7 +308,7 @@ fun HistoryListItemInfoDetail(
 @Composable
 fun HistoryListItemInfoDetailMembers(
     characters: List<CharacterType>,
-    extraNumbers: Int,
+    membersCount : Int,
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -319,16 +319,14 @@ fun HistoryListItemInfoDetailMembers(
         HistoryListItemInfoDetailMembersCharacterList(
             characters = characters
         )
-        if(extraNumbers > 0) {
-            Text(
-                text = stringResource(
-                    id = R.string.history_list_item_member_count,
-                    extraNumbers
-                ),
-                style = MissionMateTypography.body_xl_bold,
-                color = ColorGray1_FF404249
-            )
-        }
+        Text(
+            text = stringResource(
+                id = R.string.history_list_item_member_count,
+                membersCount
+            ),
+            style = MissionMateTypography.body_xl_bold,
+            color = ColorGray1_FF404249
+        )
     }
 }
 
@@ -529,7 +527,7 @@ private fun HistoryListItemPreview() {
                 CharacterType.DOG,
                 CharacterType.BIRD
             ),
-            extraNumbers = 3,
+            membersCount = 3,
             title = "매일 저녁 1시간 먹기",
             startDate = "2024.08.15",
             endDate = "2024.09.14",
