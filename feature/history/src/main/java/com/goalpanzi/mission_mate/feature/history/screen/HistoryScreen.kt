@@ -169,7 +169,7 @@ fun HistoryListInfo(
     ) {
         HistoryListTitle(titleRes = R.string.history_list_title_complete)
 
-        HistoryListCount(count = histories.resultList.size)
+        HistoryListCount(count = histories.totalCount)
 
         HistoryListSort(modifier = Modifier.weight(1f))
     }
