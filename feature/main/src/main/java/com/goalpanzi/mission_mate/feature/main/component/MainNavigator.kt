@@ -84,8 +84,8 @@ class MainNavigator(
         navController.navigateToBoardFinish(missionId)
     }
 
-    fun navigationToUserStory(userStory: UserStory) {
-        navController.navigateToUserStory(userStory)
+    fun navigationToUserStory(userStories: List<UserStory>) {
+        navController.navigateToUserStory(userStories)
     }
 
     fun navigationToVerificationPreview(missionId: Long, imageUrl : Uri) {

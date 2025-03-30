@@ -1,6 +1,5 @@
 package com.goalpanzi.mission_mate.feature.board.screen
 
-import android.app.Activity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
@@ -45,6 +44,7 @@ import com.goalpanzi.mission_mate.core.designsystem.theme.ColorBlack_FF000000
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorWhite_FFFFFFFF
 import com.goalpanzi.mission_mate.core.designsystem.theme.MissionMateTypography
 import com.goalpanzi.mission_mate.core.designsystem.theme.MissionmateTheme
+import com.goalpanzi.mission_mate.core.navigation.model.image.MissionMateImages
 import com.goalpanzi.mission_mate.feature.board.model.CharacterUiModel
 import java.net.URLDecoder
 import java.nio.charset.StandardCharsets
@@ -53,12 +53,16 @@ import java.time.format.DateTimeFormatter
 
 @Composable
 fun UserStoryScreen(
-    characterUiModel: CharacterUiModel = CharacterUiModel.RABBIT,
-    nickname: String = "",
-    verifiedAt: String = "",
-    imageUrl: String = "",
+    images: MissionMateImages,
     onClickClose: () -> Unit
 ) {
+    if(images.isEmpty()) return
+
+    val characterUiModel = images[0].userCharacter.let { CharacterUiModel.valueOf(it) }
+    val verifiedAt = images[0].verifiedAt
+    val imageUrl = images[0].imageUrl
+    val nickname = images[0].nickname
+
     val dateTime = LocalDateTime.parse(verifiedAt)
     val formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd")
     val statusBarPaddingValue = WindowInsets.statusBars.asPaddingValues().calculateTopPadding()
@@ -140,7 +144,6 @@ fun UserStoryScreen(
                 IconButton(
                     onClick = {
                         onClickClose()
-                        //setStatusBar(context, true)
                     },
                     modifier = Modifier.wrapContentSize()
                 ) {
@@ -160,8 +163,9 @@ fun UserStoryScreen(
 fun UserStoryScreenPreview() {
     MissionmateTheme {
         UserStoryScreen(
-            nickname = "토끼는깡총깡",
-            verifiedAt = "2024-08-08T10:15:30",
+            images = MissionMateImages(
+                emptyList()
+            ),
             onClickClose = {}
         )
     }

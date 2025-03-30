@@ -62,7 +62,7 @@ fun BoardRoute(
     onNavigateOnboarding: () -> Unit,
     onNavigateDetail: (Long) -> Unit,
     onNavigateFinish : (Long) -> Unit,
-    onClickStory: (UserStory) -> Unit,
+    onClickStory: (List<UserStory>) -> Unit,
     onPreviewImage: (Long, Uri) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: BoardViewModel = hiltViewModel()
@@ -120,7 +120,7 @@ fun BoardRoute(
         }
         launch {
             viewModel.myMissionVerification.collect {
-                onClickStory(it)
+                onClickStory(listOf(it))
             }
         }
         launch {
@@ -221,8 +221,8 @@ fun BoardRoute(
         onClickTooltip = {
             viewModel.setViewedTooltip()
         },
-        onClickStory = { story ->
-            onClickStory(story)
+        onClickStory = { story,stories ->
+            onClickStory(stories)
             if(story.isVerified && !story.isViewed) {
                 viewModel.viewVerification(story.missionVerificationId)
             }
@@ -251,7 +251,7 @@ fun BoardScreen(
     onClickFlag: () -> Unit,
     onClickAddUser: () -> Unit,
     onClickTooltip: () -> Unit,
-    onClickStory : (UserStory) -> Unit,
+    onClickStory : (UserStory, List<UserStory>) -> Unit,
     onClickMyVerificationBoardBlock : (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {

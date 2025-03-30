@@ -45,8 +45,8 @@ fun MainTabNavHost(
             onNavigateFinish = { missionId ->
                 mainNavigator.navigateToBoardFinish(missionId)
             },
-            onNavigateStory = { userStory ->
-                mainNavigator.navigationToUserStory(userStory)
+            onNavigateStory = { userStories ->
+                mainNavigator.navigationToUserStory(userStories)
             },
             onNavigateToPreview = { missionId, imageUrl ->
                 mainNavigator.navigationToVerificationPreview(missionId, imageUrl)

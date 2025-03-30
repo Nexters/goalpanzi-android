@@ -7,11 +7,13 @@ import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import com.goalpanzi.mission_mate.core.navigation.model.RouteModel.MainTabRoute.MissionRouteModel
-import com.goalpanzi.mission_mate.core.ui.util.slideInFromEnd
+import com.goalpanzi.mission_mate.core.navigation.model.image.MissionMateImage
+import com.goalpanzi.mission_mate.core.navigation.model.image.MissionMateImages
+import com.goalpanzi.mission_mate.core.navigation.model.image.MissionMateImagesModelType
 import com.goalpanzi.mission_mate.core.ui.util.slideInFromBottom
+import com.goalpanzi.mission_mate.core.ui.util.slideInFromEnd
 import com.goalpanzi.mission_mate.core.ui.util.slideOutToBottom
 import com.goalpanzi.mission_mate.core.ui.util.slideOutToEnd
-import com.goalpanzi.mission_mate.feature.board.model.CharacterUiModel
 import com.goalpanzi.mission_mate.feature.board.model.UserStory
 import com.goalpanzi.mission_mate.feature.board.screen.BoardFinishRoute
 import com.goalpanzi.mission_mate.feature.board.screen.BoardMissionDetailRoute
@@ -20,6 +22,7 @@ import com.goalpanzi.mission_mate.feature.board.screen.UserStoryScreen
 import com.goalpanzi.mission_mate.feature.board.screen.VerificationPreviewRoute
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
+import kotlin.reflect.typeOf
 
 fun NavController.navigateToBoard(
     missionId: Long,
@@ -36,7 +39,7 @@ fun NavGraphBuilder.boardNavGraph(
     onNavigateOnboarding: () -> Unit,
     onNavigateDetail : (Long) -> Unit,
     onNavigateFinish : (Long) -> Unit,
-    onNavigateStory: (UserStory) -> Unit,
+    onNavigateStory: (List<UserStory>) -> Unit,
     onNavigateToPreview: (Long, Uri) -> Unit
 ) {
     composable<MissionRouteModel.Board> { navBackStackEntry ->
@@ -92,16 +95,21 @@ fun NavGraphBuilder.boardFinishNavGraph(
 }
 
 fun NavController.navigateToUserStory(
-    userStory: UserStory
-) = with(userStory) {
-    val encodedUrl = URLEncoder.encode(imageUrl, StandardCharsets.UTF_8.toString())
+    userStories: List<UserStory>
+) = with(userStories) {
     this@navigateToUserStory
         .navigate(
             MissionRouteModel.UserStory(
-                userCharacter = characterUiModelType.name.uppercase(),
-                nickname = nickname,
-                verifiedAt = verifiedAt,
-                imageUrl = encodedUrl
+                images = MissionMateImages(
+                    userStories.map {
+                        MissionMateImage(
+                            imageUrl = URLEncoder.encode(it.imageUrl, StandardCharsets.UTF_8.toString()),
+                            userCharacter = it.characterUiModelType.name.uppercase(),
+                            nickname = it.nickname,
+                            verifiedAt = it.verifiedAt
+                        )
+                    }
+                )
             )
         )
 }
@@ -115,15 +123,12 @@ fun NavGraphBuilder.userStoryNavGraph(
         },
         exitTransition = {
             slideOutToBottom()
-        }
+        },
+        typeMap = mapOf(typeOf<MissionMateImages>() to MissionMateImagesModelType)
     ) { backStackEntry ->
         backStackEntry.toRoute<MissionRouteModel.UserStory>().run {
-            val characterUiModel = userCharacter.let { CharacterUiModel.valueOf(it) }
             UserStoryScreen(
-                characterUiModel = characterUiModel,
-                nickname = nickname,
-                verifiedAt = verifiedAt,
-                imageUrl = imageUrl,
+                images = images,
                 onClickClose = onClickClose
             )
         }

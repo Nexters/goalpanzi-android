@@ -1,5 +1,6 @@
 package com.goalpanzi.mission_mate.core.navigation.model
 
+import com.goalpanzi.mission_mate.core.navigation.model.image.MissionMateImages
 import kotlinx.serialization.Serializable
 
 sealed interface RouteModel {
@@ -46,10 +47,7 @@ sealed interface RouteModel {
 
             @Serializable
             data class UserStory(
-                val userCharacter : String,
-                val nickname : String,
-                val verifiedAt : String,
-                val imageUrl : String
+                val images : MissionMateImages,
             ) : MissionRouteModel
 
             @Serializable
