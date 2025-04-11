@@ -3,7 +3,14 @@ package com.goalpanzi.mission_mate.feature.onboarding.model
 class InvitationCode private constructor(
     private val symbols: List<InvitationCodeSymbol>
 ) {
-    fun getCode(): String = symbols.joinToString(EMPTY_VALUE)
+    fun getCode(): String {
+        return symbols.joinToString(EMPTY_VALUE) {
+            when(it) {
+                is InvitationCodeSymbol.Code -> it.symbol.toString()
+                InvitationCodeSymbol.Blank -> EMPTY_VALUE
+            }
+        }
+    }
 
     fun valueAt(index: Int): String {
         return when (val target = symbols[index]) {
