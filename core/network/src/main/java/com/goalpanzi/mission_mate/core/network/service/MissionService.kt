@@ -7,6 +7,7 @@ import com.goalpanzi.mission_mate.core.network.model.response.MissionDetailRespo
 import com.goalpanzi.mission_mate.core.network.model.response.MissionRankResponse
 import com.goalpanzi.mission_mate.core.network.model.response.MissionVerificationResponse
 import com.goalpanzi.mission_mate.core.network.model.response.MissionVerificationsResponse
+import com.goalpanzi.mission_mate.core.network.model.response.VerificationInfoByBlockNumberResponse
 import okhttp3.MultipartBody
 import retrofit2.Response
 import retrofit2.http.Body
@@ -61,7 +62,7 @@ interface MissionService {
     suspend fun getMyMissionVerification(
         @Path("missionId") missionId: Long,
         @Path("number") number: Int
-    ) : Response<MissionVerificationResponse>
+    ) : Response<VerificationInfoByBlockNumberResponse>
 
     @POST("/api/mission-members/complete")
     suspend fun completeMission(

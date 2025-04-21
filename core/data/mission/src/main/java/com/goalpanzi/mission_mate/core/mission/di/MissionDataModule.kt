@@ -13,5 +13,4 @@ internal abstract class MissionDataModule {
 
     @Binds
     abstract fun bindMissionRepository(impl: MissionRepositoryImpl): MissionRepository
-
 }

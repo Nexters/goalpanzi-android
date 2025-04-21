@@ -6,6 +6,7 @@ import com.goalpanzi.mission_mate.core.domain.mission.model.MissionDetail
 import com.goalpanzi.mission_mate.core.domain.mission.model.MissionRank
 import com.goalpanzi.mission_mate.core.domain.mission.model.MissionVerification
 import com.goalpanzi.mission_mate.core.domain.mission.model.MissionVerifications
+import com.goalpanzi.mission_mate.core.domain.mission.model.VerificationInfoByBlockNumber
 import kotlinx.coroutines.flow.Flow
 import java.io.File
 
@@ -22,7 +23,7 @@ interface MissionRepository  {
 
     suspend fun verifyMission(missionId: Long, image: File) : DomainResult<Unit>
 
-    suspend fun getMyMissionVerification(missionId: Long, number : Int) : DomainResult<MissionVerification>
+    suspend fun getMyMissionVerification(missionId: Long, number : Int) : DomainResult<VerificationInfoByBlockNumber>
 
     suspend fun completeMission(missionId : Long) : DomainResult<Unit>
 

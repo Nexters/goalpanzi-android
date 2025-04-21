@@ -1,4 +1,4 @@
-package com.goalpanzi.mission_mate.feature.board.screen
+package com.goalpanzi.mission_mate.feature.board.verification.screen
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel

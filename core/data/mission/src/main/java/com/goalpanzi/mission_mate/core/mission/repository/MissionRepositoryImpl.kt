@@ -10,6 +10,7 @@ import com.goalpanzi.mission_mate.core.domain.mission.model.MissionDetail
 import com.goalpanzi.mission_mate.core.domain.mission.model.MissionRank
 import com.goalpanzi.mission_mate.core.domain.mission.model.MissionVerification
 import com.goalpanzi.mission_mate.core.domain.mission.model.MissionVerifications
+import com.goalpanzi.mission_mate.core.domain.mission.model.VerificationInfoByBlockNumber
 import com.goalpanzi.mission_mate.core.domain.mission.repository.MissionRepository
 import com.goalpanzi.mission_mate.core.network.model.request.CompleteMissionRequest
 import com.goalpanzi.mission_mate.core.network.model.request.MissionVerificationsViewRequest
@@ -73,7 +74,7 @@ class MissionRepositoryImpl @Inject constructor(
     override suspend fun getMyMissionVerification(
         missionId: Long,
         number: Int
-    ): DomainResult<MissionVerification> = handleResult {
+    ): DomainResult<VerificationInfoByBlockNumber> = handleResult {
         missionService.getMyMissionVerification(missionId, number)
     }.convert {
         it.toModel()

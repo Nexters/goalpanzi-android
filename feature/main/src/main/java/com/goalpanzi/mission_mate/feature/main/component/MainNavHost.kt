@@ -26,6 +26,7 @@ import com.goalpanzi.mission_mate.feature.board.verificationPreviewNavGraph
 import com.goalpanzi.mission_mate.feature.login.loginNavGraph
 import com.goalpanzi.mission_mate.feature.main.ext.isDarkStatusBarScreen
 import com.goalpanzi.mission_mate.core.navigation.model.MainTabDataModelType
+import com.goalpanzi.mission_mate.feature.board.myVerificationHistoryNavGraph
 import com.goalpanzi.mission_mate.feature.onboarding.boardSetupNavGraph
 import com.goalpanzi.mission_mate.feature.onboarding.boardSetupSuccessNavGraph
 import com.goalpanzi.mission_mate.feature.onboarding.invitationCodeNavGraph
@@ -124,6 +125,11 @@ internal fun MainNavHost(
                     navigator.popBackStack()
                 },
                 onUploadSuccess = {
+                    navigator.popBackStack()
+                }
+            )
+            myVerificationHistoryNavGraph(
+                onClickClose = {
                     navigator.popBackStack()
                 }
             )

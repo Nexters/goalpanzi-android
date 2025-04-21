@@ -47,15 +47,19 @@ sealed interface RouteModel {
             @Serializable
             data class UserStory(
                 val userCharacter : String,
-                val nickname : String,
-                val verifiedAt : String,
-                val imageUrl : String
             ) : MissionRouteModel
 
             @Serializable
             data class VerificationPreview(
                 val missionId : Long,
                 val imageUrl : String
+            ) : MissionRouteModel
+
+            @Serializable
+            data class MyVerificationHistory(
+                val missionId : Long,
+                val number: Int,
+                val count: Int,
             ) : MissionRouteModel
         }
 

@@ -33,26 +33,27 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.goalpanzi.mission_mate.core.designsystem.component.StableImage
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorWhite_FFFFFFFF
 import com.goalpanzi.mission_mate.core.domain.mission.model.BoardReward
 import com.goalpanzi.mission_mate.feature.board.R
 import com.goalpanzi.mission_mate.feature.board.component.Board
 import com.goalpanzi.mission_mate.feature.board.component.BoardBottomView
 import com.goalpanzi.mission_mate.feature.board.component.BoardTopView
-import com.goalpanzi.mission_mate.feature.board.component.dialog.InvitationCodeDialog
 import com.goalpanzi.mission_mate.feature.board.component.dialog.BoardEventDialog
 import com.goalpanzi.mission_mate.feature.board.component.dialog.DeleteMissionDialog
+import com.goalpanzi.mission_mate.feature.board.component.dialog.InvalidMissionErrorDialog
+import com.goalpanzi.mission_mate.feature.board.component.dialog.InvitationCodeDialog
 import com.goalpanzi.mission_mate.feature.board.model.BoardPiece
+import com.goalpanzi.mission_mate.feature.board.model.MissionError
 import com.goalpanzi.mission_mate.feature.board.model.MissionState
+import com.goalpanzi.mission_mate.feature.board.verification.model.MyVerificationExtra
 import com.goalpanzi.mission_mate.feature.board.model.UserStory
 import com.goalpanzi.mission_mate.feature.board.model.toCharacterUiModel
 import com.goalpanzi.mission_mate.feature.board.model.toUserStory
 import com.goalpanzi.mission_mate.feature.board.model.uimodel.MissionBoardUiModel
 import com.goalpanzi.mission_mate.feature.board.model.uimodel.MissionUiModel
 import com.goalpanzi.mission_mate.feature.board.model.uimodel.MissionVerificationUiModel
-import com.goalpanzi.mission_mate.core.designsystem.component.StableImage
-import com.goalpanzi.mission_mate.feature.board.component.dialog.InvalidMissionErrorDialog
-import com.goalpanzi.mission_mate.feature.board.model.MissionError
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -63,6 +64,7 @@ fun BoardRoute(
     onNavigateDetail: (Long) -> Unit,
     onNavigateFinish : (Long) -> Unit,
     onClickStory: (UserStory) -> Unit,
+    onNavigateMyVerificationHistory: (MyVerificationExtra) -> Unit,
     onPreviewImage: (Long, Uri) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: BoardViewModel = hiltViewModel()
@@ -120,7 +122,7 @@ fun BoardRoute(
         }
         launch {
             viewModel.myMissionVerification.collect {
-                onClickStory(it)
+                onNavigateMyVerificationHistory(it)
             }
         }
         launch {
@@ -228,7 +230,7 @@ fun BoardRoute(
             }
         },
         onClickMyVerificationBoardBlock = {
-            viewModel.getMyMissionVerification(it)
+            viewModel.navigateToVerificationHistory(it)
         }
     )
 
