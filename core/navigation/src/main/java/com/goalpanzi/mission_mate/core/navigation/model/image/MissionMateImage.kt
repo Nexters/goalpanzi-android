@@ -4,11 +4,12 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Parcelable
 import androidx.navigation.NavType
-import com.goalpanzi.mission_mate.core.navigation.model.MainTabDataModel
 import kotlinx.parcelize.Parcelize
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 @Serializable
 @Parcelize
@@ -23,7 +24,14 @@ class MissionMateImage(
     val nickname : String,
     val verifiedAt : String,
     val imageUrl : String
-) : Parcelable
+) : Parcelable {
+
+    fun formattedVerifiedAt() : String {
+        val dateTime = LocalDateTime.parse(verifiedAt)
+        val formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd")
+        return dateTime.format(formatter)
+    }
+}
 
 val MissionMateImagesModelType = object : NavType<MissionMateImages>(
     isNullableAllowed = false

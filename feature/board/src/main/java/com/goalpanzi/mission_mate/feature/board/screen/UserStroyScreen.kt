@@ -17,6 +17,8 @@ import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -48,52 +50,50 @@ import com.goalpanzi.mission_mate.core.navigation.model.image.MissionMateImages
 import com.goalpanzi.mission_mate.feature.board.model.CharacterUiModel
 import java.net.URLDecoder
 import java.nio.charset.StandardCharsets
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 
 @Composable
 fun UserStoryScreen(
     images: MissionMateImages,
     onClickClose: () -> Unit
 ) {
-    if(images.isEmpty()) return
+    if (images.isEmpty()) return
 
-    val characterUiModel = images[0].userCharacter.let { CharacterUiModel.valueOf(it) }
-    val verifiedAt = images[0].verifiedAt
-    val imageUrl = images[0].imageUrl
-    val nickname = images[0].nickname
-
-    val dateTime = LocalDateTime.parse(verifiedAt)
-    val formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd")
-    val statusBarPaddingValue = WindowInsets.statusBars.asPaddingValues().calculateTopPadding()
+    val verifiedImages = images.filter { it.verifiedAt.isNotEmpty() }
+    val pagerState = rememberPagerState { verifiedImages.size }
+    val image = verifiedImages[pagerState.currentPage ]
     var isVisibleSpacer by remember { mutableStateOf(true) }
+    val statusBarPaddingValue = WindowInsets.statusBars.asPaddingValues().calculateTopPadding()
 
     Box(
         modifier = Modifier
             .fillMaxSize()
             .navigationBarsPadding()
     ) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(ColorBlack_FF000000)
-                .statusBarsPadding()
-        ) {
-            AsyncImage(
-                model = ImageRequest.Builder(LocalContext.current)
-                    .data(URLDecoder.decode(imageUrl, StandardCharsets.UTF_8.toString()))
-                    .build(),
-                contentDescription = null,
+        HorizontalPager(
+            pagerState
+        ) { page ->
+            val imageUrl = verifiedImages[page].imageUrl
+            Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .clickableWithoutRipple {
-                        isVisibleSpacer = !isVisibleSpacer
-                    },
-                contentScale = ContentScale.Fit,
-                filterQuality = FilterQuality.None
-            )
+                    .background(ColorBlack_FF000000)
+                    .statusBarsPadding()
+            ) {
+                AsyncImage(
+                    model = ImageRequest.Builder(LocalContext.current)
+                        .data(URLDecoder.decode(imageUrl, StandardCharsets.UTF_8.toString()))
+                        .build(),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .clickableWithoutRipple {
+                            isVisibleSpacer = !isVisibleSpacer
+                        },
+                    contentScale = ContentScale.Fit,
+                    filterQuality = FilterQuality.None
+                )
+            }
         }
-
         if (isVisibleSpacer) {
             Spacer(
                 modifier = Modifier
@@ -101,59 +101,75 @@ fun UserStoryScreen(
                     .height(statusBarPaddingValue + 80.dp)
                     .background(ColorBlack_FF000000.copy(alpha = 0.7f))
             )
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .statusBarsPadding()
-                    .height(93.dp)
-                    .padding(horizontal = 24.dp, vertical = 14.dp)
-            ) {
-                StableImage(
-                    modifier = Modifier
-                        .padding(top = 6.dp)
-                        .size(28.dp)
-                        .border(1.dp, ColorWhite_FFFFFFFF, CircleShape)
-                        .paint(
-                            painter = painterResource(characterUiModel.backgroundId),
-                            contentScale = ContentScale.FillWidth
-                        )
-                        .padding(5.dp),
-                    drawableResId = characterUiModel.imageId,
-                    description = ""
-                )
-                Text(
-                    text = nickname,
-                    style = MissionMateTypography.body_xl_bold,
-                    color = ColorWhite_FFFFFFFF,
-                    modifier = Modifier
-                        .padding(start = 8.dp)
-                        .wrapContentWidth()
-                        .padding(top = 6.dp)
-                )
+            StoryImageDetail(
+                characterUiModel = image.userCharacter.let { CharacterUiModel.valueOf(it) },
+                nickname = image.nickname,
+                dateTime = image.formattedVerifiedAt(),
+                onClickClose = onClickClose
+            )
+        }
+    }
+}
 
-                Text(
-                    text = dateTime.format(formatter),
-                    style = MissionMateTypography.body_xl_regular,
-                    color = ColorWhite_FFFFFFFF,
-                    modifier = Modifier
-                        .padding(start = 8.dp)
-                        .weight(1f)
-                        .padding(top = 6.dp)
+@Composable
+fun StoryImageDetail(
+    characterUiModel: CharacterUiModel,
+    nickname: String,
+    dateTime: String,
+    onClickClose: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .statusBarsPadding()
+            .height(93.dp)
+            .padding(horizontal = 24.dp, vertical = 14.dp)
+    ) {
+        StableImage(
+            modifier = Modifier
+                .padding(top = 6.dp)
+                .size(28.dp)
+                .border(1.dp, ColorWhite_FFFFFFFF, CircleShape)
+                .paint(
+                    painter = painterResource(characterUiModel.backgroundId),
+                    contentScale = ContentScale.FillWidth
                 )
+                .padding(5.dp),
+            drawableResId = characterUiModel.imageId,
+            description = ""
+        )
+        Text(
+            text = nickname,
+            style = MissionMateTypography.body_xl_bold,
+            color = ColorWhite_FFFFFFFF,
+            modifier = Modifier
+                .padding(start = 8.dp)
+                .wrapContentWidth()
+                .padding(top = 6.dp)
+        )
 
-                IconButton(
-                    onClick = {
-                        onClickClose()
-                    },
-                    modifier = Modifier.wrapContentSize()
-                ) {
-                    Icon(
-                        imageVector = ImageVector.vectorResource(id = com.goalpanzi.mission_mate.core.designsystem.R.drawable.ic_close),
-                        contentDescription = "",
-                        tint = ColorWhite_FFFFFFFF
-                    )
-                }
-            }
+        Text(
+            text = dateTime,
+            style = MissionMateTypography.body_xl_regular,
+            color = ColorWhite_FFFFFFFF,
+            modifier = Modifier
+                .padding(start = 8.dp)
+                .weight(1f)
+                .padding(top = 6.dp)
+        )
+
+        IconButton(
+            onClick = {
+                onClickClose()
+            },
+            modifier = Modifier.wrapContentSize()
+        ) {
+            Icon(
+                imageVector = ImageVector.vectorResource(id = com.goalpanzi.mission_mate.core.designsystem.R.drawable.ic_close),
+                contentDescription = "",
+                tint = ColorWhite_FFFFFFFF
+            )
         }
     }
 }
