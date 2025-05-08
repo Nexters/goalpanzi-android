@@ -11,7 +11,6 @@ import com.goalpanzi.mission_mate.core.domain.mission.usecase.DeleteMissionUseCa
 import com.goalpanzi.mission_mate.core.domain.mission.usecase.GetMissionBoardsUseCase
 import com.goalpanzi.mission_mate.core.domain.mission.usecase.GetMissionUseCase
 import com.goalpanzi.mission_mate.core.domain.mission.usecase.GetMissionVerificationsUseCase
-import com.goalpanzi.mission_mate.core.domain.mission.usecase.GetMyMissionVerificationUseCase
 import com.goalpanzi.mission_mate.core.domain.mission.usecase.ViewVerificationUseCase
 import com.goalpanzi.mission_mate.core.domain.onboarding.usecase.GetJoinedMissionsUseCase
 import com.goalpanzi.mission_mate.core.domain.setting.usecase.GetViewedTooltipUseCase
@@ -23,14 +22,13 @@ import com.goalpanzi.mission_mate.feature.board.model.BoardPiece
 import com.goalpanzi.mission_mate.feature.board.model.MissionError
 import com.goalpanzi.mission_mate.feature.board.model.MissionState
 import com.goalpanzi.mission_mate.feature.board.model.MissionState.Companion.getMissionState
-import com.goalpanzi.mission_mate.feature.board.model.UserStory
 import com.goalpanzi.mission_mate.feature.board.model.toBoardPieces
-import com.goalpanzi.mission_mate.feature.board.model.toCharacterUiModel
 import com.goalpanzi.mission_mate.feature.board.model.toUiModel
 import com.goalpanzi.mission_mate.feature.board.model.uimodel.MissionBoardUiModel
 import com.goalpanzi.mission_mate.feature.board.model.uimodel.MissionUiModel
 import com.goalpanzi.mission_mate.feature.board.model.uimodel.MissionVerificationUiModel
 import com.goalpanzi.mission_mate.feature.board.util.PieceManager
+import com.goalpanzi.mission_mate.feature.board.verification.model.MyVerificationExtra
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -64,7 +62,6 @@ class BoardViewModel @Inject constructor(
     private val profileUseCase: ProfileUseCase,
     private val setViewedTooltipUseCase: SetViewedTooltipUseCase,
     private val getJoinedMissionsUseCase: GetJoinedMissionsUseCase,
-    private val getMyMissionVerificationUseCase: GetMyMissionVerificationUseCase,
     private val viewVerificationUseCase: ViewVerificationUseCase
 ) : ViewModel() {
 
@@ -79,8 +76,9 @@ class BoardViewModel @Inject constructor(
     private val _missionError = MutableStateFlow<MissionError?>(null)
     val missionError: StateFlow<MissionError?> = _missionError.asStateFlow()
 
-    private val _myMissionVerification = MutableSharedFlow<UserStory>()
-    val myMissionVerification: SharedFlow<UserStory> = _myMissionVerification.asSharedFlow()
+    private val _myMissionVerification = MutableSharedFlow<MyVerificationExtra>()
+    val myMissionVerification: SharedFlow<MyVerificationExtra> =
+        _myMissionVerification.asSharedFlow()
 
     private val _deleteMissionResultEvent = MutableSharedFlow<Boolean>()
     val deleteMissionResultEvent: SharedFlow<Boolean> = _deleteMissionResultEvent.asSharedFlow()
@@ -255,36 +253,18 @@ class BoardViewModel @Inject constructor(
         }
     }
 
-    fun getMyMissionVerification(
-        number: Int
-    ) {
+    fun navigateToVerificationHistory(number: Int) {
         viewModelScope.launch {
-            getMyMissionVerificationUseCase(
-                missionId,
-                number
-            ).catch {
-
-            }.collect {
-                when (it) {
-                    is DomainResult.Success -> {
-                        _myMissionVerification.emit(
-                            UserStory(
-                                characterUiModelType = it.data.characterType.toCharacterUiModel(),
-                                imageUrl = it.data.imageUrl,
-                                isVerified = true,
-                                nickname = it.data.nickname,
-                                verifiedAt = it.data.verifiedAt,
-                                viewedAt = it.data.viewedAt,
-                                missionVerificationId = it.data.missionVerificationId
-                            )
-                        )
-                    }
-
-                    else -> {
-
-                    }
-                }
-            }
+            _myMissionVerification.emit(
+                MyVerificationExtra(
+                    missionId = missionId,
+                    number = number,
+                    count = (missionBoardUiModel.value as? MissionBoardUiModel.Success)
+                        ?.missionBoards
+                        ?.passedCountByMe
+                        ?: 0
+                )
+            )
         }
     }
 
@@ -301,8 +281,8 @@ class BoardViewModel @Inject constructor(
         _missionError.value = null
     }
 
-    private suspend fun handleMissionError(isSameAsLastMission : Boolean){
-        if(isSameAsLastMission) _missionError.emit(MissionError.INVALID_MISSION)
+    private suspend fun handleMissionError(isSameAsLastMission: Boolean) {
+        if (isSameAsLastMission) _missionError.emit(MissionError.INVALID_MISSION)
         else _missionError.emit(MissionError.NOT_EXIST)
     }
 

@@ -1,5 +1,4 @@
 import com.goalpanzi.mission_mate.convention.configureHiltAndroid
-import com.goalpanzi.mission_mate.convention.libs
 
 plugins {
     id("missionmate.android.library")

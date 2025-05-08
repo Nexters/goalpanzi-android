@@ -8,9 +8,11 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.goalpanzi.mission_mate.core.navigation.model.MainTabDataModel
 import com.goalpanzi.mission_mate.core.navigation.model.RouteModel
+import com.goalpanzi.mission_mate.feature.board.verification.model.MyVerificationExtra
 import com.goalpanzi.mission_mate.feature.board.model.UserStory
 import com.goalpanzi.mission_mate.feature.board.navigateToBoardDetail
 import com.goalpanzi.mission_mate.feature.board.navigateToBoardFinish
+import com.goalpanzi.mission_mate.feature.board.navigateToMyVerificationHistory
 import com.goalpanzi.mission_mate.feature.board.navigateToUserStory
 import com.goalpanzi.mission_mate.feature.board.navigateToVerificationPreview
 import com.goalpanzi.mission_mate.feature.login.navigateToLogin
@@ -85,11 +87,15 @@ class MainNavigator(
     }
 
     fun navigationToUserStory(userStory: UserStory) {
-        navController.navigateToUserStory(userStory)
+        navController.navigateToUserStory(userStory.characterUiModelType)
     }
 
     fun navigationToVerificationPreview(missionId: Long, imageUrl : Uri) {
         navController.navigateToVerificationPreview(missionId, imageUrl)
+    }
+
+    fun navigationToMyVerification(extra: MyVerificationExtra) {
+        navController.navigateToMyVerificationHistory(extra)
     }
 }
 

@@ -50,6 +50,9 @@ fun MainTabNavHost(
             },
             onNavigateToPreview = { missionId, imageUrl ->
                 mainNavigator.navigationToVerificationPreview(missionId, imageUrl)
+            },
+            onNavigateMyVerificationHistory = { extra ->
+                mainNavigator.navigationToMyVerification(extra)
             }
         )
         historyNavGraph()
