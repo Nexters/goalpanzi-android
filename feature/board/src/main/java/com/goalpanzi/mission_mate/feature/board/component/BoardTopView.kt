@@ -41,7 +41,7 @@ fun BoardTopView(
     onClickFlag: () -> Unit,
     onClickAddUser: () -> Unit,
     onClickTooltip : () -> Unit,
-    onClickStory: (UserStory) -> Unit,
+    onClickStory: (UserStory, List<UserStory>) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Box(
@@ -77,7 +77,9 @@ fun BoardTopView(
             modifier = Modifier.padding(top = 56.dp),
             userList = userList,
             missionState = missionState,
-            onClickStory = onClickStory,
+            onClickStory = {
+                onClickStory(it, userList)
+            },
         )
         if(!viewedTooltip){
             if (isAddingUserEnabled) {
