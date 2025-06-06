@@ -16,9 +16,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.requiredWidthIn
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
@@ -45,15 +47,18 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.max
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.repeatOnLifecycle
 import coil.compose.AsyncImage
 import com.goalpanzi.mission_mate.core.designsystem.component.StableImage
+import com.goalpanzi.mission_mate.core.designsystem.theme.ColorDisabled_FFB3B3B3
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorGray1_FF404249
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorGray3_FF727484
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorGray4_FFE5E5E5
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorGray5_FFF5F6F9
+import com.goalpanzi.mission_mate.core.designsystem.theme.ColorLightGreen_FFC2E792
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorOrange_FFFF5732
 import com.goalpanzi.mission_mate.core.designsystem.theme.ColorWhite_FFFFFFFF
 import com.goalpanzi.mission_mate.core.designsystem.theme.MissionMateTypography
@@ -186,7 +191,9 @@ fun HistoryListItem(
                 imageUrls = imageUrls
             )
         } else {
-            HistoryListItemImageEmpty()
+            HistoryListItemImageEmpty(
+                modifier = Modifier.fillMaxWidth().aspectRatio(1f)
+            )
         }
 
         HistoryListItemInfo(
@@ -228,10 +235,16 @@ fun HistoryListItemImage(
 fun HistoryListItemImageEmpty(
     modifier: Modifier = Modifier
 ) {
-    StableImage(
-        modifier = modifier,
-        drawableResId = R.drawable.img_history_empty
-    )
+    Box(
+        modifier = modifier.background(color = ColorDisabled_FFB3B3B3),
+        contentAlignment = Alignment.Center
+    ){
+        StableImage(
+            modifier = Modifier.fillMaxWidth(171f / 390f).widthIn(max = 300.dp),
+            drawableResId = R.drawable.img_history_empty
+        )
+    }
+
 }
 
 @Composable
