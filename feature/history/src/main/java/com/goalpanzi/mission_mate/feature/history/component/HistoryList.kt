@@ -176,9 +176,6 @@ fun HistoryListItem(
             .background(
                 color = ColorWhite_FFFFFFFF
             )
-            .clickable {
-                onClick()
-            }
     ) {
         if(imageUrls.isNotEmpty()){
             HistoryListItemImage(
