@@ -1,5 +1,6 @@
 /build
 .kotlin/
+/.idea
 
 # Created by https://www.gitignore.io/api/kotlin,androidstudio
 # Edit at https://www.gitignore.io/?templates=kotlin,androidstudio
