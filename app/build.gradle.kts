@@ -11,9 +11,9 @@ android {
 
     defaultConfig {
         applicationId = "com.goalpanzi.mission_mate"
-        targetSdk = 34
-        versionCode = 7
-        versionName = "1.1.0"
+        targetSdk = 36
+        versionCode = 9
+        versionName = "1.2.1"
 
         vectorDrawables {
             useSupportLibrary = true
