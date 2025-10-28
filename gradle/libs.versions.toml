@@ -1,7 +1,7 @@
 [versions]
 ## Android gradle plugin
 accompanistPermissions = "0.37.0"
-agp = "8.4.2"
+agp = "8.13.0"
 
 ## Kotlin
 kotlin = "2.0.0"
