@@ -60,12 +60,10 @@ import kotlinx.coroutines.launch
 @Composable
 fun BoardRoute(
     onNavigateOnboarding: () -> Unit,
-    onNavigateDetail: () -> Unit,
+    onNavigateDetail: (Long) -> Unit,
     onNavigateFinish : (Long) -> Unit,
-    onClickSetting: () -> Unit,
-    onClickStory: (UserStory) -> Unit,
+    onClickStory: (List<UserStory>) -> Unit,
     onPreviewImage: (Long, Uri) -> Unit,
-    isUploadSuccess: Boolean,
     modifier: Modifier = Modifier,
     viewModel: BoardViewModel = hiltViewModel()
 ) {
@@ -122,7 +120,7 @@ fun BoardRoute(
         }
         launch {
             viewModel.myMissionVerification.collect {
-                onClickStory(it)
+                onClickStory(listOf(it))
             }
         }
         launch {
@@ -207,10 +205,9 @@ fun BoardRoute(
         missionState = missionState,
         boardPieces = boardPieces,
         isHost = isHost,
-        onClickSetting = onClickSetting,
         onClickFlag = {
             viewModel.setViewedTooltip()
-            onNavigateDetail()
+            onNavigateDetail(viewModel.missionId)
         },
         onClickAddUser = {
             viewModel.setViewedTooltip()
@@ -224,8 +221,8 @@ fun BoardRoute(
         onClickTooltip = {
             viewModel.setViewedTooltip()
         },
-        onClickStory = { story ->
-            onClickStory(story)
+        onClickStory = { story,stories ->
+            onClickStory(stories)
             if(story.isVerified && !story.isViewed) {
                 viewModel.viewVerification(story.missionVerificationId)
             }
@@ -250,12 +247,11 @@ fun BoardScreen(
     missionState: MissionState,
     boardPieces: List<BoardPiece>,
     isHost: Boolean,
-    onClickSetting: () -> Unit,
     onClickVerification: () -> Unit,
     onClickFlag: () -> Unit,
     onClickAddUser: () -> Unit,
     onClickTooltip: () -> Unit,
-    onClickStory : (UserStory) -> Unit,
+    onClickStory : (UserStory, List<UserStory>) -> Unit,
     onClickMyVerificationBoardBlock : (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -298,7 +294,6 @@ fun BoardScreen(
                 missionState = missionState,
                 onClickFlag = onClickFlag,
                 onClickAddUser = onClickAddUser,
-                onClickSetting = onClickSetting,
                 onClickTooltip = onClickTooltip,
                 onClickStory = onClickStory
             )
@@ -340,7 +335,7 @@ fun BoardScreen(
                     )
                 }
 
-            } else {
+            } else if(!scrollState.isScrollInProgress || !scrollState.canScrollForward) {
                 BoardBottomView(
                     modifier = Modifier.align(Alignment.BottomCenter),
                     missionState = missionState,

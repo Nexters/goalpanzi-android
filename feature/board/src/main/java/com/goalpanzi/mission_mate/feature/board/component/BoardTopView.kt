@@ -28,7 +28,7 @@ import com.goalpanzi.mission_mate.feature.board.R
 import com.goalpanzi.mission_mate.feature.board.model.MissionState
 import com.goalpanzi.mission_mate.feature.board.model.UserStory
 import com.goalpanzi.mission_mate.core.designsystem.component.StableImage
-
+import com.goalpanzi.mission_mate.core.designsystem.ext.clickableWithoutRipple
 
 @SuppressLint("UnrememberedMutableInteractionSource")
 @Composable
@@ -40,9 +40,8 @@ fun BoardTopView(
     missionState : MissionState,
     onClickFlag: () -> Unit,
     onClickAddUser: () -> Unit,
-    onClickSetting: () -> Unit,
     onClickTooltip : () -> Unit,
-    onClickStory: (UserStory) -> Unit,
+    onClickStory: (UserStory, List<UserStory>) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Box(
@@ -70,7 +69,6 @@ fun BoardTopView(
                 BoardTopViewRightActionButtons(
                     isAddingUserEnabled = isAddingUserEnabled,
                     onClickAddUser = onClickAddUser,
-                    onClickSetting = onClickSetting
                 )
             },
             containerColor = Color.Transparent
@@ -79,20 +77,17 @@ fun BoardTopView(
             modifier = Modifier.padding(top = 56.dp),
             userList = userList,
             missionState = missionState,
-            onClickStory = onClickStory,
+            onClickStory = {
+                onClickStory(it, userList)
+            },
         )
         if(!viewedTooltip){
             if (isAddingUserEnabled) {
-                // datastore 조건 추가
                 StableImage(
                     modifier = Modifier
                         .align(Alignment.TopEnd)
-                        .clickable(
-                            interactionSource = MutableInteractionSource(),
-                            indication = null,
-                            onClick = onClickTooltip
-                        )
-                        .padding(end = 43.dp,top = 56.dp)
+                        .clickableWithoutRipple { onClickTooltip() }
+                        .padding(top = 48.dp)
                         .width(161.dp),
                     drawableResId = R.drawable.img_tooltip_mission_invitation_code,
                     contentScale = ContentScale.Crop
@@ -101,20 +96,16 @@ fun BoardTopView(
                 StableImage(
                     modifier = Modifier
                         .align(Alignment.TopStart)
-                        .clickable(
-                            interactionSource = MutableInteractionSource(),
-                            indication = null,
-                            onClick = onClickTooltip
-                        )
-                        .padding(start = 8.dp, top = 56.dp)
+                        .clickableWithoutRipple {
+                            onClickTooltip()
+                        }
+                        .padding(start = 8.dp, top = 48.dp)
                         .width(161.dp),
                     drawableResId = R.drawable.img_tooltip_mission_detail,
                     contentScale = ContentScale.Crop
                 )
             }
         }
-
-
     }
 }
 
@@ -122,7 +113,6 @@ fun BoardTopView(
 fun BoardTopViewRightActionButtons(
     isAddingUserEnabled: Boolean,
     onClickAddUser: () -> Unit,
-    onClickSetting: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -140,16 +130,6 @@ fun BoardTopViewRightActionButtons(
                     tint = ColorGray1_FF404249
                 )
             }
-        }
-        IconButton(
-            onClick = onClickSetting,
-            modifier = Modifier.wrapContentSize()
-        ) {
-            Icon(
-                imageVector = ImageVector.vectorResource(id = com.goalpanzi.mission_mate.core.designsystem.R.drawable.ic_setting),
-                contentDescription = "",
-                tint = ColorGray1_FF404249
-            )
         }
     }
 }

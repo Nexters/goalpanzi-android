@@ -63,7 +63,7 @@ import kotlin.math.min
 fun Board(
     scrollState: ScrollState,
     pullRefreshState: PullRefreshState,
-    isRefreshLoading : Boolean,
+    isRefreshLoading: Boolean,
     missionBoards: MissionBoardsUiModel,
     missionDetail: MissionDetail,
     numberOfColumns: Int,
@@ -81,7 +81,7 @@ fun Board(
     val statusBarHeight =
         remember(statusBarPaddingValue) { statusBarPaddingValue }
     val bottomViewHeight = remember(navigationPaddingValue) {
-        142.dp + navigationPaddingValue
+        120.dp + navigationPaddingValue
     }
     val navigationBarHeight =
         remember(navigationPaddingValue) {
@@ -102,7 +102,7 @@ fun Board(
     LaunchedEffect(myIndex) {
         scrollState.animateScrollTo(
             getPositionScrollToMyIndex(
-                myIndex = if(myIndex in 3 .. 5) myIndex - 3 else myIndex,
+                myIndex = if (myIndex in 3..5) myIndex - 3 else myIndex,
                 numberOfColumns = numberOfColumns,
                 blockSize = (configuration.screenWidthDp - 48) / numberOfColumns,
                 localDensity = localDensity
@@ -151,10 +151,10 @@ fun Board(
                     .drawWithContent {
                         clipRect(
                             top = statusBarHeight.toPx() + 178.dp.toPx() - 1,
-                            bottom = if (!isVisiblePieces) {
+                            bottom = if (!isVisiblePieces || scrollState.isScrollInProgress) {
                                 size.height
                             } else {
-                                size.height + navigationBarHeight.toPx() - bottomViewHeight.toPx() + 1.dp.toPx()
+                                size.height + navigationBarHeight.toPx() - bottomViewHeight.toPx()
                             }
                         ) {
                             this@drawWithContent.drawContent()
@@ -187,7 +187,8 @@ fun Board(
                             isVisiblePieces = isVisiblePieces,
                             innerModifier = Modifier
                                 .drawWithContent {
-                                    clipRect(top = (size.height + navigationBarHeight.toPx() - bottomViewHeight.toPx() + 1.dp.toPx())) {
+                                    clipRect(top = if (scrollState.isScrollInProgress ) size.height
+                                    else (size.height + navigationBarHeight.toPx() - bottomViewHeight.toPx())) {
                                         this@drawWithContent.drawContent()
                                     }
                                 }
@@ -213,7 +214,10 @@ fun Board(
         PullRefreshIndicator(
             refreshing = isRefreshLoading,
             state = pullRefreshState,
-            modifier = Modifier.align(TopCenter).statusBarsPadding().padding(top = 178.dp)
+            modifier = Modifier
+                .align(TopCenter)
+                .statusBarsPadding()
+                .padding(top = 178.dp)
         )
     }
 }
@@ -291,7 +295,7 @@ fun ColumnScope.BoardContent(
         }
         if (isVisiblePieces) {
             boardPieces.forEach { piece ->
-                key(piece.memberId,piece.needToDraw) {
+                key(piece.memberId, piece.needToDraw) {
                     Piece(
                         boardPiece = piece,
                         sizePerBlock = width / numberOfColumns,

@@ -66,7 +66,6 @@ fun OnboardingRoute(
     modifier: Modifier = Modifier,
     onClickBoardSetup: () -> Unit,
     onClickInvitationCode: () -> Unit,
-    onClickSetting: () -> Unit,
     onNavigateMissionBoard: (Long) -> Unit,
     viewModel: OnboardingViewModel = hiltViewModel()
 ) {
@@ -112,7 +111,6 @@ fun OnboardingRoute(
         modifier = modifier.fillMaxSize(),
         onClickBoardSetup = onClickBoardSetup,
         onClickInvitationCode = onClickInvitationCode,
-        onClickSetting = onClickSetting
     )
 
     profileCreateSuccessData?.let {
@@ -131,7 +129,6 @@ fun OnboardingScreen(
     onboardingUiModel: OnboardingUiModel,
     onClickBoardSetup: () -> Unit,
     onClickInvitationCode: () -> Unit,
-    onClickSetting: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Box(
@@ -153,26 +150,16 @@ fun OnboardingScreen(
                         .navigationBarsPadding(),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    MissionMateTopAppBar(
-                        modifier = modifier,
-                        navigationType = NavigationType.NONE,
-                        containerColor = Color.Transparent,
-                        rightActionButtons = {
-                            TopBarSetting(
-                                onClick = { onClickSetting() }
-                            )
-                        }
-                    )
                     Text(
-                        modifier = Modifier.padding(bottom = 52.dp),
+                        modifier = Modifier.padding(top = 48.dp, bottom = 40.dp),
                         text = stringResource(id = R.string.onboarding_ready_title),
                         textAlign = TextAlign.Center,
                         style = MissionMateTypography.heading_sm_bold,
                         color = ColorGray1_FF404249
                     )
                     OutlinedTextChip(
-                        text = stringResource(id = R.string.onboarding_level_1),
-                        modifier = Modifier.padding(bottom = 23.dp)
+                        text = stringResource(id = R.string.onboarding_land_1),
+                        modifier = Modifier.padding(bottom = 24.dp)
                     )
                     Box(
                         modifier = Modifier
@@ -239,22 +226,6 @@ fun OnboardingScreen(
             }
         }
 
-    }
-}
-
-@Composable
-fun TopBarSetting(
-    onClick: () -> Unit
-) {
-    IconButton(
-        onClick = onClick,
-        modifier = Modifier.wrapContentSize()
-    ) {
-        Icon(
-            imageVector = ImageVector.vectorResource(id = designSystemResource.drawable.ic_setting),
-            contentDescription = "",
-            tint = ColorGray1_FF404249
-        )
     }
 }
 
@@ -341,7 +312,6 @@ fun OnboardingScreenPreview() {
         ),
         onClickBoardSetup = {},
         onClickInvitationCode = {},
-        onClickSetting = {}
     )
 }
 

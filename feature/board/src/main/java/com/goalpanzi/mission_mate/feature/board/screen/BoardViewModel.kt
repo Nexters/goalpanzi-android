@@ -3,6 +3,7 @@ package com.goalpanzi.mission_mate.feature.board.screen
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.toRoute
 import com.goalpanzi.mission_mate.core.domain.common.DomainResult
 import com.goalpanzi.mission_mate.core.domain.common.model.mission.MissionStatus.Companion.statusString
 import com.goalpanzi.mission_mate.core.domain.mission.model.BoardReward
@@ -17,6 +18,7 @@ import com.goalpanzi.mission_mate.core.domain.setting.usecase.GetViewedTooltipUs
 import com.goalpanzi.mission_mate.core.domain.setting.usecase.SetViewedTooltipUseCase
 import com.goalpanzi.mission_mate.core.domain.user.usecase.GetCachedMemberIdUseCase
 import com.goalpanzi.mission_mate.core.domain.user.usecase.ProfileUseCase
+import com.goalpanzi.mission_mate.core.navigation.model.RouteModel.MainTabRoute.MissionRouteModel
 import com.goalpanzi.mission_mate.feature.board.model.BoardPiece
 import com.goalpanzi.mission_mate.feature.board.model.MissionError
 import com.goalpanzi.mission_mate.feature.board.model.MissionState
@@ -66,7 +68,7 @@ class BoardViewModel @Inject constructor(
     private val viewVerificationUseCase: ViewVerificationUseCase
 ) : ViewModel() {
 
-    val missionId: Long = savedStateHandle.get<Long>("missionId")!!
+    val missionId: Long = savedStateHandle.toRoute<MissionRouteModel.Board>().missionId
 
     val viewedToolTip: StateFlow<Boolean> = getViewedTooltipUseCase().stateIn(
         viewModelScope,

@@ -20,4 +20,5 @@ dependencies {
     implementation(project(":feature:profile"))
     implementation(project(":feature:board"))
     implementation(project(":feature:setting"))
+    implementation(project(":feature:history"))
 }

@@ -1,5 +1,6 @@
 package com.goalpanzi.mission_mate.core.navigation
 
+import com.goalpanzi.mission_mate.core.navigation.model.RouteModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -7,10 +8,10 @@ import javax.inject.Inject
 
 class AuthNavigationEventHandler @Inject constructor() : NavigationEventHandler {
 
-    private val _routeToNavigate = MutableSharedFlow<String>()
-    override val routeToNavigate: SharedFlow<String> = _routeToNavigate.asSharedFlow()
+    private val _routeToNavigate = MutableSharedFlow<RouteModel>()
+    override val routeToNavigate: SharedFlow<RouteModel> = _routeToNavigate.asSharedFlow()
 
-    override suspend fun triggerRouteToNavigate(route: String) {
+    override suspend fun triggerRouteToNavigate(route: RouteModel) {
         _routeToNavigate.emit(route)
     }
 }
